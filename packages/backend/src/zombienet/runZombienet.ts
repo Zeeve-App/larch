@@ -8,6 +8,14 @@ const exec = util.promisify(cmd.exec);
 // const exec = util.promisify(require('node:child_process').exec);
 // import smallnet from '../zombienet/small-network.toml'
 // networks/small-network.toml
+const { stdout, stderr } = await exec('echo $USER');
+// where to store the networks
+let init:string = '/home/';
+let username:string = stdout;
+let location = init+username+'/.larch'
+location = location.replace(/(\r\n|\n|\r)/gm, "");
+
+
 export const zombienetRun = async (a:string,b:string|undefined) => {
     try {
         
@@ -16,15 +24,18 @@ export const zombienetRun = async (a:string,b:string|undefined) => {
         // console.log("from binary"+str1)
         // console.log("from binary1"+str2)
         console.log("Zombienet Start Running")
-        let c1 = 'cd && cd parity-zeeve-zombienet/zombienet/javascript/packages/cli && node dist/cli.js -p podman spawn ';
-        let c2 = str2;
-        let c3 = ' -d ';
-        let c4 = str1;
-        let command = c1+c2+c3+c4
+        let c1 = 'cd && cd ';
+        let c2 = location;
+        let c3 = '/zombienet/javascript/packages/cli && node dist/cli.js -p podman spawn '
+        let c4 = str2;
+        let c5 = ' -d ';
+        let c6 = str1;
+        let command = c1+c2+c3+c4+c5+c6
         command = command.replace(/(\r\n|\n|\r)/gm, "");
-        // console.log("This is command"+command)
-        // const str = 'cd && cd parity-zeeve-zombienet/zombienet/javascript/packages/cli && node dist/cli.js -p podman spawn ../../../examples/0001-small-network.toml'
+        console.log("This is command"+command)
+        // const str = 'cd && cd /home/antar/.larch/zombienet/javascript/packages/cli && node dist/cli.js -p podman spawn ../../../examples/0001-small-network.toml'
         const { stdout, stderr } = await exec(command);
+        // const { stdout, stderr } = await exec(str);
         console.log(stdout)
         console.log(stderr)
         console.log("Zombienet Running")
@@ -32,4 +43,5 @@ export const zombienetRun = async (a:string,b:string|undefined) => {
         console.error(error);
     }
 }
+
 // podman pod rm -f collator01_pod bob_pod alice_pod temp-1_pod temp-collator_pod temp_pod grafana_pod tempo_pod prometheus_pod 

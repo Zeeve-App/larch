@@ -1,6 +1,6 @@
 import { Request,Response } from "express"
-import { startNetwork } from "../../../zombienet/index.js";
-import { zombienetRun } from "../../../zombienet/runZombienet.js";
+import { startNetwork } from "../../../zombienet-installer/index.js";
+// import { zombienetRun } from "../../../zombienet-installer/runZombienet.js";
 export const networkController = async (req:Request,res:Response):Promise<Response> => {
     try {
         return res.status(200).json({message:"success from network api"});

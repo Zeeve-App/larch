@@ -1,9 +1,8 @@
 import React from 'react';
-import './App.css';
+import './App.css'
 import {BrowserRouter, Route, Routes , Link} from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import Network from './pages/Network';
-
 
 function App() {
   return (
@@ -53,12 +52,18 @@ function App() {
         <Route path='/activity' element={<Network/>} />
         <Route path='/docs' element={<Network/>} />
         <Route path='/contact' element={<Network/>} />
+       
 
 
     </Routes>
+    <h1 className="text-xl underline">
+      Hello world!
+    </h1>
     </div>
   </BrowserRouter>
+  
 
   );
 }
-export default App;
+
+export default App

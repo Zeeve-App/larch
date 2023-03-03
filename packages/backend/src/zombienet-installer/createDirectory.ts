@@ -1,6 +1,7 @@
 import * as util  from 'node:util';
 import * as cmd from 'node:child_process'
-import { cloneRepo } from './cloneZombienet.js';
+import { createNetworks } from './manageNetworks.js';
+// import { cloneRepo } from './cloneZombienet.js';
 const exec = util.promisify(cmd.exec);
 
 const { stdout, stderr } = await exec('echo $USER');
@@ -35,7 +36,8 @@ export const createDirectory = async (arg1:string,arg2:string,arg3:string,arg4:s
             console.log("From create directory")
 
             const {stdout,stderr } = await exec(command);
-            await cloneRepo(str1,str2,str3,str4);
+            // await cloneRepo(str1,str2,str3,str4);
+            await createNetworks(str1,str2,str3,str4)
     } catch (error) {
         
     }

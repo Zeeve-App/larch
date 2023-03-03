@@ -44,7 +44,7 @@ export const zombienetRun = async (arg1:string,arg2:string,arg3:string,arg4:stri
         let c6 = str1;
         let command = c1+c2+c3+c4+c5+c6
         command = command.replace(/(\r\n|\n|\r)/gm, "");
-        console.log("This is command"+command)
+        console.log("This is command "+command)
         // const str = 'cd && cd /home/antar/.larch/zombienet/javascript/packages/cli && node dist/cli.js -p podman spawn ../../../examples/0001-small-network.toml'
         
         const { stdout, stderr } = await exec(command);

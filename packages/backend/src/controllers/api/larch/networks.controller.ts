@@ -1,6 +1,9 @@
 import { Request,Response } from "express"
 import { startNetwork } from "../../../zombienet-installer/index.js";
+
 // import { zombienetRun } from "../../../zombienet-installer/runZombienet.js";
+
+
 export const networkController = async (req:Request,res:Response):Promise<Response> => {
     try {
         return res.status(200).json({message:"success from network api"});
@@ -19,15 +22,35 @@ export const networkController = async (req:Request,res:Response):Promise<Respon
 
 export const createNetworkController = async (req:Request,res:Response) => {
     try {
+        const {dirName,fileName,NetworkName,confFile} = req.body;
+        // console.log(dirName); // -d parameter
+        // console.log(fileName); // where the network config will be written
+        // console.log(NetworkName); // a random network name given by the user
+        // console.log(confFile); // -p podman spawn parameter
         
-        console.log(req.body.directoryName);
-        console.log(req.file?.path);
-        const str1:string = req.body.directoryName
-        const str2:string|undefined = req.file?.path
+
+        
+        let str1:string = dirName;
+        let str2:string = fileName;
+        let str3:string = NetworkName;
+        let str4:string = confFile;
+
+        // const myBuffer = Buffer.from(str4, 'base64');
+
+        // console.log(myBuffer);
+
+        await startNetwork(str1,str2,str3,str4)
+
+        // console.log(req.body.directoryName);
+        // console.log(req.file?.path);
+        // const str1:string = req.body.directoryName
+        // const str2:string|undefined = req.file?.path
         // zombienetRun(req.body.directoryName,str)
         // console.log(req.file);
-        await startNetwork(str1,str2);
+        // await startNetwork(str1,str2);
         return res.status(200).json({message:"Uploaded successfully"});
+        
+        
         // const {confFile,dirName} = req.body;
         
         // const request = req.body;

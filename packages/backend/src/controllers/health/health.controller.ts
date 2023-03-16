@@ -7,3 +7,4 @@ export const healthController = async (req:Request,res:Response):Promise<Respons
         return res.status(500).json("Server Error")
     }
 }
+

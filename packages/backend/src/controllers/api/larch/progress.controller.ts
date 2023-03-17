@@ -27,7 +27,14 @@ export const progressController = async (req:Request,res:Response) => {
             for(let i=0; i<arrLength;i++){
                 
                 // console.log(networkJson[i].dirName) 
-                return res.status(200).json({"networkName":networkJson[i].networkName,"networkState":networkJson[i].networkState})
+
+                let returnNetworkObj ={
+                    networkName:networkJson[i].networkName,
+                    networkState:networkJson[i].networkState
+                }
+
+                return res.status(200).send(JSON.stringify(returnNetworkObj))
+                // return res.status(200).json({"networkName":networkJson[i].networkName,"networkState":networkJson[i].networkState})
 
                 
                                         

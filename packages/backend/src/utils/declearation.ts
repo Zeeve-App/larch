@@ -15,7 +15,7 @@ const command = commandArr.join("")
 export const LOCATION:string = command;
 
 
-export const VERSION:string = '1.3.37';
+export const VERSION:string = '1.3.40';
 
 export const LARCH_VERSION = process.env.npm_package_version;
 

@@ -15,20 +15,27 @@ export const networkController = async (req:Request,res:Response) => {
             networkLocationArr.push('/networks.json')
 
             const networkLocation = networkLocationArr.join("")
-        fs.readFile( networkLocation, 'utf8',  (err, data) => {
-            
-            if(err){
-                console.log(err) // Error to handel
+
+            if(!(fs.existsSync(networkLocation))){
+                return res.status(200).send({message:"No Networks Available"});
             }
-            return res.status(200).send(JSON.parse(data));
+            else{
+                fs.readFile( networkLocation, 'utf8',  (err, data) => {
             
-         });
+                    if(err){
+                        console.log(err) // Error to handel
+                    }
+                    return res.status(200).send(JSON.parse(data));
+                    
+                 });
+            }
+        
 
     } catch (error) {
         return res.status(500).json("Server Error");
     }
 }
-
+ 
 export const createNetworkController = async (req:Request,res:Response) => {
     try {
         const {dirName,fileName,networkName,confFile} = req.body;
@@ -36,6 +43,7 @@ export const createNetworkController = async (req:Request,res:Response) => {
         // console.log(fileName); // where the network config will be written
         // console.log(NetworkName); // a random network name given by the user
         // console.log(confFile); // -p podman spawn parameter
+        
 
         if(!(req.body.dirName) && !(req.body.fileName) && !(req.body.networkName) && !(req.body.confFile)){
             return res.status(404).json({msg:"Empty values are not allowed"});
@@ -58,7 +66,9 @@ export const createNetworkController = async (req:Request,res:Response) => {
 
             await startZombienet(req.body.dirName,req.body.fileName,req.body.networkName,req.body.confFile)
 
-        return res.status(200).json({message:"Uploaded successfully",directoryName:dirName,fileName:fileName,networkName:networkName,networkConfiguration:confFile});
+            return res.status(200).json({message:"Uploaded successfully",directoryName:dirName,fileName:fileName,networkName:networkName,networkConfiguration:confFile});
+       
+        
     }
         
 

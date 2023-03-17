@@ -115,42 +115,70 @@ export const createDirectoryInsideNetworkDir = async (networkName:string):Promis
 
 }
 
+
 export const manageNetworkJson = async (dirName:string,fileName:string,networkName:string,confFile:string,VERSION:string):Promise<boolean> => {
 
 
-        let locationArr = [];
-        locationArr.push(LOCATION);
-        locationArr.push('/networks.json');
-        const location = locationArr.join("");
-        // console.log(location);
+  let locationArr = [];
+  locationArr.push(LOCATION);
+  locationArr.push('/networks.json');
+  const location = locationArr.join("");
+  // console.log(location);
 
+  // Adding Network Status
 
-        const networkValue = {
-            name: networkName,
-            dirName: dirName,
-            fileName: fileName,
-            confFile: confFile
+//   let zombieJsonLocationArr = [];
+//   zombieJsonLocationArr.push(dirName)
+//   zombieJsonLocationArr.push('/zombie.json')
+
+//   const zombieJsonLocation = zombieJsonLocationArr.join("")
+
+//   // fileHandeler
+
+//   const jsonHandeler = async () => {
+//   if(fileHandeler.existsSync(dirName)){
+//     const networkStatus:string = "in-progress"
+//     return networkStatus
+//   }
+
+//   else if (fileHandeler.existsSync(zombieJsonLocation)) {
+    
+//     const networkStatus:string = "finished"
+
+//     return networkStatus
+
+//   }
+// }
+
+// await jsonHandeler();
+
+  const networkValue = {
+      name: networkName,
+      dirName: dirName,
+      fileName: fileName,
+      confFile: confFile,
+      // networkState: jsonHandeler
+  }
+
+  let emptyArr = [];
+
+  emptyArr.push(networkValue)
+
+  const myJSON = JSON.stringify(emptyArr);
+
+      const appendFile = async (path:string, data:string) => {
+        try {
+          await fs.appendFile(path, data);
+        } catch (error) {
+          console.error(error);
         }
+      };
+      await appendFile(location, myJSON);
+  
+      console.log("Creating Network Json and adding network into it");
 
-        let emptyArr = [];
-
-        emptyArr.push(networkValue)
-
-        const myJSON = JSON.stringify(emptyArr);
-
-            const appendFile = async (path:string, data:string) => {
-              try {
-                await fs.appendFile(path, data);
-              } catch (error) {
-                console.error(error);
-              }
-            };
-            await appendFile(location, myJSON);
-        
-            console.log("Creating Network Json and adding network into it");
-
-            return true
-            
+      return true
+      
 }
 
 export const addIntoNetworksDirectory = async (fileName:string,confFile:string,networkName:string,VERSION:string):Promise<boolean> => {
@@ -209,10 +237,12 @@ export const runZombienet = async (dirName:string,fileName:string,networkName:st
         console.log(stdout)
         console.log(stderr)
 
+        
+
         console.log("Running Zombienet");
 
-
 }
+
 
 // IF DIRECTORY ALREADY EXIST
 
@@ -297,4 +327,5 @@ let binaryLocationArr = [];
         
         console.log(stdout)
         console.log(stderr)
+
 }

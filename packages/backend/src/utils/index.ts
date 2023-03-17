@@ -1,7 +1,6 @@
 import * as util  from 'node:util';
 import * as cmd from 'node:child_process'
 import * as fs from 'fs'
-import { join } from 'path';
 import { LOCATION, VERSION } from './declearation.js';
 import { downloadZombienetBinary, renameBinary, executePermissionToBinary, createNetworkDir, createDirectoryInsideNetworkDir, manageNetworkJson, addIntoNetworksDirectory, runZombienet, zombieBinaryAlreadyExist } from './zombienetRunner.js';
 
@@ -42,6 +41,6 @@ export const startZombienet = async (dirName:string,fileName:string,networkName:
                 await addIntoNetworksDirectory(fileName,confFile,networkName,VERSION);
                        
                 await runZombienet(dirName,fileName,networkName,confFile,VERSION);
-                                 
+                                                 
         }
     }

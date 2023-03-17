@@ -27,73 +27,10 @@ export const progressController = async (req:Request,res:Response) => {
             for(let i=0; i<arrLength;i++){
                 
                 // console.log(networkJson[i].dirName) 
-
-                let zombieJsonLocationArr = [];
-                zombieJsonLocationArr.push(networkJson[i].dirName)
-                zombieJsonLocationArr.push('/zombie.json')
-                const zombieJsonLocation = zombieJsonLocationArr.join("")
+                return res.status(200).json({"networkName":networkJson[i].networkName,"networkState":networkJson[i].networkState})
 
                 
-                      
-                    
-                    //    if (fs.existsSync(zombieJsonLocation)) {
-                        
-                    //     const networkStatus:string = "finished"
-
-                    //     let newObj ={
-                    //         networkState:  networkStatus
-                    //     } 
-                    //     //add networkStatus in the json file
-                    //     // console.log()
-                    //     fs.writeFile(JSON.stringify(networkJson[i]),JSON.stringify(newObj),(err)=>{
-                    //         if (err)
-                    //             console.log(err);
-                    //         else {
-                    //             console.log(JSON.stringify(networkJson[i]));
-                                
-                    //         }
-                    //     });
-                    //     // let networkState =  networkStatus
-                    
-                    //     // return res.status(200).send(networkStatus)
-                    //   }
-                       if(fs.existsSync(networkJson[i].dirName)){
-                        // const networkStatus:string = "in-progress"
-                        let newObj ={
-                            networkState:  "in-progress"
-                        } 
-                        // console.log(newObj)
-                        // const networkJsonFile = JSON.parse(networkJson[i])
-                        // const jsonStr = JSON.stringify(networkJsonFile);
-                        // console.log(jsonStr)
-
-                        const data = fs.readFileSync(networkLocation,'utf-8');
-                        const jsonData = JSON.parse(data);
-
-                        jsonData.networkState = "in-progress"
-
-                        const newData = jsonData[i];
-                        const updatedData = JSON.stringify(newData)
-                        console.log(updatedData)
-                        // console.log(jsonData)
-                        // fs.writeFileSync
-                        // console.log(jsonStr)
-                        // fs.appendFile(JSON.stringify(networkJson[i]),JSON.stringify(newObj),(err)=>{
-                        //     if (err)
-                        //         console.log(err);
-                        //     else {
-                        //         console.log(JSON.stringify(networkJson[i]));
-                                
-                        //     }
-                        // });
-                        
-                        // console.log(JSON.stringify(networkJson[i]))
-                        // let networkState =  networkStatus
-                        // return res.status(200).send(networkStatus)
-                        
-                      }
-                    
-                    
+                                        
                     
             }
         }

@@ -36,11 +36,14 @@ export const startZombienet = async (dirName:string,fileName:string,networkName:
 
                 await createDirectoryInsideNetworkDir(networkName)
 
-                await manageNetworkJson (dirName,fileName,networkName,confFile,VERSION); 
+                // await manageNetworkJson (dirName,fileName,networkName,confFile,VERSION); 
 
                 await addIntoNetworksDirectory(fileName,confFile,networkName,VERSION);
                        
                 await runZombienet(dirName,fileName,networkName,confFile,VERSION);
+
+                await manageNetworkJson (dirName,fileName,networkName,confFile,VERSION); 
+
                                                  
         }
     }

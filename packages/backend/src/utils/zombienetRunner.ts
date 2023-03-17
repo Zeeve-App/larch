@@ -202,17 +202,17 @@ export const manageNetworkJson = async (dirName:string,fileName:string,networkNa
   // fileHandeler
 
   const jsonHandeler = () => {
-  if(fileHandeler.existsSync(dirName)){
-    const networkStatus:string = "in-progress"
-    return networkStatus
-  }
 
-  else if (fileHandeler.existsSync(zombieJsonLocation)) {
+    if (fileHandeler.existsSync(zombieJsonLocation)) {
     
-    const networkStatus:string = "finished"
-
-    return networkStatus
-
+      const networkStatus:string = "finished"
+  
+      return networkStatus
+  
+    }
+      else if(fileHandeler.existsSync(dirName)){
+        const networkStatus:string = "in-progress"
+        return networkStatus
   }
 
   else {
@@ -258,30 +258,30 @@ const status = jsonHandeler();
 
 export const zombieBinaryAlreadyExist = async (dirName:string,fileName:string,networkName:string,confFile:string,VERSION:string) => {
 
-    let locationNewArr = [];
-    locationNewArr.push(LOCATION);
-    locationNewArr.push("/networks.json")
-    const locationNew = locationNewArr.join("")
+    // let locationNewArr = [];
+    // locationNewArr.push(LOCATION);
+    // locationNewArr.push("/networks.json")
+    // const locationNew = locationNewArr.join("")
 
-    const networkValue = {
-        name: networkName,
-        dirName : dirName,
-        fileName : fileName,
-        confFile : confFile
-    }
+    // const networkValue = {
+    //     name: networkName,
+    //     dirName : dirName,
+    //     fileName : fileName,
+    //     confFile : confFile
+    // }
 
-    async function appendDataToFile(newData:any) {
-        try {
-        const existingData:any = await readFileAsync(locationNew);
-        const jsonData = JSON.parse(existingData);
-        jsonData.push(newData);
-        await writeFileAsync(locationNew, JSON.stringify(jsonData));
-        console.log('Data appended to file successfully');
-        } catch (err) {
-        console.error('Error appending data to file:', err);
-        }
-    }
-    await appendDataToFile(networkValue);
+    // async function appendDataToFile(newData:any) {
+    //     try {
+    //     const existingData:any = await readFileAsync(locationNew);
+    //     const jsonData = JSON.parse(existingData);
+    //     jsonData.push(newData);
+    //     await writeFileAsync(locationNew, JSON.stringify(jsonData));
+    //     console.log('Data appended to file successfully');
+    //     } catch (err) {
+    //     console.error('Error appending data to file:', err);
+    //     }
+    // }
+    // await appendDataToFile(networkValue);
 
 
     let createFileNameArr = [];
@@ -337,5 +337,64 @@ let binaryLocationArr = [];
         
         console.log(stdout)
         console.log(stderr)
+
+        // Adding Network Status
+
+  let zombieJsonLocationArr = [];
+  zombieJsonLocationArr.push(dirName)
+  zombieJsonLocationArr.push('/zombie.json')
+
+  const zombieJsonLocation = zombieJsonLocationArr.join("")
+
+  // fileHandeler
+
+  const jsonHandeler = () => {
+
+    if (fileHandeler.existsSync(zombieJsonLocation)) {
+    
+      const networkStatus:string = "finished"
+  
+      return networkStatus
+  
+    }
+      else if(fileHandeler.existsSync(dirName)){
+        const networkStatus:string = "in-progress"
+        return networkStatus
+  }
+
+  else {
+    const networkStatus:string = "failed to create the network"
+
+    return networkStatus
+  }
+}
+
+const status = jsonHandeler();
+
+let locationNewArr = [];
+    locationNewArr.push(LOCATION);
+    locationNewArr.push("/networks.json")
+    const locationNew = locationNewArr.join("")
+
+  const networkValue = {
+      name: networkName,
+      dirName: dirName,
+      fileName: fileName,
+      confFile: confFile,
+      networkState: status
+  }
+
+        async function appendDataToFile(newData:any) {
+        try {
+        const existingData:any = await readFileAsync(locationNew);
+        const jsonData = JSON.parse(existingData);
+        jsonData.push(newData);
+        await writeFileAsync(locationNew, JSON.stringify(jsonData));
+        console.log('Data appended to file successfully');
+        } catch (err) {
+        console.error('Error appending data to file:', err);
+        }
+    }
+    await appendDataToFile(networkValue);
 
 }

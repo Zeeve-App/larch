@@ -338,7 +338,12 @@ let binaryLocationArr = [];
         console.log(stdout)
         console.log(stderr)
 
-        // Adding Network Status
+        let locationNewArr = [];
+    locationNewArr.push(LOCATION);
+    locationNewArr.push("/networks.json")
+    const locationNew = locationNewArr.join("")
+
+    // Adding Network Status
 
   let zombieJsonLocationArr = [];
   zombieJsonLocationArr.push(dirName)
@@ -371,20 +376,15 @@ let binaryLocationArr = [];
 
 const status = jsonHandeler();
 
-let locationNewArr = [];
-    locationNewArr.push(LOCATION);
-    locationNewArr.push("/networks.json")
-    const locationNew = locationNewArr.join("")
+    const networkValue = {
+        name: networkName,
+        dirName : dirName,
+        fileName : fileName,
+        confFile : confFile,
+        networkState: status
+    }
 
-  const networkValue = {
-      name: networkName,
-      dirName: dirName,
-      fileName: fileName,
-      confFile: confFile,
-      networkState: status
-  }
-
-        async function appendDataToFile(newData:any) {
+    async function appendDataToFile(newData:any) {
         try {
         const existingData:any = await readFileAsync(locationNew);
         const jsonData = JSON.parse(existingData);

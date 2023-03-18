@@ -5,12 +5,12 @@
   "main": "larch.js",
   "type": "module",
   "bin": {
-    "larch": "./dist/module/larch.js"
+    "larch": "./dist/module/index.js"
   },
   "scripts": {
-    "test": "jest",
+    "test": "vitest",
     "build": "npx tsc",
-    "dev": "nodemon dist/index.js",
+    "dev": "npm run build && npm run start",
     "start": "node dist/index.js"
   },
   "keywords": [],
@@ -30,6 +30,7 @@
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-promise": "^6.1.1",
     "nodemon": "^2.0.20",
+    "supertest": "^6.3.3",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5",
     "vitest": "^0.29.1"

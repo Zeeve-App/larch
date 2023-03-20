@@ -63,9 +63,13 @@ export const createNetworkController = async (req:Request,res:Response) => {
 
         else{
 
-            await startZombienet(req.body.dirName,req.body.fileName,req.body.networkName,req.body.confFile)
+                const newNetworkName = req.body.networkName;
 
-            return res.status(200).json({message:"Uploaded successfully",directoryName:dirName,fileName:fileName,networkName:networkName,networkConfiguration:confFile}); 
+                const updatedNetworkName = newNetworkName.replace(/\s/g,"");
+
+                await startZombienet(req.body.dirName,req.body.fileName,updatedNetworkName,req.body.confFile)
+
+                return res.status(200).json({message:"Network Running successfully",directoryName:dirName,fileName:fileName,networkName:updatedNetworkName,networkConfiguration:confFile}); 
     }
         
 

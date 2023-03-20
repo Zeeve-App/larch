@@ -36,7 +36,7 @@ export const options = program.opts();
 
 export const startBackend = async () => {
 
-  const { stdout, stderr } = await exec("npm run dev"); // for production change it to "npm start"
+  const { stdout, stderr } = await exec("npm run start:api");
 
 }
 

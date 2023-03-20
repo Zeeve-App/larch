@@ -1,5 +1,4 @@
 import { Request,Response } from "express"
-import { initializeService } from "../../../zombienet-installer/index.js";
 import * as util  from 'node:util';
 import * as cmd from 'node:child_process'
 import * as fs from 'fs'
@@ -66,11 +65,7 @@ export const createNetworkController = async (req:Request,res:Response) => {
 
             await startZombienet(req.body.dirName,req.body.fileName,req.body.networkName,req.body.confFile)
 
-            
-
-            return res.status(200).json({message:"Uploaded successfully",directoryName:dirName,fileName:fileName,networkName:networkName,networkConfiguration:confFile});
-       
-        
+            return res.status(200).json({message:"Uploaded successfully",directoryName:dirName,fileName:fileName,networkName:networkName,networkConfiguration:confFile}); 
     }
         
 

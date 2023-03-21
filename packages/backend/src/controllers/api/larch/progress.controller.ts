@@ -15,7 +15,7 @@ export const progressController = async (req:Request,res:Response) => {
         fs.readFile( networkLocation, 'utf8',  (err, data) => {
         
             if(err){
-                console.log(err) // Error to handel
+                return res.status(404).json({"message":"No Network to show the progress"}) // Error to handel
             }
             let networkJson = JSON.parse(data)
             let arrLength = networkJson.length
@@ -23,7 +23,7 @@ export const progressController = async (req:Request,res:Response) => {
 
                 if(arrLength<=0)
                 {
-                    return res.status(200).json({"message":"No Network to show the progress"})
+                    return res.status(404).json({"message":"No Network to show the progress"})
                 }
                 else if(arrLength>0){
 

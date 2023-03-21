@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import {BrowserRouter, Route, Routes , Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Dashboard from '../pages/dashboard/components/page';
 import Network from '../pages/Network';
 import IconDashboard from "./assets/Dashboard.svg";
@@ -13,11 +13,11 @@ import IconEmail from "./assets/Email.svg";
 import IconHelp from "./assets/Help.svg";
 
 
-export function Menu() {
+export default function Menu() {
 
 return (
     <div className="box-border flex flex-col items-start py-6.25 px-0 gap-6.25 min-w-64 h-screen overflow-hidden	border-r-2 border-border divide-solid " > 
-    <BrowserRouter>
+  
   
     <nav>
           <div className='gap-6 py-6 px-0 flex flex-col	justify-start	'>
@@ -43,7 +43,7 @@ return (
             <div className="w-64 h-14 flex justify-start bg-menu flex-row flex-nowrap content-center items-center py-2 px-4 "> 
               <div className='font-Rubik text-white text-base font-normal flex items-center gap-2.5	'>
               <img src={IconTemp} alt=""/>
-              <Link to="/activity">Template</Link>
+              <Link to="/template">Template</Link>
               </div>
             </div>
         
@@ -98,28 +98,7 @@ return (
    
     </nav>
   
-    
-        <Routes>
-            <Route path='/dashboard' element={<Dashboard/>} />
-            <Route path='/network' element={<Network/>} />
-            <Route path='/network/list' element={<Network/>} />
-            <Route path='/network/create' element={<Network/>} />
-            <Route path='/template' element={<Network/>} />
-            <Route path='/template/list' element={<Network/>} />
-            <Route path='/template/create' element={<Network/>} />
-            <Route path='/activity' element={<Network/>} />
-            <Route path='/docs' element={<Network/>} />
-            <Route path='/contact' element={<Network/>} />
-        
-
-
-        </Routes>
-        
-    </BrowserRouter>
-    
-    </div>
-  
-        
+    </div>   
     );
     }
-    export default Menu;
+  

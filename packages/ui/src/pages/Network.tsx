@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Network() {
+export function Network() {
 return (
    <p>hello Network</p>
 );

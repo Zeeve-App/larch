@@ -1,23 +1,47 @@
 import React from 'react';
 import './App.css'
-import Header from './components/header'
-import Menu from './components/main_menu'
-import DashContent from './pages/dashboard/components/dashboard_content'
+import MainLayout from './components/layout/Mainlayout'
+import Dashboard from './pages/dashboard/components/dashboard_content'
+import Network from './pages/network/components/network_content'
+import Activity from './pages/activity/components/Main'
+import Template from './pages/template/components/Main'
+import { useRoutes, RouteObject, Navigate } from "react-router";
 
+const routes: RouteObject[] = [
+  
+      {
+        element: <MainLayout />,
+        children: [
+          {
+            path: ("/dashboard"),
+            element: <Dashboard />,
+          },
+          {
+            path: ("/network"),
+            element: <Network />,
+          },
+         
+          {
+            path: ("/activity"),
+            element: <Activity />,
+          },
 
-function App() {
-  return (
-   <>
-      <Header/>
+          {
+            path: ("/template"),
+            element: <Template />,
+          },
+          
+        
+        ],
+      },
+    ]
+  
 
-    <div className='flex flex-row gap-0 bg-black'>
-        <Menu />
-        <DashContent/>
-    </div>
-   
-    </>
- 
-  );
+const App = () => {
+
+  const element = useRoutes(routes);
+  return element;
+
 }
 
 export default App

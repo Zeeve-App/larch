@@ -4,9 +4,11 @@ import IconNetwork from "./assets/My-Network.svg";
 import IconTemp from "./assets/template.svg";
 import IconUser from "./assets/User-Editor.svg";
 
-export function Dashboard() {
+export default function Dashboard() {
 
 return (
+
+
 <div className='h-full bg-black p-6'>
 
 <div className="bg-create-button flex flex-col gap-6 p-6 border-2 border-border border-border rounded-2xl rounded border-solid box-border max-w-max	">
@@ -52,4 +54,3 @@ return (
     
 );
 }
-export default Dashboard

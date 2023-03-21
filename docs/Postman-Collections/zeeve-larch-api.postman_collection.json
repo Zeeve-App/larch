@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "6803abef-2ecd-45ce-ad9a-3bf19e9586e3",
+		"name": "zeeve-larch-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21725798"
+	},
+	"item": [
+		{
+			"name": "Version API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/larch/version",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"larch",
+						"version"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Health API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/healthz",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"healthz"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Progress API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/larch/progress",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"larch",
+						"progress"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Networks API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/larch/networks",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"larch",
+						"networks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Network API",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dirName\":\"{{directoryName}}\",\n    \"fileName\":\"{{fileName}}\",\n    \"networkName\":\"{{networkName}}\",\n    \"confFile\":\"{{configFile}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/larch/networks/create",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"larch",
+						"networks",
+						"create"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

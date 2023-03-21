@@ -38,38 +38,50 @@ export const networkController = async (req:Request,res:Response) => {
 export const createNetworkController = async (req:Request,res:Response) => {
     try {
         const {dirName,fileName,networkName,confFile} = req.body;
+        
         // console.log(dirName); // -d parameter
         // console.log(fileName); // where the network config will be written
         // console.log(NetworkName); // a random network name given by the user
         // console.log(confFile); // -p podman spawn parameter
         
 
-        if(!(req.body.dirName) && !(req.body.fileName) && !(req.body.networkName) && !(req.body.confFile)){
+        if(!(dirName) && !(fileName) && !(networkName) && !(confFile)){
             return res.status(404).json({msg:"Empty values are not allowed"});
         }
 
-        else if(!(req.body.dirName)){
+        else if(!(dirName)){
             return res.status(404).json({msg:"Directory Name Required"});
         }
-        else if(!(req.body.fileName)){
+        else if(!(fileName)){
             return res.status(404).json({msg:"File Name Required"});
         }
-        else if(!(req.body.networkName)){
+        else if(!(networkName)){
             return res.status(404).json({msg:"Network Name Required"});
         }
-        else if(!(req.body.confFile)){
+        else if(!(confFile)){
             return res.status(404).json({msg:"Configuration File Required"});
         }
 
         else{
 
-                const newNetworkName = req.body.networkName;
+                const updatedNetworkName = networkName.replace(/\s/g,"");
 
-                const updatedNetworkName = newNetworkName.replace(/\s/g,"");
+                if(fs.existsSync(dirName)){
+                    return res.status(400).json({message:"This directory already exists at this location, please change the location or directory name"})
+                }
 
-                await startZombienet(req.body.dirName,req.body.fileName,updatedNetworkName,req.body.confFile)
+                const networkArr = fileName.split('.');
+                if(networkArr.length>=2 && (networkArr[1] === 'json')|| (networkArr[1] === 'toml') || (networkArr[1] === 'zndsl')){
 
-                return res.status(200).json({message:"Network Running successfully",directoryName:dirName,fileName:fileName,networkName:updatedNetworkName,networkConfiguration:confFile}); 
+                    var updatedFilename = fileName.replace(/\s/g,"-");
+                }
+                else{
+                    return res.status(400).json({message:"Please give a valid file name and finish with .json or .toml or .zndsl extension"})
+                }
+
+                await startZombienet(req.body.dirName,updatedFilename,updatedNetworkName,req.body.confFile)
+
+                return res.status(200).json({message:"Network Running successfully",directoryName:dirName,fileName:updatedFilename,networkName:updatedNetworkName,networkConfiguration:confFile}); 
     }
         
 

@@ -4,7 +4,7 @@ import * as fs from 'node:fs/promises';
 import * as fileHandeler from 'fs'
 const readFileAsync = util.promisify(fileHandeler.readFile);
 const writeFileAsync = util.promisify(fileHandeler.writeFile);
-import { LOCATION } from './declearation.js';
+import { LOCATION, PROVIDER_NAME } from './declearation.js';
 
 const exec = util.promisify(cmd.exec);
 
@@ -158,7 +158,9 @@ export const runZombienet = async (dirName:string,fileName:string,networkName:st
         binaryLocationArr.push(networkName);
         binaryLocationArr.push('/');
         binaryLocationArr.push(fileName);
-        binaryLocationArr.push(' -p podman -d ')
+        binaryLocationArr.push(' -p ')
+        binaryLocationArr.push(PROVIDER_NAME)
+        binaryLocationArr.push(' -d ')
         binaryLocationArr.push(dirName);
 
         const binaryLocation = binaryLocationArr.join('');
@@ -220,7 +222,8 @@ const status = jsonHandeler();
       dirName: dirName,
       fileName: fileName,
       confFile: confFile,
-      networkState: status
+      networkState: status,
+      networkProvider:PROVIDER_NAME
   }
 
   let emptyArr = [];
@@ -291,7 +294,9 @@ let binaryLocationArr = [];
         binaryLocationArr.push(networkName);
         binaryLocationArr.push('/');
         binaryLocationArr.push(fileName);
-        binaryLocationArr.push(' -p podman -d ')
+        binaryLocationArr.push(' -p ')
+        binaryLocationArr.push(PROVIDER_NAME)
+        binaryLocationArr.push(' -d ')
         binaryLocationArr.push(dirName);
 
         const binaryLocation = binaryLocationArr.join('');
@@ -346,7 +351,8 @@ const status = jsonHandeler();
         dirName : dirName,
         fileName : fileName,
         confFile : confFile,
-        networkState: status
+        networkState: status,
+        networkProvider:PROVIDER_NAME
     }
 
     async function appendDataToFile(newData:any) {

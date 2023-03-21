@@ -103,6 +103,7 @@ describe('Network route endpoint', () => {
           expect(res._body[i].fileName && typeof res._body[i].fileName === 'string')
           expect(res._body[i].confFile && typeof res._body[i].confFile === 'string')
           expect(res._body[i].networkState && typeof res._body[i].networkState === 'string')
+          expect(res._body[i].networkProvider && typeof res._body[i].networkProvider === 'string')
         }     
       }
       else{

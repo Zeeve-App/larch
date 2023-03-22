@@ -1,12 +1,11 @@
 import { Router } from "express";
-import { network , createNetwork} from "../../../controllers/index.js";
-// import { upload } from "../../../middleware/upload.js";
+import { network , createNetwork, displayNetworks } from "../../../controllers/index.js";
 
 
 const router = Router();
 
 router.get("/networks",network);
-// router.post("/networks/create/",upload.single('confFile'), createNetwork)
-router.post("/networks/create/", createNetwork)
+router.post("/networks/create/", createNetwork);
+router.get("/network/", displayNetworks);
 
 export default router

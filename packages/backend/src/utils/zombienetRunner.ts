@@ -176,7 +176,7 @@ export const runZombienet = async (dirName:string,fileName:string,networkName:st
 }
 
 
-export const manageNetworkJson = async (dirName:string,fileName:string,networkName:string,confFile:string,VERSION:string):Promise<boolean> => {
+export const manageNetworkJson = async (dirName:string,fileName:string,networkName:string,confFile:string,VERSION:string,dslFileName:string,dslFile:string):Promise<boolean> => {
 
 
   let locationArr = [];
@@ -222,6 +222,8 @@ const status = jsonHandeler();
       dirName: dirName,
       fileName: fileName,
       confFile: confFile,
+      dslFileName: dslFileName,
+      dslFile: dslFile,
       networkState: status,
       networkProvider:PROVIDER_NAME
   }
@@ -250,7 +252,7 @@ const status = jsonHandeler();
 
 // IF DIRECTORY ALREADY EXIST
 
-export const zombieBinaryAlreadyExist = async (dirName:string,fileName:string,networkName:string,confFile:string,VERSION:string) => {
+export const zombieBinaryAlreadyExist = async (dirName:string,fileName:string,networkName:string,confFile:string,VERSION:string,dslFileName:string,dslFile:string) => {
 
     let createFileNameArr = [];
     createFileNameArr.push('cd ')
@@ -351,6 +353,8 @@ const status = jsonHandeler();
         dirName : dirName,
         fileName : fileName,
         confFile : confFile,
+        dslFileName : dslFileName,
+        dslFile: dslFile,
         networkState: status,
         networkProvider:PROVIDER_NAME
     }

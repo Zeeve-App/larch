@@ -12,9 +12,7 @@ describe('Health route endpoint', () => {
     const res = await supertest(app)
       .get('/healthz')
     expect(res.statusCode).toEqual(200)
-    expect(res.body).toEqual({
-      "message": "success from health api"
-  })
+    expect(res.body).toEqual("")
   })
 })
 

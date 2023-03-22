@@ -6,7 +6,7 @@ import { downloadZombienetBinary, renameBinary, executePermissionToBinary, creat
 
 const exec = util.promisify(cmd.exec);
 
-export const startZombienet = async (dirName:string,fileName:string,networkName:string,confFile:string) => {
+export const startZombienet = async (dirName:string,fileName:string,networkName:string,confFile:string,dslFileName:string,dslFile:string) => {
 
     try {
         
@@ -22,7 +22,7 @@ export const startZombienet = async (dirName:string,fileName:string,networkName:
 
         if (fs.existsSync(dir)) {
             console.log('Directory exists!')
-            await zombieBinaryAlreadyExist(dirName,fileName,networkName,confFile,VERSION)
+            await zombieBinaryAlreadyExist(dirName,fileName,networkName,confFile,VERSION,dslFileName,dslFile)
 
           } else {
 
@@ -42,7 +42,7 @@ export const startZombienet = async (dirName:string,fileName:string,networkName:
                        
                 await runZombienet(dirName,fileName,networkName,confFile,VERSION);
 
-                await manageNetworkJson (dirName,fileName,networkName,confFile,VERSION);                                          
+                await manageNetworkJson (dirName,fileName,networkName,confFile,VERSION,dslFileName,dslFile);                                          
         }
     }
         catch (error) {

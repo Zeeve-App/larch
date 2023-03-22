@@ -101,17 +101,12 @@ export const runTest = async ( dslFileName:string,VERSION:string,networkName:str
 
         // console.log("The Final Command "+binaryLocation)
 
-        // const { stdout, stderr } = await exec(runZombieTest);
-        const result:any = await spawn(runZombieTest,)
-        result.stdout.on('data', data => {
-            console.log(`stdout:\n${data}`);
-        })
-        result.stderr.on("data", (data) => {
-            console.log(`stdout: ${data}`);
+        const result:any = await exec(runZombieTest);
+
+        result.stdout.on('data', function(data:any) {
+            console.log(data); 
         });
-        result.on('exit', code => {
-            console.log(`Process ended with ${code}`);
-        })
+        
 
         console.log("Running Zombienet Test");
     

@@ -3,7 +3,7 @@ import * as util  from 'node:util';
 import * as cmd from 'node:child_process'
 import * as fs from 'fs'
 import { LOCATION } from "../../../utils/declearation.js";
-import { startZombienet } from "../../../utils/index.js";
+import { startZombienet, testZombienet } from "../../../utils/index.js";
 import { json } from "body-parser";
 const exec = util.promisify(cmd.exec);
 
@@ -127,3 +127,49 @@ export const displayNetworkController = async (req:Request,res:Response) => {
             });
         }
     }
+
+export const testNetworkController = async (req:Request,res:Response) => {
+
+    const searchNetwork = req.query.networkName
+    // res.send(searchNetwork)
+
+    let networkLocationArr = [];
+    networkLocationArr.push(LOCATION)
+    networkLocationArr.push('/networks.json')
+
+    const networkLocation = networkLocationArr.join("")
+
+    if(!(fs.existsSync(networkLocation))){
+        return res.status(404).send({message:"No Networks Available"});
+    }
+    else{
+         fs.readFile( networkLocation, 'utf8', async (err, data) => {
+            
+            if(err){
+                return res.status(404).send({message:"No Networks Available"});
+            }
+            const networkArr = JSON.parse(data);
+            const networkArrLength:number = networkArr.length;
+
+            if(networkArrLength<=0){
+                return res.status(404).send({message:"No Networks Available"});
+            }
+            // Searching for the network in networks.json
+            for(let i=0; i<networkArrLength; i++){
+                if(networkArr[i].name == searchNetwork){
+                    if((!(networkArr[i].dslFileName)) || (!(networkArr[i].dslFile))){
+                        return res.status(404).send({message:"Test Files Not Available, Please Add a Test File"});
+                    }
+                    if((!networkArr[i].fileName)){
+                        return res.status(404).send({message:"Configuration File Not Available"});
+                    }
+                    // If test file available then run the test file
+                        await testZombienet(networkArr[i].fileName,networkArr[i].name,networkArr[i].dslFileName,networkArr[i].dslFile);
+                    // ./zombienet-linux -p native test examples/0000-test-toml-config-small-network.zndsl
+
+                }
+            }
+            return res.status(404).send({message:"No Networks Available"});                
+        });
+    }
+}

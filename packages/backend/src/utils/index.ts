@@ -3,6 +3,7 @@ import * as cmd from 'node:child_process'
 import * as fs from 'fs'
 import { LOCATION, VERSION } from './declearation.js';
 import { downloadZombienetBinary, renameBinary, executePermissionToBinary, createNetworkDir, createDirectoryInsideNetworkDir, manageNetworkJson, addIntoNetworksDirectory, runZombienet, zombieBinaryAlreadyExist } from './zombienetRunner.js';
+import { checkNetworkDirExists, createTestFile, matchFileName, runTest } from './testZombienetRunner.js';
 
 const exec = util.promisify(cmd.exec);
 
@@ -51,3 +52,15 @@ export const startZombienet = async (dirName:string,fileName:string,networkName:
         
         }
     }
+
+export const testZombienet = async (fileName:string,networkName:string,dslFileName:string,dslFile:string) => {
+
+    await checkNetworkDirExists(networkName,fileName);
+
+    await matchFileName(fileName,dslFileName)
+
+    await createTestFile(networkName,dslFileName,dslFile);
+
+    await runTest(dslFileName,VERSION,networkName)
+
+}

@@ -167,9 +167,11 @@ export const runZombienet = async (dirName:string,fileName:string,networkName:st
 
         // console.log("The Final Command "+binaryLocation)
 
-        const { stdout, stderr } = await exec(binaryLocation);
-        console.log(stdout)
-        console.log(stderr)
+        const result:any = await exec(binaryLocation);
+
+        result.stdout.on('data', function(data:any) {
+            console.log(data); 
+        });
 
         console.log("Running Zombienet");
 
@@ -303,12 +305,14 @@ let binaryLocationArr = [];
 
         const binaryLocation = binaryLocationArr.join('');
 
-        const { stdout, stderr } = await exec(binaryLocation);
+        const result:any = await exec(binaryLocation);
+
+        result.stdout.on('data', function(data:any) {
+            console.log(data); 
+        });
 
         console.log("Running Zombienet");
         
-        console.log(stdout)
-        console.log(stderr)
 
         let locationNewArr = [];
     locationNewArr.push(LOCATION);

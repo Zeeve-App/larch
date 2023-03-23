@@ -2,15 +2,12 @@ import * as util  from 'node:util';
 import * as cmd from 'node:child_process'
 import * as fs from 'node:fs/promises';
 import * as fileHandeler from 'fs'
-// import { spawn } from 'child_process';
 const readFileAsync = util.promisify(fileHandeler.readFile);
 const writeFileAsync = util.promisify(fileHandeler.writeFile);
 import { LOCATION, PROVIDER_NAME } from './declearation.js';
 import { exit } from 'node:process';
 
 const exec = util.promisify(cmd.exec);
-const spawn = util.promisify(cmd.spawn)
-
 
 export const checkNetworkDirExists = async ( networkName:string,fileName:string ):Promise<boolean> => {
 
@@ -102,6 +99,8 @@ export const runTest = async ( dslFileName:string,VERSION:string,networkName:str
         // console.log("The Final Command "+binaryLocation)
 
         const {stdout,stderr} = await exec(runZombieTest);
+        console.log(stdout)
+        console.log(stderr)
 
         
         

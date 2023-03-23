@@ -172,7 +172,58 @@ export const runZombienet = async (dirName:string,fileName:string,networkName:st
         console.log(stdout);
         console.log(stderr)
 
-        console.log("Running Zombienet");
+        // console.log("Running Zombienet");
+        if(stdout){
+
+                let zombieNetworkRunOutputArr = [];
+                zombieNetworkRunOutputArr.push('cd ')
+                zombieNetworkRunOutputArr.push(LOCATION);
+                zombieNetworkRunOutputArr.push('/networks/')
+                zombieNetworkRunOutputArr.push(networkName);
+                zombieNetworkRunOutputArr.push('/');
+                zombieNetworkRunOutputArr.push('output.txt');
+
+                const zombieNetworkRunOutput = zombieNetworkRunOutputArr.join("")
+
+                const myBuffer = Buffer.from(stdout, 'base64');
+
+
+                const appendFile = async (path:string, data:string|any) => {
+                    try {
+                      await fs.appendFile(path, data);
+                    } catch (error) {
+                      console.error(error); // error to handel
+                    }
+                  };
+
+                  await appendFile(zombieNetworkRunOutput, myBuffer); 
+        }
+        if(stderr){
+
+                let zombieNetworkRunOutputArr = [];
+                zombieNetworkRunOutputArr.push('cd ')
+                zombieNetworkRunOutputArr.push(LOCATION);
+                zombieNetworkRunOutputArr.push('/networks/')
+                zombieNetworkRunOutputArr.push(networkName);
+                zombieNetworkRunOutputArr.push('/');
+                zombieNetworkRunOutputArr.push('outputErr.txt');
+
+                const zombieNetworkRunOutput = zombieNetworkRunOutputArr.join("")
+
+                const myBuffer = Buffer.from(stdout, 'base64');
+
+
+                const appendFile = async (path:string, data:string|any) => {
+                    try {
+                      await fs.appendFile(path, data);
+                    } catch (error) {
+                      console.error(error); // error to handel
+                    }
+                  };
+
+                  await appendFile(zombieNetworkRunOutput, myBuffer); 
+        }
+
 
 }
 
@@ -275,23 +326,6 @@ else{
       console.log("Creating Network Json and adding network into it");
 
 }
-
-  // let emptyArr = [];
-
-  // emptyArr.push(networkValue)
-
-  // const myJSON = JSON.stringify(emptyArr);
-
-  //     const appendFile = async (path:string, data:string) => {
-  //       try {
-  //         await fs.appendFile(path, data);
-  //       } catch (error) {
-  //         console.error(error);
-  //       }
-  //     };
-  //     await appendFile(location, myJSON);
-  
-  //     console.log("Creating Network Json and adding network into it");
 
       return true
       
@@ -396,13 +430,15 @@ let binaryLocationArr = [];
 
 const status = jsonHandeler();
 
+if((!(dslFileName)) && (!(dslFile))){
+
     const networkValue = {
         name: networkName,
         dirName : dirName,
         fileName : fileName,
         confFile : confFile,
-        dslFileName : dslFileName,
-        dslFile: dslFile,
+        dslFileName : "",
+        dslFile: "",
         networkState: status,
         networkProvider:PROVIDER_NAME
     }
@@ -419,5 +455,31 @@ const status = jsonHandeler();
         }
     }
     await appendDataToFile(networkValue);
+  }
+  else{
+    const networkValue = {
+      name: networkName,
+      dirName : dirName,
+      fileName : fileName,
+      confFile : confFile,
+      dslFileName : dslFileName,
+      dslFile: dslFile,
+      networkState: status,
+      networkProvider:PROVIDER_NAME
+  }
+
+  async function appendDataToFile(newData:any) {
+      try {
+      const existingData:any = await readFileAsync(locationNew);
+      const jsonData = JSON.parse(existingData);
+      jsonData.push(newData);
+      await writeFileAsync(locationNew, JSON.stringify(jsonData));
+      console.log('Data appended to file successfully');
+      } catch (err) {
+      console.error('Error appending data to file:', err);
+      }
+  }
+  await appendDataToFile(networkValue);
+  }
 
 }

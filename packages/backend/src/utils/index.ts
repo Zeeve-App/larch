@@ -55,12 +55,23 @@ export const startZombienet = async (dirName:string,fileName:string,networkName:
 
 export const testZombienet = async (fileName:string,networkName:string,dslFileName:string,dslFile:string) => {
 
-    await checkNetworkDirExists(networkName,fileName);
+    try {
 
-    await matchFileName(fileName,dslFileName)
+        await checkNetworkDirExists(networkName,fileName);
 
-    await createTestFile(networkName,dslFileName,dslFile);
+        await matchFileName(fileName,dslFileName)
+    
+        await createTestFile(networkName,dslFileName,dslFile);
+    
+        await runTest(dslFileName,VERSION,networkName)
 
-    await runTest(dslFileName,VERSION,networkName)
+        
+    } catch (error) {
+
+        console.log(error)
+        
+    }
+
+   
 
 }

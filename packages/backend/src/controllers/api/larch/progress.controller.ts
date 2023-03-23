@@ -1,6 +1,6 @@
 import { Request,Response } from "express"
 import * as fs from 'fs'
-import { LOCATION } from "../../../utils/declearation.js";
+import { LOCATION } from "../../../utils/declaration.js";
 
 
 export const progressController = async (req:Request,res:Response) => {

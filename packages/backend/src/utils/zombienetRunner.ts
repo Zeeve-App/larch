@@ -4,7 +4,7 @@ import * as fs from 'node:fs/promises';
 import * as fileHandeler from 'fs'
 const readFileAsync = util.promisify(fileHandeler.readFile);
 const writeFileAsync = util.promisify(fileHandeler.writeFile);
-import { LOCATION, PROVIDER_NAME } from './declearation.js';
+import { LOCATION, PROVIDER_NAME } from './declaration.js';
 
 const exec = util.promisify(cmd.exec);
 
@@ -17,7 +17,7 @@ export const downloadZombienetBinary = async ( VERSION:string ):Promise<boolean>
             const downloadBinary = downloadBinaryArr.join("");
 
             let commandArr = [];
-            commandArr.push('mkdir ');
+            commandArr.push('mkdir -p ');
             commandArr.push(LOCATION);
             commandArr.push(' && cd ')
             commandArr.push(LOCATION);

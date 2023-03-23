@@ -1,5 +1,5 @@
 import { Request,Response } from "express"
-import { VERSION,LARCH_VERSION } from "../../../utils/declearation.js";
+import { VERSION,LARCH_VERSION } from "../../../utils/declaration.js";
 
 export const versionController = async (req:Request,res:Response)=> {
     try {

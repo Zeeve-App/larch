@@ -1,10 +1,7 @@
 import { Request,Response } from "express"
-import * as util  from 'node:util';
-import * as cmd from 'node:child_process'
 import * as fs from 'fs'
-import { LOCATION } from "../../../utils/declearation.js";
+import { LOCATION } from "../../../utils/declaration.js";
 import { startZombienet } from "../../../utils/index.js";
-const exec = util.promisify(cmd.exec);
 
 export const networkController = async (req:Request,res:Response) => {
     try {

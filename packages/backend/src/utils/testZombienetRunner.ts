@@ -101,11 +101,9 @@ export const runTest = async ( dslFileName:string,VERSION:string,networkName:str
 
         // console.log("The Final Command "+binaryLocation)
 
-        const result:any = await exec(runZombieTest);
+        const {stdout,stderr} = await exec(runZombieTest);
 
-        result.stdout.on('data', function(data:any) {
-            console.log(data); 
-        });
+        
         
 
         console.log("Running Zombienet Test");

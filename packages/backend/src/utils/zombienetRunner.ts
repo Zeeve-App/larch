@@ -7,6 +7,7 @@ const writeFileAsync = util.promisify(fileHandeler.writeFile);
 import { LOCATION, PROVIDER_NAME } from './declearation.js';
 
 const exec = util.promisify(cmd.exec);
+const spawn = util.promisify(cmd.spawn)
 
 export const downloadZombienetBinary = async ( VERSION:string ):Promise<boolean> => {
 
@@ -167,11 +168,9 @@ export const runZombienet = async (dirName:string,fileName:string,networkName:st
 
         // console.log("The Final Command "+binaryLocation)
 
-        const result:any = await exec(binaryLocation);
-
-        result.stdout.on('data', function(data:any) {
-            console.log(data); 
-        });
+        const {stdout,stderr} = await exec(binaryLocation);
+        console.log(stdout);
+        console.log(stderr)
 
         console.log("Running Zombienet");
 
@@ -305,11 +304,9 @@ let binaryLocationArr = [];
 
         const binaryLocation = binaryLocationArr.join('');
 
-        const result:any = await exec(binaryLocation);
-
-        result.stdout.on('data', function(data:any) {
-            console.log(data); 
-        });
+        const {stdout,stderr} = await exec(binaryLocation);
+        console.log(stdout);
+        console.log(stderr)
 
         console.log("Running Zombienet");
         

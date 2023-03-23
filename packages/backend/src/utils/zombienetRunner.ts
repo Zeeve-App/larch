@@ -218,17 +218,17 @@ export const manageNetworkJson = async (dirName:string,fileName:string,networkNa
 
 const status = jsonHandeler();
 
+if((!(dslFileName)) && (!(dslFile))){
   const networkValue = {
       name: networkName,
       dirName: dirName,
       fileName: fileName,
       confFile: confFile,
-      dslFileName: dslFileName,
-      dslFile: dslFile,
+      dslFileName: "",
+      dslFile: "",
       networkState: status,
       networkProvider:PROVIDER_NAME
   }
-
   let emptyArr = [];
 
   emptyArr.push(networkValue)
@@ -245,6 +245,53 @@ const status = jsonHandeler();
       await appendFile(location, myJSON);
   
       console.log("Creating Network Json and adding network into it");
+}
+else{
+  const networkValue = {
+    name: networkName,
+    dirName: dirName,
+    fileName: fileName,
+    confFile: confFile,
+    dslFileName: dslFileName,
+    dslFile: dslFile,
+    networkState: status,
+    networkProvider:PROVIDER_NAME
+  }
+  let emptyArr = [];
+
+  emptyArr.push(networkValue)
+
+  const myJSON = JSON.stringify(emptyArr);
+
+      const appendFile = async (path:string, data:string) => {
+        try {
+          await fs.appendFile(path, data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      await appendFile(location, myJSON);
+  
+      console.log("Creating Network Json and adding network into it");
+
+}
+
+  // let emptyArr = [];
+
+  // emptyArr.push(networkValue)
+
+  // const myJSON = JSON.stringify(emptyArr);
+
+  //     const appendFile = async (path:string, data:string) => {
+  //       try {
+  //         await fs.appendFile(path, data);
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //     };
+  //     await appendFile(location, myJSON);
+  
+  //     console.log("Creating Network Json and adding network into it");
 
       return true
       

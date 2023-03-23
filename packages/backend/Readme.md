@@ -38,5 +38,5 @@ npm run dev
 
 for running the backend manually (for production) do
 ```
-npm start
+npm run start:api
 ```

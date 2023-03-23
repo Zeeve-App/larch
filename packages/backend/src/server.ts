@@ -6,8 +6,6 @@ import {config} from 'dotenv';
 import allRoute from './routes/index.js'
 import cors from 'cors';
 
-// const router = express.Router();
-
 config()
 
 const app:Application = express();
@@ -17,12 +15,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
 app.use(allRoute);
-
-//only enable this for testing with jest for checking the jest configuration 
-
-// app.get("/",(req:Request,res:Response,next:NextFunction) => {
-//     res.status(201).json({message:"Welcome to larch-cli apis"});
-// })
 
 app.use((req:Request,res:Response,next:NextFunction) => {
     next(new createHttpError.NotFound());

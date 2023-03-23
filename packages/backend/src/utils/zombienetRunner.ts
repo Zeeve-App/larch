@@ -4,7 +4,7 @@ import * as fs from 'node:fs/promises';
 import * as fileHandeler from 'fs'
 const readFileAsync = util.promisify(fileHandeler.readFile);
 const writeFileAsync = util.promisify(fileHandeler.writeFile);
-import { LOCATION } from './declearation.js';
+import { LOCATION, PROVIDER_NAME } from './declearation.js';
 
 const exec = util.promisify(cmd.exec);
 
@@ -110,48 +110,9 @@ export const createDirectoryInsideNetworkDir = async (networkName:string):Promis
 
     return true;
 
-    
-
-
 }
 
-export const manageNetworkJson = async (dirName:string,fileName:string,networkName:string,confFile:string,VERSION:string):Promise<boolean> => {
 
-
-        let locationArr = [];
-        locationArr.push(LOCATION);
-        locationArr.push('/networks.json');
-        const location = locationArr.join("");
-        // console.log(location);
-
-
-        const networkValue = {
-            name: networkName,
-            dirName: dirName,
-            fileName: fileName,
-            confFile: confFile
-        }
-
-        let emptyArr = [];
-
-        emptyArr.push(networkValue)
-
-        const myJSON = JSON.stringify(emptyArr);
-
-            const appendFile = async (path:string, data:string) => {
-              try {
-                await fs.appendFile(path, data);
-              } catch (error) {
-                console.error(error);
-              }
-            };
-            await appendFile(location, myJSON);
-        
-            console.log("Creating Network Json and adding network into it");
-
-            return true
-            
-}
 
 export const addIntoNetworksDirectory = async (fileName:string,confFile:string,networkName:string,VERSION:string):Promise<boolean> => {
 
@@ -185,7 +146,6 @@ export const addIntoNetworksDirectory = async (fileName:string,confFile:string,n
 
 export const runZombienet = async (dirName:string,fileName:string,networkName:string,confFile:string,VERSION:string) => {
 
-    // cd /home/antar/.larch/bin && ./zombienet-linux-x64-1.3.37 spawn /home/antar/.larch/networks/small-network2.json -p podman -d /home/antar/.larch/my-zombienet
         let binaryLocationArr = [];
         binaryLocationArr.push('cd ');
         binaryLocationArr.push(LOCATION);
@@ -198,12 +158,14 @@ export const runZombienet = async (dirName:string,fileName:string,networkName:st
         binaryLocationArr.push(networkName);
         binaryLocationArr.push('/');
         binaryLocationArr.push(fileName);
-        binaryLocationArr.push(' -p podman -d ')
+        binaryLocationArr.push(' -p ')
+        binaryLocationArr.push(PROVIDER_NAME)
+        binaryLocationArr.push(' -d ')
         binaryLocationArr.push(dirName);
 
         const binaryLocation = binaryLocationArr.join('');
 
-        console.log("The Final Command "+binaryLocation)
+        // console.log("The Final Command "+binaryLocation)
 
         const { stdout, stderr } = await exec(binaryLocation);
         console.log(stdout)
@@ -211,38 +173,84 @@ export const runZombienet = async (dirName:string,fileName:string,networkName:st
 
         console.log("Running Zombienet");
 
-
 }
+
+
+export const manageNetworkJson = async (dirName:string,fileName:string,networkName:string,confFile:string,VERSION:string):Promise<boolean> => {
+
+
+  let locationArr = [];
+  locationArr.push(LOCATION);
+  locationArr.push('/networks.json');
+  const location = locationArr.join("");
+
+  // Adding Network Status
+
+  let zombieJsonLocationArr = [];
+  zombieJsonLocationArr.push(dirName)
+  zombieJsonLocationArr.push('/zombie.json')
+
+  const zombieJsonLocation = zombieJsonLocationArr.join("")
+
+  // fileHandeler
+
+  const jsonHandeler = () => {
+
+    if (fileHandeler.existsSync(zombieJsonLocation)) {
+    
+      const networkStatus:string = "finished"
+  
+      return networkStatus
+  
+    }
+      else if(fileHandeler.existsSync(dirName)){
+        const networkStatus:string = "in-progress"
+        return networkStatus
+  }
+
+  else {
+    const networkStatus:string = "failed to create the network"
+
+    return networkStatus
+  }
+}
+
+const status = jsonHandeler();
+
+  const networkValue = {
+      name: networkName,
+      dirName: dirName,
+      fileName: fileName,
+      confFile: confFile,
+      networkState: status,
+      networkProvider:PROVIDER_NAME
+  }
+
+  let emptyArr = [];
+
+  emptyArr.push(networkValue)
+
+  const myJSON = JSON.stringify(emptyArr);
+
+      const appendFile = async (path:string, data:string) => {
+        try {
+          await fs.appendFile(path, data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      await appendFile(location, myJSON);
+  
+      console.log("Creating Network Json and adding network into it");
+
+      return true
+      
+}
+
 
 // IF DIRECTORY ALREADY EXIST
 
 export const zombieBinaryAlreadyExist = async (dirName:string,fileName:string,networkName:string,confFile:string,VERSION:string) => {
-
-    let locationNewArr = [];
-    locationNewArr.push(LOCATION);
-    locationNewArr.push("/networks.json")
-    const locationNew = locationNewArr.join("")
-
-    const networkValue = {
-        name: networkName,
-        dirName : dirName,
-        fileName : fileName,
-        confFile : confFile
-    }
-
-    async function appendDataToFile(newData:any) {
-        try {
-        const existingData:any = await readFileAsync(locationNew);
-        const jsonData = JSON.parse(existingData);
-        jsonData.push(newData);
-        await writeFileAsync(locationNew, JSON.stringify(jsonData));
-        console.log('Data appended to file successfully');
-        } catch (err) {
-        console.error('Error appending data to file:', err);
-        }
-    }
-    await appendDataToFile(networkValue);
-
 
     let createFileNameArr = [];
     createFileNameArr.push('cd ')
@@ -286,7 +294,9 @@ let binaryLocationArr = [];
         binaryLocationArr.push(networkName);
         binaryLocationArr.push('/');
         binaryLocationArr.push(fileName);
-        binaryLocationArr.push(' -p podman -d ')
+        binaryLocationArr.push(' -p ')
+        binaryLocationArr.push(PROVIDER_NAME)
+        binaryLocationArr.push(' -d ')
         binaryLocationArr.push(dirName);
 
         const binaryLocation = binaryLocationArr.join('');
@@ -297,4 +307,65 @@ let binaryLocationArr = [];
         
         console.log(stdout)
         console.log(stderr)
+
+        let locationNewArr = [];
+    locationNewArr.push(LOCATION);
+    locationNewArr.push("/networks.json")
+    const locationNew = locationNewArr.join("")
+
+    // Adding Network Status
+
+  let zombieJsonLocationArr = [];
+  zombieJsonLocationArr.push(dirName)
+  zombieJsonLocationArr.push('/zombie.json')
+
+  const zombieJsonLocation = zombieJsonLocationArr.join("")
+
+  // fileHandeler
+
+  const jsonHandeler = () => {
+
+    if (fileHandeler.existsSync(zombieJsonLocation)) {
+    
+      const networkStatus:string = "finished"
+  
+      return networkStatus
+  
+    }
+      else if(fileHandeler.existsSync(dirName)){
+        const networkStatus:string = "in-progress"
+        return networkStatus
+  }
+
+  else {
+    const networkStatus:string = "failed to create the network"
+
+    return networkStatus
+  }
+}
+
+const status = jsonHandeler();
+
+    const networkValue = {
+        name: networkName,
+        dirName : dirName,
+        fileName : fileName,
+        confFile : confFile,
+        networkState: status,
+        networkProvider:PROVIDER_NAME
+    }
+
+    async function appendDataToFile(newData:any) {
+        try {
+        const existingData:any = await readFileAsync(locationNew);
+        const jsonData = JSON.parse(existingData);
+        jsonData.push(newData);
+        await writeFileAsync(locationNew, JSON.stringify(jsonData));
+        console.log('Data appended to file successfully');
+        } catch (err) {
+        console.error('Error appending data to file:', err);
+        }
+    }
+    await appendDataToFile(networkValue);
+
 }

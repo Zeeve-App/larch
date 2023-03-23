@@ -1,7 +1,7 @@
 import * as util  from 'node:util';
 import * as cmd from 'node:child_process'
 import * as fs from 'fs'
-import { LOCATION, VERSION } from './declearation.js';
+import { LOCATION, VERSION } from './declaration.js';
 import { downloadZombienetBinary, renameBinary, executePermissionToBinary, createNetworkDir, createDirectoryInsideNetworkDir, manageNetworkJson, addIntoNetworksDirectory, runZombienet, zombieBinaryAlreadyExist } from './zombienetRunner.js';
 
 const exec = util.promisify(cmd.exec);

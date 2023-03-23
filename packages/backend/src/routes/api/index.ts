@@ -1,9 +1,8 @@
 import * as express from 'express';
-import allRoutes from './larch/index.js'
+import larchRoutes from './larch/index.js';
 
-const router = express.Router();
+const apiRouter = express.Router();
 
-router.use('/api',allRoutes);
+apiRouter.use('/larch', larchRoutes);
 
-export default router;
-
+export default apiRouter;

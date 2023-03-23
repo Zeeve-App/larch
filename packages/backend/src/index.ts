@@ -1,9 +1,5 @@
-import express from 'express'
-import {Application} from 'express';
-import server from './server.js';
+import { startService, ServiceStartOptions } from './server.js';
 
-const app:Application = express();
-
-app.use(server);
-
-export default app
+export default (serviceStartOptions: ServiceStartOptions) => {
+  startService(serviceStartOptions);
+}

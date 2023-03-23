@@ -115,7 +115,7 @@ export const createDirectoryInsideNetworkDir = async (networkName:string):Promis
 
 
 
-export const addIntoNetworksDirectory = async (fileName:string,confFile:string,networkName:string,VERSION:string):Promise<boolean> => {
+export const addIntoNetworksDirectory = async (fileName:string,confFile:string,networkName:string,VERSION:string,dslFileName:string,dslFile:string):Promise<boolean> => {
 
         let locationArr = [];
         locationArr.push(LOCATION);
@@ -140,6 +140,28 @@ export const addIntoNetworksDirectory = async (fileName:string,confFile:string,n
           await appendFile(location, myBuffer);     
 
         console.log("Network Added into the networks directory");
+
+        if((dslFileName) && (dslFile)){
+            let dslFileLocationArr = [];
+            dslFileLocationArr.push(LOCATION);
+            dslFileLocationArr.push('/networks/');
+            dslFileLocationArr.push(networkName)
+            dslFileLocationArr.push('/')
+            dslFileLocationArr.push(dslFileName)
+
+            const dslFileLocation = dslFileLocationArr.join("")
+
+            const myDslBuffer = Buffer.from(dslFile, 'base64');
+
+            const appendDslFile = async (path:string, data:string|any) => {
+              try {
+                await fs.appendFile(path, data); //check this line for any problem
+              } catch (error) {
+                console.error(error); // error to handel
+              }
+            };
+            await appendDslFile(dslFileLocation, myDslBuffer); 
+        }
 
         return true
 
@@ -364,6 +386,29 @@ fileHandeler.appendFile(newLocation, myBuffer, function (err){
 if (err) throw err;
 console.log('Saved!');
 });
+
+        if((dslFileName) && (dslFile)){
+          
+            let dslFileLocationArr = [];
+            dslFileLocationArr.push(LOCATION);
+            dslFileLocationArr.push('/networks/');
+            dslFileLocationArr.push(networkName)
+            dslFileLocationArr.push('/')
+            dslFileLocationArr.push(dslFileName)
+
+            const dslFileLocation = dslFileLocationArr.join("")
+
+            const myDslBuffer = Buffer.from(dslFile, 'base64');
+
+            const appendDslFile = async (path:string, data:string|any) => {
+              try {
+                await fs.appendFile(path, data); //check this line for any problem
+              } catch (error) {
+                console.error(error); // error to handel
+              }
+            };
+            await appendDslFile(dslFileLocation, myDslBuffer); 
+    }
 
 let binaryLocationArr = [];
         binaryLocationArr.push('cd ');

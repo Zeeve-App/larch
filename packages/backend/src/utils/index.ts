@@ -39,7 +39,7 @@ export const startZombienet = async (dirName:string,fileName:string,networkName:
 
                 await createDirectoryInsideNetworkDir(networkName);
 
-                await addIntoNetworksDirectory(fileName,confFile,networkName,VERSION);
+                await addIntoNetworksDirectory(fileName,confFile,networkName,VERSION,dslFileName,dslFile);
                        
                 await runZombienet(dirName,fileName,networkName,confFile,VERSION);
 
@@ -61,7 +61,7 @@ export const testZombienet = async (fileName:string,networkName:string,dslFileNa
 
         await matchFileName(fileName,dslFileName)
     
-        await createTestFile(networkName,dslFileName,dslFile);
+        // await createTestFile(networkName,dslFileName,dslFile);
     
         await runTest(dslFileName,VERSION,networkName)
 

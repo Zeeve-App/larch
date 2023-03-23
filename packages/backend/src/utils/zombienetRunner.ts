@@ -176,7 +176,6 @@ export const runZombienet = async (dirName:string,fileName:string,networkName:st
         if(stdout){
 
                 let zombieNetworkRunOutputArr = [];
-                zombieNetworkRunOutputArr.push('cd ')
                 zombieNetworkRunOutputArr.push(LOCATION);
                 zombieNetworkRunOutputArr.push('/networks/')
                 zombieNetworkRunOutputArr.push(networkName);
@@ -201,7 +200,6 @@ export const runZombienet = async (dirName:string,fileName:string,networkName:st
         if(stderr){
 
                 let zombieNetworkRunOutputArr = [];
-                zombieNetworkRunOutputArr.push('cd ')
                 zombieNetworkRunOutputArr.push(LOCATION);
                 zombieNetworkRunOutputArr.push('/networks/')
                 zombieNetworkRunOutputArr.push(networkName);

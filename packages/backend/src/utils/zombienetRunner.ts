@@ -172,7 +172,7 @@ export const runZombienet = async (dirName:string,fileName:string,networkName:st
         console.log(stdout);
         console.log(stderr)
 
-        // console.log("Running Zombienet");
+        console.log("Running Zombienet");
         if(stdout){
 
                 let zombieNetworkRunOutputArr = [];
@@ -221,6 +221,7 @@ export const runZombienet = async (dirName:string,fileName:string,networkName:st
 
                   await appendFile(zombieNetworkRunOutput, stderr); 
         }
+        console.log("Running Zombienet");
 
 
 }
@@ -386,6 +387,56 @@ let binaryLocationArr = [];
         const {stdout,stderr} = await exec(binaryLocation);
         console.log(stdout);
         console.log(stderr)
+
+        if(stdout){
+
+          let zombieNetworkRunOutputArr = [];
+          zombieNetworkRunOutputArr.push(LOCATION);
+          zombieNetworkRunOutputArr.push('/networks/')
+          zombieNetworkRunOutputArr.push(networkName);
+          zombieNetworkRunOutputArr.push('/');
+          zombieNetworkRunOutputArr.push('output.txt');
+
+          const zombieNetworkRunOutput = zombieNetworkRunOutputArr.join("")
+
+          // const myBuffer = Buffer.from(stdout, 'base64');
+
+
+          const appendFile = async (path:string, data:string|any) => {
+              try {
+                await fs.appendFile(path, data);
+              } catch (error) {
+                console.error(error); // error to handel
+              }
+            };
+
+            await appendFile(zombieNetworkRunOutput, stdout); 
+  }
+
+  if(stderr){
+
+    let zombieNetworkRunOutputArr = [];
+    zombieNetworkRunOutputArr.push(LOCATION);
+    zombieNetworkRunOutputArr.push('/networks/')
+    zombieNetworkRunOutputArr.push(networkName);
+    zombieNetworkRunOutputArr.push('/');
+    zombieNetworkRunOutputArr.push('outputErr.txt');
+
+    const zombieNetworkRunOutput = zombieNetworkRunOutputArr.join("")
+
+    // const myBuffer = Buffer.from(stdout, 'base64');
+
+
+    const appendFile = async (path:string, data:string|any) => {
+        try {
+          await fs.appendFile(path, data);
+        } catch (error) {
+          console.error(error); // error to handel
+        }
+      };
+
+      await appendFile(zombieNetworkRunOutput, stderr); 
+}
 
         console.log("Running Zombienet");
         

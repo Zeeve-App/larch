@@ -25,6 +25,7 @@ export const checkNetworkDirExists = async ( networkName:string,fileName:string 
         return true
     }
     else{
+        console.log("Network Directory Doesn't exist")
          exit;
     }
 

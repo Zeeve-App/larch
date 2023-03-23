@@ -184,7 +184,7 @@ export const runZombienet = async (dirName:string,fileName:string,networkName:st
 
                 const zombieNetworkRunOutput = zombieNetworkRunOutputArr.join("")
 
-                const myBuffer = Buffer.from(stdout, 'base64');
+                // const myBuffer = Buffer.from(stdout, 'base64');
 
 
                 const appendFile = async (path:string, data:string|any) => {
@@ -195,7 +195,7 @@ export const runZombienet = async (dirName:string,fileName:string,networkName:st
                     }
                   };
 
-                  await appendFile(zombieNetworkRunOutput, myBuffer); 
+                  await appendFile(zombieNetworkRunOutput, stdout); 
         }
         if(stderr){
 
@@ -208,7 +208,7 @@ export const runZombienet = async (dirName:string,fileName:string,networkName:st
 
                 const zombieNetworkRunOutput = zombieNetworkRunOutputArr.join("")
 
-                const myBuffer = Buffer.from(stdout, 'base64');
+                // const myBuffer = Buffer.from(stdout, 'base64');
 
 
                 const appendFile = async (path:string, data:string|any) => {
@@ -219,7 +219,7 @@ export const runZombienet = async (dirName:string,fileName:string,networkName:st
                     }
                   };
 
-                  await appendFile(zombieNetworkRunOutput, myBuffer); 
+                  await appendFile(zombieNetworkRunOutput, stderr); 
         }
 
 

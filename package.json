@@ -4,6 +4,10 @@
   "workspaces": [
     "packages/*"
   ],
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "prepare": "ASSET_URL='/ui' lerna run build && cp -r packages/ui/dist packages/backend/dist/ui"
+  },
   "devDependencies": {
     "lerna": "^6.5.1"
   }

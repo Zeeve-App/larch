@@ -1,12 +1,22 @@
-import React from 'react';
+import React ,{ SyntheticEvent }from 'react';
 import IconImage from "../assets/Search.svg";
 import IconGrid from "../assets/Grid.svg";
 import IconEp from "../assets/Menu.svg";
+import { useEffect } from 'react';
 
 
 
 
 export function Network() {
+
+  useEffect(()=>{
+     onload 
+     console.log('netwrok page load')   
+
+  }, [])
+
+
+
 return (
   <div className='p-6 gap-6 flex-col flex'>
    <div className='h-12 w-[1138px] flex'>

@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.py-2:hover{
+    background: linear-gradient(90deg, #E6007A 0%, #9F125D 100%);
+}
+.text-gradiant{
+
+    background: linear-gradient(to right, #E6007A 0%, #9F125D 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}

@@ -1,69 +1,88 @@
 import React from 'react';
+import { useEffect } from 'react';
 import './App.css'
-import {BrowserRouter, Route, Routes , Link} from 'react-router-dom';
-import Dashboard from './pages/Dashboard';
-import Network from './pages/Network';
+import MainLayout from './components/layout/Mainlayout'
+import Dashboard from './pages/dashboard/components/dashboard_content'
+import Network from './pages/network/components/network_content'
+import Activity from './pages/activity/components/Main'
+import Template from './pages/template/components/Main'
+import { useRoutes, RouteObject, Navigate } from "react-router";
 
-function App() {
-  return (
-  <BrowserRouter>
-    <div>
-    <nav>
-        <Link to="/dashboard">Dashboard</Link><br></br>
-        <Link to="/network">Network</Link>
-        <ul>
-          <li>
-          <Link to="/network/list">List</Link>
-          <li>
-          <Link to="/network/create">Create</Link>
-          </li>
-          </li>
-        </ul>
-        <Link to="/template">Template</Link><br></br>
-        <ul>
-          <li>
-          <Link to="/template/list">List</Link>
-          <li>
-          <Link to="/template/create">Create</Link>
-          </li>
-          </li>
-        </ul>
-        <Link to="/activity">Activity</Link><br></br>
-        <Link to="/docs">Docs</Link><br></br>
-        <Link to="/contact">Contact</Link><br></br>
-        <ul>
-          <li>
-          <Link to="#">Email</Link>
-          <li>
-          <Link to="#">Support</Link>
-          </li>
-          </li>
-        </ul>
+const idb = window.indexedDB
+ const createCollectionsInIndexDB = () =>{
+  if(!idb){
 
-    </nav>
-    <Routes>
-        <Route path='/dashboard' element={<Dashboard/>} />
-        <Route path='/network' element={<Network/>} />
-        <Route path='/network/list' element={<Network/>} />
-        <Route path='/network/create' element={<Network/>} />
-        <Route path='/template' element={<Network/>} />
-        <Route path='/template/list' element={<Network/>} />
-        <Route path='/template/create' element={<Network/>} />
-        <Route path='/activity' element={<Network/>} />
-        <Route path='/docs' element={<Network/>} />
-        <Route path='/contact' element={<Network/>} />
-       
+    console.log("THis window is react app window");
+  }
+  console.log(idb)
+  const req = idb.open('test-db1', 1);
+
+  req.onerror = (event) => {
+    console.log("error", event)
+    console.log("handling error")
+  };
+
+  req.onupgradeneeded = (event) => {
+    const db = req.result
+    if (!db.objectStoreNames.contains("userdata")){
+      db.createObjectStore("usedata",{
+        keyPath:"id",
+      });
+    }
+  }
+
+  req.onsuccess = ()=>{
+    console.log("successfully created")
+
+  }
+ }
 
 
-    </Routes>
-    <h1 className="text-xl underline">
-      Hello world!
-    </h1>
-    </div>
-  </BrowserRouter>
+const routes: RouteObject[] = [
+  
+      {
+        element: <MainLayout />,
+        children: [
+
+          {
+            path: ("/"),
+            element: <Dashboard />,
+          },
+          {
+            path: ("/dashboard"),
+            element: <Dashboard />,
+          },
+          {
+            path: ("/network"),
+            element: <Network />,
+          },
+         
+          {
+            path: ("/activity"),
+            element: <Activity />,
+          },
+
+          {
+            path: ("/template"),
+            element: <Template />,
+          },
+          
+        
+        ],
+      },
+    ]
   
 
-  );
+const App = () => {
+
+  useEffect(()=>{
+    createCollectionsInIndexDB()
+
+  }, [])
+
+  const element = useRoutes(routes);
+  return element;
+
 }
 
 export default App

@@ -1,23 +1,17 @@
-import * as util  from 'node:util';
-import * as cmd from 'node:child_process'
-
-const exec = util.promisify(cmd.exec);
-const { stdout, stderr } = await exec('echo -n $USER');
-
-// where to store the networks
-let commandArr = [];
-commandArr.push('/home/');
-commandArr.push(stdout);
-commandArr.push('/.larch');
-
-const command = commandArr.join("")
-
-export const LOCATION:string = command;
-
+import { homedir } from 'os';
 
 export const VERSION:string = '1.3.40';
 
 export const LARCH_VERSION = process.env.npm_package_version;
 
-export const PROVIDER_NAME = 'podman'
+export const PROVIDER_NAME = 'podman';
 
+export const ZOMBIENET_BINARY_DOWNLOAD_BASE_URL = 'https://github.com/paritytech/zombienet/releases/download';
+export const LARCH_CONTEXT_DIR = `${homedir()}/.larch`;
+
+export type DownloadFileToAPathParams = {
+  downloadUrl: string;
+  filePath: string;
+  progressRefreshInMs?: number;
+  progressCb?: (fileSize: number, currentFileSize: number) => void;
+};

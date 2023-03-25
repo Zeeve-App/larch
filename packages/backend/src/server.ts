@@ -23,6 +23,9 @@ export const startService = (serviceStartOptions: ServiceStartOptions) => {
     if (serviceStartOptions.disableUi !== true) {
         console.log('ui enabled');
         app.use('/ui', express.static(join(dirname(fileURLToPath(import.meta.url)), 'ui')));
+        app.get('/ui/*', (req,res) =>{
+            res.sendFile(join(dirname(fileURLToPath(import.meta.url)), 'ui/index.html'));
+        });
     }
     if (serviceStartOptions.disableApi !== true) {
         console.log('api enabled');

@@ -12,7 +12,7 @@ UI base path can be changed by passing environment variable `ASSET_URL` and can 
 
 - Visualize packages: `npx nx graph` at any project level
 - Build all packages: `npx lerna run build` at any project level
-- Prepare the build with UI: from root project directory run `npm run prepare`
+- Prepare the build with UI: from root project directory run `npm run build`
 - To run the application: from root project directory run `npm run start`
 
 ## References

@@ -8,4 +8,4 @@ const ASSET_URL = process.env.ASSET_URL || '';
 export default defineConfig({
   plugins: [react(), svgr()],
   base: `${ASSET_URL}`,
-})
+});

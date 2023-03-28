@@ -5,9 +5,8 @@ import versionRouter from './version.js'
 
 const router = express.Router();
 
-router.use('/larch',networkRouter);
-router.use('/larch',progressRouter);
-router.use('/larch',versionRouter);
-
+router.use(networkRouter);
+router.use(progressRouter);
+router.use(versionRouter);
 
 export default router;

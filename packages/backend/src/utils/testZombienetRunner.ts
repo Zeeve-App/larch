@@ -2,22 +2,19 @@ import * as util  from 'node:util';
 import * as cmd from 'node:child_process'
 import * as fs from 'node:fs/promises';
 import * as fileHandeler from 'fs'
-const readFileAsync = util.promisify(fileHandeler.readFile);
-const writeFileAsync = util.promisify(fileHandeler.writeFile);
-import { LOCATION, PROVIDER_NAME } from './declearation.js';
+import { LARCH_CONTEXT_DIR, PROVIDER_NAME } from './declaration.js';
 import { exit } from 'node:process';
 
 const exec = util.promisify(cmd.exec);
 
-export const checkNetworkDirExists = async ( networkName:string,fileName:string ):Promise<boolean> => {
+export const checkNetworkDirExists = async ( networkName:string,dslFileName:string ):Promise<boolean> => {
 
     let networkDirectoryArr = [];
-    networkDirectoryArr.push('cd ');
-    networkDirectoryArr.push(LOCATION);
+    networkDirectoryArr.push(LARCH_CONTEXT_DIR);
     networkDirectoryArr.push('/networks/')
     networkDirectoryArr.push(networkName)
     networkDirectoryArr.push('/')
-    networkDirectoryArr.push(fileName)
+    networkDirectoryArr.push(dslFileName)
 
     const networkDirectory = networkDirectoryArr.join("")
 
@@ -25,7 +22,7 @@ export const checkNetworkDirExists = async ( networkName:string,fileName:string 
         return true
     }
     else{
-        console.log("Network Directory Doesn't exist")
+        console.log("Network Directory Doesn't exist");
          exit;
     }
 
@@ -47,47 +44,18 @@ export const matchFileName = async ( fileName:string,dslFileName:string ):Promis
 
 }
 
-export const createTestFile = async ( networkName:string,dslFileName:string,dslFile:string ):Promise<boolean> => {
-
-    let locationArr = [];
-        locationArr.push(LOCATION);
-        locationArr.push('/networks/');
-        locationArr.push(networkName)
-        locationArr.push('/')
-        locationArr.push(dslFileName)
-
-        const location = locationArr.join("")
-
-
-        const myBuffer = Buffer.from(dslFile, 'base64');
-
-
-        const appendFile = async (path:string, data:string|any) => {
-            try {
-              await fs.appendFile(path, data);
-            } catch (error) {
-              console.error(error); // error to handel
-            }
-          };
-          await appendFile(location, myBuffer);     
-
-        console.log("Test File Created");
-
-        return true
-}
-
-export const runTest = async ( dslFileName:string,VERSION:string,networkName:string ) => {
+export const runTest = async ( dslFileName:string,VERSION:string,networkName:string ):Promise<boolean> => {
 
     let runZombieTestArr = [];
         runZombieTestArr.push('cd ');
-        runZombieTestArr.push(LOCATION);
+        runZombieTestArr.push(LARCH_CONTEXT_DIR);
         runZombieTestArr.push('/bin && ./');
         runZombieTestArr.push('zombienet-linux-x64-')
         runZombieTestArr.push(VERSION);
         runZombieTestArr.push(' -p ')
         runZombieTestArr.push(PROVIDER_NAME)
         runZombieTestArr.push(' test ');
-        runZombieTestArr.push(LOCATION)
+        runZombieTestArr.push(LARCH_CONTEXT_DIR)
         runZombieTestArr.push('/networks/');
         runZombieTestArr.push(networkName);
         runZombieTestArr.push('/');
@@ -103,12 +71,55 @@ export const runTest = async ( dslFileName:string,VERSION:string,networkName:str
         console.log(stdout)
         console.log(stderr)
 
-        
-        
+        if(stdout){
+
+            let zombieNetworkRunTestOutputArr = [];
+            zombieNetworkRunTestOutputArr.push(LARCH_CONTEXT_DIR);
+            zombieNetworkRunTestOutputArr.push('/networks/')
+            zombieNetworkRunTestOutputArr.push(networkName);
+            zombieNetworkRunTestOutputArr.push('/');
+            zombieNetworkRunTestOutputArr.push('testOutput.txt');
+
+            const zombieNetworkRunTestOutput = zombieNetworkRunTestOutputArr.join("")
+
+            // const myBuffer = Buffer.from(stdout, 'base64');
+
+
+            const appendFile = async (path:string, data:string|any) => {
+                try {
+                  await fs.appendFile(path, data);
+                } catch (error) {
+                  console.error(error); // error to handel
+                }
+              };
+
+              await appendFile(zombieNetworkRunTestOutput, stdout); 
+    }
+    if(stderr){
+
+        let zombieNetworkRunTestOutputArr = [];
+        zombieNetworkRunTestOutputArr.push(LARCH_CONTEXT_DIR);
+        zombieNetworkRunTestOutputArr.push('/networks/')
+        zombieNetworkRunTestOutputArr.push(networkName);
+        zombieNetworkRunTestOutputArr.push('/');
+        zombieNetworkRunTestOutputArr.push('testOutputErr.txt');
+
+        const zombieNetworkRunTestOutput = zombieNetworkRunTestOutputArr.join("")
+
+        const appendFile = async (path:string, data:string|any) => {
+            try {
+              await fs.appendFile(path, data);
+            } catch (error) {
+              console.error(error); // error to handel
+            }
+          };
+
+          await appendFile(zombieNetworkRunTestOutput, stderr); 
+        }
 
         console.log("Running Zombienet Test");
+        return true
     
-
 }
 
 

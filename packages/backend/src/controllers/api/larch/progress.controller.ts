@@ -1,6 +1,6 @@
 import { Request,Response } from "express"
 import * as fs from 'fs'
-import { LOCATION } from "../../../utils/declearation.js";
+import { LARCH_CONTEXT_DIR } from "../../../utils/declaration.js";
 
 
 export const progressController = async (req:Request,res:Response) => {
@@ -8,7 +8,7 @@ export const progressController = async (req:Request,res:Response) => {
 
         const searchNetwork = req.query.networkName
         let networkLocationArr = [];
-        networkLocationArr.push(LOCATION)
+        networkLocationArr.push(LARCH_CONTEXT_DIR)
         networkLocationArr.push('/networks.json')
 
         const networkLocation = networkLocationArr.join("")

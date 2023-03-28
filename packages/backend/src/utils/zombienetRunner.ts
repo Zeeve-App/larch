@@ -1,10 +1,11 @@
 import * as util from 'node:util';
-import * as cmd from 'node:child_process'
+import * as cmd from 'node:child_process';
 import * as fs from 'node:fs/promises';
 import { constants } from 'node:fs';
 import * as fileHandeler from 'fs';
 import { downloadFileToAPath } from './download.js';
-import { PROVIDER_NAME, ZOMBIENET_BINARY_DOWNLOAD_BASE_URL, LARCH_CONTEXT_DIR } from './declaration.js';
+import { LARCH_CONTEXT_DIR, LARCH_DEFAULT_PROVIDER_NAME, ZOMBIENET_BINARY_DOWNLOAD_BASE_URL } from '../config.js';
+import { createDir } from './fs_helper.js';
 
 const exec = util.promisify(cmd.exec);
 
@@ -19,7 +20,7 @@ export const downloadZombienetBinary = async (zombienetVersion: string): Promise
     progressRefreshInMs: 400,
     progressCb: (fileSize, currentFileSize) => {
       console.log(`Total file size: ${fileSize}, Current file size: ${currentFileSize}, Percent downloaded: ${((currentFileSize / fileSize) * 100).toFixed(2)}`);
-    }
+    },
   });
 };
 
@@ -31,16 +32,14 @@ export const executePermissionToBinary = async (zombienetVersion: string): Promi
 
 export const createNetworksDir = async (): Promise<void> => {
   const networksDirPath = `${LARCH_CONTEXT_DIR}/networks`;
-  await fs.mkdir(networksDirPath, { recursive: true });
+  await createDir(networksDirPath);
 };
 
 export const createDirectoryInsideNetworkDir = async (networkName: string): Promise<void> => {
   const networksDirPath = `${LARCH_CONTEXT_DIR}/networks`;
   const networkDirPath = `${networksDirPath}/${networkName}`;
-  await fs.mkdir(networkDirPath, { recursive: true });
+  await createDir(networkDirPath);
 };
-
-
 
 export const addIntoNetworksDirectory = async (fileName: string, confFile: string, networkName: string, VERSION: string): Promise<void> => {
   const networksDirPath = `${LARCH_CONTEXT_DIR}/networks`;
@@ -50,22 +49,21 @@ export const addIntoNetworksDirectory = async (fileName: string, confFile: strin
 };
 
 export const runZombienet = async (dirName: string, fileName: string, networkName: string, confFile: string, VERSION: string) => {
-
-  let binaryLocationArr = [];
+  const binaryLocationArr = [];
   binaryLocationArr.push('cd ');
   binaryLocationArr.push(LARCH_CONTEXT_DIR);
   binaryLocationArr.push('/bin && ./');
-  binaryLocationArr.push('zombienet-linux-x64-')
+  binaryLocationArr.push('zombienet-linux-x64-');
   binaryLocationArr.push(VERSION);
   binaryLocationArr.push(' spawn ');
-  binaryLocationArr.push(LARCH_CONTEXT_DIR)
+  binaryLocationArr.push(LARCH_CONTEXT_DIR);
   binaryLocationArr.push('/networks/');
   binaryLocationArr.push(networkName);
   binaryLocationArr.push('/');
   binaryLocationArr.push(fileName);
-  binaryLocationArr.push(' -p ')
-  binaryLocationArr.push(PROVIDER_NAME)
-  binaryLocationArr.push(' -d ')
+  binaryLocationArr.push(' -p ');
+  binaryLocationArr.push(LARCH_DEFAULT_PROVIDER_NAME);
+  binaryLocationArr.push(' -d ');
   binaryLocationArr.push(dirName);
 
   const binaryLocation = binaryLocationArr.join('');
@@ -73,65 +71,52 @@ export const runZombienet = async (dirName: string, fileName: string, networkNam
   // console.log("The Final Command "+binaryLocation)
 
   const { stdout, stderr } = await exec(binaryLocation);
-  console.log(stdout)
-  console.log(stderr)
+  console.log(stdout);
+  console.log(stderr);
+  console.log('Running Zombienet');
+};
 
-  console.log("Running Zombienet");
-
-}
-
-
-export const manageNetworkJson = async (dirName:string,fileName:string,networkName:string,confFile:string,VERSION:string,dslFileName:string,dslFile:string):Promise<boolean> => {
-
-
-  let locationArr = [];
+export const manageNetworkJson = async (dirName: string, fileName: string, networkName: string, confFile: string, VERSION: string, dslFileName: string, dslFile: string): Promise<boolean> => {
+  const locationArr = [];
   locationArr.push(LARCH_CONTEXT_DIR);
   locationArr.push('/networks.json');
-  const location = locationArr.join("");
+  const location = locationArr.join('');
 
   // Adding Network Status
 
-  let zombieJsonLocationArr = [];
-  zombieJsonLocationArr.push(dirName)
-  zombieJsonLocationArr.push('/zombie.json')
+  const zombieJsonLocationArr = [];
+  zombieJsonLocationArr.push(dirName);
+  zombieJsonLocationArr.push('/zombie.json');
 
-  const zombieJsonLocation = zombieJsonLocationArr.join("")
+  const zombieJsonLocation = zombieJsonLocationArr.join('');
 
   const jsonHandeler = () => {
-
     if (fileHandeler.existsSync(zombieJsonLocation)) {
-
-      const networkStatus: string = "finished"
-
-      return networkStatus
-
+      const networkStatus: string = 'finished';
+      return networkStatus;
+    } else if (fileHandeler.existsSync(dirName)) {
+      const networkStatus: string = 'in-progress';
+      return networkStatus;
+    } else {
+      const networkStatus: string = 'failed to create the network';
+      return networkStatus;
     }
-    else if (fileHandeler.existsSync(dirName)) {
-      const networkStatus: string = "in-progress"
-      return networkStatus
-    }
-
-    else {
-      const networkStatus: string = "failed to create the network"
-
-      return networkStatus
-    }
-  }
+  };
 
   const status = jsonHandeler();
 
   const networkValue = {
     name: networkName,
-    dirName: dirName,
-    fileName: fileName,
-    confFile: confFile,
+    dirName,
+    fileName,
+    confFile,
     networkState: status,
-    networkProvider: PROVIDER_NAME
-  }
+    networkProvider: LARCH_DEFAULT_PROVIDER_NAME,
+  };
 
-  let emptyArr = [];
+  const emptyArr = [];
 
-  emptyArr.push(networkValue)
+  emptyArr.push(networkValue);
 
   const myJSON = JSON.stringify(emptyArr);
 
@@ -144,134 +129,118 @@ export const manageNetworkJson = async (dirName:string,fileName:string,networkNa
   };
   await appendFile(location, myJSON);
 
-  console.log("Creating Network Json and adding network into it");
+  console.log('Creating Network Json and adding network into it');
 
-  return true
-
-}
+  return true;
+};
 
 
 // IF DIRECTORY ALREADY EXIST
 
-export const zombieBinaryAlreadyExist = async (dirName: string, fileName: string, networkName: string, confFile: string, VERSION: string,dslFileName:string,dslFile:string) => {
-
-  let createFileNameArr = [];
-  createFileNameArr.push('cd ')
+export const zombieBinaryAlreadyExist = async (dirName: string, fileName: string, networkName: string, confFile: string, VERSION: string, dslFileName: string, dslFile: string) => {
+  const createFileNameArr = [];
+  createFileNameArr.push('cd ');
   createFileNameArr.push(LARCH_CONTEXT_DIR);
   createFileNameArr.push('/networks/');
   createFileNameArr.push(' && mkdir ');
-  createFileNameArr.push(networkName)
-  const createFileName = createFileNameArr.join("")
+  createFileNameArr.push(networkName);
+  const createFileName = createFileNameArr.join('');
 
-  const { } = await exec(createFileName);
+  await exec(createFileName);
 
-
-
-  let newLocationArr = [];
+  const newLocationArr = [];
   newLocationArr.push(LARCH_CONTEXT_DIR);
   newLocationArr.push('/networks/');
   newLocationArr.push(networkName);
-  newLocationArr.push('/')
-  newLocationArr.push(fileName)
+  newLocationArr.push('/');
+  newLocationArr.push(fileName);
 
-
-  let newLocation = newLocationArr.join("")
+  const newLocation = newLocationArr.join('');
 
   const myBuffer = Buffer.from(confFile, 'base64');
-
 
   fileHandeler.appendFile(newLocation, myBuffer, function (err) {
     if (err) throw err;
     console.log('Saved!');
   });
 
-  let binaryLocationArr = [];
+  const binaryLocationArr = [];
   binaryLocationArr.push('cd ');
   binaryLocationArr.push(LARCH_CONTEXT_DIR);
   binaryLocationArr.push('/bin && ./');
-  binaryLocationArr.push('zombienet-linux-x64-')
+  binaryLocationArr.push('zombienet-linux-x64-');
   binaryLocationArr.push(VERSION);
   binaryLocationArr.push(' spawn ');
-  binaryLocationArr.push(LARCH_CONTEXT_DIR)
+  binaryLocationArr.push(LARCH_CONTEXT_DIR);
   binaryLocationArr.push('/networks/');
   binaryLocationArr.push(networkName);
   binaryLocationArr.push('/');
   binaryLocationArr.push(fileName);
-  binaryLocationArr.push(' -p ')
-  binaryLocationArr.push(PROVIDER_NAME)
-  binaryLocationArr.push(' -d ')
+  binaryLocationArr.push(' -p ');
+  binaryLocationArr.push(LARCH_DEFAULT_PROVIDER_NAME);
+  binaryLocationArr.push(' -d ');
   binaryLocationArr.push(dirName);
 
   const binaryLocation = binaryLocationArr.join('');
 
   const { stdout, stderr } = await exec(binaryLocation);
 
-  console.log("Running Zombienet");
+  console.log('Running Zombienet');
 
-  console.log(stdout)
-  console.log(stderr)
+  console.log(stdout);
+  console.log(stderr);
 
-  let locationNewArr = [];
+  const locationNewArr = [];
   locationNewArr.push(LARCH_CONTEXT_DIR);
-  locationNewArr.push("/networks.json")
-  const locationNew = locationNewArr.join("")
+  locationNewArr.push('/networks.json');
+  const locationNew = locationNewArr.join('');
 
   // Adding Network Status
 
-  let zombieJsonLocationArr = [];
-  zombieJsonLocationArr.push(dirName)
-  zombieJsonLocationArr.push('/zombie.json')
+  const zombieJsonLocationArr = [];
+  zombieJsonLocationArr.push(dirName);
+  zombieJsonLocationArr.push('/zombie.json');
 
-  const zombieJsonLocation = zombieJsonLocationArr.join("")
+  const zombieJsonLocation = zombieJsonLocationArr.join('');
 
   // fileHandeler
 
   const jsonHandeler = () => {
-
     if (fileHandeler.existsSync(zombieJsonLocation)) {
-
-      const networkStatus: string = "finished"
-
-      return networkStatus
-
+      const networkStatus: string = 'finished';
+      return networkStatus;
+    } else if (fileHandeler.existsSync(dirName)) {
+      const networkStatus: string = 'in-progress';
+      return networkStatus;
+    } else {
+      const networkStatus: string = 'failed to create the network';
+      return networkStatus;
     }
-    else if (fileHandeler.existsSync(dirName)) {
-      const networkStatus: string = "in-progress"
-      return networkStatus
-    }
-
-    else {
-      const networkStatus: string = "failed to create the network"
-
-      return networkStatus
-    }
-  }
+  };
 
   const status = jsonHandeler();
 
-if((!(dslFileName)) && (!(dslFile))){
-  const networkValue = {
-    name: networkName,
-    dirName: dirName,
-    fileName: fileName,
-    confFile: confFile,
-    networkState: status,
-    networkProvider: PROVIDER_NAME
-  }
-  let emptyArr = [];
+  if ((!(dslFileName)) && (!(dslFile))) {
+    const networkValue = {
+      name: networkName,
+      dirName,
+      fileName,
+      confFile,
+      networkState: status,
+      networkProvider: LARCH_DEFAULT_PROVIDER_NAME,
+    };
 
-  async function appendDataToFile(newData: any) {
-    try {
-      const existingData: any = await fs.readFile(locationNew);
-      const jsonData = JSON.parse(existingData);
-      jsonData.push(newData);
-      await fs.writeFile(locationNew, JSON.stringify(jsonData));
-      console.log('Data appended to file successfully');
-    } catch (err) {
-      console.error('Error appending data to file:', err);
-    }
+    async function appendDataToFile(newData: any) {
+      try {
+        const existingData: any = await fs.readFile(locationNew);
+        const jsonData = JSON.parse(existingData);
+        jsonData.push(newData);
+        await fs.writeFile(locationNew, JSON.stringify(jsonData));
+        console.log('Data appended to file successfully');
+      } catch (err) {
+        console.error('Error appending data to file:', err);
+      }
+    };
+    await appendDataToFile(networkValue);
   }
-  await appendDataToFile(networkValue);
-
-}
-}
+};

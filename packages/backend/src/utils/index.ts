@@ -8,29 +8,50 @@ import {
     manageNetworkJson, addIntoNetworksDirectory,
     runZombienet, zombieBinaryAlreadyExist
 } from './zombienetRunner.js';
+import { checkNetworkDirExists, matchFileName, runTest } from './testZombienetRunner.js';
 
-const exec = util.promisify(cmd.exec);
+export const startZombienet = async (dirName:string,fileName:string,networkName:string,confFile:string,dslFileName:string,dslFile:string) => {
 
-export const startZombienet = async (dirName: string, fileName: string, networkName: string, confFile: string) => {
     try {
         console.log("Welcome to Zombienet binary")
-
         const binDirectory = `${LARCH_CONTEXT_DIR}/bin`;
+
         if (fs.existsSync(binDirectory)) {
             console.log('Directory exists!')
-            await zombieBinaryAlreadyExist(dirName, fileName, networkName, confFile, VERSION);
-        } else {
-            console.log('Directory not found.');
-            await downloadZombienetBinary(VERSION);
-            await executePermissionToBinary(VERSION);
-            await createNetworksDir();
-            await createDirectoryInsideNetworkDir(networkName);
-            await addIntoNetworksDirectory(fileName, confFile, networkName, VERSION);
-            await runZombienet(dirName, fileName, networkName, confFile, VERSION);
-            await manageNetworkJson(dirName, fileName, networkName, confFile, VERSION);
+            await zombieBinaryAlreadyExist(dirName,fileName,networkName,confFile,VERSION,dslFileName,dslFile)
+
+          } else {
+
+            console.log('Directory not found.')
+
+                await downloadZombienetBinary( VERSION );
+                await executePermissionToBinary( VERSION );
+                await createNetworksDir();
+                await createDirectoryInsideNetworkDir(networkName);
+                await addIntoNetworksDirectory(fileName,confFile,networkName,VERSION,dslFileName,dslFile);
+                await runZombienet(dirName,fileName,networkName,confFile,VERSION);
+                await manageNetworkJson (dirName,fileName,networkName,confFile,VERSION,dslFileName,dslFile);                                          
         }
     }
     catch (error) {
         console.error(error);
     }
-}
+};
+
+export const testZombienet = async (networkName:string,fileName:string,dslFileName:string,dslFile:string) => {
+
+    try {
+
+        await checkNetworkDirExists(networkName,dslFileName);
+        await matchFileName(fileName,dslFileName)
+        await runTest(dslFileName,VERSION,networkName)
+        
+    } catch (error) {
+
+        console.log(error)
+        
+    }
+
+   
+
+};

@@ -6,6 +6,7 @@ import { LARCH_CONTEXT_DIR } from "../../../utils/declaration.js";
 export const progressController = async (req:Request,res:Response) => {
     try {
 
+        const searchNetwork = req.query.networkName
         let networkLocationArr = [];
         networkLocationArr.push(LARCH_CONTEXT_DIR)
         networkLocationArr.push('/networks.json')
@@ -15,32 +16,24 @@ export const progressController = async (req:Request,res:Response) => {
         fs.readFile( networkLocation, 'utf8',  (err, data) => {
         
             if(err){
-                return res.status(404).json({"message":"No Network to show the progress"}) // Error to handel
+                return res.status(404).json({"message":"No Network to show the progress"}) 
             }
             let networkJson = JSON.parse(data)
-            let arrLength = networkJson.length
-            const emptyArr:any =[];
+            let arrLength:number = networkJson.length;
 
                 if(arrLength<=0)
                 {
                     return res.status(404).json({"message":"No Network to show the progress"})
                 }
-                else if(arrLength>0){
-
-
+                
                     for(let i=0; i<arrLength;i++){
-                        let returnNetworkObj ={
-                            networkName:networkJson[i].name,
-                            networkState:networkJson[i].networkState
+                        if(networkJson[i].name == searchNetwork){
+                            return res.status(200).json({"networkState":networkJson[i].networkState});
                         }
-                        emptyArr.push(returnNetworkObj)
 
                     }
         
-                }
-            const jsonfile = JSON.stringify(emptyArr);
-        
-            return res.status(200).send(JSON.parse(jsonfile))
+            return res.status(404).json({"message":"No Network to show the progress"})
 
         });
 

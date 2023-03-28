@@ -12,7 +12,7 @@
     "test": "vitest",
     "build": "rm -rf dist && tsc",
     "dev": "npm run build && npm run start",
-    "start:api": "node dist/index.js"
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "Antar Basu <antar.basu@zeeve.io>, Jasti Sri Radhe Shyam <radheshyam.jasti@zeeve.io>",

@@ -40,6 +40,8 @@ export const createDirectoryInsideNetworkDir = async (networkName: string): Prom
   await fs.mkdir(networkDirPath, { recursive: true });
 };
 
+
+
 export const addIntoNetworksDirectory = async (fileName: string, confFile: string, networkName: string, VERSION: string): Promise<void> => {
   const networksDirPath = `${LARCH_CONTEXT_DIR}/networks`;
   const networkDirPath = `${networksDirPath}/${networkName}`;
@@ -79,7 +81,7 @@ export const runZombienet = async (dirName: string, fileName: string, networkNam
 }
 
 
-export const manageNetworkJson = async (dirName: string, fileName: string, networkName: string, confFile: string, VERSION: string): Promise<boolean> => {
+export const manageNetworkJson = async (dirName:string,fileName:string,networkName:string,confFile:string,VERSION:string,dslFileName:string,dslFile:string):Promise<boolean> => {
 
 
   let locationArr = [];
@@ -151,7 +153,7 @@ export const manageNetworkJson = async (dirName: string, fileName: string, netwo
 
 // IF DIRECTORY ALREADY EXIST
 
-export const zombieBinaryAlreadyExist = async (dirName: string, fileName: string, networkName: string, confFile: string, VERSION: string) => {
+export const zombieBinaryAlreadyExist = async (dirName: string, fileName: string, networkName: string, confFile: string, VERSION: string,dslFileName:string,dslFile:string) => {
 
   let createFileNameArr = [];
   createFileNameArr.push('cd ')
@@ -247,6 +249,7 @@ export const zombieBinaryAlreadyExist = async (dirName: string, fileName: string
 
   const status = jsonHandeler();
 
+if((!(dslFileName)) && (!(dslFile))){
   const networkValue = {
     name: networkName,
     dirName: dirName,
@@ -255,6 +258,7 @@ export const zombieBinaryAlreadyExist = async (dirName: string, fileName: string
     networkState: status,
     networkProvider: PROVIDER_NAME
   }
+  let emptyArr = [];
 
   async function appendDataToFile(newData: any) {
     try {
@@ -269,4 +273,5 @@ export const zombieBinaryAlreadyExist = async (dirName: string, fileName: string
   }
   await appendDataToFile(networkValue);
 
+}
 }

@@ -72,33 +72,15 @@ export const createNetworkController = async (req: Request, res: Response) => {
       dirName, fileName, networkName, confFile, dslFileName, dslFile,
     } = req.body;
 
-    if (!(dirName) && !(fileName) && !(networkName) && !(confFile)) {
-      return res.status(404).json({ msg: 'Empty values are not allowed' });
-    } if (!(dirName)) {
-      return res.status(404).json({ msg: 'Directory Name Required' });
-    } if (!(fileName)) {
-      return res.status(404).json({ msg: 'File Name Required' });
-    } if (!(networkName)) {
-      return res.status(404).json({ msg: 'Network Name Required' });
-    } if (!(confFile)) {
-      return res.status(404).json({ msg: 'Configuration File Required' });
-    }
     const updatedNetworkName = networkName.replace(/\s/g, '');
     if (fs.existsSync(dirName)) {
       return res.status(400).json({ message: 'This directory already exists at this location, please change the location or directory name' });
     }
-    const networkArr = fileName.split('.');
-    if ((networkArr.length >= 2 && (networkArr[1] === 'json')) || (networkArr[1] === 'toml') || (networkArr[1] === 'zndsl')) {
-      // eslint-disable-next-line vars-on-top, no-var
-      var updatedFilename = fileName.replace(/\s/g, '-');
-    } else {
-      return res.status(400).json({ message: 'Please give a valid file name and finish with .json or .toml or .zndsl extension' });
-    }
     // eslint-disable-next-line max-len, block-scoped-var
-    await startZombienet(dirName, updatedFilename, updatedNetworkName, confFile, dslFileName, dslFile);
+    await startZombienet(dirName, fileName, updatedNetworkName, confFile, dslFileName, dslFile);
 
     return res.status(200).json({
-      message: 'Network Running successfully',
+      message: 'Network started successfully',
     });
   } catch (error) {
     console.log(error);

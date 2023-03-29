@@ -2,36 +2,15 @@
 import * as util from 'node:util';
 import * as cmd from 'node:child_process';
 import * as fs from 'node:fs/promises';
-import { constants } from 'node:fs';
 import * as fileHandeler from 'fs';
-import { downloadFileToAPath } from './download.js';
-import { LARCH_CONTEXT_DIR, LARCH_DEFAULT_PROVIDER_NAME, ZOMBIENET_BINARY_DOWNLOAD_BASE_URL } from '../config.js';
+import { LARCH_CONTEXT_DIR, LARCH_DEFAULT_PROVIDER_NAME } from '../config.js';
 import { createDir } from './fs_helper.js';
+
+export { downloadZombienetBinary, executePermissionToBinary } from '../modules/zombienet.js';
 
 const readFileAsync = util.promisify(fileHandeler.readFile);
 const writeFileAsync = util.promisify(fileHandeler.writeFile);
 const exec = util.promisify(cmd.exec);
-
-export const downloadZombienetBinary = async (zombienetVersion: string): Promise<void> => {
-  const binaryDownloadUrl = `${ZOMBIENET_BINARY_DOWNLOAD_BASE_URL}/v${zombienetVersion}/zombienet-linux-x64`;
-  const binaryDirPath = `${LARCH_CONTEXT_DIR}/bin`;
-  const binaryVersionedPath = `${binaryDirPath}/zombienet-linux-x64-${zombienetVersion}`;
-  await fs.mkdir(binaryDirPath, { recursive: true });
-  await downloadFileToAPath({
-    downloadUrl: binaryDownloadUrl,
-    filePath: binaryVersionedPath,
-    progressRefreshInMs: 400,
-    progressCb: (fileSize, currentFileSize) => {
-      console.log(`Total file size: ${fileSize}, Current file size: ${currentFileSize}, Percent downloaded: ${((currentFileSize / fileSize) * 100).toFixed(2)}`);
-    },
-  });
-};
-
-export const executePermissionToBinary = async (zombienetVersion: string): Promise<void> => {
-  const binaryDirPath = `${LARCH_CONTEXT_DIR}/bin`;
-  const binaryVersionedPath = `${binaryDirPath}/zombienet-linux-x64-${zombienetVersion}`;
-  await fs.chmod(binaryVersionedPath, constants.S_IRUSR | constants.S_IWUSR | constants.S_IXUSR);
-};
 
 export const createNetworksDir = async (): Promise<void> => {
   const networksDirPath = `${LARCH_CONTEXT_DIR}/networks`;

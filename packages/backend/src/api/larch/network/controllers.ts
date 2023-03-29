@@ -1,8 +1,15 @@
 /* eslint-disable consistent-return */
 import { Request, Response } from 'express';
 import * as fs from 'fs';
-import { LARCH_CONTEXT_DIR } from '../../../config.js';
+import { randomUUID } from 'node:crypto';
+import { LARCH_CONTEXT_DIR, ZOMBIENET_VERSION } from '../../../config.js';
 import { startZombienet, testZombienet } from '../../../utils/index.js';
+import { runZombienet } from '../../../modules/zombienet.js';
+
+export const testZombie = async (req: Request, res: Response) => {
+  runZombienet({ version: true }, ZOMBIENET_VERSION, randomUUID());
+  res.send('');
+};
 
 export const networkController = async (req: Request, res: Response) => {
   try {

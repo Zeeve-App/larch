@@ -35,9 +35,9 @@ export const downloadFileToAPath = (
   }
 
   response.body?.pipe(dest);
-  response.body?.on('end', () => {
+  response.body?.on('end', async () => {
     clearInterval(interval);
-    if (downloadFileToAPathParams.progressCb) updateFileSize();
+    if (downloadFileToAPathParams.progressCb) await updateFileSize();
     resolve();
   });
 

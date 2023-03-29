@@ -4,9 +4,12 @@ export const up = function (knex) {
       table.increments('id');
       table.string('name').notNullable();
       table.string('config_filename').notNullable();
+      table.string('config_content').notNullable();
       table.string('network_directory').notNullable();
       table.string('network_provider').notNullable();
       table.string('network_state').notNullable();
+      table.string('test_filename').notNullable();
+      table.string('test_content').notNullable();
     })
     .createTable('template', function (table) {
       table.increments('id');

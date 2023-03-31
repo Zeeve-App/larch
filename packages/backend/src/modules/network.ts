@@ -2,6 +2,7 @@ import * as fs from 'node:fs/promises';
 import { Network } from './models/network.js';
 import { createDir } from '../utils/fs_helper.js';
 import { LARCH_CONTEXT_DIR } from '../config.js';
+import { ExecRun } from './models/exec_run.js';
 
 export const showNetwork = async (
   networkName: string,
@@ -46,4 +47,12 @@ export const createDirectory = async (
   await createDir(networkDirPath);
   const myBuffer = Buffer.from(confFileData, 'base64');
   await fs.writeFile(`${networkDirPath}/${confFileName}`, myBuffer);
+};
+
+export const displayZombienetRunOutput = async (
+  networkId: string,
+): Promise<void> => {
+  const execRun = new ExecRun(networkId);
+  const result = await execRun.getRunInfoById(networkId);
+  return result;
 };

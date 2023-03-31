@@ -10,7 +10,7 @@ import {
 } from '../../../config.js';
 import { testZombienet } from '../../../utils/index.js';
 import { runZombienet } from '../../../modules/zombienet.js';
-import { showNetwork, createDirectory } from '../../../modules/networkModule.js';
+import { showNetwork, createDirectory, displayZombienetRunOutput } from '../../../modules/network.js';
 
 export const testZombie = async (req: Request, res: Response) => {
   runZombienet({ version: true }, ZOMBIENET_VERSION, randomUUID());
@@ -32,6 +32,12 @@ export const createNetworkController = async (req: Request, res: Response) => {
   res.json({
     networkName, dirName, confFileName, confFileData, dslFileName, dslFileData,
   });
+};
+
+export const networkRunController = async (req: Request, res: Response) => {
+  const networkId: any = req.query.networkRunId;
+  const result = await displayZombienetRunOutput(networkId);
+  res.send(result);
 };
 
 export const networkController = async (req: Request, res: Response) => {

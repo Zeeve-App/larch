@@ -3,7 +3,7 @@ import {
   networkController, createNetworkController,
   displayNetworkController, testNetworkController,
   updateNetworkController, progressController,
-  testZombie,
+  testZombie, networkRunController,
 } from './controllers.js';
 import { createNetworkValidation, updateNetworkValidation } from './validations.js';
 
@@ -16,5 +16,6 @@ router.get('/', displayNetworkController);
 router.get('/test', testNetworkController);
 router.post('/update', updateNetworkValidation, updateNetworkController);
 router.get('/progress', progressController);
+router.get('/network-run', networkRunController);
 
 export default router;

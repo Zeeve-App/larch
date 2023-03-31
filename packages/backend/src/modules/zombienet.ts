@@ -86,6 +86,7 @@ export const runZombienet = async (
   const execRun = new ExecRun(runId);
   await execRun.addMinimalInfo(command);
   const spawnZombienet = () => new Promise((resolve, reject) => {
+    console.log(command);
     const result = spawn(zombienetBinPath, [...compiledCliOptions.trim().split(' ')]);
     let stderrChunks: Array<Uint8Array> = [];
     let stdoutChunks: Array<Uint8Array> = [];

@@ -54,6 +54,14 @@ export class ExecRun {
       .where('id', this.id);
     return result;
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  async getRunInfoById(networkId: string): Promise<any> {
+    const [result] = await this.db()
+      .select('*')
+      .where('id', networkId);
+    return result;
+  }
 }
 
 export const getExecRunList = async () => {

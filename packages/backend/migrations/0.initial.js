@@ -1,7 +1,7 @@
 export const up = function (knex) {
   return knex.schema
     .createTable('networks', function (table) {
-      table.increments('id');
+      table.string('id').notNullable();;
       table.string('name').notNullable();
       table.string('config_filename').notNullable();
       table.string('config_content').notNullable();
@@ -12,7 +12,7 @@ export const up = function (knex) {
       table.string('test_content').default(null);
     })
     .createTable('template', function (table) {
-      table.increments('id');
+      table.string('id').notNullable();;
       table.string('name').notNullable();
       table.string('config_filename').notNullable();
       table.string('config_content').notNullable();

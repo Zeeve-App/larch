@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { knexInstance } from '../db/sqlite.js';
 
 export class Network {
@@ -7,12 +8,12 @@ export class Network {
 
   private db = () => knexInstance(this.primaryTable);
 
-  constructor(id: string) {
-    this.id = id;
+  constructor(id?: string) {
+    this.id = id ?? randomUUID();
   }
 
   async addAllNetworkInfo(
-    network_name: string,
+    name: string,
     config_filename: string,
     config_content: string,
     network_directory: string,
@@ -24,7 +25,7 @@ export class Network {
     await this.db()
       .insert({
         id: this.id,
-        network_name,
+        name,
         config_filename,
         config_content,
         network_directory,
@@ -36,7 +37,7 @@ export class Network {
   }
 
   async addNetworkInfoWithoutTestFiles(
-    network_name: string,
+    name: string,
     config_filename: string,
     config_content: string,
     network_directory: string,
@@ -46,7 +47,7 @@ export class Network {
     await this.db()
       .insert({
         id: this.id,
-        network_name,
+        name,
         config_filename,
         config_content,
         network_directory,
@@ -60,7 +61,8 @@ export class Network {
     const [result] = await this.db()
       .select('*')
       .where('network_name', network_name);
-    return result;
+    console.log(result);
+    // return result;
   }
 
   async testNetwork(network_name: string): Promise<any> {
@@ -73,10 +75,10 @@ export class Network {
 
   async updateNetworkInfoWithConfigFile(
     network_name: string,
-    config_filename:string,
-    config_content:string,
-    test_filename:string,
-    test_content:string,
+    config_filename: string,
+    config_content: string,
+    test_filename: string,
+    test_content: string,
   ): Promise<void> {
     await this.db()
       .where('network_name', network_name)
@@ -90,9 +92,9 @@ export class Network {
 
   async updateNetworkInfoWithoutConfigFile(
     network_name: string,
-    config_filename:string,
-    test_filename:string,
-    test_content:string,
+    config_filename: string,
+    test_filename: string,
+    test_content: string,
   ): Promise<void> {
     await this.db()
       .where('network_name', network_name)
@@ -115,8 +117,8 @@ export class Network {
     network_name: string,
   ): Promise<void> {
     await this.db()
-      .where('network_name', network_name)
-      .delete('*');
+      .delete()
+      .where('network_name', network_name);
   }
 }
 

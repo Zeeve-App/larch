@@ -2,13 +2,36 @@
 import { Request, Response } from 'express';
 import * as fs from 'fs';
 import { randomUUID } from 'node:crypto';
-import { LARCH_CONTEXT_DIR, ZOMBIENET_VERSION } from '../../../config.js';
-import { startZombienet, testZombienet } from '../../../utils/index.js';
+import {
+  LARCH_CONTEXT_DIR,
+  ZOMBIENET_VERSION,
+  LARCH_DEFAULT_PROVIDER_NAME,
+  ZOMBIENET_NETWORKS_COLLECTION_DIR,
+} from '../../../config.js';
+import { testZombienet } from '../../../utils/index.js';
 import { runZombienet } from '../../../modules/zombienet.js';
+import { showNetwork, createDirectory } from '../../../modules/networkModule.js';
 
 export const testZombie = async (req: Request, res: Response) => {
   runZombienet({ version: true }, ZOMBIENET_VERSION, randomUUID());
   res.send('');
+};
+
+export const createNetworkController = async (req: Request, res: Response) => {
+  const {
+    networkName, dirName, confFileName, confFileData, dslFileName, dslFileData,
+  } = req.body;
+  const networkDirPath = `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkName}`;
+  await createDirectory(networkName, confFileName, confFileData);
+  await runZombienet({
+    spawn: true,
+    networkConfigPath: `${networkDirPath}/${confFileName}`,
+    provider: LARCH_DEFAULT_PROVIDER_NAME,
+    dir: dirName,
+  }, ZOMBIENET_VERSION, randomUUID());
+  res.json({
+    networkName, dirName, confFileName, confFileData, dslFileName, dslFileData,
+  });
 };
 
 export const networkController = async (req: Request, res: Response) => {
@@ -73,59 +96,11 @@ export const networkController = async (req: Request, res: Response) => {
   }
 };
 
-export const createNetworkController = async (req: Request, res: Response) => {
-  try {
-    const {
-      dirName, fileName, networkName, confFile, dslFileName, dslFile,
-    } = req.body;
-
-    const updatedNetworkName = networkName.replace(/\s/g, '');
-    if (fs.existsSync(dirName)) {
-      return res.status(400).json({ message: 'This directory already exists at this location, please change the location or directory name' });
-    }
-    // eslint-disable-next-line max-len, block-scoped-var
-    await startZombienet(dirName, fileName, updatedNetworkName, confFile, dslFileName, dslFile);
-
-    return res.status(200).json({
-      message: 'Network started successfully',
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json('Server Error');
-  }
-};
-
 export const displayNetworkController = async (req: Request, res: Response) => {
-  const searchNetwork = req.query.networkName;
-
-  const networkLocationArr = [];
-  networkLocationArr.push(LARCH_CONTEXT_DIR);
-  networkLocationArr.push('/networks.json');
-
-  const networkLocation = networkLocationArr.join('');
-
-  if (!(fs.existsSync(networkLocation))) {
-    return res.status(404).send({ message: 'No Networks Available' });
-  }
-
-  fs.readFile(networkLocation, 'utf8', (err, data) => {
-    if (err) {
-      return res.status(404).send({ message: 'No Networks Available' });
-    }
-    const networkArr = JSON.parse(data);
-    const networkArrLength: number = networkArr.length;
-
-    if (networkArrLength <= 0) {
-      return res.status(404).send({ message: 'No Networks Available' });
-    }
-    // Searching for the network in networks.json
-    for (let i = 0; i < networkArrLength; i++) {
-      if (networkArr[i].name === searchNetwork) {
-        return res.status(200).send(networkArr[i]);
-      }
-    }
-    return res.status(404).send({ message: 'No Networks Available' });
-  });
+  const searchNetwork: string | any = req.query.networkName;
+  const updatedNetworkName = searchNetwork.replace(/\s/g, '');
+  const result = await showNetwork(updatedNetworkName);
+  res.send(result);
 };
 
 export const testNetworkController = async (req: Request, res: Response) => {

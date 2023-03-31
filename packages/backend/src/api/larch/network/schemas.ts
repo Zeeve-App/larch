@@ -9,3 +9,10 @@ export const createNetworkSchema = Joi.object({
   dslFileName: Joi.string().min(3).regex(/\.(zndsl)$/),
   dslFileData: Joi.string(),
 });
+
+export const updateNetworkSchema = Joi.object({
+  confFileName: Joi.string().min(3).required().regex(/\.(json|toml)$/),
+  confFileData: Joi.string().required(),
+  dslFileName: Joi.string().min(3).regex(/\.(zndsl)$/),
+  dslFileData: Joi.string(),
+});

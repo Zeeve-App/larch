@@ -117,8 +117,8 @@ export class Network {
     network_name: string,
   ): Promise<void> {
     await this.db()
-      .delete()
-      .where('network_name', network_name);
+      .where('network_name', network_name)
+      .del();
   }
 }
 

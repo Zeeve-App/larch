@@ -14,7 +14,7 @@ export class Network {
   // removing state
 
   async addAllNetworkInfo(
-    id:string,
+    id: string,
     name: string,
     config_filename: string,
     config_content: string,

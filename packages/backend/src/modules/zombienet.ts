@@ -5,7 +5,7 @@ import { ZOMBIENET_BIN_COLLECTION_DIR, ZOMBIENET_BINARY_DOWNLOAD_BASE_URL } from
 import { downloadFileToAPath } from '../utils/download.js';
 import { checkPathExists } from '../utils/fs_helper.js';
 import { ExecRun } from './models/exec_run.js';
-import { getRunId } from './network.js';
+// import { getRunId } from './network.js';
 
 type ZombienetCliOptions = {
   spawn?: boolean,
@@ -85,7 +85,6 @@ export const runZombienet = async (
   const zombienetBinPath = zombienetBinPathByVersion(zombienetVersion);
   const command = `${zombienetBinPath} ${compiledCliOptions}`;
   const execRun = new ExecRun(runId);
-  await getRunId(runId);
   await execRun.addMinimalInfo(command);
   const spawnZombienet = () => new Promise((resolve, reject) => {
     console.log(command);

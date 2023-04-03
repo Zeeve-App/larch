@@ -15,10 +15,12 @@ import {
   displayZombienetRunOutput, addNetworkInfo,
   runZombienetForTest, createTestDirectory,
   displayZombienetTestRunOutput, updateWithConfig,
-  updateWithoutConfig, updateNetworkStatus, getRunId,
+  updateWithoutConfig, updateNetworkStatus,
 } from '../../../modules/network.js';
 
 import { checkPathExists } from '../../../utils/fs_helper.js';
+
+export const networkRunId = randomUUID();
 
 export const testZombie = async (req: Request, res: Response) => {
   runZombienet({ version: true }, ZOMBIENET_VERSION, randomUUID());
@@ -35,17 +37,8 @@ export const createNetworkController = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Directory Already Exists' });
   }
   await createDirectory(networkName, confFileName, confFileData);
-  await runZombienet({
-    spawn: true,
-    networkConfigPath: `${networkDirPath}/${confFileName}`,
-    provider: LARCH_DEFAULT_PROVIDER_NAME,
-    dir: dirName,
-  }, ZOMBIENET_VERSION, randomUUID());
-  res.status(200).json({
-    message: 'Network Running...',
-  });
   await addNetworkInfo(
-    getRunId,
+    networkRunId,
     networkName,
     confFileName,
     confFileData,
@@ -54,7 +47,16 @@ export const createNetworkController = async (req: Request, res: Response) => {
     dslFileName,
     dslFileData,
   );
-  await updateNetworkStatus(getRunId);
+  await runZombienet({
+    spawn: true,
+    networkConfigPath: `${networkDirPath}/${confFileName}`,
+    provider: LARCH_DEFAULT_PROVIDER_NAME,
+    dir: dirName,
+  }, ZOMBIENET_VERSION, networkRunId);
+  res.status(200).json({
+    message: 'Network Running...',
+  });
+  await updateNetworkStatus(networkRunId);
 };
 
 export const networkRunController = async (req: Request, res: Response) => {

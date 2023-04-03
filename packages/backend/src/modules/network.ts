@@ -4,19 +4,25 @@ import { Network } from './models/network.js';
 import { createDir } from '../utils/fs_helper.js';
 import { LARCH_CONTEXT_DIR } from '../config.js';
 import { ExecRun } from './models/exec_run.js';
+// import { networkRunId } from './zombienet.js';
 
-export const getRunId = async (id: string): Promise<string> => id;
+// export const getRunId = async (id: string): Promise<string> => {
+//   // eslint-disable-next-line no-var
+//   var networkId = id;
+//   // console.log(`From ${networkId}`);
+//   return networkId;
+// };
 
 export const updateNetworkStatus = async (id: any): Promise<void> => {
   const network = new Network();
   const execRun = new ExecRun(id);
   const statusCode = await execRun.showNetworkState(id);
-  let state: string = 'in-progress';
+  let state: string = 'failed';
   if (statusCode === 0) {
     state = 'running';
   }
   if (statusCode === 1) {
-    state = 'failed';
+    state = 'in-progress';
   }
   await network.updateStatus(id, state);
 };
@@ -38,7 +44,7 @@ export const runZombienetForTest = async (
 };
 
 export const addNetworkInfo = async (
-  id: any,
+  networkRunId: string,
   name: string,
   config_filename: string,
   config_content: string,
@@ -48,8 +54,9 @@ export const addNetworkInfo = async (
   test_content: string,
 ): Promise<void> => {
   const network = new Network();
+  // console.log(`From ${networkRunId}`);
   const result = await network.addAllNetworkInfo(
-    id,
+    networkRunId,
     name,
     config_filename,
     config_content,

@@ -8,9 +8,17 @@ import {
   LARCH_DEFAULT_PROVIDER_NAME,
   ZOMBIENET_NETWORKS_COLLECTION_DIR,
 } from '../../../config.js';
-import { testZombienet } from '../../../utils/index.js';
+// import { testZombienet } from '../../../utils/index.js';
 import { runZombienet } from '../../../modules/zombienet.js';
-import { showNetwork, createDirectory, displayZombienetRunOutput } from '../../../modules/network.js';
+import {
+  showNetwork, createDirectory,
+  displayZombienetRunOutput, addNetworkInfo,
+  runZombienetForTest, createTestDirectory,
+  displayZombienetTestRunOutput, updateWithConfig,
+  updateWithoutConfig, updateNetworkStatus, getRunId,
+} from '../../../modules/network.js';
+
+import { checkPathExists } from '../../../utils/fs_helper.js';
 
 export const testZombie = async (req: Request, res: Response) => {
   runZombienet({ version: true }, ZOMBIENET_VERSION, randomUUID());
@@ -22,6 +30,10 @@ export const createNetworkController = async (req: Request, res: Response) => {
     networkName, dirName, confFileName, confFileData, dslFileName, dslFileData,
   } = req.body;
   const networkDirPath = `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkName}`;
+  const pathExists = await checkPathExists(dirName);
+  if (pathExists) {
+    return res.status(400).json({ message: 'Directory Already Exists' });
+  }
   await createDirectory(networkName, confFileName, confFileData);
   await runZombienet({
     spawn: true,
@@ -29,14 +41,55 @@ export const createNetworkController = async (req: Request, res: Response) => {
     provider: LARCH_DEFAULT_PROVIDER_NAME,
     dir: dirName,
   }, ZOMBIENET_VERSION, randomUUID());
-  res.json({
-    networkName, dirName, confFileName, confFileData, dslFileName, dslFileData,
+  res.status(200).json({
+    message: 'Network Running...',
   });
+  await addNetworkInfo(
+    getRunId,
+    networkName,
+    confFileName,
+    confFileData,
+    dirName,
+    LARCH_DEFAULT_PROVIDER_NAME,
+    dslFileName,
+    dslFileData,
+  );
+  await updateNetworkStatus(getRunId);
 };
 
 export const networkRunController = async (req: Request, res: Response) => {
   const networkId: any = req.query.networkRunId;
   const result = await displayZombienetRunOutput(networkId);
+  res.send(result);
+};
+
+export const displayNetworkController = async (req: Request, res: Response) => {
+  const searchNetwork: string | any = req.query.networkName;
+  const updatedNetworkName = searchNetwork.replace(/\s/g, '');
+  const result = await showNetwork(updatedNetworkName);
+  res.send(result);
+};
+
+export const testNetworkController = async (req: Request, res: Response) => {
+  const searchNetwork: string | any = req.query.networkName;
+  const updatedNetworkName = searchNetwork.replace(/\s/g, '');
+  const networkDirPath = `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${updatedNetworkName}`;
+  const result: any = await runZombienetForTest(updatedNetworkName);
+  if (result == null) {
+    res.json({ message: 'No Test File Available' });
+  }
+  await createTestDirectory(updatedNetworkName, result[0].test_filename, result[0].test_content);
+  await runZombienet({
+    test: true,
+    testConfigPath: `${networkDirPath}/${result[0].test_filename}`,
+    provider: LARCH_DEFAULT_PROVIDER_NAME,
+  }, ZOMBIENET_VERSION, randomUUID());
+  res.send('');
+};
+
+export const networkTestRunController = async (req: Request, res: Response) => {
+  const networkId: any = req.query.networkRunId;
+  const result = await displayZombienetTestRunOutput(networkId);
   res.send(result);
 };
 
@@ -102,55 +155,6 @@ export const networkController = async (req: Request, res: Response) => {
   }
 };
 
-export const displayNetworkController = async (req: Request, res: Response) => {
-  const searchNetwork: string | any = req.query.networkName;
-  const updatedNetworkName = searchNetwork.replace(/\s/g, '');
-  const result = await showNetwork(updatedNetworkName);
-  res.send(result);
-};
-
-export const testNetworkController = async (req: Request, res: Response) => {
-  const searchNetwork: string | any = req.query.networkName;
-  const updatedNetworkName = searchNetwork.replace(/\s/g, '');
-  // res.send(searchNetwork)
-
-  const networkLocationArr = [];
-  networkLocationArr.push(LARCH_CONTEXT_DIR);
-  networkLocationArr.push('/networks.json');
-
-  const networkLocation = networkLocationArr.join('');
-
-  if (!(fs.existsSync(networkLocation))) {
-    return res.status(404).send({ message: 'No Networks Available' });
-  }
-  fs.readFile(networkLocation, 'utf8', async (err, data) => {
-    if (err) {
-      return res.status(404).send({ message: 'No Networks Available' });
-    }
-    const networkArr = JSON.parse(data);
-    const networkArrLength: number = networkArr.length;
-
-    if (networkArrLength <= 0) {
-      return res.status(404).send({ message: 'No Networks Available' });
-    }
-    // Searching for the network in networks.json
-    for (let i = 0; i < networkArrLength; i++) {
-      if (networkArr[i].name === updatedNetworkName) {
-        if (((networkArr[i].dslFileName === '')) || ((networkArr[i].dslFile === ''))) {
-          return res.status(404).send({ message: 'Test Files Not Available, Please Add a Test File' });
-        }
-        if (!(networkArr[i].fileName)) {
-          return res.status(404).send({ message: 'Configuration File Not Available' });
-        }
-        // If test file available then run the test file
-        // eslint-disable-next-line no-await-in-loop
-        await testZombienet(networkArr[i].name, networkArr[i].fileName, networkArr[i].dslFileName);
-      }
-    }
-    return res.status(404).send({ message: 'No Networks Available' });
-  });
-};
-
 export const updateNetworkController = async (req: Request, res: Response) => {
   const searchNetwork: string | any = req.query.networkName;
   const updatedNetworkName = searchNetwork.replace(/\s/g, '');
@@ -162,68 +166,14 @@ export const updateNetworkController = async (req: Request, res: Response) => {
   if ((!(dslFileName)) || (!(dslFile)) || (!(fileName))) {
     return res.status(404).json({ message: 'Empty values are not allowed' });
   }
-
-  const networkLocationArr = [];
-  networkLocationArr.push(LARCH_CONTEXT_DIR);
-  networkLocationArr.push('/networks.json');
-
-  const networkLocation = networkLocationArr.join('');
-  if (!(fs.existsSync(networkLocation))) {
-    return res.status(404).send({ message: 'No Networks Available' });
+  if (confFile) {
+    await updateWithConfig(updatedNetworkName, dslFileName, dslFile, fileName, confFile);
+    return res.status(200).send('');
   }
-
-  fs.readFile(networkLocation, 'utf8', async (err, data) => {
-    if (err) {
-      return res.status(404).send({ message: 'No Networks Available' });
-    }
-    const networkArr = JSON.parse(data);
-    const networkArrLength: number = networkArr.length;
-
-    if (networkArrLength <= 0) {
-      return res.status(404).send({ message: 'No Networks Available' });
-    }
-    // Searching for the network in networks.json
-    for (let i = 0; i < networkArrLength; i++) {
-      if (networkArr[i].name === updatedNetworkName) {
-        if (confFile) {
-          networkArr[i].fileName = fileName;
-          networkArr[i].confFile = confFile;
-          networkArr[i].dslFileName = dslFileName;
-          networkArr[i].dslFile = dslFile;
-
-          const newArr = JSON.stringify(networkArr);
-
-          // eslint-disable-next-line @typescript-eslint/no-shadow
-          fs.writeFile(networkLocation, newArr, (err) => {
-            // In case of a error throw err.
-            if (err) {
-              return res.status(404).send({ message: 'Error Finding Network' });
-            }
-          });
-
-          return res.status(200).send({ message: 'Network Config Updated Successfully' });
-        }
-        if (!(confFile)) {
-          networkArr[i].fileName = fileName;
-          networkArr[i].dslFileName = dslFileName;
-          networkArr[i].dslFile = dslFile;
-
-          const newArr = JSON.stringify(networkArr);
-
-          // eslint-disable-next-line @typescript-eslint/no-shadow
-          fs.writeFile(networkLocation, newArr, (err) => {
-            // In case of a error throw err.
-            if (err) {
-              return res.status(404).send({ message: 'Error Finding Network' });
-            }
-          });
-
-          return res.status(200).send({ message: 'Network Config Updated Successfully' });
-        }
-      }
-    }
-    return res.status(404).send({ message: 'No Networks Available' });
-  });
+  if (!confFile) {
+    await updateWithoutConfig(updatedNetworkName, dslFileName, dslFile, fileName);
+    return res.status(200).send('');
+  }
 };
 
 export const progressController = async (req: Request, res: Response) => {

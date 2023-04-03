@@ -62,6 +62,13 @@ export class ExecRun {
       .where('id', networkId);
     return result;
   }
+
+  async showNetworkState(networkId: string): Promise<any> {
+    const result = await this.db()
+      .select('status_code')
+      .where('id', networkId);
+    return result;
+  }
 }
 
 export const getExecRunList = async () => {

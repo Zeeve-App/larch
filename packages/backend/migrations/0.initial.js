@@ -7,7 +7,7 @@ export const up = function (knex) {
       table.string('config_content').notNullable();
       table.string('network_directory').notNullable();
       table.string('network_provider').notNullable();
-      table.string('network_state').notNullable();
+      table.string('network_state').default(null);
       table.string('test_filename').default(null);
       table.string('test_content').default(null);
     })

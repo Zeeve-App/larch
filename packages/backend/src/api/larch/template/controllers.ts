@@ -113,10 +113,26 @@ export const templateDeleteController = async (req: Request, res: Response): Pro
 
 export const templateListController = async (req: Request, res: Response): Promise<void> => {
   addUserOperationEntry('TEMPLATE_LIST', 'Listed templates');
-  const templates = await getTemplateList();
+  const templateListReq = req.body;
+  const pageNum = templateListReq.meta
+  && templateListReq.meta.pageNum ? templateListReq.meta.pageNum : 1;
+  const numOfRec = templateListReq.meta ? templateListReq.meta.numOfRec : 10;
+  const {
+    result: templates,
+    totalNumberOfRecCount,
+    currentPageRecCount,
+  } = await getTemplateList(templateListReq.filter, templateListReq.sort ?? [], {
+    pageNum,
+    numOfRec,
+  });
 
   res.json({
     success: true,
     result: templates,
+    meta: {
+      pageNum,
+      numOfRec: currentPageRecCount,
+      total: totalNumberOfRecCount,
+    },
   });
 };

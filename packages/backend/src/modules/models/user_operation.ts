@@ -1,6 +1,9 @@
 import { randomUUID } from 'node:crypto';
 import { knexInstance } from '../db/sqlite.js';
 import { getTimestamp } from '../../utils/time.js';
+import {
+  DefaultSort, FieldMap, PaginationInfo, SortInfo, getPaginatedInfo,
+} from '../../utils/pagination.js';
 
 type OperationInfo = {
   id: string;
@@ -64,9 +67,30 @@ export class UserOperation {
 export const purgeOperationData = async () => knexInstance(primaryTableName)
   .truncate();
 
-export const getOperationList = async () => {
-  const result = await knexInstance(primaryTableName)
-    .select(['*'])
-    .orderBy(['created_at', 'id']);
-  return result;
+type FilterInfo = {
+  operation: string,
+  operationDetail: string,
+};
+
+const fieldMap: FieldMap = {
+  operationDetail: 'operation_detail',
+  createdAt: 'created_at',
+};
+
+const defaultSort: DefaultSort = {
+  createdAt: 'desc',
+  id: 'asc',
+};
+
+export const getOperationList = async (
+  filter: FilterInfo,
+  sortArray: SortInfo,
+  pageInfo: PaginationInfo,
+) => {
+  const getModel = () => knexInstance.table(primaryTableName).where((builder) => {
+    if (!filter) return;
+    if (filter.operation) builder.where('operation', filter.operation);
+    if (filter.operationDetail) builder.whereLike('operation_detail', `%${filter.operationDetail}%`);
+  });
+  return getPaginatedInfo(pageInfo, sortArray, getModel, fieldMap, defaultSort);
 };

@@ -1,14 +1,13 @@
 /* eslint-disable consistent-return */
 import { Request, Response } from 'express';
-import * as fs from 'fs';
+// import * as fs from 'fs';
 import { randomUUID } from 'node:crypto';
 import {
-  LARCH_CONTEXT_DIR,
+  /* LARCH_CONTEXT_DIR, */
   ZOMBIENET_VERSION,
   LARCH_DEFAULT_PROVIDER_NAME,
   ZOMBIENET_NETWORKS_COLLECTION_DIR,
 } from '../../../config.js';
-// import { testZombienet } from '../../../utils/index.js';
 import { runZombienet } from '../../../modules/zombienet.js';
 import {
   showNetwork, createDirectory,
@@ -16,6 +15,8 @@ import {
   runZombienetForTest, createTestDirectory,
   displayZombienetTestRunOutput, updateWithConfig,
   updateWithoutConfig, updateNetworkStatus,
+  showNetworkProgress, deleteNetwork,
+  checkNetworkName, allNetworkInfo,
 } from '../../../modules/network.js';
 
 import { checkPathExists } from '../../../utils/fs_helper.js';
@@ -69,8 +70,14 @@ export const networkRunController = async (req: Request, res: Response) => {
 export const displayNetworkController = async (req: Request, res: Response) => {
   const searchNetwork: string | any = req.query.networkName;
   const updatedNetworkName = searchNetwork.replace(/\s/g, '');
-  const result = await showNetwork(updatedNetworkName);
-  res.send(result);
+  const result = await checkNetworkName(updatedNetworkName);
+  if (result === 1) {
+    res.json({ message: 'No Such Network' });
+  }
+  if (result === 0) {
+    const networkDetails = await showNetwork(updatedNetworkName);
+    res.send(networkDetails);
+  }
 };
 
 export const testNetworkController = async (req: Request, res: Response) => {
@@ -86,7 +93,7 @@ export const testNetworkController = async (req: Request, res: Response) => {
     test: true,
     testConfigPath: `${networkDirPath}/${result[0].test_filename}`,
     provider: LARCH_DEFAULT_PROVIDER_NAME,
-  }, ZOMBIENET_VERSION, randomUUID());
+  }, ZOMBIENET_VERSION, networkRunId);
   res.send('');
 };
 
@@ -94,69 +101,6 @@ export const networkTestRunController = async (req: Request, res: Response) => {
   const networkId: any = req.query.networkRunId;
   const result = await displayZombienetTestRunOutput(networkId);
   res.send(result);
-};
-
-export const networkController = async (req: Request, res: Response) => {
-  addUserOperationEntry('NETWORK_LIST', 'Listed networks');
-  try {
-    const { filter, meta } = req.body;
-
-    const { networkName } = filter;
-    const newNetworkName: string = networkName.replace(/\s/g, '');
-
-    const { numberOfRecords } = meta;
-    const results: any = {};
-
-    const networkLocationArr = [];
-    networkLocationArr.push(LARCH_CONTEXT_DIR);
-    networkLocationArr.push('/networks.json');
-
-    const networkLocation = networkLocationArr.join('');
-
-    if (!(fs.existsSync(networkLocation))) {
-      return res.status(404).send({ message: 'No Networks Available' });
-    }
-    fs.readFile(networkLocation, 'utf8', (err, data) => {
-      if (err) {
-        return res.status(404).send({ message: 'No Networks Available' });
-      }
-      const networkList = JSON.parse(data);
-
-      for (let i = 0; i < networkList.length; i++) {
-        if (networkList[i].name === newNetworkName) {
-          const pageCount = (i / numberOfRecords) + 1;
-          const pageNo = Math.trunc(pageCount);
-          const startIndex: number = (pageNo - 1) * numberOfRecords;
-          const endIndex: number = pageNo * numberOfRecords;
-
-          if (endIndex < networkList.length) {
-            results.next = {
-              page: pageNo + 1,
-              limit: numberOfRecords,
-            };
-          }
-          if (startIndex > 0) {
-            results.previous = {
-              page: pageNo - 1,
-              limit: numberOfRecords,
-            };
-          }
-
-          results.results = [];
-          results.results.push(networkList[i]);
-          results.pageNo = pageNo;
-          results.skippedRecords = i;
-          results.skippedPages = pageNo - 1;
-          results.totalRecords = networkList.length;
-
-          return res.status(200).send(results);
-        }
-      }
-      return res.status(404).json({ message: 'No Networks Available' });
-    });
-  } catch (error) {
-    return res.status(500).json('Server Error');
-  }
 };
 
 export const updateNetworkController = async (req: Request, res: Response) => {
@@ -181,34 +125,37 @@ export const updateNetworkController = async (req: Request, res: Response) => {
 };
 
 export const progressController = async (req: Request, res: Response) => {
-  try {
-    const searchNetwork = req.query.networkName;
-    const networkLocationArr = [];
-    networkLocationArr.push(LARCH_CONTEXT_DIR);
-    networkLocationArr.push('/networks.json');
+  const searchNetwork: string | any = req.query.networkName;
+  const updatedNetworkName = searchNetwork.replace(/\s/g, '');
+  const result = await showNetworkProgress(updatedNetworkName);
+  res.send(result);
+};
 
-    const networkLocation = networkLocationArr.join('');
+export const deleteNetworkController = async (req: Request, res: Response) => {
+  const searchNetwork: string | any = req.query.networkName;
+  const updatedNetworkName = searchNetwork.replace(/\s/g, '');
+  await deleteNetwork(updatedNetworkName);
+  res.json({ message: 'Network Deleted Successfully' });
+};
 
-    fs.readFile(networkLocation, 'utf8', (err, data) => {
-      if (err) {
-        return res.status(404).json({ message: 'No Network to show the progress' });
-      }
-      const networkJson = JSON.parse(data);
-      const arrLength: number = networkJson.length;
-
-      if (arrLength <= 0) {
-        return res.status(404).json({ message: 'No Network to show the progress' });
-      }
-
-      for (let i = 0; i < arrLength; i++) {
-        if (networkJson[i].name === searchNetwork) {
-          return res.status(200).json({ networkState: networkJson[i].networkState });
-        }
-      }
-
-      return res.status(404).json({ message: 'No Network to show the progress' });
-    });
-  } catch (error) {
-    return res.status(500).json('Server Error');
-  }
+export const networkController = async (req: Request, res: Response) => {
+  const { filter, meta } = req.body;
+  const { networkName } = filter;
+  const updatedNetworkName: string = networkName.replace(/\s/g, '');
+  const { page, numberOfRecords } = meta;
+  const storeResults = await allNetworkInfo();
+  const startIndex: number = (page - 1) * numberOfRecords;
+  const endIndex: number = page * numberOfRecords;
+  const filteredItems = storeResults.filter(
+    (storeResult: { name: string; }) => storeResult.name
+      .includes(updatedNetworkName),
+  );
+  const pageItems = filteredItems.slice(startIndex, endIndex);
+  const metaValue = {
+    currentPage: page,
+    totalPages: Math.ceil(filteredItems.length / numberOfRecords),
+    totalCount: filteredItems.length,
+    pageSize: pageItems.length,
+  };
+  res.json({ items: pageItems, metaValue });
 };

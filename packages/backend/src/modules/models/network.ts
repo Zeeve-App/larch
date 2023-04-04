@@ -57,9 +57,16 @@ export class Network {
   // }
 
   async displayNetworkByNetworkName(network_name: string): Promise<any> {
-    const [result] = await this.db()
+    const result = await this.db()
       .select('*')
       .where('name', network_name);
+    return result;
+  }
+
+  async getAllNetworkInfo(): Promise<any> {
+    const result = await this.db()
+      .select('*');
+    // console.log(result);
     return result;
   }
 
@@ -110,15 +117,15 @@ export class Network {
     // console.log(this.id);
     const [result] = await this.db()
       .select('network_state')
-      .where('network_name', network_name);
+      .where('name', network_name);
     return result;
   }
 
   async deleteNetwork(
     network_name: string,
-  ): Promise<void> {
+  ): Promise<any> {
     await this.db()
-      .where('network_name', network_name)
+      .where('name', network_name)
       .del();
   }
 

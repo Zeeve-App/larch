@@ -4,14 +4,6 @@ import { Network } from './models/network.js';
 import { createDir } from '../utils/fs_helper.js';
 import { LARCH_CONTEXT_DIR } from '../config.js';
 import { ExecRun } from './models/exec_run.js';
-// import { networkRunId } from './zombienet.js';
-
-// export const getRunId = async (id: string): Promise<string> => {
-//   // eslint-disable-next-line no-var
-//   var networkId = id;
-//   // console.log(`From ${networkId}`);
-//   return networkId;
-// };
 
 export const updateNetworkStatus = async (id: any): Promise<void> => {
   const network = new Network();
@@ -141,5 +133,40 @@ export const updateWithoutConfig = async (
     dslFile,
     fileName,
   );
+  return result;
+};
+
+export const showNetworkProgress = async (
+  networkName: string,
+): Promise<void> => {
+  const network = new Network();
+  const result = await network.findNetworkProgress(
+    networkName,
+  );
+  return result;
+};
+
+export const deleteNetwork = async (
+  networkName: string,
+): Promise<void> => {
+  const network = new Network();
+  await network.deleteNetwork(networkName);
+};
+
+// This function is here to check if we are receiving a valid name from the frontend
+export const checkNetworkName = async (
+  networkName: string,
+): Promise<any> => {
+  const network = new Network();
+  const result = await network.displayNetworkByNetworkName(networkName);
+  if (result.length > 0) {
+    return 0;
+  }
+  return 1;
+};
+
+export const allNetworkInfo = async (): Promise<any> => {
+  const network = new Network();
+  const result = await network.getAllNetworkInfo();
   return result;
 };

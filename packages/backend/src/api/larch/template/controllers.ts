@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Template, getTemplateList } from '../../../modules/models/template.js';
+import { addUserOperationEntry } from '../../../modules/user_operation.js';
 
 export const templateCreateController = async (req: Request, res: Response): Promise<void> => {
   const templateData = req.body;
@@ -27,6 +28,7 @@ export const templateCreateController = async (req: Request, res: Response): Pro
 
 export const templateGetController = async (req: Request, res: Response): Promise<void> => {
   const templateId = typeof req.query.templateId === 'string' ? req.query.templateId : '';
+  addUserOperationEntry('TEMPLATE_GET', `Fetched template with ID: ${templateId}`);
   const template = new Template(templateId);
   const templateExists = await template.exists();
   if (!templateExists) {
@@ -85,6 +87,7 @@ export const templateUpdateController = async (req: Request, res: Response): Pro
 
 export const templateDeleteController = async (req: Request, res: Response): Promise<void> => {
   const templateId = typeof req.query.templateId === 'string' ? req.query.templateId : '';
+  addUserOperationEntry('TEMPLATE_DELETE', `Deleted template with ID: ${templateId}`);
   const template = new Template(templateId);
   const templateExists = await template.exists();
   if (!templateExists) {
@@ -109,6 +112,7 @@ export const templateDeleteController = async (req: Request, res: Response): Pro
 };
 
 export const templateListController = async (req: Request, res: Response): Promise<void> => {
+  addUserOperationEntry('TEMPLATE_LIST', 'Listed templates');
   const templates = await getTemplateList();
 
   res.json({

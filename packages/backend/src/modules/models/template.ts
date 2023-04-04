@@ -105,10 +105,10 @@ export const getTemplateList = async (
 ) => {
   const getModel = () => knexInstance.table(primaryTableName).where((builder) => {
     if (!filter) return;
-    if (filter.name) builder.whereLike('operation', `%${filter.name}%`);
-    if (filter.configFilename) builder.whereLike('operation_detail', `%${filter.configFilename}%`);
-    if (filter.networkProvider) builder.whereLike('operation_detail', `%${filter.networkProvider}%`);
-    if (filter.testFilename) builder.whereLike('operation_detail', `%${filter.testFilename}%`);
+    if (filter.name) builder.whereLike('name', `%${filter.name}%`);
+    if (filter.configFilename) builder.whereLike('config_filename', `%${filter.configFilename}%`);
+    if (filter.networkProvider) builder.whereLike('network_provider', `%${filter.networkProvider}%`);
+    if (filter.testFilename) builder.whereLike('test_filename', `%${filter.testFilename}%`);
   });
   return getPaginatedInfo(pageInfo, sortArray, getModel, fieldMap, defaultSort);
 };

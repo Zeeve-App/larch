@@ -36,10 +36,26 @@ export const userOperationPurgeController = async (req: Request, res: Response):
 };
 
 export const userOperationListController = async (req: Request, res: Response): Promise<void> => {
-  const operations = await getOperationList();
+  const operationListReq = req.body;
+  const pageNum = operationListReq.meta
+  && operationListReq.meta.pageNum ? operationListReq.meta.pageNum : 1;
+  const numOfRec = operationListReq.meta ? operationListReq.meta.numOfRec : 10;
+  const {
+    result: operations,
+    totalNumberOfRecCount,
+    currentPageRecCount,
+  } = await getOperationList(operationListReq.filter, operationListReq.sort ?? [], {
+    pageNum,
+    numOfRec,
+  });
 
   res.json({
     success: true,
     result: operations,
+    meta: {
+      pageNum,
+      numOfRec: currentPageRecCount,
+      total: totalNumberOfRecCount,
+    },
   });
 };

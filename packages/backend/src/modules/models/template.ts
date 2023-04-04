@@ -1,6 +1,9 @@
 import { randomUUID } from 'node:crypto';
 import { knexInstance } from '../db/sqlite.js';
 import { getTimestamp } from '../../utils/time.js';
+import {
+  DefaultSort, FieldMap, PaginationInfo, SortInfo, getPaginatedInfo,
+} from '../../utils/pagination.js';
 
 type TemplateInfo = {
   id: string;
@@ -15,10 +18,12 @@ type TemplateInfo = {
   createdAt: string | null;
 };
 
+const primaryTableName = 'template';
+
 export class Template {
   public id: string;
 
-  private primaryTable = 'template';
+  private primaryTable = primaryTableName;
 
   private db = () => knexInstance(this.primaryTable);
 
@@ -73,9 +78,37 @@ export class Template {
   }
 }
 
-export const getTemplateList = async () => {
-  const result = await knexInstance('template')
-    .select(['*'])
-    .orderBy(['created_at', 'id']);
-  return result;
+type FilterInfo = {
+  name: string,
+  configFilename: string,
+  networkProvider: string,
+  testFilename: string
+};
+
+const fieldMap: FieldMap = {
+  networkProvider: 'network_provider',
+  configFilename: 'config_filename',
+  testFilename: 'test_filename',
+  createdAt: 'created_at',
+  updatedAt: 'updated_at',
+};
+
+const defaultSort: DefaultSort = {
+  createdAt: 'desc',
+  id: 'asc',
+};
+
+export const getTemplateList = async (
+  filter: FilterInfo,
+  sortArray: SortInfo,
+  pageInfo: PaginationInfo,
+) => {
+  const getModel = () => knexInstance.table(primaryTableName).where((builder) => {
+    if (!filter) return;
+    if (filter.name) builder.whereLike('operation', `%${filter.name}%`);
+    if (filter.configFilename) builder.whereLike('operation_detail', `%${filter.configFilename}%`);
+    if (filter.networkProvider) builder.whereLike('operation_detail', `%${filter.networkProvider}%`);
+    if (filter.testFilename) builder.whereLike('operation_detail', `%${filter.testFilename}%`);
+  });
+  return getPaginatedInfo(pageInfo, sortArray, getModel, fieldMap, defaultSort);
 };

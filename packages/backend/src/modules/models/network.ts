@@ -11,66 +11,67 @@ export class Network {
   constructor(id?: string) {
     this.id = id ?? randomUUID();
   }
+  // removing state
 
   async addAllNetworkInfo(
+    id: string,
     name: string,
     config_filename: string,
     config_content: string,
     network_directory: string,
     network_provider: string,
-    network_state: string,
     test_filename: string,
     test_content: string,
   ): Promise<void> {
     await this.db()
       .insert({
-        id: this.id,
+        id,
         name,
         config_filename,
         config_content,
         network_directory,
         network_provider,
-        network_state,
         test_filename,
         test_content,
       });
   }
 
-  async addNetworkInfoWithoutTestFiles(
-    name: string,
-    config_filename: string,
-    config_content: string,
-    network_directory: string,
-    network_provider: string,
-    network_state: string,
-  ): Promise<void> {
-    await this.db()
-      .insert({
-        id: this.id,
-        name,
-        config_filename,
-        config_content,
-        network_directory,
-        network_provider,
-        network_state,
-      });
-  }
+  // async addNetworkInfoWithoutTestFiles(
+  //   name: string,
+  //   config_filename: string,
+  //   config_content: string,
+  //   network_directory: string,
+  //   network_provider: string,
+  //   network_state: string,
+  // ): Promise<void> {
+  //   await this.db()
+  //     .insert({
+  //       id: this.id,
+  //       name,
+  //       config_filename,
+  //       config_content,
+  //       network_directory,
+  //       network_provider,
+  //       network_state,
+  //     });
+  // }
 
   async displayNetworkByNetworkName(network_name: string): Promise<any> {
-    console.log(this.id);
     const [result] = await this.db()
       .select('*')
-      .where('network_name', network_name);
-    console.log(result);
-    // return result;
+      .where('name', network_name);
+    return result;
   }
 
   async testNetwork(network_name: string): Promise<any> {
     // console.log(this.id);
-    const [result] = await this.db()
+    const result = await this.db()
       .select('test_filename', 'test_content')
-      .where('network_name', network_name);
-    return result;
+      .where('name', network_name);
+    if (result[0].test_filename != null && result[0].test_content != null) {
+      return result;
+    }
+    return null;
   }
 
   async updateNetworkInfoWithConfigFile(
@@ -81,7 +82,7 @@ export class Network {
     test_content: string,
   ): Promise<void> {
     await this.db()
-      .where('network_name', network_name)
+      .where('name', network_name)
       .update({
         config_filename,
         config_content,
@@ -97,7 +98,7 @@ export class Network {
     test_content: string,
   ): Promise<void> {
     await this.db()
-      .where('network_name', network_name)
+      .where('name', network_name)
       .update({
         config_filename,
         test_filename,
@@ -117,8 +118,19 @@ export class Network {
     network_name: string,
   ): Promise<void> {
     await this.db()
-      .delete()
-      .where('network_name', network_name);
+      .where('network_name', network_name)
+      .del();
+  }
+
+  async updateStatus(
+    runId: string,
+    state: string,
+  ): Promise<void> {
+    await this.db()
+      .where('id', runId)
+      .update({
+        network_state: state,
+      });
   }
 }
 

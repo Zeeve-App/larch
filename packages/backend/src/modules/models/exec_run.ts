@@ -49,6 +49,7 @@ export class ExecRun {
 
   async getRunInfo(): Promise<any> {
     console.log(this.id);
+    // const ID = this.id;
     const [result] = await this.db()
       .select('*')
       .where('id', this.id);
@@ -59,6 +60,13 @@ export class ExecRun {
   async getRunInfoById(networkId: string): Promise<any> {
     const [result] = await this.db()
       .select('*')
+      .where('id', networkId);
+    return result;
+  }
+
+  async showNetworkState(networkId: string): Promise<any> {
+    const result = await this.db()
+      .select('status_code')
       .where('id', networkId);
     return result;
   }

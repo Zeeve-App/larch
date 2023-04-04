@@ -1,7 +1,7 @@
 export const up = function (knex) {
   return knex.schema
     .createTable('networks', function (table) {
-      table.string('id').notNullable();;
+      table.string('id').notNullable();
       table.string('name').notNullable();
       table.string('config_filename').notNullable();
       table.string('config_content').notNullable();
@@ -12,7 +12,7 @@ export const up = function (knex) {
       table.string('test_content').default(null);
     })
     .createTable('template', function (table) {
-      table.string('id').notNullable();;
+      table.string('id').notNullable().primary();
       table.string('name').notNullable();
       table.string('config_filename').notNullable();
       table.string('config_content').notNullable();
@@ -20,9 +20,11 @@ export const up = function (knex) {
       table.string('network_provider').notNullable();
       table.string('test_filename').notNullable();
       table.string('test_content').notNullable();
+      table.timestamp('created_at').notNullable();
+      table.timestamp('updated_at');
     })
     .createTable('exec_run', function (table) {
-      table.string('id').notNullable();
+      table.string('id').notNullable().primary();
       table.string('command').notNullable();
       table.string('std_error').default(null);
       table.string('std_output').default(null);

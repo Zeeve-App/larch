@@ -29,6 +29,12 @@ export const up = function (knex) {
       table.string('std_error').default(null);
       table.string('std_output').default(null);
       table.integer('status_code').default(null);
+    })
+    .createTable('user_operation', function (table) {
+      table.string('id').notNullable().primary();
+      table.string('operation').notNullable();
+      table.string('operation_detail').default(null);
+      table.timestamp('created_at').notNullable();
     });
 };
 

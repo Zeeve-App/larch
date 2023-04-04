@@ -19,6 +19,7 @@ import {
 } from '../../../modules/network.js';
 
 import { checkPathExists } from '../../../utils/fs_helper.js';
+import { addUserOperationEntry } from '../../../modules/user_operation.js';
 
 export const networkRunId = randomUUID();
 
@@ -96,6 +97,7 @@ export const networkTestRunController = async (req: Request, res: Response) => {
 };
 
 export const networkController = async (req: Request, res: Response) => {
+  addUserOperationEntry('NETWORK_LIST', 'Listed networks');
   try {
     const { filter, meta } = req.body;
 

@@ -10,6 +10,8 @@ import { ExecRun, removeAllExecRunByRelatedId } from './models/exec_run.js';
 import { runZombienet } from './zombienet.js';
 import { AppError } from '../utils/declaration.js';
 import { networkCleanUp } from './providers/common.js';
+import { deleteDirUnshare } from './providers/podman.js';
+import { removeInProgressNetwork } from './exec_run.js';
 
 const getNetworkPath = (networkName: string): string => `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkName}`;
 
@@ -35,6 +37,7 @@ export const deleteNetwork = async (
   await network.updateStatus('in-cleanup');
   const networkInfo = await network.get();
   const networkPath = getNetworkPath(networkInfo.name);
+  removeInProgressNetwork(networkInfo.name);
   if (await checkPathExists(networkPath)) await deleteDir(networkPath);
   if (await checkPathExists(networkInfo.networkDirectory)) {
     await networkCleanUp(
@@ -42,7 +45,13 @@ export const deleteNetwork = async (
       networkInfo.name,
       networkInfo.networkDirectory,
     );
-    await deleteDir(networkInfo.networkDirectory);
+    try {
+      await deleteDir(networkInfo.networkDirectory);
+    } catch (error) {
+      if (networkInfo.networkProvider === 'podman') {
+        await deleteDirUnshare(networkInfo.networkDirectory, networkInfo.name);
+      }
+    }
   }
   await removeAllExecRunByRelatedId(networkInfo.name);
   await network.remove();

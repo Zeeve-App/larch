@@ -1,7 +1,14 @@
-/* eslint-disable import/prefer-default-export */
-
-import { spawn } from 'child_process';
+import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
 import { ExecRun, Intention } from './models/exec_run.js';
+
+export const spawnObjList: Map<string, ChildProcessWithoutNullStreams> = new Map();
+
+export const removeInProgressNetwork = (networkName: string): void => {
+  if (!spawnObjList.has(networkName)) return;
+  const spawnContext = spawnObjList.get(networkName);
+  spawnContext?.kill('SIGINT');
+  spawnObjList.delete(networkName);
+};
 
 export const execute = async (
   runId: string | undefined,
@@ -19,6 +26,9 @@ export const execute = async (
     code: number | null, stdout: Buffer, stderr: Buffer
   } | null> => new Promise((resolve, reject) => {
     const result = spawn(commandBinPath, [...commandArguments.trim().split(' ')]);
+    if ((intention === 'NETWORK_CREATE' || intention === 'NETWORK_TEST') && relatedId) {
+      spawnObjList.set(relatedId, result);
+    }
     let stderrChunks: Array<Uint8Array> = [];
     let stdoutChunks: Array<Uint8Array> = [];
     result.stderr.on('data', (data) => {
@@ -42,7 +52,8 @@ export const execute = async (
       execRun.updateStdOutput(stdout);
     });
     result.on('exit', async (code) => {
-      await execRun.updateStateCode(code || -1);
+      if (relatedId) spawnObjList.delete(relatedId);
+      await execRun.updateStateCode(code !== null ? code : -1);
       if (wait) {
         resolve({
           code,

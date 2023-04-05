@@ -72,6 +72,8 @@ const generateZombienetCliOptions = (zombienetCliOptions: ZombienetCliOptions): 
     optionsList.push(` --dir ${zombienetCliOptions.dir}`);
   }
 
+  optionsList.push(' --force');
+
   return optionsList.join('');
 };
 

@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { knexInstance } from '../db/sqlite.js';
 
 export class ExecRun {
@@ -15,8 +16,8 @@ export class ExecRun {
 
   private db = () => knexInstance(this.primaryTable);
 
-  constructor(id: string) {
-    this.id = id;
+  constructor(id?: string) {
+    this.id = id ?? randomUUID();
   }
 
   async addMinimalInfo(command: string): Promise<void> {

@@ -1,8 +1,7 @@
 export const up = function (knex) {
   return knex.schema
     .createTable('networks', function (table) {
-      table.string('id').notNullable();
-      table.string('name').notNullable();
+      table.string('name').primary();
       table.string('config_filename').notNullable();
       table.string('config_content').notNullable();
       table.string('network_directory').notNullable();
@@ -10,6 +9,8 @@ export const up = function (knex) {
       table.string('network_state').default(null);
       table.string('test_filename').default(null);
       table.string('test_content').default(null);
+      table.timestamp('created_at').notNullable();
+      table.timestamp('updated_at');
     })
     .createTable('template', function (table) {
       table.string('id').notNullable().primary();

@@ -1,9 +1,16 @@
-import * as fs from 'node:fs/promises';
-// import * as fileHandeler from 'node:fs';
-import { Network } from './models/network.js';
-import { createDir } from '../utils/fs_helper.js';
-import { LARCH_CONTEXT_DIR } from '../config.js';
+import { Network, NetworkInfo } from './models/network.js';
+import {
+  checkPathExists, createDir, deleteDir, writeToFileFromBase64,
+} from '../utils/fs_helper.js';
+import {
+  LARCH_DEFAULT_PROVIDER_NAME,
+  ZOMBIENET_NETWORKS_COLLECTION_DIR, ZOMBIENET_VERSION,
+} from '../config.js';
 import { ExecRun } from './models/exec_run.js';
+import { runZombienet } from './zombienet.js';
+import { AppError } from '../utils/declaration.js';
+
+const getNetworkPath = (networkName: string): string => `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkName}`;
 
 export const updateNetworkStatus = async (id: any): Promise<void> => {
   const network = new Network();
@@ -19,71 +26,12 @@ export const updateNetworkStatus = async (id: any): Promise<void> => {
   await network.updateStatus(id, state);
 };
 
-export const showNetwork = async (
-  networkName: string,
-): Promise<void> => {
-  const network = new Network();
-  const result = await network.displayNetworkByNetworkName(networkName);
-  return result;
-};
-
 export const runZombienetForTest = async (
   networkName: string,
 ): Promise<void> => {
   const network = new Network();
   const result = await network.testNetwork(networkName);
   return result;
-};
-
-export const addNetworkInfo = async (
-  networkRunId: string,
-  name: string,
-  config_filename: string,
-  config_content: string,
-  network_directory: string,
-  network_provider: string,
-  test_filename: string,
-  test_content: string,
-): Promise<void> => {
-  const network = new Network();
-  // console.log(`From ${networkRunId}`);
-  const result = await network.addAllNetworkInfo(
-    networkRunId,
-    name,
-    config_filename,
-    config_content,
-    network_directory,
-    network_provider,
-    test_filename,
-    test_content,
-  );
-  return result;
-};
-
-export const createDirectory = async (
-  networkName: string,
-  confFileName: string,
-  confFileData: string,
-): Promise<void> => {
-  const networksDirPath = `${LARCH_CONTEXT_DIR}/networks`;
-  await createDir(networksDirPath);
-  const networkDirPath = `${networksDirPath}/${networkName}`;
-  await createDir(networkDirPath);
-  const myBuffer = Buffer.from(confFileData, 'base64');
-  await fs.writeFile(`${networkDirPath}/${confFileName}`, myBuffer);
-};
-
-export const createTestDirectory = async (
-  networkName: string,
-  testFileName: string,
-  testFileData: string,
-): Promise<void> => {
-  const networksDirPath = `${LARCH_CONTEXT_DIR}/networks`;
-  await createDir(networksDirPath);
-  const networkDirPath = `${networksDirPath}/${networkName}`;
-  await createDir(networkDirPath);
-  const myBuffer = Buffer.from(testFileData, 'base64');
-  await fs.writeFile(`${networkDirPath}/${testFileName}`, myBuffer);
 };
 
 export const displayZombienetRunOutput = async (
@@ -102,71 +50,96 @@ export const displayZombienetTestRunOutput = async (
   return result;
 };
 
-export const updateWithConfig = async (
-  networkName: string,
-  dslFileName: string,
-  dslFile: string,
-  fileName: string,
-  confFile: string,
-): Promise<void> => {
-  const network = new Network();
-  const result = await network.updateNetworkInfoWithConfigFile(
-    networkName,
-    dslFileName,
-    dslFile,
-    fileName,
-    confFile,
-  );
-  return result;
-};
-
-export const updateWithoutConfig = async (
-  networkName: string,
-  dslFileName: string,
-  dslFile: string,
-  fileName: string,
-): Promise<void> => {
-  const network = new Network();
-  const result = await network.updateNetworkInfoWithoutConfigFile(
-    networkName,
-    dslFileName,
-    dslFile,
-    fileName,
-  );
-  return result;
-};
-
 export const showNetworkProgress = async (
   networkName: string,
 ): Promise<void> => {
-  const network = new Network();
-  const result = await network.findNetworkProgress(
-    networkName,
-  );
+  const network = new Network(networkName);
+  const result = await network.findNetworkProgress();
   return result;
 };
 
 export const deleteNetwork = async (
   networkName: string,
 ): Promise<void> => {
-  const network = new Network();
-  await network.deleteNetwork(networkName);
-};
-
-// This function is here to check if we are receiving a valid name from the frontend
-export const checkNetworkName = async (
-  networkName: string,
-): Promise<any> => {
-  const network = new Network();
-  const result = await network.displayNetworkByNetworkName(networkName);
-  if (result.length > 0) {
-    return 0;
+  const network = new Network(networkName);
+  const networkExists = await network.exists();
+  if (!networkExists) {
+    throw new AppError({
+      kind: 'NETWORK_NOT_FOUND',
+      message: `Network with network name ${networkName} does not exists`,
+    });
   }
-  return 1;
+  const networkInfo = await network.get();
+  const networkPath = getNetworkPath(networkInfo.name);
+  if (await checkPathExists(networkPath)) await deleteDir(networkPath);
+  if (await checkPathExists(networkInfo.networkDirectory)) {
+    await deleteDir(networkInfo.networkDirectory);
+  }
+  await network.remove();
 };
 
-export const allNetworkInfo = async (): Promise<any> => {
-  const network = new Network();
-  const result = await network.getAllNetworkInfo();
-  return result;
+export const createNetwork = async (networkInfo: NetworkInfo): Promise<{
+  name: string; runId: string;
+}> => {
+  const runInfo = new ExecRun();
+  const network = new Network(networkInfo.name);
+  const networkExists = await network.exists();
+  if (networkExists) {
+    throw new AppError({
+      kind: 'NETWORK_EXISTS',
+      message: `Network with network name ${networkInfo.name} already exists`,
+    });
+  }
+  await network.set({ ...networkInfo, networkState: 'creating' });
+
+  const networkDirPath = `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkInfo.name}`;
+  const networkConfigPath = `${networkDirPath}/${networkInfo.configFilename}`;
+  await createDir(networkDirPath);
+  await createDir(networkInfo.networkDirectory);
+  await writeToFileFromBase64(networkConfigPath, networkInfo.configContent);
+  if (networkInfo.testFilename && networkInfo.testContent) {
+    const networkTestConfigPath = `${networkDirPath}/${networkInfo.testFilename}`;
+    await writeToFileFromBase64(networkTestConfigPath, networkInfo.testContent);
+  }
+  await runZombienet({
+    spawn: true,
+    networkConfigPath: `${networkDirPath}/${networkInfo.configFilename}`,
+    // @ts-ignore
+    provider: networkInfo.networkProvider ?? LARCH_DEFAULT_PROVIDER_NAME,
+    dir: networkInfo.networkDirectory,
+  }, ZOMBIENET_VERSION, networkInfo.name);
+
+  return {
+    name: networkInfo.name,
+    runId: runInfo.id,
+  };
+};
+
+export const testNetwork = async (networkName: string): Promise<{
+  name: string; runId: string;
+}> => {
+  const runInfo = new ExecRun();
+  const network = new Network(networkName);
+  const networkExists = await network.exists();
+  if (!networkExists) {
+    throw new AppError({
+      kind: 'NETWORK_NOT_FOUND',
+      message: `Network with network name ${networkName} does not exists`,
+    });
+  }
+  const networkInfo = await network.get();
+  const networkDirPath = `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkInfo.name}`;
+
+  await runZombienet({
+    test: true,
+    testConfigPath: `${networkDirPath}/${networkInfo.testFilename}`,
+    // @ts-ignore
+    provider: networkInfo.networkProvider ?? LARCH_DEFAULT_PROVIDER_NAME,
+    dir: networkInfo.networkDirectory,
+  }, ZOMBIENET_VERSION, runInfo.id);
+
+  return {
+    name: networkInfo.name,
+    runId: runInfo.id,
+  };
 };

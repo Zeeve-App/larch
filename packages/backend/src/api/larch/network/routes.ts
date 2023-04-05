@@ -1,24 +1,23 @@
 import { Router } from 'express';
 import {
-  networkController, createNetworkController,
-  displayNetworkController, testNetworkController,
-  updateNetworkController, progressController,
-  testZombie, networkRunController,
-  networkTestRunController, deleteNetworkController,
+  networkListController, networkCreateController,
+  networkGetController, networkTestController,
+  networkUpdateController, progressController,
+  networkRunController,
+  networkTestRunController, networkDeleteController,
 } from './controllers.js';
-import { createNetworkValidation, updateNetworkValidation } from './validations.js';
+import { networkCreateValidation, networkUpdateValidation } from './validations.js';
 
 const router = Router();
 
-router.get('/test-zombie', testZombie); // only for initial testing, should be deleted later
-router.post('/list', networkController); // done
-router.post('/create', createNetworkValidation, createNetworkController); // done
-router.get('/network-run', networkRunController); // done
-router.get('/test', testNetworkController); // done
-router.get('/test-run', networkTestRunController); // done
-router.get('/', displayNetworkController); // done
-router.post('/update', updateNetworkValidation, updateNetworkController); // done
-router.get('/progress', progressController); // done
-router.get('/delete', deleteNetworkController); // done
+router.get('/', networkGetController);
+router.post('/list', networkListController);
+router.post('/create', networkCreateValidation, networkCreateController);
+router.post('/update', networkUpdateValidation, networkUpdateController);
+router.get('/delete', networkDeleteController);
+router.get('/test', networkTestController);
+router.get('/run', networkRunController);
+router.get('/test-run', networkTestRunController);
+router.get('/progress', progressController);
 
 export default router;

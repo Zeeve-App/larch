@@ -136,3 +136,14 @@ export const templateListController = async (req: Request, res: Response): Promi
     },
   });
 };
+
+export const templateCloneController = async (req: Request, res: Response): Promise<void> => {
+  const templateId = typeof req.query.templateId === 'string' ? req.query.templateId : '';
+  const template = new Template(templateId);
+  const currentTemplateInfo = await template.get();
+  const duplicateTemplateInfo = await template.set(currentTemplateInfo);
+  res.json({
+    success: true,
+    result: duplicateTemplateInfo,
+  });
+};

@@ -1,3 +1,4 @@
+import cron from 'node-cron';
 import { Network, NetworkInfo } from './models/network.js';
 import {
   checkPathExists, createDir, deleteDir, writeToFileFromBase64,
@@ -17,9 +18,12 @@ const getNetworkPath = (networkName: string): string => `${ZOMBIENET_NETWORKS_CO
 
 export const showNetworkProgress = async (
   networkName: string,
-): Promise<void> => {
+): Promise<any> => {
   const network = new Network(networkName);
-  const result = await network.findNetworkProgress();
+  // const result = await network.findNetworkProgress();
+  const result = cron.schedule('* * * * * *', () => {
+    network.findNetworkProgress();
+  });
   return result;
 };
 

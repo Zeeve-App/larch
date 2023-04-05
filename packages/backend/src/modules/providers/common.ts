@@ -8,7 +8,14 @@ export const networkCleanUp = async (
   networkDirectory: string,
 ): Promise<void> => {
   if (provider === 'podman') {
-    const namespace = await podman.getNamespace(networkDirectory);
-    await podman.cleanUp(namespace, networkName);
+    try {
+      const namespace = await podman.getNamespace(networkDirectory);
+      await podman.cleanUp(namespace, networkName);
+    } catch (error) {
+      // @ts-ignore
+      if (error!.code === 'ENOENT') {
+        console.error('File do not exists, skipping network deletion');
+      }
+    }
   }
 };

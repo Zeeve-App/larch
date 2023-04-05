@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import * as fs from 'node:fs/promises';
 
 /**
@@ -10,16 +9,19 @@ export const createDir = async (dirPath: string): Promise<void> => {
 };
 
 export const deleteDir = async (dirPath: string): Promise<void> => {
-  await fs.rm(dirPath, { recursive: true });
+  await fs.rm(dirPath, { recursive: true, force: true });
 };
 
-export const checkPathExists = async (path: string): Promise<boolean> => fs.access(
-  path,
+export const checkPathExists = async (fsPath: string): Promise<boolean> => fs.access(
+  fsPath,
   fs.constants.F_OK,
 )
   .then(() => true)
   .catch(() => false);
 
-export const writeToFileFromBase64 = async (path: string, dataInBase64: string): Promise<void> => {
-  await fs.writeFile(path, dataInBase64, { encoding: 'base64' });
+export const writeToFileFromBase64 = async (
+  fsPath: string,
+  dataInBase64: string,
+): Promise<void> => {
+  await fs.writeFile(fsPath, dataInBase64, { encoding: 'base64' });
 };

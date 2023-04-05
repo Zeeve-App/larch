@@ -28,3 +28,9 @@ export const cleanUp = async (namespace: string, networkId: string): Promise<voi
   const { code: removeNetworkCode } = await execute(undefined, 'podman', removeNetworkArgs.join(' '), 'NETWORK_CLEANUP', networkId, true);
   console.log({ removeNetworkCode });
 };
+
+export const deleteDirUnshare = async (dirPath: string, networkName: string): Promise<void> => {
+  const args = `unshare rm -r ${dirPath}`;
+  const { code } = await execute(undefined, 'podman', args, 'NETWORK_CLEANUP', networkName, true);
+  if (code !== 0) throw new Error('Not able to deleted directory');
+};

@@ -16,3 +16,39 @@ export type HttpError = {
   detail: Array<ValidationErrorDetail>,
   instance: string,
 };
+
+type ErrorInput = {
+  kind: string;
+  message: string;
+  cause?: unknown;
+};
+export class AppError extends Error {
+  private errorKind: string;
+
+  public message: string;
+
+  public cause?: unknown;
+
+  constructor({
+    kind,
+    message,
+    cause,
+  }: ErrorInput) {
+    super(message, { cause });
+    this.errorKind = kind;
+    this.message = message;
+    this.cause = cause;
+  }
+
+  print() {
+    console.error({
+      kind: this.errorKind,
+      message: this.message,
+      cause: this.cause,
+    });
+  }
+
+  get kind(): string {
+    return this.errorKind;
+  }
+}

@@ -1,73 +1,76 @@
 import { randomUUID } from 'node:crypto';
 import { knexInstance } from '../db/sqlite.js';
+import { getTimestamp } from '../../utils/time.js';
+import {
+  DefaultSort, FieldMap, PaginationInfo, SortInfo, getPaginatedInfo,
+} from '../../utils/pagination.js';
+
+const primaryTableName = 'networks';
+
+export type NetworkState = 'creating' | 'running' | 'in-cleanup' | 'failed';
+
+export type NetworkInfo = {
+  name: string;
+  configFilename: string;
+  configContent: string;
+  networkDirectory: string;
+  networkProvider: string;
+  testFilename: string;
+  testContent: string;
+  networkState: NetworkState;
+  updatedAt: string | null;
+  createdAt: string | null;
+};
 
 export class Network {
-  public id: string;
+  public name: string;
 
-  private primaryTable = 'networks';
+  private primaryTable = primaryTableName;
 
   private db = () => knexInstance(this.primaryTable);
 
-  constructor(id?: string) {
-    this.id = id ?? randomUUID();
+  constructor(name?: string) {
+    this.name = name ?? randomUUID();
   }
-  // removing state
 
-  async addAllNetworkInfo(
-    id: string,
-    name: string,
-    config_filename: string,
-    config_content: string,
-    network_directory: string,
-    network_provider: string,
-    test_filename: string,
-    test_content: string,
-  ): Promise<void> {
+  async set(networkInfo: NetworkInfo): Promise<void> {
+    const [result] = await this.db()
+      .select(['name', 'created_at'])
+      .where('name', this.name);
+
+    const currentTimestamp = getTimestamp();
     await this.db()
       .insert({
-        id,
-        name,
-        config_filename,
-        config_content,
-        network_directory,
-        network_provider,
-        test_filename,
-        test_content,
-      });
+        name: this.name,
+        config_filename: networkInfo.configFilename,
+        config_content: networkInfo.configContent,
+        network_directory: networkInfo.networkDirectory,
+        network_provider: networkInfo.networkProvider,
+        test_filename: networkInfo.testFilename,
+        test_content: networkInfo.testContent,
+        network_state: networkInfo.networkState,
+        updated_at: result ? currentTimestamp : null,
+        created_at: result ? result.createdAt : currentTimestamp,
+      })
+      .onConflict('name')
+      .merge();
   }
 
-  // async addNetworkInfoWithoutTestFiles(
-  //   name: string,
-  //   config_filename: string,
-  //   config_content: string,
-  //   network_directory: string,
-  //   network_provider: string,
-  //   network_state: string,
-  // ): Promise<void> {
-  //   await this.db()
-  //     .insert({
-  //       id: this.id,
-  //       name,
-  //       config_filename,
-  //       config_content,
-  //       network_directory,
-  //       network_provider,
-  //       network_state,
-  //     });
-  // }
-
-  async displayNetworkByNetworkName(network_name: string): Promise<any> {
-    const result = await this.db()
+  async get(): Promise<NetworkInfo> {
+    const [result] = await this.db()
       .select('*')
-      .where('name', network_name);
-    return result;
+      .where('name', this.name);
+    return {
+      id: this.name,
+      ...result,
+    };
   }
 
-  async getAllNetworkInfo(): Promise<any> {
-    const result = await this.db()
-      .select('*');
-    // console.log(result);
-    return result;
+  async exists(): Promise<boolean> {
+    const [result] = await this.db()
+      .select('name')
+      .where('name', this.name);
+    return typeof result !== 'undefined';
   }
 
   async testNetwork(network_name: string): Promise<any> {
@@ -81,52 +84,18 @@ export class Network {
     return null;
   }
 
-  async updateNetworkInfoWithConfigFile(
-    network_name: string,
-    config_filename: string,
-    config_content: string,
-    test_filename: string,
-    test_content: string,
-  ): Promise<void> {
-    await this.db()
-      .where('name', network_name)
-      .update({
-        config_filename,
-        config_content,
-        test_filename,
-        test_content,
-      });
-  }
-
-  async updateNetworkInfoWithoutConfigFile(
-    network_name: string,
-    config_filename: string,
-    test_filename: string,
-    test_content: string,
-  ): Promise<void> {
-    await this.db()
-      .where('name', network_name)
-      .update({
-        config_filename,
-        test_filename,
-        test_content,
-      });
-  }
-
-  async findNetworkProgress(network_name: string): Promise<any> {
+  async findNetworkProgress(): Promise<any> {
     // console.log(this.id);
     const [result] = await this.db()
       .select('network_state')
-      .where('name', network_name);
+      .where('name', this.name);
     return result;
   }
 
-  async deleteNetwork(
-    network_name: string,
-  ): Promise<any> {
+  async remove(): Promise<void> {
     await this.db()
-      .where('name', network_name)
-      .del();
+      .where('name', this.name)
+      .delete();
   }
 
   async updateStatus(
@@ -141,6 +110,37 @@ export class Network {
   }
 }
 
-export const getNetworkList = async () => {
+type FilterInfo = {
+  name: string,
+  configFilename: string,
+  networkProvider: string,
+  testFilename: string
+};
 
+const fieldMap: FieldMap = {
+  networkProvider: 'network_provider',
+  configFilename: 'config_filename',
+  testFilename: 'test_filename',
+  createdAt: 'created_at',
+  updatedAt: 'updated_at',
+};
+
+const defaultSort: DefaultSort = {
+  createdAt: 'desc',
+  name: 'asc',
+};
+
+export const getNetworkList = async (
+  filter: FilterInfo,
+  sortArray: SortInfo,
+  pageInfo: PaginationInfo,
+) => {
+  const getModel = () => knexInstance.table(primaryTableName).where((builder) => {
+    if (!filter) return;
+    if (filter.name) builder.whereLike('name', `%${filter.name}%`);
+    if (filter.configFilename) builder.whereLike('config_filename', `%${filter.configFilename}%`);
+    if (filter.networkProvider) builder.whereLike('network_provider', `%${filter.networkProvider}%`);
+    if (filter.testFilename) builder.whereLike('test_filename', `%${filter.testFilename}%`);
+  });
+  return getPaginatedInfo(pageInfo, sortArray, getModel, fieldMap, defaultSort);
 };

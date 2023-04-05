@@ -1,8 +1,6 @@
 /* eslint-disable consistent-return */
 import { Request, Response } from 'express';
 import {
-  displayZombienetRunOutput,
-  displayZombienetTestRunOutput,
   showNetworkProgress, deleteNetwork, createNetwork, testNetwork,
 } from '../../../modules/network.js';
 

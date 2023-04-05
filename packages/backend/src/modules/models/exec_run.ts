@@ -7,7 +7,7 @@ import { getTimestamp } from '../../utils/time.js';
 
 const primaryTableName = 'exec_run';
 
-export type Intention = 'NETWORK_CREATE' | 'NETWORK_TEST';
+export type Intention = 'NETWORK_CREATE' | 'NETWORK_TEST' | 'NETWORK_CLEANUP';
 export type RelatedId = string | null;
 
 export type ExecRunInfo = {

@@ -4,8 +4,7 @@ import { spawn } from 'node:child_process';
 import { ZOMBIENET_BIN_COLLECTION_DIR, ZOMBIENET_BINARY_DOWNLOAD_BASE_URL } from '../config.js';
 import { downloadFileToAPath } from '../utils/download.js';
 import { checkPathExists } from '../utils/fs_helper.js';
-import { ExecRun } from './models/exec_run.js';
-// import { getRunId } from './network.js';
+import { ExecRun, Intention } from './models/exec_run.js';
 
 type ZombienetCliOptions = {
   spawn?: boolean,
@@ -81,13 +80,15 @@ export const runZombienet = async (
   zombienetCliOptions: ZombienetCliOptions,
   zombienetVersion: string,
   runId: string,
+  networkId?: string,
 ): Promise<void> => {
   await checkAndDownloadZombienetBinary(zombienetVersion);
   const compiledCliOptions = generateZombienetCliOptions(zombienetCliOptions);
   const zombienetBinPath = zombienetBinPathByVersion(zombienetVersion);
   const command = `${zombienetBinPath} ${compiledCliOptions}`;
   const execRun = new ExecRun(runId);
-  await execRun.addMinimalInfo(command);
+  const intention: Intention = zombienetCliOptions.spawn ? 'NETWORK_CREATE' : 'NETWORK_TEST';
+  await execRun.addMinimalInfo(command, intention, networkId ?? null);
   const spawnZombienet = () => new Promise((resolve, reject) => {
     console.log(command);
     const result = spawn(zombienetBinPath, [...compiledCliOptions.trim().split(' ')]);
@@ -122,5 +123,5 @@ export const runZombienet = async (
     });
   });
   await spawnZombienet();
-  console.debug(await execRun.getRunInfo());
+  console.debug(await execRun.get());
 };

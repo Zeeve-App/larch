@@ -6,7 +6,7 @@ import {
   LARCH_DEFAULT_PROVIDER_NAME,
   ZOMBIENET_NETWORKS_COLLECTION_DIR, ZOMBIENET_VERSION,
 } from '../config.js';
-import { ExecRun } from './models/exec_run.js';
+import { ExecRun, removeAllExecRunByRelatedId } from './models/exec_run.js';
 import { runZombienet } from './zombienet.js';
 import { AppError } from '../utils/declaration.js';
 
@@ -75,6 +75,7 @@ export const deleteNetwork = async (
   if (await checkPathExists(networkInfo.networkDirectory)) {
     await deleteDir(networkInfo.networkDirectory);
   }
+  await removeAllExecRunByRelatedId(networkInfo.name);
   await network.remove();
 };
 
@@ -107,7 +108,7 @@ export const createNetwork = async (networkInfo: NetworkInfo): Promise<{
     // @ts-ignore
     provider: networkInfo.networkProvider ?? LARCH_DEFAULT_PROVIDER_NAME,
     dir: networkInfo.networkDirectory,
-  }, ZOMBIENET_VERSION, networkInfo.name);
+  }, ZOMBIENET_VERSION, runInfo.id, networkInfo.name);
 
   return {
     name: networkInfo.name,
@@ -136,7 +137,7 @@ export const testNetwork = async (networkName: string): Promise<{
     // @ts-ignore
     provider: networkInfo.networkProvider ?? LARCH_DEFAULT_PROVIDER_NAME,
     dir: networkInfo.networkDirectory,
-  }, ZOMBIENET_VERSION, runInfo.id);
+  }, ZOMBIENET_VERSION, runInfo.id, networkName);
 
   return {
     name: networkInfo.name,

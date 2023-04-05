@@ -9,6 +9,7 @@ import {
 import { addUserOperationEntry } from '../../../modules/user_operation.js';
 import { Network, getNetworkList } from '../../../modules/models/network.js';
 import { AppError } from '../../../utils/declaration.js';
+import { ExecRun, getExecRunList } from '../../../modules/models/exec_run.js';
 
 export const networkGetController = async (req: Request, res: Response): Promise<void> => {
   const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
@@ -22,7 +23,7 @@ export const networkGetController = async (req: Request, res: Response): Promise
       error: {
         type: 'ERROR_NOT_FOUND',
         title: 'Network not found',
-        detail: 'requested template is not found',
+        detail: 'requested network is not found',
         instance: req.originalUrl,
       },
     });
@@ -95,14 +96,35 @@ export const networkCreateController = async (req: Request, res: Response) => {
   }
 };
 
-export const networkRunController = async (req: Request, res: Response) => {
+export const networkRunGetController = async (req: Request, res: Response) => {
   const runId = typeof req.query.runId === 'string' ? req.query.runId : '';
-  const result = await displayZombienetRunOutput(runId);
-  res.send(result);
+  addUserOperationEntry('NETWORK_RUN_GET', `Fetched network run with id: ${runId}`);
+  const execRun = new ExecRun(runId);
+  const execRunExists = await execRun.exists();
+  if (!execRunExists) {
+    res.statusCode = 404;
+    res.json({
+      success: false,
+      error: {
+        type: 'ERROR_NOT_FOUND',
+        title: 'Network run not found',
+        detail: 'requested network run is not found',
+        instance: req.originalUrl,
+      },
+    });
+    return;
+  }
+  const execRunInfo = await execRun.get();
+
+  res.json({
+    success: true,
+    result: execRunInfo,
+  });
 };
 
 export const networkTestController = async (req: Request, res: Response) => {
   const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
+  addUserOperationEntry('NETWORK_TEST', `Test network with name: ${networkName}`);
   try {
     const networkTestRunInfo = await testNetwork(networkName);
     res.status(200).json({
@@ -127,12 +149,6 @@ export const networkTestController = async (req: Request, res: Response) => {
   }
 };
 
-export const networkTestRunController = async (req: Request, res: Response) => {
-  const networkId: any = req.query.networkRunId;
-  const result = await displayZombienetTestRunOutput(networkId);
-  res.send(result);
-};
-
 export const progressController = async (req: Request, res: Response) => {
   const searchNetwork: string | any = req.query.networkName;
   const updatedNetworkName = searchNetwork.replace(/\s/g, '');
@@ -142,6 +158,7 @@ export const progressController = async (req: Request, res: Response) => {
 
 export const networkDeleteController = async (req: Request, res: Response) => {
   const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
+  addUserOperationEntry('NETWORK_DELETE', `Delete network with name: ${networkName}`);
   try {
     await deleteNetwork(networkName);
     res.status(200).json({
@@ -173,7 +190,7 @@ export const networkListController = async (req: Request, res: Response): Promis
     && networkListReq.meta.pageNum ? networkListReq.meta.pageNum : 1;
   const numOfRec = networkListReq.meta ? networkListReq.meta.numOfRec : 10;
   const {
-    result: templates,
+    result: networks,
     totalNumberOfRecCount,
     currentPageRecCount,
   } = await getNetworkList(networkListReq.filter, networkListReq.sort ?? [], {
@@ -183,7 +200,33 @@ export const networkListController = async (req: Request, res: Response): Promis
 
   res.json({
     success: true,
-    result: templates,
+    result: networks,
+    meta: {
+      pageNum,
+      numOfRec: currentPageRecCount,
+      total: totalNumberOfRecCount,
+    },
+  });
+};
+
+export const networkRunListController = async (req: Request, res: Response): Promise<void> => {
+  addUserOperationEntry('NETWORK_RUN_LIST', 'Listed networks and test runs');
+  const networkRunListReq = req.body;
+  const pageNum = networkRunListReq.meta
+    && networkRunListReq.meta.pageNum ? networkRunListReq.meta.pageNum : 1;
+  const numOfRec = networkRunListReq.meta ? networkRunListReq.meta.numOfRec : 10;
+  const {
+    result: networkRuns,
+    totalNumberOfRecCount,
+    currentPageRecCount,
+  } = await getExecRunList(networkRunListReq.filter, networkRunListReq.sort ?? [], {
+    pageNum,
+    numOfRec,
+  });
+
+  res.json({
+    success: true,
+    result: networkRuns,
     meta: {
       pageNum,
       numOfRec: currentPageRecCount,

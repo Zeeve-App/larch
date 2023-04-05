@@ -26,10 +26,13 @@ export const up = function (knex) {
     })
     .createTable('exec_run', function (table) {
       table.string('id').notNullable().primary();
+      table.string('intention').notNullable();
+      table.string('related_id').default(null);
       table.string('command').notNullable();
       table.string('std_error').default(null);
       table.string('std_output').default(null);
       table.integer('status_code').default(null);
+      table.timestamp('created_at').notNullable();
     })
     .createTable('user_operation', function (table) {
       table.string('id').notNullable().primary();

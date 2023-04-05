@@ -8,13 +8,14 @@ import {
 const primaryTableName = 'networks';
 
 export type NetworkState = 'creating' | 'running' | 'in-cleanup' | 'failed';
+export type Provider = 'podman' | 'kubernetes' | 'native';
 
 export type NetworkInfo = {
   name: string;
   configFilename: string;
   configContent: string;
   networkDirectory: string;
-  networkProvider: string;
+  networkProvider: Provider;
   testFilename: string;
   testContent: string;
   networkState: NetworkState;
@@ -99,11 +100,10 @@ export class Network {
   }
 
   async updateStatus(
-    runId: string,
-    state: string,
+    state: NetworkState,
   ): Promise<void> {
     await this.db()
-      .where('id', runId)
+      .where('name', this.name)
       .update({
         network_state: state,
       });

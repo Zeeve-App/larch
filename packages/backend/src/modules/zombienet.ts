@@ -1,10 +1,10 @@
 import * as fs from 'node:fs/promises';
 import { constants } from 'node:fs';
-import { spawn } from 'node:child_process';
 import { ZOMBIENET_BIN_COLLECTION_DIR, ZOMBIENET_BINARY_DOWNLOAD_BASE_URL } from '../config.js';
 import { downloadFileToAPath } from '../utils/download.js';
 import { checkPathExists } from '../utils/fs_helper.js';
-import { ExecRun, Intention } from './models/exec_run.js';
+import { Intention } from './models/exec_run.js';
+import { execute } from './exec_run.js';
 
 type ZombienetCliOptions = {
   spawn?: boolean,
@@ -80,48 +80,11 @@ export const runZombienet = async (
   zombienetCliOptions: ZombienetCliOptions,
   zombienetVersion: string,
   runId: string,
-  networkId?: string,
+  networkId: string,
 ): Promise<void> => {
   await checkAndDownloadZombienetBinary(zombienetVersion);
   const compiledCliOptions = generateZombienetCliOptions(zombienetCliOptions);
   const zombienetBinPath = zombienetBinPathByVersion(zombienetVersion);
-  const command = `${zombienetBinPath} ${compiledCliOptions}`;
-  const execRun = new ExecRun(runId);
   const intention: Intention = zombienetCliOptions.spawn ? 'NETWORK_CREATE' : 'NETWORK_TEST';
-  await execRun.addMinimalInfo(command, intention, networkId ?? null);
-  const spawnZombienet = () => new Promise((resolve, reject) => {
-    console.log(command);
-    const result = spawn(zombienetBinPath, [...compiledCliOptions.trim().split(' ')]);
-    let stderrChunks: Array<Uint8Array> = [];
-    let stdoutChunks: Array<Uint8Array> = [];
-    result.stderr.on('data', (data) => {
-      resolve(null);
-      stderrChunks = stderrChunks.concat(data);
-      const stderr = Buffer.concat(stderrChunks).toString();
-      execRun.updateStdError(stderr);
-    });
-    result.stderr.on('end', () => {
-      const stderr = Buffer.concat(stderrChunks).toString();
-      execRun.updateStdError(stderr);
-    });
-    result.stdout.on('data', (data) => {
-      resolve(null);
-      stdoutChunks = stdoutChunks.concat(data);
-      const stdout = Buffer.concat(stdoutChunks).toString();
-      execRun.updateStdOutput(stdout);
-    });
-    result.stdout.on('end', () => {
-      const stdout = Buffer.concat(stdoutChunks).toString();
-      execRun.updateStdOutput(stdout);
-    });
-    result.on('exit', async (code) => {
-      await execRun.updateStateCode(code || -1);
-    });
-    result.on('error', (error) => {
-      console.log('error occurred');
-      reject(error);
-    });
-  });
-  await spawnZombienet();
-  console.debug(await execRun.get());
+  await execute(runId, zombienetBinPath, compiledCliOptions, intention, networkId, false);
 };

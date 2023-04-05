@@ -9,46 +9,9 @@ import {
 import { ExecRun, removeAllExecRunByRelatedId } from './models/exec_run.js';
 import { runZombienet } from './zombienet.js';
 import { AppError } from '../utils/declaration.js';
+import { networkCleanUp } from './providers/common.js';
 
 const getNetworkPath = (networkName: string): string => `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkName}`;
-
-export const updateNetworkStatus = async (id: any): Promise<void> => {
-  const network = new Network();
-  const execRun = new ExecRun(id);
-  const statusCode = await execRun.showNetworkState(id);
-  let state: string = 'failed';
-  if (statusCode === 0) {
-    state = 'running';
-  }
-  if (statusCode === 1) {
-    state = 'in-progress';
-  }
-  await network.updateStatus(id, state);
-};
-
-export const runZombienetForTest = async (
-  networkName: string,
-): Promise<void> => {
-  const network = new Network();
-  const result = await network.testNetwork(networkName);
-  return result;
-};
-
-export const displayZombienetRunOutput = async (
-  networkId: string,
-): Promise<void> => {
-  const execRun = new ExecRun(networkId);
-  const result = await execRun.getRunInfoById(networkId);
-  return result;
-};
-
-export const displayZombienetTestRunOutput = async (
-  networkId: string,
-): Promise<void> => {
-  const execRun = new ExecRun(networkId);
-  const result = await execRun.getRunInfoById(networkId);
-  return result;
-};
 
 export const showNetworkProgress = async (
   networkName: string,
@@ -69,10 +32,16 @@ export const deleteNetwork = async (
       message: `Network with network name ${networkName} does not exists`,
     });
   }
+  await network.updateStatus('in-cleanup');
   const networkInfo = await network.get();
   const networkPath = getNetworkPath(networkInfo.name);
   if (await checkPathExists(networkPath)) await deleteDir(networkPath);
   if (await checkPathExists(networkInfo.networkDirectory)) {
+    await networkCleanUp(
+      networkInfo.networkProvider,
+      networkInfo.name,
+      networkInfo.networkDirectory,
+    );
     await deleteDir(networkInfo.networkDirectory);
   }
   await removeAllExecRunByRelatedId(networkInfo.name);

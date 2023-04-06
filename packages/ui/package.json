@@ -11,6 +11,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@uiw/codemirror-extensions-langs": "^4.19.11",
+    "@uiw/codemirror-themes": "^4.19.11",
+    "@uiw/codemirror-themes-all": "^4.19.11",
+    "@uiw/react-codemirror": "^4.19.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.9.0",

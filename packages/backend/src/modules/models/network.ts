@@ -67,6 +67,16 @@ export class Network {
     };
   }
 
+  // async getNetworkId(): Promise<string> {
+  //   const [result] = await this.db()
+  //     .select('*')
+  //     .where('name', this.name);
+  //   return {
+  //     id: this.name,
+  //     ...result,
+  //   };
+  // }
+
   async exists(): Promise<boolean> {
     const [result] = await this.db()
       .select('name')
@@ -93,6 +103,14 @@ export class Network {
     return result;
   }
 
+  async findProgress(network_name: string): Promise<any> {
+    // console.log(this.id);
+    const [result] = await this.db()
+      .select('network_state')
+      .where('name', network_name);
+    return result;
+  }
+
   async remove(): Promise<void> {
     await this.db()
       .where('name', this.name)
@@ -104,6 +122,17 @@ export class Network {
   ): Promise<void> {
     await this.db()
       .where('name', this.name)
+      .update({
+        network_state: state,
+      });
+  }
+
+  async updateNetworkStatus(
+    networkName: string,
+    state: NetworkState,
+  ): Promise<void> {
+    await this.db()
+      .where('name', networkName)
       .update({
         network_state: state,
       });

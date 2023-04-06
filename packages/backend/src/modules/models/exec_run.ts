@@ -51,6 +51,13 @@ export class ExecRun {
       });
   }
 
+  async getStatusCode(relatedId: string): Promise<any> {
+    const [result] = await this.db()
+      .select('status_code')
+      .where('related_id', relatedId);
+    return result;
+  }
+
   async updateStdError(stdError: string): Promise<void> {
     this.latestStdError = stdError;
     await this.db()

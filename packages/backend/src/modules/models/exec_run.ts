@@ -52,9 +52,10 @@ export class ExecRun {
   }
 
   async getStatusCode(relatedId: string): Promise<any> {
-    const [result] = await this.db()
+    const result = await this.db()
       .select('status_code')
       .where('related_id', relatedId);
+    // console.log(result);
     return result;
   }
 

@@ -1,13 +1,13 @@
 /* eslint-disable consistent-return */
 import { Request, Response } from 'express';
 import {
-  showNetworkProgress, deleteNetwork, createNetwork, testNetwork,
+  deleteNetwork, createNetwork, testNetwork, progressNetwork,
 } from '../../../modules/network.js';
-
 import { addUserOperationEntry } from '../../../modules/user_operation.js';
 import { Network, getNetworkList } from '../../../modules/models/network.js';
 import { AppError } from '../../../utils/declaration.js';
 import { ExecRun, getExecRunList } from '../../../modules/models/exec_run.js';
+// import { UserOperation } from '../../../modules/models/user_operation.js';
 
 export const networkGetController = async (req: Request, res: Response): Promise<void> => {
   const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
@@ -148,9 +148,8 @@ export const networkTestController = async (req: Request, res: Response) => {
 };
 
 export const progressController = async (req: Request, res: Response) => {
-  const searchNetwork: string | any = req.query.networkName;
-  const updatedNetworkName = searchNetwork.replace(/\s/g, '');
-  const result = await showNetworkProgress(updatedNetworkName);
+  const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
+  const result = await progressNetwork(networkName);
   res.send(result);
 };
 

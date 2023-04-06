@@ -62,6 +62,13 @@ export class UserOperation {
       .delete()
       .where('id', this.id);
   }
+
+  async sortByCreatedAt(): Promise<void> {
+    const result = await this.db()
+      .select('*')
+      .orderBy('created_at', 'desc');
+    console.log(result);
+  }
 }
 
 export const purgeOperationData = async () => knexInstance(primaryTableName)

@@ -11,3 +11,10 @@
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
+.bg-grad{
+    
+        background-image: linear-gradient(to right, #E6007A 0%,#9F125D 100%);
+   }
+.text-grad{
+    color: linear-gradient(to right, #E6007A 0%,#9F125D 100%);
+}

@@ -13,9 +13,11 @@ module.exports = {
       'pink':'#E6007A',
       'orange':'#9F125D',
       'grey':'#21262A',
+      'yellow':'#FFC542',
+      'red':'#FF7F7F'
     },
     fontFamily: {
-      'Rubik': ['Rubik'],
+      'rubik': ['Rubik'],
     },
     extend: {},
   },

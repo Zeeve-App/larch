@@ -1,9 +1,8 @@
 /* eslint-disable consistent-return */
 import { Request, Response } from 'express';
 import {
-  showNetworkProgress, deleteNetwork, createNetwork, testNetwork,
+  deleteNetwork, createNetwork, testNetwork,
 } from '../../../modules/network.js';
-
 import { addUserOperationEntry } from '../../../modules/user_operation.js';
 import { Network, getNetworkList } from '../../../modules/models/network.js';
 import { AppError } from '../../../utils/declaration.js';
@@ -147,11 +146,31 @@ export const networkTestController = async (req: Request, res: Response) => {
   }
 };
 
-export const progressController = async (req: Request, res: Response) => {
-  const searchNetwork: string | any = req.query.networkName;
-  const updatedNetworkName = searchNetwork.replace(/\s/g, '');
-  const result = await showNetworkProgress(updatedNetworkName);
-  res.send(result);
+export const networkStatusController = async (req: Request, res: Response) => {
+  const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
+  const network = new Network(networkName);
+  const networkExists = await network.exists();
+  if (!networkExists) {
+    res.statusCode = 404;
+    res.json({
+      success: false,
+      error: {
+        type: 'ERROR_NOT_FOUND',
+        title: 'Network not found',
+        detail: 'requested network is not found',
+        instance: req.originalUrl,
+      },
+    });
+    return;
+  }
+  const status = await network.getNetworkState();
+  res.json({
+    success: true,
+    result: {
+      name: networkName,
+      status,
+    },
+  });
 };
 
 export const networkDeleteController = async (req: Request, res: Response) => {

@@ -1,4 +1,7 @@
-import { Network, NetworkInfo } from './models/network.js';
+/* eslint-disable no-await-in-loop */
+import {
+  getAllNetworks, Network, NetworkInfo, NetworkState,
+} from './models/network.js';
 import {
   checkPathExists, createDir, deleteDir, writeToFileFromBase64,
 } from '../utils/fs_helper.js';
@@ -6,7 +9,7 @@ import {
   LARCH_DEFAULT_PROVIDER_NAME,
   ZOMBIENET_NETWORKS_COLLECTION_DIR, ZOMBIENET_VERSION,
 } from '../config.js';
-import { ExecRun, removeAllExecRunByRelatedId } from './models/exec_run.js';
+import { ExecRun, removeAllExecRunByRelatedId, getLatestStatusCode } from './models/exec_run.js';
 import { runZombienet } from './zombienet.js';
 import { AppError } from '../utils/declaration.js';
 import { networkCleanUp } from './providers/common.js';
@@ -15,13 +18,24 @@ import { removeInProgressNetwork } from './exec_run.js';
 
 const getNetworkPath = (networkName: string): string => `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkName}`;
 
-export const showNetworkProgress = async (
-  networkName: string,
-): Promise<void> => {
-  const network = new Network(networkName);
-  const result = await network.findNetworkProgress();
-  return result;
-};
+async function networkStatusUpdate() {
+  const networkList = await getAllNetworks();
+  for (let i = 0; i < networkList.length; i++) {
+    const result = await getLatestStatusCode(networkList[i].name);
+    const network = new Network(networkList[i].name);
+    let state: NetworkState = 'failed';
+    if (result === null) state = 'creating';
+    if (result === 0) state = 'running';
+    network.updateNetworkStatus(state);
+  }
+}
+function startInterval() {
+  setInterval(async () => {
+    await networkStatusUpdate();
+  }, 1000);
+}
+
+startInterval();
 
 export const deleteNetwork = async (
   networkName: string,

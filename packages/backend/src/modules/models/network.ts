@@ -75,7 +75,6 @@ export class Network {
   }
 
   async testNetwork(network_name: string): Promise<any> {
-    // console.log(this.id);
     const result = await this.db()
       .select('test_filename', 'test_content')
       .where('name', network_name);
@@ -85,12 +84,11 @@ export class Network {
     return null;
   }
 
-  async findNetworkProgress(): Promise<any> {
-    // console.log(this.id);
+  async getNetworkState(): Promise<any> {
     const [result] = await this.db()
       .select('network_state')
       .where('name', this.name);
-    return result;
+    return result.networkState;
   }
 
   async remove(): Promise<void> {
@@ -100,6 +98,16 @@ export class Network {
   }
 
   async updateStatus(
+    state: NetworkState,
+  ): Promise<void> {
+    await this.db()
+      .where('name', this.name)
+      .update({
+        network_state: state,
+      });
+  }
+
+  async updateNetworkStatus(
     state: NetworkState,
   ): Promise<void> {
     await this.db()
@@ -143,4 +151,11 @@ export const getNetworkList = async (
     if (filter.testFilename) builder.whereLike('test_filename', `%${filter.testFilename}%`);
   });
   return getPaginatedInfo(pageInfo, sortArray, getModel, fieldMap, defaultSort);
+};
+
+export const getAllNetworks = async () => {
+  const result = await knexInstance.table(primaryTableName)
+    .select('*')
+    .orderBy('created_at', 'desc');
+  return result;
 };

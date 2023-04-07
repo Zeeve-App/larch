@@ -2,7 +2,7 @@ import { Router } from 'express';
 import {
   networkListController, networkCreateController,
   networkGetController, networkTestController,
-  networkUpdateController, progressController,
+  networkUpdateController, networkStatusController,
   networkRunGetController, networkRunListController,
   networkDeleteController,
 } from './controllers.js';
@@ -18,6 +18,6 @@ router.get('/delete', networkDeleteController);
 router.get('/test', networkTestController);
 router.get('/run', networkRunGetController);
 router.post('/run-list', networkRunListController);
-router.get('/progress', progressController);
+router.get('/status', networkStatusController);
 
 export default router;

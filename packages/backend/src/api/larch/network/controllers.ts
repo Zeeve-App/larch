@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 import { Request, Response } from 'express';
 import {
-  deleteNetwork, createNetwork, testNetwork, progressNetwork,
+  deleteNetwork, createNetwork, testNetwork,
 } from '../../../modules/network.js';
 import { addUserOperationEntry } from '../../../modules/user_operation.js';
 import { Network, getNetworkList } from '../../../modules/models/network.js';
@@ -149,8 +149,25 @@ export const networkTestController = async (req: Request, res: Response) => {
 
 export const progressController = async (req: Request, res: Response) => {
   const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
-  const result = await progressNetwork(networkName);
-  res.send(result);
+  const network = new Network(networkName);
+  const networkExists = await network.exists();
+  if (!networkExists) {
+    res.statusCode = 404;
+    res.json({
+      success: false,
+      error: {
+        type: 'ERROR_NOT_FOUND',
+        title: 'Network not found',
+        detail: 'requested network is not found',
+        instance: req.originalUrl,
+      },
+    });
+    return;
+  }
+  const result = await network.getNetworkState();
+  res.json({
+    status: result,
+  });
 };
 
 export const networkDeleteController = async (req: Request, res: Response) => {

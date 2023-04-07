@@ -51,14 +51,6 @@ export class ExecRun {
       });
   }
 
-  async getStatusCode(relatedId: string): Promise<any> {
-    const result = await this.db()
-      .select('status_code')
-      .where('related_id', relatedId);
-    // console.log(result);
-    return result;
-  }
-
   async updateStdError(stdError: string): Promise<void> {
     this.latestStdError = stdError;
     await this.db()
@@ -146,4 +138,11 @@ export const removeAllExecRunByRelatedId = async (relatedId: string): Promise<vo
   await knexInstance.table(primaryTableName)
     .delete()
     .where('related_id', relatedId);
+};
+
+export const getStatusCode = async (relatedId: string): Promise<number> => {
+  const [result] = await knexInstance.table(primaryTableName)
+    .select('status_code')
+    .where('related_id', relatedId);
+  return result.statusCode;
 };

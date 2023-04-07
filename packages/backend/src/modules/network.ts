@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
-// import cron from 'node-cron';
-import { Network, NetworkInfo, NetworkState } from './models/network.js';
+import {
+  getAllNetworks, Network, NetworkInfo, NetworkState,
+} from './models/network.js';
 import {
   checkPathExists, createDir, deleteDir, writeToFileFromBase64,
 } from '../utils/fs_helper.js';
@@ -8,7 +9,7 @@ import {
   LARCH_DEFAULT_PROVIDER_NAME,
   ZOMBIENET_NETWORKS_COLLECTION_DIR, ZOMBIENET_VERSION,
 } from '../config.js';
-import { ExecRun, removeAllExecRunByRelatedId } from './models/exec_run.js';
+import { ExecRun, removeAllExecRunByRelatedId, getStatusCode } from './models/exec_run.js';
 import { runZombienet } from './zombienet.js';
 import { AppError } from '../utils/declaration.js';
 import { networkCleanUp } from './providers/common.js';
@@ -18,26 +19,18 @@ import { removeInProgressNetwork } from './exec_run.js';
 const getNetworkPath = (networkName: string): string => `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkName}`;
 
 async function networkStatusUpdate() {
-  const network = new Network();
-  const sortedResult = await network.getAll();
+  const sortedResult = await getAllNetworks();
   for (let i = 0; i < sortedResult.length; i++) {
-    // console.log(sortedResult[i].name);
-    const runInfo = new ExecRun();
-    const result = await runInfo.getStatusCode(sortedResult[i].name);
-    // console.log(result);
-    for (let j = 0; j < result.length; j++) {
-      const status = result[j].statusCode;
-      let state: NetworkState = 'failed';
-      if (status === null) {
-        state = 'creating';
-        await network.updateNetworkStatus(sortedResult[i].name, state);
-      } else if (status === 0) {
-        state = 'running';
-        await network.updateNetworkStatus(sortedResult[i].name, state);
-      } else {
-        await network.updateNetworkStatus(sortedResult[i].name, state);
-      }
+    const result = await getStatusCode(sortedResult[i].name);
+    const network = new Network(sortedResult[i].name);
+    let state: NetworkState = 'failed';
+    if (result === null) {
+      state = 'creating';
     }
+    if (result === 0) {
+      state = 'running';
+    }
+    network.updateNetworkStatus(state);
   }
 }
 function startInterval() {
@@ -47,14 +40,6 @@ function startInterval() {
 }
 
 startInterval();
-
-export const progressNetwork = async (
-  networkName: string,
-): Promise<any> => {
-  const network = new Network();
-  const result = await network.getNetworkState(networkName);
-  return result;
-};
 
 export const deleteNetwork = async (
   networkName: string,

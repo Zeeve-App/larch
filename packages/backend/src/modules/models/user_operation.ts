@@ -62,13 +62,6 @@ export class UserOperation {
       .delete()
       .where('id', this.id);
   }
-
-  async sortByCreatedAt(): Promise<void> {
-    const result = await this.db()
-      .select('*')
-      .orderBy('created_at', 'desc');
-    console.log(result);
-  }
 }
 
 export const purgeOperationData = async () => knexInstance(primaryTableName)
@@ -100,4 +93,11 @@ export const getOperationList = async (
     if (filter.operationDetail) builder.whereLike('operation_detail', `%${filter.operationDetail}%`);
   });
   return getPaginatedInfo(pageInfo, sortArray, getModel, fieldMap, defaultSort);
+};
+
+export const sortByCreatedAt = async (): Promise<any> => {
+  const result = await knexInstance.table(primaryTableName)
+    .select('*')
+    .orderBy('created_at', 'desc');
+  return result;
 };

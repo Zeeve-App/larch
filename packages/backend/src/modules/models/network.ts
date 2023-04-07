@@ -67,24 +67,6 @@ export class Network {
     };
   }
 
-  async getAll(): Promise<any> {
-    const result = await this.db()
-      .select('*')
-      .orderBy('created_at', 'desc');
-    // console.log(result);
-    return result;
-  }
-
-  // async getNetworkId(): Promise<string> {
-  //   const [result] = await this.db()
-  //     .select('*')
-  //     .where('name', this.name);
-  //   return {
-  //     id: this.name,
-  //     ...result,
-  //   };
-  // }
-
   async exists(): Promise<boolean> {
     const [result] = await this.db()
       .select('name')
@@ -103,20 +85,13 @@ export class Network {
     return null;
   }
 
-  // async findNetworkProgress(): Promise<any> {
-  //   // console.log(this.id);
-  //   const [result] = await this.db()
-  //     .select('network_state')
-  //     .where('name', this.name);
-  //   return result;
-  // }
-
-  async getNetworkState(network_name: string): Promise<any> {
+  async getNetworkState(): Promise<any> {
     // console.log(this.id);
     const [result] = await this.db()
       .select('network_state')
-      .where('name', network_name);
-    return result;
+      .where('name', this.name);
+    // console.log(result);
+    return result.networkState;
   }
 
   async remove(): Promise<void> {
@@ -136,11 +111,10 @@ export class Network {
   }
 
   async updateNetworkStatus(
-    networkName: string,
     state: NetworkState,
   ): Promise<void> {
     await this.db()
-      .where('name', networkName)
+      .where('name', this.name)
       .update({
         network_state: state,
       });
@@ -180,4 +154,11 @@ export const getNetworkList = async (
     if (filter.testFilename) builder.whereLike('test_filename', `%${filter.testFilename}%`);
   });
   return getPaginatedInfo(pageInfo, sortArray, getModel, fieldMap, defaultSort);
+};
+
+export const getAllNetworks = async () => {
+  const result = await knexInstance.table(primaryTableName)
+    .select('*')
+    .orderBy('created_at', 'desc');
+  return result;
 };

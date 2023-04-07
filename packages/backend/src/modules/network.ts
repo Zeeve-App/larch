@@ -9,7 +9,7 @@ import {
   LARCH_DEFAULT_PROVIDER_NAME,
   ZOMBIENET_NETWORKS_COLLECTION_DIR, ZOMBIENET_VERSION,
 } from '../config.js';
-import { ExecRun, removeAllExecRunByRelatedId, getStatusCode } from './models/exec_run.js';
+import { ExecRun, removeAllExecRunByRelatedId, getLatestStatusCode } from './models/exec_run.js';
 import { runZombienet } from './zombienet.js';
 import { AppError } from '../utils/declaration.js';
 import { networkCleanUp } from './providers/common.js';
@@ -19,17 +19,13 @@ import { removeInProgressNetwork } from './exec_run.js';
 const getNetworkPath = (networkName: string): string => `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkName}`;
 
 async function networkStatusUpdate() {
-  const sortedResult = await getAllNetworks();
-  for (let i = 0; i < sortedResult.length; i++) {
-    const result = await getStatusCode(sortedResult[i].name);
-    const network = new Network(sortedResult[i].name);
+  const networkList = await getAllNetworks();
+  for (let i = 0; i < networkList.length; i++) {
+    const result = await getLatestStatusCode(networkList[i].name);
+    const network = new Network(networkList[i].name);
     let state: NetworkState = 'failed';
-    if (result === null) {
-      state = 'creating';
-    }
-    if (result === 0) {
-      state = 'running';
-    }
+    if (result === null) state = 'creating';
+    if (result === 0) state = 'running';
     network.updateNetworkStatus(state);
   }
 }

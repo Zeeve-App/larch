@@ -75,7 +75,6 @@ export class Network {
   }
 
   async testNetwork(network_name: string): Promise<any> {
-    // console.log(this.id);
     const result = await this.db()
       .select('test_filename', 'test_content')
       .where('name', network_name);
@@ -86,11 +85,9 @@ export class Network {
   }
 
   async getNetworkState(): Promise<any> {
-    // console.log(this.id);
     const [result] = await this.db()
       .select('network_state')
       .where('name', this.name);
-    // console.log(result);
     return result.networkState;
   }
 

@@ -7,7 +7,6 @@ import { addUserOperationEntry } from '../../../modules/user_operation.js';
 import { Network, getNetworkList } from '../../../modules/models/network.js';
 import { AppError } from '../../../utils/declaration.js';
 import { ExecRun, getExecRunList } from '../../../modules/models/exec_run.js';
-// import { UserOperation } from '../../../modules/models/user_operation.js';
 
 export const networkGetController = async (req: Request, res: Response): Promise<void> => {
   const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
@@ -147,7 +146,7 @@ export const networkTestController = async (req: Request, res: Response) => {
   }
 };
 
-export const progressController = async (req: Request, res: Response) => {
+export const networkStatusController = async (req: Request, res: Response) => {
   const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
   const network = new Network(networkName);
   const networkExists = await network.exists();
@@ -164,9 +163,13 @@ export const progressController = async (req: Request, res: Response) => {
     });
     return;
   }
-  const result = await network.getNetworkState();
+  const status = await network.getNetworkState();
   res.json({
-    status: result,
+    success: true,
+    result: {
+      name: networkName,
+      status,
+    },
   });
 };
 

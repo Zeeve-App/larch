@@ -27,7 +27,7 @@ export default function PaginatedItems({ itemsPerPage, totalRecords, onPageChang
         breakLabel='...'
         nextLabel='next >'
         onPageChange={handlePageClick}
-        pageRangeDisplayed={6}
+        pageRangeDisplayed={3}
         pageCount={pageCount}
         previousLabel='< previous'
         renderOnZeroPageCount={null}

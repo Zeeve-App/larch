@@ -1,0 +1,4 @@
+dist
+vite.config.ts
+__tests__
+.eslintrc.cjs

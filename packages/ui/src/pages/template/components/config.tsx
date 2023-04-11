@@ -1,8 +1,34 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import IconImage from "../assets/Search.svg";
+import { Parent } from './Parent';
 
 
 export function Template() {
+
+  const [user ,setUser] = useState([])
+
+  const fetchData = async () => {
+    const api_data = fetch("http://localhost:9000/api/larch/template/list", {
+      method: 'post',
+    })
+    const response = await api_data;
+    const data = await response.json();
+    console.log({data})
+    const temp = data.result
+    console.log("dataaaa",temp)
+ 
+
+    return setUser(temp);
+
+   
+  }
+
+  useEffect(() => {
+
+    fetchData()
+
+  },[])
+
 return (
   
   <div className=' flex-col flex'>
@@ -29,41 +55,8 @@ return (
       </div>
      </div>
      </div>
-     <div className=" ">
-     <table className="text-white border-2 border-border font-rubik w-full rounded">
-      <thead className='bg-create-button'>
-      <tr className=' border-b-2 border-border'>
-         <th className='px-6 py-3 w-56.25' scope="col">Template Name</th>
-         <th className='px-6 py-3' scope="col">Type</th>
-         <th className='px-6 py-3' scope="col">Created On </th>
-         <th className='px-6 py-3' scope="col">Action</th>
-      </tr>
-      </thead>
-  <tbody>
-    <tr className=' border-b-2 border-border rounded '> 
-      <td className='px-6 py-3 w-56.25 text-center	'>Mark</td>
-      <td className='px-6 py-3 w-56.25 text-center	'>Otto</td>
-      <td className='px-6 py-3 w-56.25 text-center	'>@mdo</td>
-      <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-    </tr>
-    <tr className=' border-b-2 border-border'>
-      <td className='px-6 py-3 w-56.25 text-center	'>Jacob</td>
-      <td className='px-6 py-3 w-56.25 text-center	'>Thornton</td>
-      <td className='px-6 py-3 w-56.25 text-center	'>@fat</td>
-      <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-     
-    </tr>
-    <tr className=' border-b-2 border-border'>
-      <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-      <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-      <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-      <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-     
-
-    </tr>
-  </tbody>
-  </table>
-   </div>
+     <Parent/>
+    
    </div>
    </div>
 

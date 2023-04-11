@@ -1,7 +1,7 @@
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import express, {
-  Request, Response, NextFunction, Application, ErrorRequestHandler,
+  Request, Response, NextFunction, Application,
 } from 'express';
 import createHttpError from 'http-errors';
 import cors from 'cors';
@@ -40,15 +40,13 @@ export const startService = (serviceStartOptions: ServiceStartOptions) => {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-    res.status(err.status || 500);
+  app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    res.status(500);
     res.send({
-      status: err.status || 500,
+      status: 500,
       message: err.message,
     });
-  };
-
-  app.use(errorHandler);
+  });
 
   const httpPort: Number = Number(serviceStartOptions.httpPort) || 9000;
 

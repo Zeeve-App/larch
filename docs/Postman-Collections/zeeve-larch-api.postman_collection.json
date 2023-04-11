@@ -7,23 +7,1919 @@
 	},
 	"item": [
 		{
+			"name": "Template API Collection",
+			"item": [
+				{
+					"name": "Create Template API",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"{{networkName}}\",\n    \"configFilename\":\"{{configFileName}}\",\n    \"configContent\":\"{{configFile}}\",\n    \"networkDirectory\":\"{{directoryName}}\",\n    \"networkProvider\":\"{{networkProvider}}\",\n    \"testFilename\":\"{{dslFileName}}\",\n    \"testContent\":\"{{dslFile}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/larch/template/create/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"template",
+								"create",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Template API Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"TestSecondNetworkTemplate\",\n    \"configFilename\":\"0001-small-network.toml\",\n    \"configContent\":\"IyBleGFtcGxlcy8wMDAxLXNtYWxsLW5ldHdvcmsudG9tbApbcmVsYXljaGFpbl0KZGVmYXVsdF9pbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90OmxhdGVzdCIKZGVmY...\",\n    \"networkDirectory\":\"/home/antar/.larch/my-zombienet-second-template\",\n    \"networkProvider\":\"podman\",\n    \"testFilename\":\"0001-small-network.zndsl\",\n    \"testContent\":\"RGVzY3JpcHRpb246IFNtYWxsIE5ldHdvcmsgdGVzdApOZXR3b3JrOiAuLzAwMDEtc21hbGwtbmV0d29yay50b21sCkNyZWRzOiBjb25maWcKCiMgVHJhY2luZwojIGFsaWNlOiB0c...\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:•••••••/api/larch/template/create/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "•••••••",
+									"path": [
+										"api",
+										"larch",
+										"template",
+										"create",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "71"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"47-8y9qddI+OhnF9s3KZOzMkVc5C9A\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 10:20:49 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": {\n        \"id\": \"3bcf02da-4f2f-4f27-97fd-7e2851ab2bc2\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Template API",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/larch/template/?templateId=3bcf02da-4f2f-4f27-97fd-7e2851ab2bc2",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"template",
+								""
+							],
+							"query": [
+								{
+									"key": "templateId",
+									"value": "3bcf02da-4f2f-4f27-97fd-7e2851ab2bc2"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get Template By Template Id Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/larch/template/?templateId=3bcf02da-4f2f-4f27-97fd-7e2851ab2bc2",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"template",
+										""
+									],
+									"query": [
+										{
+											"key": "templateId",
+											"value": "3bcf02da-4f2f-4f27-97fd-7e2851ab2bc2"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2189"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"88d-d48F/dLj8E/u95wQqDly2OnxBw0\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 10:34:17 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": {\n        \"id\": \"3bcf02da-4f2f-4f27-97fd-7e2851ab2bc2\",\n        \"name\": \"TestNetworkTemplate\",\n        \"configFilename\": \"0001-small-network.toml\",\n        \"configContent\": \"IyBleGFtcGxlcy8wMDAxLXNtYWxsLW5ldHdvcmsudG9tbApbcmVsYXljaGFpbl0KZGVmYXVsdF9pbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90OmxhdGVzdCIKZGVmYXVsdF9jb21tYW5kID0gInBvbGthZG90IgpkZWZhdWx0X2FyZ3MgPSBbICItbHBhcmFjaGFpbj1kZWJ1ZyIgXQoKY2hhaW4gPSAicm9jb2NvLWxvY2FsIgoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYWxpY2UiCiAgdmFsaWRhdG9yID0gdHJ1ZQoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYm9iIgogIHZhbGlkYXRvciA9IHRydWUKCltbcGFyYWNoYWluc11dCmlkID0gMTAwCgogIFtwYXJhY2hhaW5zLmNvbGxhdG9yXQogIG5hbWUgPSAiY29sbGF0b3IwMSIKICBpbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90LXBhcmFjaGFpbjpsYXRlc3QiCiAgY29tbWFuZCA9ICJwb2xrYWRvdC1wYXJhY2hhaW4iCiAgYXJncyA9IFsiLWxwYXJhY2hhaW49ZGVidWciXQ==\",\n        \"networkDirectory\": \"/home/antar/.larch/my-zombienet-template\",\n        \"networkProvider\": \"podman\",\n        \"testFilename\": \"0001-small-network.zndsl\",\n        \"testContent\": \"RGVzY3JpcHRpb246IFNtYWxsIE5ldHdvcmsgdGVzdApOZXR3b3JrOiAuLzAwMDEtc21hbGwtbmV0d29yay50b21sCkNyZWRzOiBjb25maWcKCiMgVHJhY2luZwojIGFsaWNlOiB0cmFjZSB3aXRoIHRyYWNlSUQgOTRjMTUwMWE3OGEwZDgzYzQ5OGNjOTJkZWVjMjY0ZDkgY29udGFpbnMgWyJhbnN3ZXItY2h1bmstcmVxdWVzdCIsICJhbnN3ZXItY2h1bmstcmVxdWVzdCJdCgojIG1ldHJpY3MKYWxpY2U6IHJlcG9ydHMgbm9kZV9yb2xlcyBpcyA0CmFsaWNlOiByZXBvcnRzIHN1Yl9saWJwMnBfaXNfbWFqb3Jfc3luY2luZyBpcyAwCgojIGhpc3RvZ3JhbQphbGljZTogcmVwb3J0cyBoaXN0b2dyYW0gcG9sa2Fkb3RfcHZmX2V4ZWN1dGlvbl90aW1lIGhhcyBhdCBsZWFzdCAyIHNhbXBsZXMgaW4gYnVja2V0cyBbIjAuMSIsICIwLjI1IiwgIjAuNSIsICIrSW5mIl0gd2l0aGluIDEwMCBzZWNvbmRzCgojIGxvZ3MKYm9iOiBsb2cgbGluZSBtYXRjaGVzIGdsb2IgIipydGVkICMxKiIgd2l0aGluIDEwIHNlY29uZHMKYm9iOiBsb2cgbGluZSBtYXRjaGVzICJJbXBvcnRlZCAjWzAtOV0rIiB3aXRoaW4gMTAgc2Vjb25kcwoKIyBzeXN0ZW0gZXZlbnRzCmJvYjogc3lzdGVtIGV2ZW50IGNvbnRhaW5zICJBIGNhbmRpZGF0ZSB3YXMgaW5jbHVkZWQiIHdpdGhpbiAyMCBzZWNvbmRzCmFsaWNlOiBzeXN0ZW0gZXZlbnQgbWF0Y2hlcyBnbG9iICIqd2FzIGJhY2tlZCoiIHdpdGhpbiAxMCBzZWNvbmRzCgojcGFyYWNoYWluIHRlc3RzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGlzIHJlZ2lzdGVyZWQgd2l0aGluIDIyNSBzZWNvbmRzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGJsb2NrIGhlaWdodCBpcyBhdCBsZWFzdCAxMCB3aXRoaW4gMjAwIHNlY29uZHM=\",\n        \"createdAt\": \"2023-04-11 10:20:49\",\n        \"updatedAt\": null\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Template API",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"{{networkName}}\",\n    \"configFilename\":\"{{configFileName}}\",\n    \"configContent\":\"{{configFile}}\",\n    \"networkDirectory\":\"{{directoryName}}\",\n    \"networkProvider\":\"{{networkProvider}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/larch/template/update/?templateId=3bcf02da-4f2f-4f27-97fd-7e2851ab2bc2",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"template",
+								"update",
+								""
+							],
+							"query": [
+								{
+									"key": "templateId",
+									"value": "3bcf02da-4f2f-4f27-97fd-7e2851ab2bc2"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update Provider Name Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"{{networkName}}\",\n    \"configFilename\":\"{{configFileName}}\",\n    \"configContent\":\"{{configFile}}\",\n    \"networkDirectory\":\"{{directoryName}}\",\n    \"networkProvider\":\"{{networkProvider}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/larch/template/update/?templateId=3bcf02da-4f2f-4f27-97fd-7e2851ab2bc2",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"template",
+										"update",
+										""
+									],
+									"query": [
+										{
+											"key": "templateId",
+											"value": "3bcf02da-4f2f-4f27-97fd-7e2851ab2bc2"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2206"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"89e-GPtPJKnEPHFTB1+ZRE1921wBGrk\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 10:40:17 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": {\n        \"id\": \"3bcf02da-4f2f-4f27-97fd-7e2851ab2bc2\",\n        \"name\": \"TestNetworkTemplate\",\n        \"configFilename\": \"0001-small-network.toml\",\n        \"configContent\": \"IyBleGFtcGxlcy8wMDAxLXNtYWxsLW5ldHdvcmsudG9tbApbcmVsYXljaGFpbl0KZGVmYXVsdF9pbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90OmxhdGVzdCIKZGVmYXVsdF9jb21tYW5kID0gInBvbGthZG90IgpkZWZhdWx0X2FyZ3MgPSBbICItbHBhcmFjaGFpbj1kZWJ1ZyIgXQoKY2hhaW4gPSAicm9jb2NvLWxvY2FsIgoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYWxpY2UiCiAgdmFsaWRhdG9yID0gdHJ1ZQoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYm9iIgogIHZhbGlkYXRvciA9IHRydWUKCltbcGFyYWNoYWluc11dCmlkID0gMTAwCgogIFtwYXJhY2hhaW5zLmNvbGxhdG9yXQogIG5hbWUgPSAiY29sbGF0b3IwMSIKICBpbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90LXBhcmFjaGFpbjpsYXRlc3QiCiAgY29tbWFuZCA9ICJwb2xrYWRvdC1wYXJhY2hhaW4iCiAgYXJncyA9IFsiLWxwYXJhY2hhaW49ZGVidWciXQ==\",\n        \"networkDirectory\": \"/home/antar/.larch/my-zombienet-template\",\n        \"networkProvider\": \"native\",\n        \"testFilename\": \"0001-small-network.zndsl\",\n        \"testContent\": \"RGVzY3JpcHRpb246IFNtYWxsIE5ldHdvcmsgdGVzdApOZXR3b3JrOiAuLzAwMDEtc21hbGwtbmV0d29yay50b21sCkNyZWRzOiBjb25maWcKCiMgVHJhY2luZwojIGFsaWNlOiB0cmFjZSB3aXRoIHRyYWNlSUQgOTRjMTUwMWE3OGEwZDgzYzQ5OGNjOTJkZWVjMjY0ZDkgY29udGFpbnMgWyJhbnN3ZXItY2h1bmstcmVxdWVzdCIsICJhbnN3ZXItY2h1bmstcmVxdWVzdCJdCgojIG1ldHJpY3MKYWxpY2U6IHJlcG9ydHMgbm9kZV9yb2xlcyBpcyA0CmFsaWNlOiByZXBvcnRzIHN1Yl9saWJwMnBfaXNfbWFqb3Jfc3luY2luZyBpcyAwCgojIGhpc3RvZ3JhbQphbGljZTogcmVwb3J0cyBoaXN0b2dyYW0gcG9sa2Fkb3RfcHZmX2V4ZWN1dGlvbl90aW1lIGhhcyBhdCBsZWFzdCAyIHNhbXBsZXMgaW4gYnVja2V0cyBbIjAuMSIsICIwLjI1IiwgIjAuNSIsICIrSW5mIl0gd2l0aGluIDEwMCBzZWNvbmRzCgojIGxvZ3MKYm9iOiBsb2cgbGluZSBtYXRjaGVzIGdsb2IgIipydGVkICMxKiIgd2l0aGluIDEwIHNlY29uZHMKYm9iOiBsb2cgbGluZSBtYXRjaGVzICJJbXBvcnRlZCAjWzAtOV0rIiB3aXRoaW4gMTAgc2Vjb25kcwoKIyBzeXN0ZW0gZXZlbnRzCmJvYjogc3lzdGVtIGV2ZW50IGNvbnRhaW5zICJBIGNhbmRpZGF0ZSB3YXMgaW5jbHVkZWQiIHdpdGhpbiAyMCBzZWNvbmRzCmFsaWNlOiBzeXN0ZW0gZXZlbnQgbWF0Y2hlcyBnbG9iICIqd2FzIGJhY2tlZCoiIHdpdGhpbiAxMCBzZWNvbmRzCgojcGFyYWNoYWluIHRlc3RzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGlzIHJlZ2lzdGVyZWQgd2l0aGluIDIyNSBzZWNvbmRzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGJsb2NrIGhlaWdodCBpcyBhdCBsZWFzdCAxMCB3aXRoaW4gMjAwIHNlY29uZHM=\",\n        \"createdAt\": \"2023-04-11 10:20:49\",\n        \"updatedAt\": \"2023-04-11 10:40:16\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Template List API",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"filter\": {\n    \"name\": \"Test\",\n    \"configFilename\":\"\",\n    \"testFilename\":\"\"\n  },\n  \"meta\": {\n    \"pageNum\": 1,\n    \"numOfRec\": 2\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/larch/template/list/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"template",
+								"list",
+								""
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "List Template By Template Name Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filter\": {\n    \"name\": \"Test\",\n    \"configFilename\":\"\",\n    \"testFilename\":\"\"\n  },\n  \"meta\": {\n    \"pageNum\": 1,\n    \"numOfRec\": 2\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/larch/template/list/",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"template",
+										"list",
+										""
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "4429"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"114d-4835sUFoTVrJHgWP7yvEMoA7grM\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 10:51:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": [\n        {\n            \"id\": \"339f117e-08a3-47e9-8b1b-5ee2441cb13f\",\n            \"name\": \"TestSecondNetworkTemplate\",\n            \"configFilename\": \"0001-small-network.toml\",\n            \"configContent\": \"IyBleGFtcGxlcy8wMDAxLXNtYWxsLW5ldHdvcmsudG9tbApbcmVsYXljaGFpbl0KZGVmYXVsdF9pbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90OmxhdGVzdCIKZGVmYXVsdF9jb21tYW5kID0gInBvbGthZG90IgpkZWZhdWx0X2FyZ3MgPSBbICItbHBhcmFjaGFpbj1kZWJ1ZyIgXQoKY2hhaW4gPSAicm9jb2NvLWxvY2FsIgoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYWxpY2UiCiAgdmFsaWRhdG9yID0gdHJ1ZQoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYm9iIgogIHZhbGlkYXRvciA9IHRydWUKCltbcGFyYWNoYWluc11dCmlkID0gMTAwCgogIFtwYXJhY2hhaW5zLmNvbGxhdG9yXQogIG5hbWUgPSAiY29sbGF0b3IwMSIKICBpbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90LXBhcmFjaGFpbjpsYXRlc3QiCiAgY29tbWFuZCA9ICJwb2xrYWRvdC1wYXJhY2hhaW4iCiAgYXJncyA9IFsiLWxwYXJhY2hhaW49ZGVidWciXQ==\",\n            \"networkDirectory\": \"/home/antar/.larch/my-zombienet-second-template\",\n            \"networkProvider\": \"podman\",\n            \"testFilename\": \"0001-small-network.zndsl\",\n            \"testContent\": \"RGVzY3JpcHRpb246IFNtYWxsIE5ldHdvcmsgdGVzdApOZXR3b3JrOiAuLzAwMDEtc21hbGwtbmV0d29yay50b21sCkNyZWRzOiBjb25maWcKCiMgVHJhY2luZwojIGFsaWNlOiB0cmFjZSB3aXRoIHRyYWNlSUQgOTRjMTUwMWE3OGEwZDgzYzQ5OGNjOTJkZWVjMjY0ZDkgY29udGFpbnMgWyJhbnN3ZXItY2h1bmstcmVxdWVzdCIsICJhbnN3ZXItY2h1bmstcmVxdWVzdCJdCgojIG1ldHJpY3MKYWxpY2U6IHJlcG9ydHMgbm9kZV9yb2xlcyBpcyA0CmFsaWNlOiByZXBvcnRzIHN1Yl9saWJwMnBfaXNfbWFqb3Jfc3luY2luZyBpcyAwCgojIGhpc3RvZ3JhbQphbGljZTogcmVwb3J0cyBoaXN0b2dyYW0gcG9sa2Fkb3RfcHZmX2V4ZWN1dGlvbl90aW1lIGhhcyBhdCBsZWFzdCAyIHNhbXBsZXMgaW4gYnVja2V0cyBbIjAuMSIsICIwLjI1IiwgIjAuNSIsICIrSW5mIl0gd2l0aGluIDEwMCBzZWNvbmRzCgojIGxvZ3MKYm9iOiBsb2cgbGluZSBtYXRjaGVzIGdsb2IgIipydGVkICMxKiIgd2l0aGluIDEwIHNlY29uZHMKYm9iOiBsb2cgbGluZSBtYXRjaGVzICJJbXBvcnRlZCAjWzAtOV0rIiB3aXRoaW4gMTAgc2Vjb25kcwoKIyBzeXN0ZW0gZXZlbnRzCmJvYjogc3lzdGVtIGV2ZW50IGNvbnRhaW5zICJBIGNhbmRpZGF0ZSB3YXMgaW5jbHVkZWQiIHdpdGhpbiAyMCBzZWNvbmRzCmFsaWNlOiBzeXN0ZW0gZXZlbnQgbWF0Y2hlcyBnbG9iICIqd2FzIGJhY2tlZCoiIHdpdGhpbiAxMCBzZWNvbmRzCgojcGFyYWNoYWluIHRlc3RzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGlzIHJlZ2lzdGVyZWQgd2l0aGluIDIyNSBzZWNvbmRzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGJsb2NrIGhlaWdodCBpcyBhdCBsZWFzdCAxMCB3aXRoaW4gMjAwIHNlY29uZHM=\",\n            \"createdAt\": \"2023-04-11 10:49:13\",\n            \"updatedAt\": null\n        },\n        {\n            \"id\": \"3bcf02da-4f2f-4f27-97fd-7e2851ab2bc2\",\n            \"name\": \"TestNetworkTemplate\",\n            \"configFilename\": \"0001-small-network.toml\",\n            \"configContent\": \"IyBleGFtcGxlcy8wMDAxLXNtYWxsLW5ldHdvcmsudG9tbApbcmVsYXljaGFpbl0KZGVmYXVsdF9pbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90OmxhdGVzdCIKZGVmYXVsdF9jb21tYW5kID0gInBvbGthZG90IgpkZWZhdWx0X2FyZ3MgPSBbICItbHBhcmFjaGFpbj1kZWJ1ZyIgXQoKY2hhaW4gPSAicm9jb2NvLWxvY2FsIgoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYWxpY2UiCiAgdmFsaWRhdG9yID0gdHJ1ZQoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYm9iIgogIHZhbGlkYXRvciA9IHRydWUKCltbcGFyYWNoYWluc11dCmlkID0gMTAwCgogIFtwYXJhY2hhaW5zLmNvbGxhdG9yXQogIG5hbWUgPSAiY29sbGF0b3IwMSIKICBpbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90LXBhcmFjaGFpbjpsYXRlc3QiCiAgY29tbWFuZCA9ICJwb2xrYWRvdC1wYXJhY2hhaW4iCiAgYXJncyA9IFsiLWxwYXJhY2hhaW49ZGVidWciXQ==\",\n            \"networkDirectory\": \"/home/antar/.larch/my-zombienet-template\",\n            \"networkProvider\": \"native\",\n            \"testFilename\": \"0001-small-network.zndsl\",\n            \"testContent\": \"RGVzY3JpcHRpb246IFNtYWxsIE5ldHdvcmsgdGVzdApOZXR3b3JrOiAuLzAwMDEtc21hbGwtbmV0d29yay50b21sCkNyZWRzOiBjb25maWcKCiMgVHJhY2luZwojIGFsaWNlOiB0cmFjZSB3aXRoIHRyYWNlSUQgOTRjMTUwMWE3OGEwZDgzYzQ5OGNjOTJkZWVjMjY0ZDkgY29udGFpbnMgWyJhbnN3ZXItY2h1bmstcmVxdWVzdCIsICJhbnN3ZXItY2h1bmstcmVxdWVzdCJdCgojIG1ldHJpY3MKYWxpY2U6IHJlcG9ydHMgbm9kZV9yb2xlcyBpcyA0CmFsaWNlOiByZXBvcnRzIHN1Yl9saWJwMnBfaXNfbWFqb3Jfc3luY2luZyBpcyAwCgojIGhpc3RvZ3JhbQphbGljZTogcmVwb3J0cyBoaXN0b2dyYW0gcG9sa2Fkb3RfcHZmX2V4ZWN1dGlvbl90aW1lIGhhcyBhdCBsZWFzdCAyIHNhbXBsZXMgaW4gYnVja2V0cyBbIjAuMSIsICIwLjI1IiwgIjAuNSIsICIrSW5mIl0gd2l0aGluIDEwMCBzZWNvbmRzCgojIGxvZ3MKYm9iOiBsb2cgbGluZSBtYXRjaGVzIGdsb2IgIipydGVkICMxKiIgd2l0aGluIDEwIHNlY29uZHMKYm9iOiBsb2cgbGluZSBtYXRjaGVzICJJbXBvcnRlZCAjWzAtOV0rIiB3aXRoaW4gMTAgc2Vjb25kcwoKIyBzeXN0ZW0gZXZlbnRzCmJvYjogc3lzdGVtIGV2ZW50IGNvbnRhaW5zICJBIGNhbmRpZGF0ZSB3YXMgaW5jbHVkZWQiIHdpdGhpbiAyMCBzZWNvbmRzCmFsaWNlOiBzeXN0ZW0gZXZlbnQgbWF0Y2hlcyBnbG9iICIqd2FzIGJhY2tlZCoiIHdpdGhpbiAxMCBzZWNvbmRzCgojcGFyYWNoYWluIHRlc3RzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGlzIHJlZ2lzdGVyZWQgd2l0aGluIDIyNSBzZWNvbmRzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGJsb2NrIGhlaWdodCBpcyBhdCBsZWFzdCAxMCB3aXRoaW4gMjAwIHNlY29uZHM=\",\n            \"createdAt\": \"2023-04-11 10:20:49\",\n            \"updatedAt\": \"2023-04-11 10:40:16\"\n        }\n    ],\n    \"meta\": {\n        \"pageNum\": 1,\n        \"numOfRec\": 2,\n        \"total\": 2\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Clone Template Info API",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/larch/template/clone/?templateId=339f117e-08a3-47e9-8b1b-5ee2441cb13f",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"template",
+								"clone",
+								""
+							],
+							"query": [
+								{
+									"key": "templateId",
+									"value": "339f117e-08a3-47e9-8b1b-5ee2441cb13f"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Clone Template Info API",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/larch/template/clone/?templateId=339f117e-08a3-47e9-8b1b-5ee2441cb13f",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"template",
+										"clone",
+										""
+									],
+									"query": [
+										{
+											"key": "templateId",
+											"value": "339f117e-08a3-47e9-8b1b-5ee2441cb13f"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "16"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"10-oV4hJxRVSENxc/wX8+mA4/Pe4tA\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 10:55:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Template API",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/larch/template/delete/?templateId=339f117e-08a3-47e9-8b1b-5ee2441cb13f",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"template",
+								"delete",
+								""
+							],
+							"query": [
+								{
+									"key": "templateId",
+									"value": "339f117e-08a3-47e9-8b1b-5ee2441cb13f"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete Template API",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/larch/template/delete/?templateId=339f117e-08a3-47e9-8b1b-5ee2441cb13f",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"template",
+										"delete",
+										""
+									],
+									"query": [
+										{
+											"key": "templateId",
+											"value": "339f117e-08a3-47e9-8b1b-5ee2441cb13f"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "71"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"47-H5KlOg34v8fpQV3TD44RhH7QYzU\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 10:57:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": {\n        \"id\": \"339f117e-08a3-47e9-8b1b-5ee2441cb13f\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Network API Collection",
+			"item": [
+				{
+					"name": "Create Network API",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"{{networkName}}\",\n    \"configFilename\":\"{{configFileName}}\",\n    \"configContent\":\"{{configFile}}\",\n    \"networkDirectory\":\"{{directoryName}}\",\n    \"networkProvider\":\"{{networkProvider}}\",\n    \"testFilename\":\"{{dslFileName}}\",\n    \"testContent\":\"{{dslFile}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/larch/network/create",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"network",
+								"create"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Network API Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"{{networkName}}\",\n    \"configFilename\":\"{{configFileName}}\",\n    \"configContent\":\"{{configFile}}\",\n    \"networkDirectory\":\"{{directoryName}}\",\n    \"networkProvider\":\"{{networkProvider}}\",\n    \"testFilename\":\"{{dslFileName}}\",\n    \"testContent\":\"{{dslFile}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/larch/network/create",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"network",
+										"create"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "96"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"60-gZ/vvAIObd2O0spGNZKRY5cINfY\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 07:48:34 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": {\n        \"name\": \"ATestNetwork\",\n        \"runId\": \"c9669ff8-0449-4748-988a-d0e7cc073b45\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Check Network Status API",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/larch/network/status/?networkName=ATestNetwork",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"network",
+								"status",
+								""
+							],
+							"query": [
+								{
+									"key": "networkName",
+									"value": "ATestNetwork"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Check Status API Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/larch/network/status/?networkName=ATestNetwork",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"network",
+										"status",
+										""
+									],
+									"query": [
+										{
+											"key": "networkName",
+											"value": "ATestNetwork"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "67"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"43-nIgPCfGMlGdLgqeBgpqataWHMmA\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 07:53:27 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": {\n        \"name\": \"ATestNetwork\",\n        \"status\": \"failed\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Display Network Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/larch/network/?networkName=ATestNetwork",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"network",
+								""
+							],
+							"query": [
+								{
+									"key": "networkName",
+									"value": "ATestNetwork"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Display Network Details Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/larch/network/?networkName=ATestNetwork",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"network",
+										""
+									],
+									"query": [
+										{
+											"key": "networkName",
+											"value": "ATestNetwork"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2177"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"881-bAyvbsUnTMnqqEJp8/PLGW56rI4\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 07:55:52 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": {\n        \"id\": \"ATestNetwork\",\n        \"name\": \"ATestNetwork\",\n        \"configFilename\": \"0001-small-network.toml\",\n        \"configContent\": \"IyBleGFtcGxlcy8wMDAxLXNtYWxsLW5ldHdvcmsudG9tbApbcmVsYXljaGFpbl0KZGVmYXVsdF9pbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90OmxhdGVzdCIKZGVmYXVsdF9jb21tYW5kID0gInBvbGthZG90IgpkZWZhdWx0X2FyZ3MgPSBbICItbHBhcmFjaGFpbj1kZWJ1ZyIgXQoKY2hhaW4gPSAicm9jb2NvLWxvY2FsIgoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYWxpY2UiCiAgdmFsaWRhdG9yID0gdHJ1ZQoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYm9iIgogIHZhbGlkYXRvciA9IHRydWUKCltbcGFyYWNoYWluc11dCmlkID0gMTAwCgogIFtwYXJhY2hhaW5zLmNvbGxhdG9yXQogIG5hbWUgPSAiY29sbGF0b3IwMSIKICBpbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90LXBhcmFjaGFpbjpsYXRlc3QiCiAgY29tbWFuZCA9ICJwb2xrYWRvdC1wYXJhY2hhaW4iCiAgYXJncyA9IFsiLWxwYXJhY2hhaW49ZGVidWciXQ==\",\n        \"networkDirectory\": \"/home/antar/.larch/my-zombieNetLogs\",\n        \"networkProvider\": \"podman\",\n        \"networkState\": \"failed\",\n        \"testFilename\": \"0001-small-network.zndsl\",\n        \"testContent\": \"RGVzY3JpcHRpb246IFNtYWxsIE5ldHdvcmsgdGVzdApOZXR3b3JrOiAuLzAwMDEtc21hbGwtbmV0d29yay50b21sCkNyZWRzOiBjb25maWcKCiMgVHJhY2luZwojIGFsaWNlOiB0cmFjZSB3aXRoIHRyYWNlSUQgOTRjMTUwMWE3OGEwZDgzYzQ5OGNjOTJkZWVjMjY0ZDkgY29udGFpbnMgWyJhbnN3ZXItY2h1bmstcmVxdWVzdCIsICJhbnN3ZXItY2h1bmstcmVxdWVzdCJdCgojIG1ldHJpY3MKYWxpY2U6IHJlcG9ydHMgbm9kZV9yb2xlcyBpcyA0CmFsaWNlOiByZXBvcnRzIHN1Yl9saWJwMnBfaXNfbWFqb3Jfc3luY2luZyBpcyAwCgojIGhpc3RvZ3JhbQphbGljZTogcmVwb3J0cyBoaXN0b2dyYW0gcG9sa2Fkb3RfcHZmX2V4ZWN1dGlvbl90aW1lIGhhcyBhdCBsZWFzdCAyIHNhbXBsZXMgaW4gYnVja2V0cyBbIjAuMSIsICIwLjI1IiwgIjAuNSIsICIrSW5mIl0gd2l0aGluIDEwMCBzZWNvbmRzCgojIGxvZ3MKYm9iOiBsb2cgbGluZSBtYXRjaGVzIGdsb2IgIipydGVkICMxKiIgd2l0aGluIDEwIHNlY29uZHMKYm9iOiBsb2cgbGluZSBtYXRjaGVzICJJbXBvcnRlZCAjWzAtOV0rIiB3aXRoaW4gMTAgc2Vjb25kcwoKIyBzeXN0ZW0gZXZlbnRzCmJvYjogc3lzdGVtIGV2ZW50IGNvbnRhaW5zICJBIGNhbmRpZGF0ZSB3YXMgaW5jbHVkZWQiIHdpdGhpbiAyMCBzZWNvbmRzCmFsaWNlOiBzeXN0ZW0gZXZlbnQgbWF0Y2hlcyBnbG9iICIqd2FzIGJhY2tlZCoiIHdpdGhpbiAxMCBzZWNvbmRzCgojcGFyYWNoYWluIHRlc3RzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGlzIHJlZ2lzdGVyZWQgd2l0aGluIDIyNSBzZWNvbmRzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGJsb2NrIGhlaWdodCBpcyBhdCBsZWFzdCAxMCB3aXRoaW4gMjAwIHNlY29uZHM=\",\n        \"createdAt\": \"2023-04-11 07:47:41\",\n        \"updatedAt\": null\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Test Network API",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/larch/network/test/?networkName=ATestNetwork",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"network",
+								"test",
+								""
+							],
+							"query": [
+								{
+									"key": "networkName",
+									"value": "ATestNetwork"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Test Network API Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/larch/network/test/?networkName=ATestNetwork",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"network",
+										"test",
+										""
+									],
+									"query": [
+										{
+											"key": "networkName",
+											"value": "ATestNetwork"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "96"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"60-EgLe9EQHb3RGSghR63IrcDPNVkk\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 07:58:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": {\n        \"name\": \"ATestNetwork\",\n        \"runId\": \"05ef416b-cdf1-4488-a9ee-5f0f5723cf0a\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Show Network Running Output",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/larch/network/run?runId=c9669ff8-0449-4748-988a-d0e7cc073b45",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"network",
+								"run"
+							],
+							"query": [
+								{
+									"key": "runId",
+									"value": "c9669ff8-0449-4748-988a-d0e7cc073b45"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Show Network Running Output Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/larch/network/run?runId=c9669ff8-0449-4748-988a-d0e7cc073b45",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"network",
+										"run"
+									],
+									"query": [
+										{
+											"key": "runId",
+											"value": "c9669ff8-0449-4748-988a-d0e7cc073b45"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "5755"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"167b-nTdOqwmr2F5DQbi7M8/uFl4ZJ5s\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 08:02:18 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": {\n        \"id\": \"c9669ff8-0449-4748-988a-d0e7cc073b45\",\n        \"intention\": \"NETWORK_CREATE\",\n        \"relatedId\": \"ATestNetwork\",\n        \"command\": \"/home/antar/.larch/bin/zombienet-1.3.43  spawn /home/antar/.larch/networks/ATestNetwork/0001-small-network.toml --provider podman --dir /home/antar/.larch/my-zombieNetLogs --force\",\n        \"stdError\": \"\",\n        \"stdOutput\": \"\\u001b[90m╔════════════════════\\u001b[39m\\u001b[90m╤════════════════════════════════════════════════════════════════════════════════════════════════════╗\\u001b[39m\\n\\u001b[90m║\\u001b[39m\\u001b[31m \\u001b[32m🧟 Zombienet 🧟\\u001b[0m    \\u001b[39m\\u001b[90m│\\u001b[39m\\u001b[31m \\u001b[32mInitiation\\u001b[0m                                                                                         \\u001b[39m\\u001b[90m║\\u001b[39m\\n\\u001b[90m╟────────────────────\\u001b[39m\\u001b[90m┼────────────────────────────────────────────────────────────────────────────────────────────────────╢\\u001b[39m\\n\\u001b[90m║\\u001b[39m \\u001b[32mProvider\\u001b[0m           \\u001b[90m│\\u001b[39m \\u001b[34mpodman\\u001b[0m                                                                                             \\u001b[90m║\\u001b[39m\\n\\u001b[90m╟────────────────────\\u001b[39m\\u001b[90m┼────────────────────────────────────────────────────────────────────────────────────────────────────╢\\u001b[39m\\n\\u001b[90m║\\u001b[39m \\u001b[32mNamespace\\u001b[0m          \\u001b[90m│\\u001b[39m zombie-469648a5                                                                                    \\u001b[90m║\\u001b[39m\\n\\u001b[90m╟────────────────────\\u001b[39m\\u001b[90m┼────────────────────────────────────────────────────────────────────────────────────────────────────╢\\u001b[39m\\n\\u001b[90m║\\u001b[39m \\u001b[32mTemp Dir\\u001b[0m           \\u001b[90m│\\u001b[39m /home/antar/.larch/my-zombieNetLogs                                                                \\u001b[90m║\\u001b[39m\\n\\u001b[90m╚════════════════════\\u001b[39m\\u001b[90m╧════════════════════════════════════════════════════════════════════════════════════════════════════╝\\u001b[39m\\n\\n \\u001b[31mError: \\u001b[0m \\t \\u001b[1mError: Command failed with exit code 125: podman play kube --network zombie-469648a5 /home/antar/.larch/my-zombieNetLogs/prometheus.yaml\\nError: error adding pod to state: name \\\"prometheus_pod\\\" is in use: pod already exists\\u001b[0m\\n\\n\\u001b[31mError: \\u001b[0m \\t \\u001b[1mError: Command failed with exit code 125: podman play kube --network zombie-469648a5 /home/antar/.larch/my-zombieNetLogs/prometheus.yaml\\nError: error adding pod to state: name \\\"prometheus_pod\\\" is in use: pod already exists\\u001b[0m\\n\\n\\u001b[35mundefined\\u001b[0m\\n\\u001b[90m┌────────────────────\\u001b[39m\\u001b[90m┬────────────────────────────────────────────────────────────────────────────────────────────────────┐\\u001b[39m\\n\\u001b[90m│\\u001b[39m \\u001b[32mNode'\\u001b[39m              \\u001b[90m│\\u001b[39m \\u001b[35m/home/antar/.larch/my-zombieNetLogs/logs\\u001b[0m                                                           \\u001b[90m│\\u001b[39m\\n\\u001b[90m│\\u001b[39m \\u001b[32ms logs:\\u001b[0\\u001b[39m            \\u001b[90m│\\u001b[39m                                                                                                    \\u001b[90m│\\u001b[39m\\n\\u001b[90m│\\u001b[39m \\u001b[32mm\\u001b[39m                  \\u001b[90m│\\u001b[39m                                                                                                    \\u001b[90m│\\u001b[39m\\n\\u001b[90m└────────────────────\\u001b[39m\\u001b[90m┴────────────────────────────────────────────────────────────────────────────────────────────────────┘\\u001b[39m\\n\\n \\u001b[31mError: \\u001b[0m \\t \\u001b[1mError: Command failed with exit code 125: podman pod rm -f \\nError: name or ID cannot be empty\\u001b[0m\\n\\n\\n\\u001b[31mUnhandledRejection: \\u001b[0m \\t \\u001b[1mError: Command failed with exit code 125: podman pod rm -f \\nError: name or ID cannot be empty\\u001b[0m\\n\\n\",\n        \"statusCode\": 233,\n        \"createdAt\": \"2023-04-11 07:48:30\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update API",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"configFilename\":\"0001-small-network.toml\",\n    \"configContent\":\"W3NldHRpbmdzXQp0aW1lb3V0ID0gMTAwMAoKW3JlbGF5Y2hhaW5dCmRlZmF1bHRfaW1hZ2UgPSAicGFyaXR5cHIvcG9sa2Fkb3QtZGVidWc6bWFzdGVyIgpjaGFpbiA9ICJyb2NvY28tbG9jYWwiCgogIFtbcmVsYXljaGFpbi5ub2Rlc11dCiAgbmFtZSA9ICJhbGljZSIKCiAgW1tyZWxheWNoYWluLm5vZGVzXV0KICBuYW1lID0gImJvYiIKCltbcGFyYWNoYWluc11dCmlkID0gMTAwCgogIFtwYXJhY2hhaW5zLmNvbGxhdG9yXQogIG5hbWUgPSAiY29sbGF0b3IwMSIKICBpbWFnZSA9ICJwYXJpdHlwci9jb2xhbmRlcjptYXN0ZXIiCiAgY29tbWFuZCA9ICJhZGRlci1jb2xsYXRvciI=\",\n    \"networkDirectory\":\"/home/antar/.larch/ZombieOurputDir\",\n    \"networkProvider\":\"podman\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/larch/network/update/?networkName=ATestNetwork",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"network",
+								"update",
+								""
+							],
+							"query": [
+								{
+									"key": "networkName",
+									"value": "ATestNetwork"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update API Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"configFilename\":\"0001-small-network.toml\",\n    \"configContent\":\"W3NldHRpbmdzXQp0aW1lb3V0ID0gMTAwMAoKW3JlbGF5Y2hhaW5dCmRlZmF1bHRfaW1hZ2UgPSAicGFyaXR5cHIvcG9sa2Fkb3QtZGVidWc6bWFzdGVyIgpjaGFpbiA9ICJyb2NvY28tbG9jYWwiCgogIFtbcmVsYXljaGFpbi5ub2Rlc11dCiAgbmFtZSA9ICJhbGljZSIKCiAgW1tyZWxheWNoYWluLm5vZGVzXV0KICBuYW1lID0gImJvYiIKCltbcGFyYWNoYWluc11dCmlkID0gMTAwCgogIFtwYXJhY2hhaW5zLmNvbGxhdG9yXQogIG5hbWUgPSAiY29sbGF0b3IwMSIKICBpbWFnZSA9ICJwYXJpdHlwci9jb2xhbmRlcjptYXN0ZXIiCiAgY29tbWFuZCA9ICJhZGRlci1jb2xsYXRvciI=\",\n    \"networkDirectory\":\"/home/antar/.larch/ZombieOurputDir\",\n    \"networkProvider\":\"podman\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/larch/network/update/?networkName=ATestNetwork",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"network",
+										"update",
+										""
+									],
+									"query": [
+										{
+											"key": "networkName",
+											"value": "ATestNetwork"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1967"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"7af-GSCDZaPR/ZyZxTNgKgne2at0MQA\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 08:18:10 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": {\n        \"id\": \"ATestNetwork\",\n        \"name\": \"ATestNetwork\",\n        \"configFilename\": \"0001-small-network.toml\",\n        \"configContent\": \"W3NldHRpbmdzXQp0aW1lb3V0ID0gMTAwMAoKW3JlbGF5Y2hhaW5dCmRlZmF1bHRfaW1hZ2UgPSAicGFyaXR5cHIvcG9sa2Fkb3QtZGVidWc6bWFzdGVyIgpjaGFpbiA9ICJyb2NvY28tbG9jYWwiCgogIFtbcmVsYXljaGFpbi5ub2Rlc11dCiAgbmFtZSA9ICJhbGljZSIKCiAgW1tyZWxheWNoYWluLm5vZGVzXV0KICBuYW1lID0gImJvYiIKCltbcGFyYWNoYWluc11dCmlkID0gMTAwCgogIFtwYXJhY2hhaW5zLmNvbGxhdG9yXQogIG5hbWUgPSAiY29sbGF0b3IwMSIKICBpbWFnZSA9ICJwYXJpdHlwci9jb2xhbmRlcjptYXN0ZXIiCiAgY29tbWFuZCA9ICJhZGRlci1jb2xsYXRvciI=\",\n        \"networkDirectory\": \"/home/antar/.larch/ZombieOurputDir\",\n        \"networkProvider\": \"podman\",\n        \"networkState\": \"creating\",\n        \"testFilename\": \"0001-small-network.zndsl\",\n        \"testContent\": \"RGVzY3JpcHRpb246IFNtYWxsIE5ldHdvcmsgdGVzdApOZXR3b3JrOiAuLzAwMDEtc21hbGwtbmV0d29yay50b21sCkNyZWRzOiBjb25maWcKCiMgVHJhY2luZwojIGFsaWNlOiB0cmFjZSB3aXRoIHRyYWNlSUQgOTRjMTUwMWE3OGEwZDgzYzQ5OGNjOTJkZWVjMjY0ZDkgY29udGFpbnMgWyJhbnN3ZXItY2h1bmstcmVxdWVzdCIsICJhbnN3ZXItY2h1bmstcmVxdWVzdCJdCgojIG1ldHJpY3MKYWxpY2U6IHJlcG9ydHMgbm9kZV9yb2xlcyBpcyA0CmFsaWNlOiByZXBvcnRzIHN1Yl9saWJwMnBfaXNfbWFqb3Jfc3luY2luZyBpcyAwCgojIGhpc3RvZ3JhbQphbGljZTogcmVwb3J0cyBoaXN0b2dyYW0gcG9sa2Fkb3RfcHZmX2V4ZWN1dGlvbl90aW1lIGhhcyBhdCBsZWFzdCAyIHNhbXBsZXMgaW4gYnVja2V0cyBbIjAuMSIsICIwLjI1IiwgIjAuNSIsICIrSW5mIl0gd2l0aGluIDEwMCBzZWNvbmRzCgojIGxvZ3MKYm9iOiBsb2cgbGluZSBtYXRjaGVzIGdsb2IgIipydGVkICMxKiIgd2l0aGluIDEwIHNlY29uZHMKYm9iOiBsb2cgbGluZSBtYXRjaGVzICJJbXBvcnRlZCAjWzAtOV0rIiB3aXRoaW4gMTAgc2Vjb25kcwoKIyBzeXN0ZW0gZXZlbnRzCmJvYjogc3lzdGVtIGV2ZW50IGNvbnRhaW5zICJBIGNhbmRpZGF0ZSB3YXMgaW5jbHVkZWQiIHdpdGhpbiAyMCBzZWNvbmRzCmFsaWNlOiBzeXN0ZW0gZXZlbnQgbWF0Y2hlcyBnbG9iICIqd2FzIGJhY2tlZCoiIHdpdGhpbiAxMCBzZWNvbmRzCgojcGFyYWNoYWluIHRlc3RzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGlzIHJlZ2lzdGVyZWQgd2l0aGluIDIyNSBzZWNvbmRzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGJsb2NrIGhlaWdodCBpcyBhdCBsZWFzdCAxMCB3aXRoaW4gMjAwIHNlY29uZHM=\",\n        \"createdAt\": \"2023-04-11 07:47:41\",\n        \"updatedAt\": \"2023-04-11 08:18:10\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Network API",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/larch/network/delete/?networkName=ATestNetwork2",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"network",
+								"delete",
+								""
+							],
+							"query": [
+								{
+									"key": "networkName",
+									"value": "ATestNetwork2"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete Network API Ecample",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/larch/network/delete/?networkName=ATestNetwork2",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"network",
+										"delete",
+										""
+									],
+									"query": [
+										{
+											"key": "networkName",
+											"value": "ATestNetwork2"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "50"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"32-LnFmx4nQZZHR9uOmfr02zkQpk6U\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 08:22:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": {\n        \"name\": \"ATestNetwork2\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Show Networks API",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"filter\": {\n    \"name\": \"ATest\",\n    \"configFilename\":\"\",\n    \"networkProvider\":\"\",\n    \"testFilename\":\"\"\n  },\n  \"meta\": {\n    \"pageNum\": 1,\n    \"numOfRec\": 1\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/larch/network/list/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"network",
+								"list",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Search By Network Name Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filter\": {\n    \"networkName\": \"Second\"\n  },\n  \"meta\": {\n    \"pageNum\": 1,\n    \"numOfRec\": 1\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/larch/network/list/",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"network",
+										"list",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2204"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"89c-3A2fCkSAiyGFJ/s5n8oUbsnbfKo\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 08:36:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": [\n        {\n            \"name\": \"SecondTestNetwork\",\n            \"configFilename\": \"0001-small-network.toml\",\n            \"configContent\": \"IyBleGFtcGxlcy8wMDAxLXNtYWxsLW5ldHdvcmsudG9tbApbcmVsYXljaGFpbl0KZGVmYXVsdF9pbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90OmxhdGVzdCIKZGVmYXVsdF9jb21tYW5kID0gInBvbGthZG90IgpkZWZhdWx0X2FyZ3MgPSBbICItbHBhcmFjaGFpbj1kZWJ1ZyIgXQoKY2hhaW4gPSAicm9jb2NvLWxvY2FsIgoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYWxpY2UiCiAgdmFsaWRhdG9yID0gdHJ1ZQoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYm9iIgogIHZhbGlkYXRvciA9IHRydWUKCltbcGFyYWNoYWluc11dCmlkID0gMTAwCgogIFtwYXJhY2hhaW5zLmNvbGxhdG9yXQogIG5hbWUgPSAiY29sbGF0b3IwMSIKICBpbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90LXBhcmFjaGFpbjpsYXRlc3QiCiAgY29tbWFuZCA9ICJwb2xrYWRvdC1wYXJhY2hhaW4iCiAgYXJncyA9IFsiLWxwYXJhY2hhaW49ZGVidWciXQ==\",\n            \"networkDirectory\": \"/home/antar/.larch/my-zombienet\",\n            \"networkProvider\": \"podman\",\n            \"networkState\": \"failed\",\n            \"testFilename\": \"0001-small-network.zndsl\",\n            \"testContent\": \"RGVzY3JpcHRpb246IFNtYWxsIE5ldHdvcmsgdGVzdApOZXR3b3JrOiAuLzAwMDEtc21hbGwtbmV0d29yay50b21sCkNyZWRzOiBjb25maWcKCiMgVHJhY2luZwojIGFsaWNlOiB0cmFjZSB3aXRoIHRyYWNlSUQgOTRjMTUwMWE3OGEwZDgzYzQ5OGNjOTJkZWVjMjY0ZDkgY29udGFpbnMgWyJhbnN3ZXItY2h1bmstcmVxdWVzdCIsICJhbnN3ZXItY2h1bmstcmVxdWVzdCJdCgojIG1ldHJpY3MKYWxpY2U6IHJlcG9ydHMgbm9kZV9yb2xlcyBpcyA0CmFsaWNlOiByZXBvcnRzIHN1Yl9saWJwMnBfaXNfbWFqb3Jfc3luY2luZyBpcyAwCgojIGhpc3RvZ3JhbQphbGljZTogcmVwb3J0cyBoaXN0b2dyYW0gcG9sa2Fkb3RfcHZmX2V4ZWN1dGlvbl90aW1lIGhhcyBhdCBsZWFzdCAyIHNhbXBsZXMgaW4gYnVja2V0cyBbIjAuMSIsICIwLjI1IiwgIjAuNSIsICIrSW5mIl0gd2l0aGluIDEwMCBzZWNvbmRzCgojIGxvZ3MKYm9iOiBsb2cgbGluZSBtYXRjaGVzIGdsb2IgIipydGVkICMxKiIgd2l0aGluIDEwIHNlY29uZHMKYm9iOiBsb2cgbGluZSBtYXRjaGVzICJJbXBvcnRlZCAjWzAtOV0rIiB3aXRoaW4gMTAgc2Vjb25kcwoKIyBzeXN0ZW0gZXZlbnRzCmJvYjogc3lzdGVtIGV2ZW50IGNvbnRhaW5zICJBIGNhbmRpZGF0ZSB3YXMgaW5jbHVkZWQiIHdpdGhpbiAyMCBzZWNvbmRzCmFsaWNlOiBzeXN0ZW0gZXZlbnQgbWF0Y2hlcyBnbG9iICIqd2FzIGJhY2tlZCoiIHdpdGhpbiAxMCBzZWNvbmRzCgojcGFyYWNoYWluIHRlc3RzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGlzIHJlZ2lzdGVyZWQgd2l0aGluIDIyNSBzZWNvbmRzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGJsb2NrIGhlaWdodCBpcyBhdCBsZWFzdCAxMCB3aXRoaW4gMjAwIHNlY29uZHM=\",\n            \"createdAt\": \"2023-04-11 08:26:22\",\n            \"updatedAt\": null\n        }\n    ],\n    \"meta\": {\n        \"pageNum\": 1,\n        \"numOfRec\": 1,\n        \"total\": 2\n    }\n}"
+						},
+						{
+							"name": "Search By Network Provider Name",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filter\": {\n    \"name\": \"\",\n    \"configFilename\":\"\",\n    \"networkProvider\":\"pod\",\n    \"testFilename\":\"\"\n  },\n  \"meta\": {\n    \"pageNum\": 1,\n    \"numOfRec\": 2\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/larch/network/list/",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"network",
+										"list",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "4124"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"101c-/OQeTAcUzCmtHp4tq1ercDNx8bs\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 09:57:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": [\n        {\n            \"name\": \"SecondTestNetwork\",\n            \"configFilename\": \"0001-small-network.toml\",\n            \"configContent\": \"IyBleGFtcGxlcy8wMDAxLXNtYWxsLW5ldHdvcmsudG9tbApbcmVsYXljaGFpbl0KZGVmYXVsdF9pbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90OmxhdGVzdCIKZGVmYXVsdF9jb21tYW5kID0gInBvbGthZG90IgpkZWZhdWx0X2FyZ3MgPSBbICItbHBhcmFjaGFpbj1kZWJ1ZyIgXQoKY2hhaW4gPSAicm9jb2NvLWxvY2FsIgoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYWxpY2UiCiAgdmFsaWRhdG9yID0gdHJ1ZQoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYm9iIgogIHZhbGlkYXRvciA9IHRydWUKCltbcGFyYWNoYWluc11dCmlkID0gMTAwCgogIFtwYXJhY2hhaW5zLmNvbGxhdG9yXQogIG5hbWUgPSAiY29sbGF0b3IwMSIKICBpbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90LXBhcmFjaGFpbjpsYXRlc3QiCiAgY29tbWFuZCA9ICJwb2xrYWRvdC1wYXJhY2hhaW4iCiAgYXJncyA9IFsiLWxwYXJhY2hhaW49ZGVidWciXQ==\",\n            \"networkDirectory\": \"/home/antar/.larch/my-zombienet\",\n            \"networkProvider\": \"podman\",\n            \"networkState\": \"failed\",\n            \"testFilename\": \"0001-small-network.zndsl\",\n            \"testContent\": \"RGVzY3JpcHRpb246IFNtYWxsIE5ldHdvcmsgdGVzdApOZXR3b3JrOiAuLzAwMDEtc21hbGwtbmV0d29yay50b21sCkNyZWRzOiBjb25maWcKCiMgVHJhY2luZwojIGFsaWNlOiB0cmFjZSB3aXRoIHRyYWNlSUQgOTRjMTUwMWE3OGEwZDgzYzQ5OGNjOTJkZWVjMjY0ZDkgY29udGFpbnMgWyJhbnN3ZXItY2h1bmstcmVxdWVzdCIsICJhbnN3ZXItY2h1bmstcmVxdWVzdCJdCgojIG1ldHJpY3MKYWxpY2U6IHJlcG9ydHMgbm9kZV9yb2xlcyBpcyA0CmFsaWNlOiByZXBvcnRzIHN1Yl9saWJwMnBfaXNfbWFqb3Jfc3luY2luZyBpcyAwCgojIGhpc3RvZ3JhbQphbGljZTogcmVwb3J0cyBoaXN0b2dyYW0gcG9sa2Fkb3RfcHZmX2V4ZWN1dGlvbl90aW1lIGhhcyBhdCBsZWFzdCAyIHNhbXBsZXMgaW4gYnVja2V0cyBbIjAuMSIsICIwLjI1IiwgIjAuNSIsICIrSW5mIl0gd2l0aGluIDEwMCBzZWNvbmRzCgojIGxvZ3MKYm9iOiBsb2cgbGluZSBtYXRjaGVzIGdsb2IgIipydGVkICMxKiIgd2l0aGluIDEwIHNlY29uZHMKYm9iOiBsb2cgbGluZSBtYXRjaGVzICJJbXBvcnRlZCAjWzAtOV0rIiB3aXRoaW4gMTAgc2Vjb25kcwoKIyBzeXN0ZW0gZXZlbnRzCmJvYjogc3lzdGVtIGV2ZW50IGNvbnRhaW5zICJBIGNhbmRpZGF0ZSB3YXMgaW5jbHVkZWQiIHdpdGhpbiAyMCBzZWNvbmRzCmFsaWNlOiBzeXN0ZW0gZXZlbnQgbWF0Y2hlcyBnbG9iICIqd2FzIGJhY2tlZCoiIHdpdGhpbiAxMCBzZWNvbmRzCgojcGFyYWNoYWluIHRlc3RzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGlzIHJlZ2lzdGVyZWQgd2l0aGluIDIyNSBzZWNvbmRzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGJsb2NrIGhlaWdodCBpcyBhdCBsZWFzdCAxMCB3aXRoaW4gMjAwIHNlY29uZHM=\",\n            \"createdAt\": \"2023-04-11 08:26:22\",\n            \"updatedAt\": null\n        },\n        {\n            \"name\": \"ATestNetwork\",\n            \"configFilename\": \"0001-small-network.toml\",\n            \"configContent\": \"W3NldHRpbmdzXQp0aW1lb3V0ID0gMTAwMAoKW3JlbGF5Y2hhaW5dCmRlZmF1bHRfaW1hZ2UgPSAicGFyaXR5cHIvcG9sa2Fkb3QtZGVidWc6bWFzdGVyIgpjaGFpbiA9ICJyb2NvY28tbG9jYWwiCgogIFtbcmVsYXljaGFpbi5ub2Rlc11dCiAgbmFtZSA9ICJhbGljZSIKCiAgW1tyZWxheWNoYWluLm5vZGVzXV0KICBuYW1lID0gImJvYiIKCltbcGFyYWNoYWluc11dCmlkID0gMTAwCgogIFtwYXJhY2hhaW5zLmNvbGxhdG9yXQogIG5hbWUgPSAiY29sbGF0b3IwMSIKICBpbWFnZSA9ICJwYXJpdHlwci9jb2xhbmRlcjptYXN0ZXIiCiAgY29tbWFuZCA9ICJhZGRlci1jb2xsYXRvciI=\",\n            \"networkDirectory\": \"/home/antar/.larch/ZombieOurputDir\",\n            \"networkProvider\": \"podman\",\n            \"networkState\": \"failed\",\n            \"testFilename\": \"0001-small-network.zndsl\",\n            \"testContent\": \"RGVzY3JpcHRpb246IFNtYWxsIE5ldHdvcmsgdGVzdApOZXR3b3JrOiAuLzAwMDEtc21hbGwtbmV0d29yay50b21sCkNyZWRzOiBjb25maWcKCiMgVHJhY2luZwojIGFsaWNlOiB0cmFjZSB3aXRoIHRyYWNlSUQgOTRjMTUwMWE3OGEwZDgzYzQ5OGNjOTJkZWVjMjY0ZDkgY29udGFpbnMgWyJhbnN3ZXItY2h1bmstcmVxdWVzdCIsICJhbnN3ZXItY2h1bmstcmVxdWVzdCJdCgojIG1ldHJpY3MKYWxpY2U6IHJlcG9ydHMgbm9kZV9yb2xlcyBpcyA0CmFsaWNlOiByZXBvcnRzIHN1Yl9saWJwMnBfaXNfbWFqb3Jfc3luY2luZyBpcyAwCgojIGhpc3RvZ3JhbQphbGljZTogcmVwb3J0cyBoaXN0b2dyYW0gcG9sa2Fkb3RfcHZmX2V4ZWN1dGlvbl90aW1lIGhhcyBhdCBsZWFzdCAyIHNhbXBsZXMgaW4gYnVja2V0cyBbIjAuMSIsICIwLjI1IiwgIjAuNSIsICIrSW5mIl0gd2l0aGluIDEwMCBzZWNvbmRzCgojIGxvZ3MKYm9iOiBsb2cgbGluZSBtYXRjaGVzIGdsb2IgIipydGVkICMxKiIgd2l0aGluIDEwIHNlY29uZHMKYm9iOiBsb2cgbGluZSBtYXRjaGVzICJJbXBvcnRlZCAjWzAtOV0rIiB3aXRoaW4gMTAgc2Vjb25kcwoKIyBzeXN0ZW0gZXZlbnRzCmJvYjogc3lzdGVtIGV2ZW50IGNvbnRhaW5zICJBIGNhbmRpZGF0ZSB3YXMgaW5jbHVkZWQiIHdpdGhpbiAyMCBzZWNvbmRzCmFsaWNlOiBzeXN0ZW0gZXZlbnQgbWF0Y2hlcyBnbG9iICIqd2FzIGJhY2tlZCoiIHdpdGhpbiAxMCBzZWNvbmRzCgojcGFyYWNoYWluIHRlc3RzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGlzIHJlZ2lzdGVyZWQgd2l0aGluIDIyNSBzZWNvbmRzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGJsb2NrIGhlaWdodCBpcyBhdCBsZWFzdCAxMCB3aXRoaW4gMjAwIHNlY29uZHM=\",\n            \"createdAt\": \"2023-04-11 07:47:41\",\n            \"updatedAt\": \"2023-04-11 08:18:10\"\n        }\n    ],\n    \"meta\": {\n        \"pageNum\": 1,\n        \"numOfRec\": 2,\n        \"total\": 2\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Network Run-List API",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"filter\": {\n    \"id\": \"\",\n    \"intention\":\"NETWORK_CREATE\",\n    \"command\":\"\"\n  },\n  \"meta\": {\n    \"pageNum\": 1,\n    \"numOfRec\": 2\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/larch/network/run-list/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"network",
+								"run-list",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Search By Intention Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filter\": {\n    \"id\": \"\",\n    \"intention\":\"NETWORK_CREATE\",\n    \"command\":\"\"\n  },\n  \"meta\": {\n    \"pageNum\": 1,\n    \"numOfRec\": 2\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/larch/network/run-list/",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"network",
+										"run-list",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "11529"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2d09-LY78kjnclXxh4seItlfBRduRwBw\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 10:06:49 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": [\n        {\n            \"id\": \"9bae3b5c-244f-41e9-b299-288e11415842\",\n            \"intention\": \"NETWORK_CREATE\",\n            \"relatedId\": \"SecondTestNetwork\",\n            \"command\": \"/home/antar/.larch/bin/zombienet-1.3.43  spawn /home/antar/.larch/networks/SecondTestNetwork/0001-small-network.toml --provider podman --dir /home/antar/.larch/my-zombienet --force\",\n            \"stdError\": \"\",\n            \"stdOutput\": \"\\u001b[90m╔════════════════════\\u001b[39m\\u001b[90m╤════════════════════════════════════════════════════════════════════════════════════════════════════╗\\u001b[39m\\n\\u001b[90m║\\u001b[39m\\u001b[31m \\u001b[32m🧟 Zombienet 🧟\\u001b[0m    \\u001b[39m\\u001b[90m│\\u001b[39m\\u001b[31m \\u001b[32mInitiation\\u001b[0m                                                                                         \\u001b[39m\\u001b[90m║\\u001b[39m\\n\\u001b[90m╟────────────────────\\u001b[39m\\u001b[90m┼────────────────────────────────────────────────────────────────────────────────────────────────────╢\\u001b[39m\\n\\u001b[90m║\\u001b[39m \\u001b[32mProvider\\u001b[0m           \\u001b[90m│\\u001b[39m \\u001b[34mpodman\\u001b[0m                                                                                             \\u001b[90m║\\u001b[39m\\n\\u001b[90m╟────────────────────\\u001b[39m\\u001b[90m┼────────────────────────────────────────────────────────────────────────────────────────────────────╢\\u001b[39m\\n\\u001b[90m║\\u001b[39m \\u001b[32mNamespace\\u001b[0m          \\u001b[90m│\\u001b[39m zombie-f1563981                                                                                    \\u001b[90m║\\u001b[39m\\n\\u001b[90m╟────────────────────\\u001b[39m\\u001b[90m┼────────────────────────────────────────────────────────────────────────────────────────────────────╢\\u001b[39m\\n\\u001b[90m║\\u001b[39m \\u001b[32mTemp Dir\\u001b[0m           \\u001b[90m│\\u001b[39m /home/antar/.larch/my-zombienet                                                                    \\u001b[90m║\\u001b[39m\\n\\u001b[90m╚════════════════════\\u001b[39m\\u001b[90m╧════════════════════════════════════════════════════════════════════════════════════════════════════╝\\u001b[39m\\n\\n \\u001b[31mError: \\u001b[0m \\t \\u001b[1mError: Command failed with exit code 125: podman play kube --network zombie-f1563981 /home/antar/.larch/my-zombienet/prometheus.yaml\\nError: error adding pod to state: name \\\"prometheus_pod\\\" is in use: pod already exists\\u001b[0m\\n\\n\\u001b[31mError: \\u001b[0m \\t \\u001b[1mError: Command failed with exit code 125: podman play kube --network zombie-f1563981 /home/antar/.larch/my-zombienet/prometheus.yaml\\nError: error adding pod to state: name \\\"prometheus_pod\\\" is in use: pod already exists\\u001b[0m\\n\\n\\u001b[35mundefined\\u001b[0m\\n\\u001b[90m┌────────────────────\\u001b[39m\\u001b[90m┬────────────────────────────────────────────────────────────────────────────────────────────────────┐\\u001b[39m\\n\\u001b[90m│\\u001b[39m \\u001b[32mNode'\\u001b[39m              \\u001b[90m│\\u001b[39m \\u001b[35m/home/antar/.larch/my-zombienet/logs\\u001b[0m                                                               \\u001b[90m│\\u001b[39m\\n\\u001b[90m│\\u001b[39m \\u001b[32ms logs:\\u001b[0\\u001b[39m            \\u001b[90m│\\u001b[39m                                                                                                    \\u001b[90m│\\u001b[39m\\n\\u001b[90m│\\u001b[39m \\u001b[32mm\\u001b[39m                  \\u001b[90m│\\u001b[39m                                                                                                    \\u001b[90m│\\u001b[39m\\n\\u001b[90m└────────────────────\\u001b[39m\\u001b[90m┴────────────────────────────────────────────────────────────────────────────────────────────────────┘\\u001b[39m\\n\\n \\u001b[31mError: \\u001b[0m \\t \\u001b[1mError: Command failed with exit code 125: podman pod rm -f \\nError: name or ID cannot be empty\\u001b[0m\\n\\n\\n\\u001b[31mUnhandledRejection: \\u001b[0m \\t \\u001b[1mError: Command failed with exit code 125: podman pod rm -f \\nError: name or ID cannot be empty\\u001b[0m\\n\\n\",\n            \"statusCode\": 233,\n            \"createdAt\": \"2023-04-11 08:26:23\"\n        },\n        {\n            \"id\": \"c9669ff8-0449-4748-988a-d0e7cc073b45\",\n            \"intention\": \"NETWORK_CREATE\",\n            \"relatedId\": \"ATestNetwork\",\n            \"command\": \"/home/antar/.larch/bin/zombienet-1.3.43  spawn /home/antar/.larch/networks/ATestNetwork/0001-small-network.toml --provider podman --dir /home/antar/.larch/my-zombieNetLogs --force\",\n            \"stdError\": \"\",\n            \"stdOutput\": \"\\u001b[90m╔════════════════════\\u001b[39m\\u001b[90m╤════════════════════════════════════════════════════════════════════════════════════════════════════╗\\u001b[39m\\n\\u001b[90m║\\u001b[39m\\u001b[31m \\u001b[32m🧟 Zombienet 🧟\\u001b[0m    \\u001b[39m\\u001b[90m│\\u001b[39m\\u001b[31m \\u001b[32mInitiation\\u001b[0m                                                                                         \\u001b[39m\\u001b[90m║\\u001b[39m\\n\\u001b[90m╟────────────────────\\u001b[39m\\u001b[90m┼────────────────────────────────────────────────────────────────────────────────────────────────────╢\\u001b[39m\\n\\u001b[90m║\\u001b[39m \\u001b[32mProvider\\u001b[0m           \\u001b[90m│\\u001b[39m \\u001b[34mpodman\\u001b[0m                                                                                             \\u001b[90m║\\u001b[39m\\n\\u001b[90m╟────────────────────\\u001b[39m\\u001b[90m┼────────────────────────────────────────────────────────────────────────────────────────────────────╢\\u001b[39m\\n\\u001b[90m║\\u001b[39m \\u001b[32mNamespace\\u001b[0m          \\u001b[90m│\\u001b[39m zombie-469648a5                                                                                    \\u001b[90m║\\u001b[39m\\n\\u001b[90m╟────────────────────\\u001b[39m\\u001b[90m┼────────────────────────────────────────────────────────────────────────────────────────────────────╢\\u001b[39m\\n\\u001b[90m║\\u001b[39m \\u001b[32mTemp Dir\\u001b[0m           \\u001b[90m│\\u001b[39m /home/antar/.larch/my-zombieNetLogs                                                                \\u001b[90m║\\u001b[39m\\n\\u001b[90m╚════════════════════\\u001b[39m\\u001b[90m╧════════════════════════════════════════════════════════════════════════════════════════════════════╝\\u001b[39m\\n\\n \\u001b[31mError: \\u001b[0m \\t \\u001b[1mError: Command failed with exit code 125: podman play kube --network zombie-469648a5 /home/antar/.larch/my-zombieNetLogs/prometheus.yaml\\nError: error adding pod to state: name \\\"prometheus_pod\\\" is in use: pod already exists\\u001b[0m\\n\\n\\u001b[31mError: \\u001b[0m \\t \\u001b[1mError: Command failed with exit code 125: podman play kube --network zombie-469648a5 /home/antar/.larch/my-zombieNetLogs/prometheus.yaml\\nError: error adding pod to state: name \\\"prometheus_pod\\\" is in use: pod already exists\\u001b[0m\\n\\n\\u001b[35mundefined\\u001b[0m\\n\\u001b[90m┌────────────────────\\u001b[39m\\u001b[90m┬────────────────────────────────────────────────────────────────────────────────────────────────────┐\\u001b[39m\\n\\u001b[90m│\\u001b[39m \\u001b[32mNode'\\u001b[39m              \\u001b[90m│\\u001b[39m \\u001b[35m/home/antar/.larch/my-zombieNetLogs/logs\\u001b[0m                                                           \\u001b[90m│\\u001b[39m\\n\\u001b[90m│\\u001b[39m \\u001b[32ms logs:\\u001b[0\\u001b[39m            \\u001b[90m│\\u001b[39m                                                                                                    \\u001b[90m│\\u001b[39m\\n\\u001b[90m│\\u001b[39m \\u001b[32mm\\u001b[39m                  \\u001b[90m│\\u001b[39m                                                                                                    \\u001b[90m│\\u001b[39m\\n\\u001b[90m└────────────────────\\u001b[39m\\u001b[90m┴────────────────────────────────────────────────────────────────────────────────────────────────────┘\\u001b[39m\\n\\n \\u001b[31mError: \\u001b[0m \\t \\u001b[1mError: Command failed with exit code 125: podman pod rm -f \\nError: name or ID cannot be empty\\u001b[0m\\n\\n\\n\\u001b[31mUnhandledRejection: \\u001b[0m \\t \\u001b[1mError: Command failed with exit code 125: podman pod rm -f \\nError: name or ID cannot be empty\\u001b[0m\\n\\n\",\n            \"statusCode\": 233,\n            \"createdAt\": \"2023-04-11 07:48:30\"\n        }\n    ],\n    \"meta\": {\n        \"pageNum\": 1,\n        \"numOfRec\": 2,\n        \"total\": 2\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "User Operation API Collection",
+			"item": [
+				{
+					"name": "Get User Operations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/larch/user_operation/?operationId=ATestNetwork",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"user_operation",
+								""
+							],
+							"query": [
+								{
+									"key": "operationId",
+									"value": "ATestNetwork"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get User Operations",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/larch/user_operation/?operationId=ATestNetwork",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"user_operation",
+										""
+									],
+									"query": [
+										{
+											"key": "operationId",
+											"value": "ATestNetwork"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "211"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d3-YiGSsqRS1WGKfRssz+pBojfZros\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 11:13:07 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"error\": {\n        \"type\": \"ERROR_NOT_FOUND\",\n        \"title\": \"User operation info not found\",\n        \"detail\": \"requested user operation info is not found\",\n        \"instance\": \"/api/larch/user_operation/?operationId=ATestNetwork\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "User Operation Purge API",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/larch/user_operation/purge/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"user_operation",
+								"purge",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "User Operation Purge API",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/larch/user_operation/purge/",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"user_operation",
+										"purge",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1c-2J+81wLnSOXOL6CqQuYoQGncQ7c\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 11:07:49 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": {}\n}"
+						}
+					]
+				},
+				{
+					"name": "User Operation List",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"filter\": {\n    \"operation\": \"\",\n    \"operationDetail\":\"\"\n  },\n  \"meta\": {\n    \"pageNum\": 1,\n    \"numOfRec\": 2\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/larch/user_operation/list/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"larch",
+								"user_operation",
+								"list",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "User Operation List Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filter\": {\n    \"operation\": \"\",\n    \"operationDetail\":\"\"\n  },\n  \"meta\": {\n    \"pageNum\": 1,\n    \"numOfRec\": 2\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/larch/user_operation/list/",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"larch",
+										"user_operation",
+										"list",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "72"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"48-9ypxw/EutKKEw/IEBLoHSYEB8dA\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Apr 2023 11:17:51 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"result\": [],\n    \"meta\": {\n        \"pageNum\": 1,\n        \"numOfRec\": 0,\n        \"total\": 0\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
 			"name": "Version API",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/api/larch/version",
+					"raw": "{{baseURL}}/api/larch/version/",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
 						"api",
 						"larch",
-						"version"
+						"version",
+						""
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Version API Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:•••••••/api/larch/version/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "•••••••",
+							"path": [
+								"api",
+								"larch",
+								"version",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "54"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"36-0rdmXjgtOXGvSv+Ragf3ZZ/1LV4\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 11 Apr 2023 07:50:38 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"zombienet-version\": \"1.3.43\",\n    \"larch-version\": \"1.0.0\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Health API",
@@ -31,199 +1927,76 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/healthz",
+					"raw": "{{baseURL}}/healthz/",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
-						"healthz"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Progress API",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseURL}}/api/larch/progress/?{{networkNameKey}}={{networkNameValue}}",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"api",
-						"larch",
-						"progress",
+						"healthz",
 						""
-					],
-					"query": [
-						{
-							"key": "{{networkNameKey}}",
-							"value": "{{networkNameValue}}"
-						}
 					]
 				}
 			},
-			"response": []
-		},
-		{
-			"name": "Show Networks API",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"filter\": {\n    \"networkName\": \"{{testingNetworkName}}\"\n  },\n  \"meta\": {\n    \"numberOfRecords\": {{limit}}\n  }\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseURL}}/api/larch/networks",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"api",
-						"larch",
-						"networks"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Network API",
-			"event": [
+			"response": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"dirName\":\"{{directoryName}}\",\n    \"fileName\":\"{{fileName}}\",\n    \"networkName\":\"{{networkName}}\",\n    \"confFile\":\"{{configFile}}\",\n    \"dslFileName\":\"{{dslFileName}}\",\n    \"dslFile\":\"{{dslFile}}\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "Health API Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:•••••••/healthz/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "•••••••",
+							"path": [
+								"healthz",
+								""
+							]
 						}
-					}
-				},
-				"url": {
-					"raw": "{{baseURL}}/api/larch/networks/create",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"api",
-						"larch",
-						"networks",
-						"create"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Display Network Details",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseURL}}/api/larch/network/?{{networkNameKey}}={{networkNameValue}}",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"api",
-						"larch",
-						"network",
-						""
-					],
-					"query": [
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
 						{
-							"key": "{{networkNameKey}}",
-							"value": "{{networkNameValue}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Test Network API",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseURL}}/api/larch/network/test/?{{networkNameKey}}={{networkNameValue}}",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"api",
-						"larch",
-						"network",
-						"test",
-						""
-					],
-					"query": [
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
 						{
-							"key": "{{networkNameKey}}",
-							"value": "{{networkNameValue}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update API",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"dslFileName\":\"0001-small-network.zndsl\",\n    \"dslFile\":\"RGVzY3JpcHRpb246IFNtYWxsIE5ldHdvcmsgdGVzdApOZXR3b3JrOiAuLzAwMDEtc21hbGwtbmV0d29yay50b21sCkNyZWRzOiBjb25maWcKCiMgVHJhY2luZwojIGFsaWNlOiB0cmFjZSB3aXRoIHRyYWNlSUQgOTRjMTUwMWE3OGEwZDgzYzQ5OGNjOTJkZWVjMjY0ZDkgY29udGFpbnMgWyJhbnN3ZXItY2h1bmstcmVxdWVzdCIsICJhbnN3ZXItY2h1bmstcmVxdWVzdCJdCgojIG1ldHJpY3MKYWxpY2U6IHJlcG9ydHMgbm9kZV9yb2xlcyBpcyA0CmFsaWNlOiByZXBvcnRzIHN1Yl9saWJwMnBfaXNfbWFqb3Jfc3luY2luZyBpcyAwCgojIGhpc3RvZ3JhbQphbGljZTogcmVwb3J0cyBoaXN0b2dyYW0gcG9sa2Fkb3RfcHZmX2V4ZWN1dGlvbl90aW1lIGhhcyBhdCBsZWFzdCAyIHNhbXBsZXMgaW4gYnVja2V0cyBbIjAuMSIsICIwLjI1IiwgIjAuNSIsICIrSW5mIl0gd2l0aGluIDEwMCBzZWNvbmRzCgojIGxvZ3MKYm9iOiBsb2cgbGluZSBtYXRjaGVzIGdsb2IgIipydGVkICMxKiIgd2l0aGluIDEwIHNlY29uZHMKYm9iOiBsb2cgbGluZSBtYXRjaGVzICJJbXBvcnRlZCAjWzAtOV0rIiB3aXRoaW4gMTAgc2Vjb25kcwoKIyBzeXN0ZW0gZXZlbnRzCmJvYjogc3lzdGVtIGV2ZW50IGNvbnRhaW5zICJBIGNhbmRpZGF0ZSB3YXMgaW5jbHVkZWQiIHdpdGhpbiAyMCBzZWNvbmRzCmFsaWNlOiBzeXN0ZW0gZXZlbnQgbWF0Y2hlcyBnbG9iICIqd2FzIGJhY2tlZCoiIHdpdGhpbiAxMCBzZWNvbmRzCgojcGFyYWNoYWluIHRlc3RzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGlzIHJlZ2lzdGVyZWQgd2l0aGluIDIyNSBzZWNvbmRzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGJsb2NrIGhlaWdodCBpcyBhdCBsZWFzdCAxMCB3aXRoaW4gMjAwIHNlY29uZHM=\",\n    \"fileName\":\"0001-small-network.toml\",\n    \"confFile\":\"IyBleGFtcGxlcy8wMDAxLXNtYWxsLW5ldHdvcmsudG9tbApbcmVsYXljaGFpbl0KZGVmYXVsdF9pbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90OmxhdGVzdCIKZGVmYXVsdF9jb21tYW5kID0gInBvbGthZG90IgpkZWZhdWx0X2FyZ3MgPSBbICItbHBhcmFjaGFpbj1kZWJ1ZyIgXQoKY2hhaW4gPSAicm9jb2NvLWxvY2FsIgoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYWxpY2UiCiAgdmFsaWRhdG9yID0gdHJ1ZQoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYm9iIgogIHZhbGlkYXRvciA9IHRydWUKCltbcGFyYWNoYWluc11dCmlkID0gMTAwCgogIFtwYXJhY2hhaW5zLmNvbGxhdG9yXQogIG5hbWUgPSAiY29sbGF0b3IwMSIKICBpbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90LXBhcmFjaGFpbjpsYXRlc3QiCiAgY29tbWFuZCA9ICJwb2xrYWRvdC1wYXJhY2hhaW4iCiAgYXJncyA9IFsiLWxwYXJhY2hhaW49ZGVidWciXQ==\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseURL}}/api/larch/network/update/?{{networkNameKey}}={{networkName}}",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"api",
-						"larch",
-						"network",
-						"update",
-						""
-					],
-					"query": [
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
 						{
-							"key": "{{networkNameKey}}",
-							"value": "{{networkName}}"
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "38"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"26-uCuO3W6wro0nQml91nk3zDh3gSY\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 11 Apr 2023 07:50:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
 						}
-					]
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Larch service is healthy\"\n}"
 				}
-			},
-			"response": []
+			]
 		}
 	]
 }

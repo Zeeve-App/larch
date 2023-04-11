@@ -2,18 +2,34 @@ import React, { SyntheticEvent } from 'react';
 import IconImage from "../assets/Search.svg";
 import IconGrid from "../assets/Grid.svg";
 import IconEp from "../assets/Menu.svg";
-import { useEffect } from 'react';
+import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
+import { Parent } from './Parent';
 
 
 export function Network() {
+  console.log("===========")
 
-  useEffect(() => {
-    onload
-    console.log('netwrok page load')
+  const [networkList, setNetworkList] = useState<any[]>([]);
+  const [meta, setMeta] = useState<{ total: number }>({ total: 0 });
 
-  }, [])
+  const fetchData = async () => {
+    const api_data = fetch("http://localhost:9000/api/larch/network/list", {
+      method: 'post'
+     
+    })
+    console.log("==============")
+    const response = await api_data;
+    const data = await response.json();
+    const temp = data.result
+    console.log({data },{temp})
 
+    return setNetworkList(temp);
+  }
+  useEffect(()=>{
+
+    fetchData()
+  },[])
 
   return (
     <div className='p-6 gap-6 flex-col flex'>
@@ -47,45 +63,7 @@ export function Network() {
         </div>
       </div>
       <div className=" ">
-        <table className="text-white border-2 border-border font-rubik w-full rounded">
-          <thead className='bg-create-button'>
-            <tr className=' border-b-2 border-border rounded '>
-              <th className='px-6 py-3 w-56.25' scope="col">My Zoombie Net</th>
-              <th className='px-6 py-3' scope="col">Local IP</th>
-              <th className='px-6 py-3' scope="col">Provider</th>
-              <th className='px-6 py-3' scope="col">Uptime</th>
-              <th className='px-6 py-3' scope="col">Status</th>
-              <th className='px-6 py-3' scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody className='rounded-xl'>
-            <tr className=' border-b-2 border-border rounded '>
-              <td className='px-6 py-3 w-56.25 text-center	'>Mark</td>
-              <td className='px-6 py-3 w-56.25 text-center	'>Otto</td>
-              <td className='px-6 py-3 w-56.25 text-center	'>@mdo</td>
-              <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-              <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-              <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-            </tr>
-            <tr className=' border-b-2 border-border rounded'>
-              <td className='px-6 py-3 w-56.25 text-center	'>Jacob</td>
-              <td className='px-6 py-3 w-56.25 text-center	'>Thornton</td>
-              <td className='px-6 py-3 w-56.25 text-center	'>@fat</td>
-              <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-              <td className='px-6 py-3 w-56.25 text-center'>@twitter</td>
-              <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-            </tr>
-            <tr className=' border-b-2 border-border rounded'>
-              <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-              <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-              <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-              <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-              <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-              <td className='px-6 py-3 w-56.25 text-center	'>@twitter</td>
-
-            </tr>
-          </tbody>
-        </table>
+       <Parent/>
       </div>
     </div>
 

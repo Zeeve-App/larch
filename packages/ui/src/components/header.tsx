@@ -6,10 +6,7 @@ import IconNotify from "./assets/notification.svg";
 import IconImage from "./assets/image.svg";
 import { Link } from 'react-router-dom';
 
-
-
 export function Header() {
-
   
 return (
 <nav className="flex items-center h-20 w-360 flex-row  bg-black  box-border gap-176.5 border-b top-0 left-0 divide-solid	border-border ">

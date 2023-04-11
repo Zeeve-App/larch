@@ -1,14 +1,13 @@
+import { useState } from 'react';
 import ReactPaginate from 'react-paginate';
-import Iconleft from '../assets/arrowleft.svg';
-import Iconright from '../assets/arrowright.svg';
-import { useEffect, useState } from "react";
 
+type PaginatedItemsProps = {
+  itemsPerPage: number,
+  totalRecords: number,
+  onPageChange: (pageNumOnChange: number) => void,
+};
 
-
-
-export function PaginatedItems({ itemsPerPage, totalRecords, onPageChange }) {
-
-
+export default function PaginatedItems({ itemsPerPage, totalRecords, onPageChange }: PaginatedItemsProps) {
   const [itemOffset, setItemOffset] = useState(0);
 
   const endOffset = itemOffset + itemsPerPage;
@@ -23,20 +22,16 @@ export function PaginatedItems({ itemsPerPage, totalRecords, onPageChange }) {
   };
 
   return (
-    <>
-      <div className='text-white justify-end'>
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel="next >"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={6}
-          pageCount={pageCount}
-          previousLabel="< previous"
-          renderOnZeroPageCount={null}
-        />
-      </div>
-    </>
+    <div className='text-white justify-end'>
+      <ReactPaginate
+        breakLabel='...'
+        nextLabel='next >'
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={6}
+        pageCount={pageCount}
+        previousLabel='< previous'
+        renderOnZeroPageCount={null}
+      />
+    </div>
   );
 }
-
-export default PaginatedItems;

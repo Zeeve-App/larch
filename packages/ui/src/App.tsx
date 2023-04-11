@@ -10,7 +10,7 @@ import CreateCollator from './pages/network/components/create_network/collator';
 import CreateHrmp from './pages/network/components/create_network/hrmp';
 import Activity from './pages/activity/page';
 import Template from './pages/template/components/config';
-import Setting from './pages/setting/components/Main';
+import Setting from './pages/setting/page';
 import DslEdit from './pages/dsl_edit/components/Main';
 
 const routes: RouteObject[] = [

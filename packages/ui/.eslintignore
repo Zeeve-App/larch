@@ -2,3 +2,4 @@ dist
 vite.config.ts
 __tests__
 .eslintrc.cjs
+tailwind.config.cjs

@@ -1,36 +1,12 @@
-import React, { SyntheticEvent } from 'react';
 import IconImage from "../assets/Search.svg";
 import IconGrid from "../assets/Grid.svg";
 import IconEp from "../assets/Menu.svg";
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
 import { Parent } from './Parent';
 
 
 export function Network() {
-  console.log("===========")
-
-  const [networkList, setNetworkList] = useState<any[]>([]);
-  const [meta, setMeta] = useState<{ total: number }>({ total: 0 });
-
-  const fetchData = async () => {
-    const api_data = fetch("http://localhost:9000/api/larch/network/list", {
-      method: 'post'
-     
-    })
-    console.log("==============")
-    const response = await api_data;
-    const data = await response.json();
-    const temp = data.result
-    console.log({data },{temp})
-
-    return setNetworkList(temp);
-  }
-  useEffect(()=>{
-
-    fetchData()
-  },[])
-
+  
   return (
     <div className='p-6 gap-6 flex-col flex'>
       <div className='h-12 w-[1138px] flex'>
@@ -47,13 +23,7 @@ export function Network() {
 
         </div>
         <div className="h-full flex w-full flex-wrap	content-center  item-center justify-end gap-4">
-          <div className='item-center'>
-            <button className="bg-create-button text-white font-rubik flex  border-2 border-border rounded h-10 px-4 items-center">
-              <Link to="/template/createNetwork/setting">
-                <span>Create Network</span>
-              </Link>
-            </button>
-          </div>
+          
           <div className='p-2.5 border-2 border-border rounded h-10 w-10 bg-create-button '>
             <img className=" " src={IconGrid} alt="" />
           </div>

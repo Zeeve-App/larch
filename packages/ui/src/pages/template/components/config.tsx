@@ -1,33 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import IconImage from "../assets/Search.svg";
 import { Parent } from './Parent';
+import { Link } from 'react-router-dom';
 
 
 export function Template() {
-
-  const [user ,setUser] = useState([])
-
-  const fetchData = async () => {
-    const api_data = fetch("http://localhost:9000/api/larch/template/list", {
-      method: 'post',
-    })
-    const response = await api_data;
-    const data = await response.json();
-    console.log({data})
-    const temp = data.result
-    console.log("dataaaa",temp)
- 
-
-    return setUser(temp);
-
-   
-  }
-
-  useEffect(() => {
-
-    fetchData()
-
-  },[])
 
 return (
   
@@ -42,6 +19,12 @@ return (
       </div>
       <div className="h-full flex w-full flex-wrap	content-center  item-center justify-end gap-4">
       <div className='item-center'>
+            <button className="bg-create-button text-white font-rubik flex  border-2 border-border rounded h-10 px-4 items-center">
+              <Link to="/template/createNetwork/setting">
+                <span>Create Network</span>
+              </Link>
+            </button>
+          </div>
       <div className="bg-create-button gap-2 text-white font-rubik flex flex-row border-2 border-border rounded h-10  items-center">
         <div className='border-r-2 flex flex-row items-start py-1.5 px-4 border-border h-full'>
             <select className='bg-create-button'>
@@ -58,7 +41,7 @@ return (
      <Parent/>
     
    </div>
-   </div>
+
 
 
    

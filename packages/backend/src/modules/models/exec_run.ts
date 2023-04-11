@@ -4,6 +4,7 @@ import {
   DefaultSort, FieldMap, PaginationInfo, SortInfo, getPaginatedInfo,
 } from '../../utils/pagination.js';
 import { getTimestamp } from '../../utils/time.js';
+import { AppError } from '../../utils/declaration.js';
 
 const primaryTableName = 'exec_run';
 
@@ -140,11 +141,17 @@ export const removeAllExecRunByRelatedId = async (relatedId: string): Promise<vo
     .where('related_id', relatedId);
 };
 
-export const getLatestStatusCode = async (relatedId: string): Promise<number> => {
+export const getLatestStatusCode = async (relatedId: string): Promise<number | null> => {
   const [result] = await knexInstance.table(primaryTableName)
     .select('status_code')
     .where('related_id', relatedId)
     .orderBy('created_at', 'desc')
     .limit(1);
+  if (!result) {
+    throw new AppError({
+      kind: 'NOT_FOUND',
+      message: `No exec record found for "${relatedId}"`,
+    });
+  }
   return result.statusCode;
 };

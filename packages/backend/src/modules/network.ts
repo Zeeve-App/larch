@@ -18,20 +18,33 @@ import { removeInProgressNetwork } from './exec_run.js';
 
 const getNetworkPath = (networkName: string): string => `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkName}`;
 
+let mutex = false;
+
 async function networkStatusUpdate() {
   const networkList = await getAllNetworks();
+  const networkUpdatePromiseList: Promise<any>[] = [];
   for (let i = 0; i < networkList.length; i++) {
-    const result = await getLatestStatusCode(networkList[i].name);
-    const network = new Network(networkList[i].name);
-    let state: NetworkState = 'failed';
-    if (result === null) state = 'creating';
-    if (result === 0) state = 'running';
-    network.updateNetworkStatus(state);
+    try {
+      const status = await getLatestStatusCode(networkList[i].name);
+      const network = new Network(networkList[i].name);
+      let state: NetworkState = 'failed';
+      if (status === null) state = 'creating';
+      if (status === 0) state = 'running';
+      networkUpdatePromiseList.push(network.updateNetworkStatus(state));
+    } catch (error) {
+      console.error(error);
+    }
   }
+  await Promise.allSettled(networkUpdatePromiseList);
 }
+
 function startInterval() {
-  setInterval(async () => {
-    await networkStatusUpdate();
+  if (mutex) return;
+  mutex = true;
+  setInterval(() => {
+    networkStatusUpdate()
+      .catch(console.error)
+      .finally(() => { mutex = false; });
   }, 1000);
 }
 

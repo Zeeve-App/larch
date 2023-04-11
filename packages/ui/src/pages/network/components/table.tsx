@@ -1,39 +1,43 @@
+import { getFormattedLocalTime } from '../../../utils/time';
 
-export const UserData = ({ users }) => {
+type NetworkInfo = {
+  name: string;
+  networkProvider: string;
+  networkDirectory: string;
+  createdAt: string;
+  networkState: string;
+};
 
-    return (
-        <>
-            {
-                users.map((tableusers: {
-                    name: any;
-                    networkProvider : any;
-                    networkDirectory : any;
-                    createdAt: any; 
-                    networkState:any;
-                }) => {
-                    const { id, name, networkProvider, networkDirectory,networkState
-                        , createdAt } = tableusers;
-                    return (
-                        <tr className=' border-b-2 border-border rounded '>
-                            <td className='px-6 py-3 w-56.25 '>{name}</td>
-                            <td className='px-6 py-3 w-56.25 '>{networkProvider}</td>
-                            <td className='px-6 py-3 w-56.25 '>{networkDirectory}</td>
-                            <td className='px-6 py-3 w-56 text-center'>{new Date(
-                                createdAt.split(" ").join("T") + ".000Z").toString()}</td>
-                            <td className='px-6 py-3 w-56.25 '>{ networkState}</td>
+type NetworkListTableProps = {
+  networkList: NetworkInfo[],
+};
 
-                        </tr>
-                    )
-                })
-
-            }
-
-
-        </>
-
-    )
-
-
+export default function NetworkListTable({ networkList }: NetworkListTableProps) {
+  return (
+    <table className='text-white border-2 border-border font-rubik w-full rounded'>
+      <thead className='bg-create-button'>
+        <tr className=' border-b-2 border-border rounded '>
+          <th className='px-6 py-3 w-56.25 text-left' scope='col'>Network Name</th>
+          <th className='px-6 py-3 text-left' scope='col'>Provider</th>
+          <th className='px-6 py-3 text-left' scope='col'>Network Directory</th>
+          <th className='px-6 py-3' scope='col'>Created On </th>
+          <th className='px-6 py-3' scope='col'>Status </th>
+          <th className='px-6 py-3' scope='col'>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          networkList.map((network) => (
+            <tr className=' border-b-2 border-border rounded '>
+              <td className='px-6 py-3 w-56.25 '>{network.name}</td>
+              <td className='px-6 py-3 w-56.25 '>{network.networkProvider}</td>
+              <td className='px-6 py-3 w-56.25 '>{network.networkDirectory}</td>
+              <td className='px-6 py-3 w-56 text-center'>{getFormattedLocalTime(network.createdAt)}</td>
+              <td className='px-6 py-3 w-56.25 '>{network.networkState}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  );
 }
-
-export default UserData;

@@ -5,14 +5,15 @@ import {
   templateDeleteController, templateCloneController,
 } from './controllers.js';
 import { templateCreateValidation, templateUpdateValidation } from './validations.js';
+import { handlePromiseController } from '../../../utils/misc.js';
 
 const router = Router();
 
-router.post('/create', templateCreateValidation, templateCreateController);
-router.get('/', templateGetController);
-router.post('/update', templateUpdateValidation, templateUpdateController);
-router.get('/delete', templateDeleteController);
-router.post('/list', templateListController);
-router.get('/clone', templateCloneController);
+router.post('/create', templateCreateValidation, handlePromiseController(templateCreateController));
+router.get('/', handlePromiseController(templateGetController));
+router.post('/update', templateUpdateValidation, handlePromiseController(templateUpdateController));
+router.get('/delete', handlePromiseController(templateDeleteController));
+router.post('/list', handlePromiseController(templateListController));
+router.get('/clone', handlePromiseController(templateCloneController));
 
 export default router;

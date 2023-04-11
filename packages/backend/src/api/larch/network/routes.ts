@@ -7,17 +7,18 @@ import {
   networkDeleteController,
 } from './controllers.js';
 import { networkCreateValidation, networkUpdateValidation } from './validations.js';
+import { handlePromiseController } from '../../../utils/misc.js';
 
 const router = Router();
 
-router.get('/', networkGetController);
-router.post('/list', networkListController);
-router.post('/create', networkCreateValidation, networkCreateController);
-router.post('/update', networkUpdateValidation, networkUpdateController);
-router.get('/delete', networkDeleteController);
-router.get('/test', networkTestController);
-router.get('/run', networkRunGetController);
-router.post('/run-list', networkRunListController);
-router.get('/status', networkStatusController);
+router.get('/', handlePromiseController(networkGetController));
+router.post('/list', handlePromiseController(networkListController));
+router.post('/create', networkCreateValidation, handlePromiseController(networkCreateController));
+router.post('/update', networkUpdateValidation, handlePromiseController(networkUpdateController));
+router.get('/delete', handlePromiseController(networkDeleteController));
+router.get('/test', handlePromiseController(networkTestController));
+router.get('/run', handlePromiseController(networkRunGetController));
+router.post('/run-list', handlePromiseController(networkRunListController));
+router.get('/status', handlePromiseController(networkStatusController));
 
 export default router;

@@ -2,7 +2,7 @@ import IconImage from "../assets/Search.svg";
 import IconGrid from "../assets/Grid.svg";
 import IconEp from "../assets/Menu.svg";
 import { useEffect, useState } from "react";
-import { Parent } from './Parent';
+import Parent from './Parent';
 
 
 export function Network() {

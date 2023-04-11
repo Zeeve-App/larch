@@ -1,5 +1,5 @@
 
-export const UserData = ({ users }) => {
+export const UserData = ({ users }:any) => {
 
     return (
         <>

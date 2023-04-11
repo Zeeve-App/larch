@@ -24,7 +24,7 @@ export default function ActivityListTable({ activityList }: ActivityListTablePro
       </thead>
       <tbody>
         {
-          activityList.map((activity: ActivityInfo) => (
+          activityList.map((activity) => (
             <tr className=' border-b-2 border-border rounded '>
               <td className='px-6 py-3 w-56.25'>{activity.id}</td>
               <td className='px-6 py-3 w-56.25 '>{activity.operationDetail}</td>

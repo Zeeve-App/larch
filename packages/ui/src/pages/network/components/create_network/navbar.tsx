@@ -4,7 +4,7 @@ type props = {
 
 export function NavBar({ pageSlug }: props) {
     const elementClasses = (highlight: boolean) => highlight ?
-        "center w-max py-4 text-gradiant px-4 flex-row font-rubik flex gap-3" :
+        "center w-max py-4 text-gradient px-4 flex-row font-rubik flex gap-3" :
         "center w-max py-4 px-4 flex-row font-rubik flex gap-3 text-white";
     const page = {
         'settings': 1,

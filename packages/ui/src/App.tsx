@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import './App.css'
 import MainLayout from './components/layout/Mainlayout'
-import Dashboard from './pages/dashboard/components/dashboard_content'
+import Dashboard from './pages/dashboard/page'
 import Network from './pages/network/components/network_content'
 import CreateNetwork from './pages/network/components/create_network/create_network'
 import CreateRelaychain from './pages/network/components/create_network/relaychain'
@@ -101,7 +101,7 @@ const routes: RouteObject[] = [
       },
 
       {
-        path: ("/template/configuration"),
+        path: ("/template"),
         element: <Template />,
       },
 

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
 import { Link } from 'react-router-dom';
 import IconDashboard from "./assets/Dashboard.svg";
 import IconNetwork from "./assets/My-Network.svg";
@@ -41,7 +39,7 @@ export default function Menu() {
             <div className="w-64 h-14 flex justify-start bg-menu flex-row flex-nowrap content-center items-center py-2 px-4 ">
               <div className='font-rubik text-white text-base font-normal flex items-center gap-2.5	'>
                 <img src={IconTemp} alt="" />
-                <Link to="/template/configuration">Template</Link>
+                <Link to="/template">Template</Link>
               </div>
             </div>
 

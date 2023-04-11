@@ -25,6 +25,7 @@ module.exports = {
         "import/no-named-as-default": "off",
         "react/react-in-jsx-scope": "off",
         "jsx-quotes": ["error", "prefer-single"],
-        "max-len": ["error", { "code": 120, "comments": 120 }]
+        "max-len": ["error", { "code": 120, "comments": 120 }],
+        "jsx-a11y/label-has-associated-control": ["error", { assert: "either" } ]
     }
 }

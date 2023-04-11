@@ -1,3 +1,5 @@
+import { getCurrentEndpoint } from '../setting';
+
 type Payload = {
   meta?: {
     numOfRec?: number,
@@ -19,9 +21,8 @@ type Response = {
   }
 };
 
-const endpoint = 'http://localhost:9000';
 export const fetchData = async ({ api, payload }: ApiParams): Promise<Response> => {
-  const response = await fetch(`${endpoint}${api}`, {
+  const response = await fetch(`${getCurrentEndpoint()}${api}`, {
     method: 'post',
     body: JSON.stringify(payload),
     headers: { 'Content-Type': 'application/json' },

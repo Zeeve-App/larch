@@ -2,19 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-.py-2:hover{
-    background: linear-gradient(90deg, #E6007A 0%, #9F125D 100%);
+.py-2:hover {
+  background: linear-gradient(90deg, #e6007a 0%, #9f125d 100%);
 }
-.text-gradient{
-
-    background: linear-gradient(to right, #E6007A 0%, #9F125D 100%);
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
+.text-gradient {
+  background: linear-gradient(to right, #e6007a 0%, #9f125d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-.bg-grad{
-    
-        background-image: linear-gradient(to right, #E6007A 0%,#9F125D 100%);
-   }
-.text-grad{
-    color: linear-gradient(to right, #E6007A 0%,#9F125D 100%);
+.bg-grad {
+  background-image: linear-gradient(to right, #e6007a 0%, #9f125d 100%);
+}
+.text-grad {
+  color: linear-gradient(to right, #e6007a 0%, #9f125d 100%);
 }

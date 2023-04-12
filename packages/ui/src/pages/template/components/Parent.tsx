@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import UserData from './table';
 import PaginatedItems from '../../../components/pagination';
-import {getTemplateList} from '../../../utils/apiCollection/fetchApi'
+import {getTemplateList} from '../../../utils/api';
+import { notify } from '../../../utils/notifications';
 
 
 export function Parent() {
@@ -23,7 +24,9 @@ export function Parent() {
         }}).then((response)=>{
           setTemplateList(response.result)
           setMeta(response.meta)
-        })
+        }).catch(() => {
+          notify('error', 'Failed to fetch template list');
+        });
       }, [pageNum])
   
  return(

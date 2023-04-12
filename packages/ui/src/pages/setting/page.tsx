@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { getCurrentEndpoint, getHostDomainWithProtocol, setEndpointInStore } from '../../utils/setting';
+import { notify } from '../../utils/notifications';
 
 export default function Setting() {
   const [endpoint, setEndpoint] = useState(getCurrentEndpoint());
 
   const onSave = () => {
     setEndpointInStore(endpoint);
+    notify('success', 'Successfully saved 👍');
   };
 
   return (

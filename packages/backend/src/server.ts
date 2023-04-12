@@ -3,7 +3,6 @@ import { fileURLToPath } from 'url';
 import express, {
   Request, Response, NextFunction, Application,
 } from 'express';
-import createHttpError from 'http-errors';
 import cors from 'cors';
 import apiRouter from './api/index.js';
 
@@ -35,16 +34,30 @@ export const startService = (serviceStartOptions: ServiceStartOptions) => {
     app.use('/api', apiRouter);
   }
 
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    next(new createHttpError.NotFound());
+  app.use((req: Request, res: Response) => {
+    res.status(404);
+    res.json({
+      success: false,
+      error: {
+        type: 'ERROR_NOT_FOUND',
+        title: 'Route not found',
+        detail: 'requested route is not found',
+        instance: req.originalUrl,
+      },
+    });
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     res.status(500);
-    res.send({
-      status: 500,
-      message: err.message,
+    res.json({
+      success: false,
+      error: {
+        type: 'SERVER_ERROR',
+        title: 'Server Error',
+        detail: err.message,
+        instance: req.originalUrl,
+      },
     });
   });
 

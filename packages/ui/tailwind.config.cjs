@@ -21,6 +21,7 @@ module.exports = {
         'red': '#FF7F7F',
         'green': 'MediumSeaGreen',
         'dark-green': 'green',
+        'toast': '#313131'
       },
     },
   },

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import ActivityListTable from './table';
 import PaginatedItems from '../../../components/pagination';
-import { getUserActivityList } from '../../../utils/apiCollection/fetchApi';
+import { getUserActivityList } from '../../../utils/api';
+import { notify } from '../../../utils/notifications';
 
 export default function Listing() {
   const [activityList, setActivityList] = useState<any[]>([]);
@@ -22,6 +23,8 @@ export default function Listing() {
     }).then((response) => {
       setActivityList(response.result);
       setMeta(response.meta);
+    }).catch(() => {
+      notify('error', 'Failed to fetch activity list');
     });
   }, [pageNum]);
 

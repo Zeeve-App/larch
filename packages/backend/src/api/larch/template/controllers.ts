@@ -28,7 +28,7 @@ export const templateCreateController = async (req: Request, res: Response): Pro
 
 export const templateGetController = async (req: Request, res: Response): Promise<void> => {
   const templateId = typeof req.query.templateId === 'string' ? req.query.templateId : '';
-  addUserOperationEntry('TEMPLATE_GET', `Fetched template with ID: ${templateId}`);
+  addUserOperationEntry('TEMPLATE_GET', `Request to fetch template information: '${templateId}'`);
   const template = new Template(templateId);
   const templateExists = await template.exists();
   if (!templateExists) {
@@ -54,6 +54,7 @@ export const templateGetController = async (req: Request, res: Response): Promis
 
 export const templateUpdateController = async (req: Request, res: Response): Promise<void> => {
   const templateId = typeof req.query.templateId === 'string' ? req.query.templateId : '';
+  addUserOperationEntry('TEMPLATE_UPDATE', `Request to update template information: '${templateId}'`);
   const templateData = req.body;
   const template = new Template(templateId);
   const templateExists = await template.exists();
@@ -87,7 +88,7 @@ export const templateUpdateController = async (req: Request, res: Response): Pro
 
 export const templateDeleteController = async (req: Request, res: Response): Promise<void> => {
   const templateId = typeof req.query.templateId === 'string' ? req.query.templateId : '';
-  addUserOperationEntry('TEMPLATE_DELETE', `Deleted template with ID: ${templateId}`);
+  addUserOperationEntry('TEMPLATE_DELETE', `Request to delete template: '${templateId}'`);
   const template = new Template(templateId);
   const templateExists = await template.exists();
   if (!templateExists) {
@@ -112,7 +113,7 @@ export const templateDeleteController = async (req: Request, res: Response): Pro
 };
 
 export const templateListController = async (req: Request, res: Response): Promise<void> => {
-  addUserOperationEntry('TEMPLATE_LIST', 'Listed templates');
+  addUserOperationEntry('TEMPLATE_LIST', 'Request to list templates');
   const templateListReq = req.body;
   const pageNum = templateListReq.meta
   && templateListReq.meta.pageNum ? templateListReq.meta.pageNum : 1;
@@ -139,6 +140,7 @@ export const templateListController = async (req: Request, res: Response): Promi
 
 export const templateCloneController = async (req: Request, res: Response): Promise<void> => {
   const templateId = typeof req.query.templateId === 'string' ? req.query.templateId : '';
+  addUserOperationEntry('TEMPLATE_CLONE', `Request to clone template: ${templateId}`);
   const template = new Template(templateId);
   const currentTemplateInfo = await template.get();
   const duplicateTemplateInfo = await template.set(currentTemplateInfo);

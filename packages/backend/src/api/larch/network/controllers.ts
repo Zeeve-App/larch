@@ -4,13 +4,13 @@ import {
   deleteNetwork, createNetwork, testNetwork,
 } from '../../../modules/network.js';
 import { addUserOperationEntry } from '../../../modules/user_operation.js';
-import { Network, getNetworkList } from '../../../modules/models/network.js';
+import { Network, NetworkInfo, getNetworkList } from '../../../modules/models/network.js';
 import { AppError } from '../../../utils/declaration.js';
 import { ExecRun, getExecRunList } from '../../../modules/models/exec_run.js';
 
 export const networkGetController = async (req: Request, res: Response): Promise<void> => {
   const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
-  addUserOperationEntry('NETWORK_GET', `Fetched network with Name: ${networkName}`);
+  addUserOperationEntry('NETWORK_GET', `Request to fetch network information: '${networkName}'`);
   const network = new Network(networkName);
   const networkExists = await network.exists();
   if (!networkExists) {
@@ -36,6 +36,7 @@ export const networkGetController = async (req: Request, res: Response): Promise
 
 export const networkUpdateController = async (req: Request, res: Response): Promise<void> => {
   const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
+  addUserOperationEntry('NETWORK_UPDATE', `Request to update network: '${networkName}'`);
   const networkData = req.body;
   const network = new Network(networkName);
   const networkExists = await network.exists();
@@ -68,7 +69,8 @@ export const networkUpdateController = async (req: Request, res: Response): Prom
 };
 
 export const networkCreateController = async (req: Request, res: Response) => {
-  const networkData = req.body;
+  const networkData: NetworkInfo = req.body;
+  addUserOperationEntry('NETWORK_CREATE', `Request to create network: '${networkData.name}'`);
   try {
     const networkRunInfo = await createNetwork(networkData);
     res.status(200).json({
@@ -95,7 +97,7 @@ export const networkCreateController = async (req: Request, res: Response) => {
 
 export const networkRunGetController = async (req: Request, res: Response) => {
   const runId = typeof req.query.runId === 'string' ? req.query.runId : '';
-  addUserOperationEntry('NETWORK_RUN_GET', `Fetched network run with id: ${runId}`);
+  addUserOperationEntry('NETWORK_RUN_GET', `Request to fetch network run information: '${runId}'`);
   const execRun = new ExecRun(runId);
   const execRunExists = await execRun.exists();
   if (!execRunExists) {
@@ -121,7 +123,7 @@ export const networkRunGetController = async (req: Request, res: Response) => {
 
 export const networkTestController = async (req: Request, res: Response) => {
   const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
-  addUserOperationEntry('NETWORK_TEST', `Test network with name: ${networkName}`);
+  addUserOperationEntry('NETWORK_TEST', `Request to test network: '${networkName}'`);
   try {
     const networkTestRunInfo = await testNetwork(networkName);
     res.status(200).json({
@@ -148,6 +150,7 @@ export const networkTestController = async (req: Request, res: Response) => {
 
 export const networkStatusController = async (req: Request, res: Response) => {
   const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
+  addUserOperationEntry('NETWORK_STATUS', `Request to fetch network status: '${networkName}'`);
   const network = new Network(networkName);
   const networkExists = await network.exists();
   if (!networkExists) {
@@ -175,7 +178,7 @@ export const networkStatusController = async (req: Request, res: Response) => {
 
 export const networkDeleteController = async (req: Request, res: Response) => {
   const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
-  addUserOperationEntry('NETWORK_DELETE', `Delete network with name: ${networkName}`);
+  addUserOperationEntry('NETWORK_DELETE', `Request to delete network: '${networkName}'`);
   try {
     await deleteNetwork(networkName);
     res.status(200).json({
@@ -201,7 +204,7 @@ export const networkDeleteController = async (req: Request, res: Response) => {
 };
 
 export const networkListController = async (req: Request, res: Response): Promise<void> => {
-  addUserOperationEntry('NETWORK_LIST', 'Listed networks');
+  addUserOperationEntry('NETWORK_LIST', 'Request to list networks');
   const networkListReq = req.body;
   const pageNum = networkListReq.meta
     && networkListReq.meta.pageNum ? networkListReq.meta.pageNum : 1;
@@ -227,7 +230,7 @@ export const networkListController = async (req: Request, res: Response): Promis
 };
 
 export const networkRunListController = async (req: Request, res: Response): Promise<void> => {
-  addUserOperationEntry('NETWORK_RUN_LIST', 'Listed networks and test runs');
+  addUserOperationEntry('NETWORK_RUN_LIST', 'Request to list networks and test runs');
   const networkRunListReq = req.body;
   const pageNum = networkRunListReq.meta
     && networkRunListReq.meta.pageNum ? networkRunListReq.meta.pageNum : 1;

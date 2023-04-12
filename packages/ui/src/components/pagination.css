@@ -1,0 +1,21 @@
+.pagination {
+  display: flex;
+  margin-top: 10px;
+  font-family: 'rubik';
+  font-size: 1rem;
+  gap: 3px;
+  padding: 8px 15px;
+}
+.pagination .page-link {
+  padding: 8px 15px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.pagination .page-link:hover {
+  background: linear-gradient(to right, #e6007a 0%, #9f125d 100%);
+  color: #fff;
+}
+.pagination .active {
+  background: linear-gradient(to right, #e6007a 0%, #9f125d 100%);
+  border-radius: 3px;
+}

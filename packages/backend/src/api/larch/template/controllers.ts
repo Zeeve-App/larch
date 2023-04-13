@@ -143,7 +143,9 @@ export const templateCloneController = async (req: Request, res: Response): Prom
   addUserOperationEntry('TEMPLATE_CLONE', `Request to clone template: ${templateId}`);
   const template = new Template(templateId);
   const currentTemplateInfo = await template.get();
-  const duplicateTemplateInfo = await template.set(currentTemplateInfo);
+  const newTemplate = new Template();
+  await newTemplate.set(currentTemplateInfo);
+  const duplicateTemplateInfo = await newTemplate.get();
   res.json({
     success: true,
     result: duplicateTemplateInfo,

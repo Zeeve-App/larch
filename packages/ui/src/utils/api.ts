@@ -1,4 +1,4 @@
-import { getCurrentEndpoint } from '../setting';
+import { getCurrentEndpoint } from './setting';
 
 type Payload = {
   meta?: {

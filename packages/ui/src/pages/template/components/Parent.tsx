@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import UserData from './table';
 import PaginatedItems from '../../../components/pagination';
-import { getTemplateList } from '../../../utils/apiCollection/fetchApi';
+import { getTemplateList } from '../../../utils/api';
+import { notify } from '../../../utils/notifications';
 
 export function Parent() {
   const [templateList, setTemplateList] = useState<any[]>([]);
   const [meta, setMeta] = useState<{ total: number }>({ total: 0 });
-  const [itemPerPage, setItemPerPage] = useState(5);
+  const [itemPerPage] = useState(5);
   const [pageNum, setPageNum] = useState(1);
   const onPageChange = (pageNumOnChange: number) => {
     setPageNum(pageNumOnChange);
@@ -21,11 +22,13 @@ export function Parent() {
     }).then((response) => {
       setTemplateList(response.result);
       setMeta(response.meta);
+    }).catch(() => {
+      notify('error', 'Failed to fetch template list');
     });
   }, [pageNum]);
 
   return (
-    <div>
+    <div className=' '>
       <table className='text-white border-2 border-border font-rubik w-full rounded'>
         <thead className='bg-create-button'>
           <tr className=' border-b-2 border-border'>

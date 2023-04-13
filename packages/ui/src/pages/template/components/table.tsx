@@ -1,42 +1,56 @@
+/* eslint-disable max-len */
+import { getFormattedLocalTime } from '../../../utils/time';
 
-export const UserData = ({ users }:any) => {
+/* eslint-disable react/button-has-type */
+type TemplateInfo = {
+  id: string
+  name: string;
+  networkProvider: string;
+  networkDirectory: string;
+  createdAt: string;
+  operation: string;
+};
 
-    return (
-        <>
-            {
-                users.map((tableusers: {
-                    id: any;
-                    name: any;
-                    networkProvider : any;
-                    networkDirectory : any;
-                    createdAt: any; 
-                    operation: any;
-                }) => {
+type TemplateListTableProps = {
+  templateList: TemplateInfo[],
+  onTemplateDelete: (templateId: string) => void,
+  onTemplateDuplicate :(templateId: string) => void
+};
+export default function TemplateListTable({ templateList, onTemplateDelete, onTemplateDuplicate }: TemplateListTableProps) {
+  return (
+    <table className='text-white border-2 border-border font-rubik w-full rounded'>
+      <thead className='bg-create-button'>
+        <tr className=' border-b-2 border-border'>
+          <th className='px-6 py-3 w-56.25 text-left' scope='col'>ID</th>
+          <th className='px-6 py-3 w-56.25 text-left' scope='col'>Template Name</th>
+          <th className='px-6 py-3 text-left' scope='col'>Provider</th>
+          <th className='px-6 py-3 text-left' scope='col'>Network Directory</th>
+          <th className='px-6 py-3' scope='col'>Created On </th>
+          <th className='px-6 py-3' scope='col'>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          templateList.map((template) => (
+            <tr className=' border-b-2 border-border rounded '>
+              <td className='px-6 py-3 w-max'>{template.id}</td>
+              <td className='px-6 py-3 w-max '>{template.name}</td>
+              <td className='px-6 py-3 w-max '>{template.networkProvider}</td>
+              <td className='px-6 py-3 w-max '>{template.networkDirectory}</td>
+              <td className='px-6 py-3 w-max text-center'>
+                {getFormattedLocalTime(template.createdAt)}
+              </td>
+              <td className='text-center'>
+                <button className='border-border border-2 rounded px-2 bg-create-button mr-2'>edit</button>
+                <button className='border-border border-2 rounded px-2 bg-create-button mr-2'>Create</button>
+                <button className='border-border border-2 rounded px-2 bg-create-button text-white mr-2 hover:bg-yellow hover:text-black' onClick={() => { onTemplateDelete(template.id); }}>Duplicate</button>
+                <button className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red hover:text-black' onClick={() => { onTemplateDuplicate(template.id); }}>Delete</button>
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
 
-                    const { id, name, networkProvider, networkDirectory
-                        , createdAt } = tableusers;
-                   
-                    return (
-                        <tr className=' border-b-2 border-border rounded '>
-                            <td className='px-6 py-3 w-56.25'>{id}</td>
-                            <td className='px-6 py-3 w-56.25 '>{name}</td>
-                            <td className='px-6 py-3 w-56.25 '>{networkProvider}</td>
-                            <td className='px-6 py-3 w-56.25 '>{networkDirectory}</td>
-                            <td className='px-6 py-3 w-56 text-center'>{new Date(
-                                createdAt.split(" ").join("T") + ".000Z").toString()}</td>
-                           
-                        </tr>
-                    )
-                })
-
-            }
-
-
-        </>
-
-    )
-
-
+  );
 }
-
-export default UserData;

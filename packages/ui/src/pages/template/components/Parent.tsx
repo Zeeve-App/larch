@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import UserData from './table';
+import TemplateListTable from './table';
 import PaginatedItems from '../../../components/pagination';
-import { getTemplateList } from '../../../utils/api';
+import { getTemplateList, deleteTemplate, duplicateTemplate } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
 
 export function Parent() {
@@ -11,6 +11,27 @@ export function Parent() {
   const [pageNum, setPageNum] = useState(1);
   const onPageChange = (pageNumOnChange: number) => {
     setPageNum(pageNumOnChange);
+  };
+  const onTemplateDelete = (templateId: string) => {
+    console.log('=================');
+
+    deleteTemplate(templateId)
+      .then(() => {
+        notify('success', 'Template deleted successfully');
+      }).catch(() => {
+        notify('error', 'Failed to delete template');
+      });
+  };
+
+  const onTemplateDuplicate = (templateId: string) => {
+    console.log('=================');
+
+    duplicateTemplate(templateId)
+      .then(() => {
+        notify('success', 'Template duplicated successfully');
+      }).catch(() => {
+        notify('error', 'Failed to duplicate template');
+      });
   };
 
   useEffect(() => {
@@ -29,23 +50,19 @@ export function Parent() {
 
   return (
     <div className=' '>
-      <table className='text-white border-2 border-border font-rubik w-full rounded'>
-        <thead className='bg-create-button'>
-          <tr className=' border-b-2 border-border'>
-            <th className='px-6 py-3 w-56.25 text-left' scope='col'>ID</th>
-            <th className='px-6 py-3 w-56.25 text-left' scope='col'>Template Name</th>
-            <th className='px-6 py-3 text-left' scope='col'>Provider</th>
-            <th className='px-6 py-3 text-left' scope='col'>Network Directory</th>
-            <th className='px-6 py-3' scope='col'>Created On </th>
-            <th className='px-6 py-3' scope='col'>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <UserData users={templateList} />
-        </tbody>
-      </table>
-      <div className='flex flex-row justify-end'>
-        <PaginatedItems itemsPerPage={itemPerPage} totalRecords={meta.total} onPageChange={onPageChange} />
+      <div className='h-[584px] flex flex-col justify-between'>
+        <TemplateListTable
+          templateList={templateList}
+          onTemplateDelete={onTemplateDelete}
+          onTemplateDuplicate={onTemplateDuplicate}
+        />
+        <div className='flex flex-row justify-end'>
+          <PaginatedItems
+            itemsPerPage={itemPerPage}
+            totalRecords={meta.total}
+            onPageChange={onPageChange}
+          />
+        </div>
       </div>
     </div>
   );

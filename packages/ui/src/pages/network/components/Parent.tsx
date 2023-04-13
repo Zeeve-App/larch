@@ -28,7 +28,7 @@ export default function Parent() {
   }, [pageNum]);
 
   return (
-    <div className=' '>
+    <div className='h-[584px] flex flex-col justify-between'>
       <NetworkListTable networkList={networkList} />
       <div className='flex flex-row justify-end'>
         <PaginatedItems itemsPerPage={itemPerPage} totalRecords={meta.total} onPageChange={onPageChange} />

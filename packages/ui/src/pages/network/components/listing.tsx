@@ -4,7 +4,7 @@ import PaginatedItems from '../../../components/pagination';
 import { getNetworkList } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
 
-export default function Parent() {
+export default function Listing() {
   const [networkList, setNetworkList] = useState<any[]>([]);
   const [meta, setMeta] = useState<{ total: number }>({ total: 0 });
   const [itemPerPage] = useState(5);
@@ -28,9 +28,9 @@ export default function Parent() {
   }, [pageNum]);
 
   return (
-    <div className='h-[584px] flex flex-col justify-between'>
+    <div className='flex flex-col justify-between'>
       <NetworkListTable networkList={networkList} />
-      <div className='flex flex-row justify-end'>
+      <div className='right-2 bottom-0 flex flex-row justify-end'>
         <PaginatedItems itemsPerPage={itemPerPage} totalRecords={meta.total} onPageChange={onPageChange} />
       </div>
     </div>

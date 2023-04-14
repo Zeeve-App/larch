@@ -1,3 +1,15 @@
+body {
+  background-color: #090D11;
+  height: 100vh;
+}
+
+#root {
+  background-color: #090D11;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

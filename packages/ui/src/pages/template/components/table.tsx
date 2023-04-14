@@ -32,7 +32,7 @@ export default function TemplateListTable({ templateList, onTemplateDelete, onTe
       <tbody>
         {
           templateList.map((template) => (
-            <tr className=' border-b-2 border-border rounded '>
+            <tr className='border-b-2 border-border rounded'>
               <td className='px-6 py-3 w-max'>{template.id}</td>
               <td className='px-6 py-3 w-max '>{template.name}</td>
               <td className='px-6 py-3 w-max '>{template.networkProvider}</td>
@@ -43,8 +43,8 @@ export default function TemplateListTable({ templateList, onTemplateDelete, onTe
               <td className='text-center'>
                 <button className='border-border border-2 rounded px-2 bg-create-button mr-2'>edit</button>
                 <button className='border-border border-2 rounded px-2 bg-create-button mr-2'>Create</button>
-                <button className='border-border border-2 rounded px-2 bg-create-button text-white mr-2 hover:bg-yellow hover:text-black' onClick={() => { onTemplateDelete(template.id); }}>Duplicate</button>
-                <button className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red hover:text-black' onClick={() => { onTemplateDuplicate(template.id); }}>Delete</button>
+                <button className='border-border border-2 rounded px-2 bg-create-button text-white mr-2 hover:bg-yellow hover:text-black' onClick={() => { onTemplateDuplicate(template.id); }}>Duplicate</button>
+                <button className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red hover:text-black' onClick={() => { onTemplateDelete(template.id); }}>Delete</button>
               </td>
             </tr>
           ))

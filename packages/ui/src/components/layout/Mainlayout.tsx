@@ -8,7 +8,7 @@ export default function MainLayout() {
   return (
     <>
       <Header />
-      <div className='flex flex-row gap-0 bg-black'>
+      <div className='flex flex-row gap-0 bg-black flex-1'>
         <Menu />
         <Outlet />
         <ToastContainer

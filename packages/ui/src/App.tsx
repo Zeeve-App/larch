@@ -2,14 +2,14 @@ import { useRoutes, RouteObject } from 'react-router-dom';
 import './App.css';
 import MainLayout from './components/layout/Mainlayout';
 import Dashboard from './pages/dashboard/page';
-import Network from './pages/network/components/network_content';
+import Network from './pages/network/page';
 import CreateNetwork from './pages/network/components/create_network/create_network';
 import CreateRelaychain from './pages/network/components/create_network/relaychain';
 import CreateParachain from './pages/network/components/create_network/parachain';
 import CreateCollator from './pages/network/components/create_network/collator';
 import CreateHrmp from './pages/network/components/create_network/hrmp';
 import Activity from './pages/activity/page';
-import Template from './pages/template/components/config';
+import Template from './pages/template/page';
 import Setting from './pages/setting/page';
 import DslEdit from './pages/dsl_edit/components/Main';
 

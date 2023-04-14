@@ -2,16 +2,21 @@
 
 A GUI for Substrate / Polkadot Zombinet application
 
-## Development
+## Usage
 
 - `npm i`
-- `npx lerna run build`
-
-
+- `npm run build`
+- `npm run start`
 
 ## Additional information
 
-License - GNU GPLv3 [license](./license)
+### Docs
+
+- [Docs](/docs)
+
+### License
+
+- GNU GPLv3 [license](./license)
 
 ## References:
 

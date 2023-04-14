@@ -29,9 +29,9 @@ export default function Listing() {
   }, [pageNum]);
 
   return (
-    <div className='h-[584px] flex flex-col justify-between'>
+    <div className='flex flex-col justify-between'>
       <ActivityListTable activityList={activityList} />
-      <div className='flex flex-row justify-end'>
+      <div className='right-2 bottom-0 flex flex-row justify-end'>
         <PaginatedItems itemsPerPage={itemPerPage} totalRecords={meta.total} onPageChange={onPageChange} />
       </div>
     </div>

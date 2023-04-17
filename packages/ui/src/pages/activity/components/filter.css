@@ -1,0 +1,5 @@
+.badge {
+  background: linear-gradient(to right, #e6007a 0%, #9f125d 100%);
+  color: white;
+  cursor: pointer;
+}

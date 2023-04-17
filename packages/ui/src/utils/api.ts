@@ -41,6 +41,10 @@ export const getUserActivityList = async (payload: Payload): Promise<Response> =
   { api: '/api/larch/user_operation/list', payload },
 );
 
+export const getFilteredActvityList = async (payload: Payload): Promise<Response> => fetchData(
+  { api: '/api/larch/user_operation/list', payload },
+);
+
 export const getNetworkList = async (payload: Payload): Promise<Response> => fetchData(
   { api: '/api/larch/network/list', payload },
 );

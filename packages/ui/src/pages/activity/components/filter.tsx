@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import './filter.css';
 import iconSearch from '../../../components/assets/Search.svg';
+import { useActivityFilterStore } from '../../../store/activityStore';
 
 interface SelectOptions {
   label: string;
@@ -37,6 +38,10 @@ export default function Filter() {
     },
   ] as SelectOptions[]);
 
+  const setActivityFilterData = useActivityFilterStore(
+    (state) => state.setActivityFilterData,
+  );
+
   const optionClick = (value: SelectOptions, index: number) => {
     const modifyObj: SelectOptions = { ...value };
     if (value.isSearchOpen) {
@@ -54,7 +59,6 @@ export default function Filter() {
   };
 
   const closeSearch = () => {
-    console.log('closeSearch', closeSearch);
     const arr: SelectOptions[] = [...options];
     arr.forEach((item: SelectOptions) => {
       // eslint-disable-next-line no-param-reassign
@@ -70,7 +74,7 @@ export default function Filter() {
   };
 
   const submitSearchData = () => {
-    console.log('options', options);
+    setActivityFilterData(options);
     closeSearch();
   };
 

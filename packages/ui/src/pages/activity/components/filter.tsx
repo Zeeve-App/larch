@@ -13,6 +13,9 @@ export default function Filter() {
     (state) => state.setActivityFilterData,
   );
 
+  const isFilterSubmit = useFilterSubmit(
+    (state) => state.isFilterSubmit,
+  );
   const setIsFilterSubmit = useFilterSubmit(
     (state) => state.setIsFilterSubmit,
   );
@@ -49,8 +52,8 @@ export default function Filter() {
   };
 
   const submitSearchData = () => {
-    setActivityFilterData(activityFilterData);
-    setIsFilterSubmit(true);
+    // setActivityFilterData(activityFilterData);
+    setIsFilterSubmit(!isFilterSubmit);
     closeSearch();
   };
 
@@ -61,7 +64,6 @@ export default function Filter() {
           <span
             aria-hidden
             onClick={() => optionClick(item, index)}
-            onBlur={closeSearch}
             className='badge h-10 text-white-800 text-md font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:text-white-400 border border-black-400'
           >
             {item.label}
@@ -70,19 +72,21 @@ export default function Filter() {
             <div>&darr;</div>
           </span>
           {item.isSearchOpen && (
-            <div className='w-[100px] h-12 bg-white border-2 border-border rounded flex'>
+            <div className='w-[100px] h-12 bg-white border-2 border-border rounded flex' style={{ position: 'absolute' }}>
               <input
-                className='form-control rounded text-black focus:outline-none bg-white me-2 font-rubik text-base'
+                type={item.key === 'date' ? 'date' : 'text'}
+                className='form-control mx-2 rounded text-black focus:outline-none bg-white me-2 font-rubik text-base'
                 placeholder='Search...'
                 value={item.inputValue}
                 onChange={(e) => searchHandler(e, index)}
+                onBlur={closeSearch}
               />
             </div>
           )}
         </div>
       ))}
       <div
-        className='w-[50px] h-10 bg-black border-2 border-white-400 rounded'
+        className='w-[50px] h-10 bg-black border-2 border-white-400 rounded search-icon'
         aria-hidden
         onClick={submitSearchData}
       >

@@ -5,7 +5,7 @@ import create from 'zustand';
 // Activity Filter Input Store Start
 interface ActivityFilterInput {
   label: string;
-  value: string | number;
+  key: string | number;
   inputValue: string;
   isSearchOpen: boolean;
 }
@@ -19,25 +19,25 @@ export const useActivityFilterStore = create<ActivityFilterInputStore>((set) => 
   activityFilterData: [
     {
       label: 'ID',
-      value: 'id',
+      key: 'id',
       inputValue: '',
       isSearchOpen: false,
     },
     {
       label: 'Operation Details',
-      value: 'operation_details',
+      key: 'operationDetail',
       inputValue: '',
       isSearchOpen: false,
     },
     {
       label: 'Date',
-      value: 'date',
+      key: 'date',
       inputValue: '',
       isSearchOpen: false,
     },
     {
       label: 'Opeartion',
-      value: 'opeartion',
+      key: 'opeartion',
       inputValue: '',
       isSearchOpen: false,
     },

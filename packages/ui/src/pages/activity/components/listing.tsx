@@ -4,7 +4,6 @@ import ActivityListTable from './table';
 import PaginatedItems from '../../../components/pagination';
 import {
   getUserActivityList,
-  getFilteredActvityList,
 } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
 import Filter from './filter';
@@ -47,16 +46,16 @@ export default function Listing() {
   useEffect(() => {
     console.log('isFilterSubmit', isFilterSubmit);
     const filterData = () => {
-      console.log('activityFilterData', activityFilterData);
+      const filter: { [name: string]: string } = {};
+      activityFilterData.forEach((item) => {
+        filter[item.key] = item.inputValue;
+      });
       const payload = {
-        filter: {
-          operation: '',
-          operationDetail: '',
-        },
+        filter,
         sort: [
           {
             field: 'date',
-            direction: sort,
+            direction: sort ? 'asc' : 'desc',
           },
         ],
         meta: {
@@ -64,9 +63,8 @@ export default function Listing() {
           numOfRec: itemPerPage,
         },
       };
-      getFilteredActvityList(payload)
+      getUserActivityList(payload)
         .then((response) => {
-          console.log('response', response);
           setActivityList(response.result);
           setMeta(response.meta);
         })

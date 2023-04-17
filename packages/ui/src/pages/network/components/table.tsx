@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { getFormattedLocalTime } from '../../../utils/time';
 
 type NetworkInfo = {
@@ -10,9 +11,10 @@ type NetworkInfo = {
 
 type NetworkListTableProps = {
   networkList: NetworkInfo[],
+  onNetworkDelete: (templateId: string)=> void
 };
 
-export default function NetworkListTable({ networkList }: NetworkListTableProps) {
+export default function NetworkListTable({ networkList, onNetworkDelete }: NetworkListTableProps) {
   return (
     <table className='text-white border-2 border-border font-rubik w-full rounded'>
       <thead className='bg-create-button'>
@@ -34,7 +36,14 @@ export default function NetworkListTable({ networkList }: NetworkListTableProps)
               <td className='px-6 py-3 w-56.25 '>{network.networkDirectory}</td>
               <td className='px-6 py-3 w-56 text-center'>{getFormattedLocalTime(network.createdAt)}</td>
               <td className='px-6 py-3 w-56.25 '>{network.networkState}</td>
-              <td ><button className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red hover:text-black' onClick={() => { onTemplateDelete(template.id); }}>Delete</button>
+              <td>
+                <button
+                  type='button'
+                  className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red hover:text-black'
+                  onClick={() => { onNetworkDelete(network.name); }}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))

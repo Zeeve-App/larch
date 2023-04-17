@@ -84,7 +84,7 @@ export class Network {
     return null;
   }
 
-  async getNetworkState(): Promise<any> {
+  async getNetworkState(): Promise<NetworkState> {
     const [result] = await this.db()
       .select('network_state')
       .where('name', this.name);

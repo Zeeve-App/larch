@@ -87,7 +87,7 @@ export default function Listing() {
         onCreateModal={onCreateModal}
 
       />
-      <PopUpBox visible={isOpen} onConfirm={onNetworkCreate} />
+      <PopUpBox isOpen={isOpen} setIsOpen={setIsOpen} onConfirm={onNetworkCreate} templateId={createNetTemplateId} />
       <div className='flex flex-row justify-end'>
         <PaginatedItems
           itemsPerPage={itemPerPage}

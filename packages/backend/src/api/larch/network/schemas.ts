@@ -3,7 +3,7 @@ import * as path from 'node:path';
 
 const networkInfo = {
   name: Joi.string().min(3).required().strict(),
-  configFilename: Joi.string().min(3).required().regex(/\.(json|toml)$/),
+  configFilename: Joi.string().min(3).required().regex(/\.(json|toml|yaml)$/),
   configContent: Joi.string().required().base64(),
   networkDirectory: Joi.string().required().custom((networkDirPath, helpers) => {
     const isValid = path.isAbsolute(networkDirPath);

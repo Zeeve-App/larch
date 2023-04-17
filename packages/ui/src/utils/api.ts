@@ -9,8 +9,9 @@ type Payload = {
 
 type PostApiParams = {
   api: string,
-  payload: Payload
+  payload: Payload | any
 };
+
 type GetApiParams = {
   api: string,
 };
@@ -25,6 +26,19 @@ type Response = {
 };
 
 export const fetchData = async ({ api, payload }: PostApiParams): Promise<Response> => {
+  const response = await fetch(`${getCurrentEndpoint()}${api}`, {
+    method: 'post',
+    body: JSON.stringify(payload),
+    headers: { 'Content-Type': 'application/json' },
+  });
+  if (response.status === 200) {
+    const data = await response.json();
+    return data;
+  }
+  throw new Error('API error');
+};
+
+export const sendData = async ({ api, payload }: PostApiParams): Promise<Response> => {
   const response = await fetch(`${getCurrentEndpoint()}${api}`, {
     method: 'post',
     body: JSON.stringify(payload),
@@ -66,4 +80,11 @@ export const deleteTemplate = async (templateId: string): Promise<Response> => g
 
 export const duplicateTemplate = async (templateId: string): Promise<Response> => getApiCall(
   { api: `/api/larch/template/clone?templateId=${templateId}` },
+);
+
+export const getTemplateData = async (templateId: string): Promise<Response> => getApiCall(
+  { api: `/api/larch/template?templateId=${templateId}` },
+);
+export const createNetwork = async (networkDetails: any): Promise<Response> => sendData(
+  { api: '/api/larch/network/create', payload: networkDetails },
 );

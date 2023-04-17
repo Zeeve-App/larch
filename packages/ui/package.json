@@ -12,6 +12,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.14",
+    "@heroicons/react": "^2.0.17",
     "@uiw/codemirror-extensions-langs": "^4.19.16",
     "@uiw/codemirror-themes": "^4.19.11",
     "@uiw/codemirror-themes-all": "^4.19.16",

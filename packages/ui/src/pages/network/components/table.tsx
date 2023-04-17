@@ -34,6 +34,8 @@ export default function NetworkListTable({ networkList }: NetworkListTableProps)
               <td className='px-6 py-3 w-56.25 '>{network.networkDirectory}</td>
               <td className='px-6 py-3 w-56 text-center'>{getFormattedLocalTime(network.createdAt)}</td>
               <td className='px-6 py-3 w-56.25 '>{network.networkState}</td>
+              <td ><button className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red hover:text-black' onClick={() => { onTemplateDelete(template.id); }}>Delete</button>
+              </td>
             </tr>
           ))
         }

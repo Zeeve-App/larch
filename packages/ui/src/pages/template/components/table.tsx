@@ -14,9 +14,10 @@ type TemplateInfo = {
 type TemplateListTableProps = {
   templateList: TemplateInfo[],
   onTemplateDelete: (templateId: string) => void,
-  onTemplateDuplicate :(templateId: string) => void
+  onTemplateDuplicate: (templateId: string) => void,
+  onCreateModal: (templateId: string) => void,
 };
-export default function TemplateListTable({ templateList, onTemplateDelete, onTemplateDuplicate }: TemplateListTableProps) {
+export default function TemplateListTable({ templateList, onTemplateDelete, onTemplateDuplicate, onCreateModal }: TemplateListTableProps) {
   return (
     <table className='text-white border-2 border-border font-rubik w-full rounded'>
       <thead className='bg-create-button'>
@@ -42,7 +43,9 @@ export default function TemplateListTable({ templateList, onTemplateDelete, onTe
               </td>
               <td className='text-center'>
                 <button className='border-border border-2 rounded px-2 bg-create-button mr-2'>edit</button>
-                <button className='border-border border-2 rounded px-2 bg-create-button mr-2'>Create</button>
+                <button className='border-border border-2 rounded px-2 bg-create-button mr-2' onClick={() => { onCreateModal(template.id); }}>
+                  Create
+                </button>
                 <button className='border-border border-2 rounded px-2 bg-create-button text-white mr-2 hover:bg-yellow hover:text-black' onClick={() => { onTemplateDuplicate(template.id); }}>Duplicate</button>
                 <button className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red hover:text-black' onClick={() => { onTemplateDelete(template.id); }}>Delete</button>
               </td>

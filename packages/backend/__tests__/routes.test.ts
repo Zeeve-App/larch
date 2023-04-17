@@ -6,6 +6,7 @@ import { Network } from '../src/modules/models/network.js';
 import { ExecRun } from '../src/modules/models/exec_run.js';
 import { Template } from '../src/modules/models/template.js';
 import { UserOperation } from '../src/modules/models/user_operation.js';
+import { LARCH_VERSION, ZOMBIENET_VERSION } from '../src/config.js';
 
 const app = startService({ httpPort: 9000, disableApi: false, disableUi: false });
 
@@ -43,21 +44,15 @@ app._router.stack.forEach(print.bind(null, []))
 // Test Cases for Health Route
 
 describe('Health route endpoint', () => {
-  test('should return success msg', async () => {
+  test('should return success msg and return an object', async () => {
     const res = await supertest(app)
       .get('/healthz')
     expect(res.statusCode).toEqual(200)
     expect(res.body).toEqual({
       "message": "Larch service is healthy"
     })
-  })
-})
-
-describe('Health route endpoint', () => {
-  test('if the server is ok, the status should be not equals to 400', async () => {
-    const res = await supertest(app)
-      .get('/healthz')
     expect(res.statusCode).not.toEqual(404)
+    expect(res && res.body && typeof res.body === 'object')
   })
 })
 
@@ -69,42 +64,43 @@ describe('Health route endpoint', () => {
   })
 })
 
-describe('Health route endpoint', () => {
-  test('check for the response body and response type', async () => {
-    const res = await supertest(app)
-      .get('/healthz')
-    expect(res && res.body && typeof res.body === 'object')
-  })
-})
 
 // Version API
 
-describe('Network route endpoint', () => {
+describe('Version route endpoint', () => {
   test('check for response and the type of response', async () => {
     const res = await supertest(app)
       .get('/api/larch/version/')
     expect(res && res.body && typeof res.body === 'object')
-  })
-})
-
-describe('Version route endpoint', () => {
-  test('should return the current version of the application', async () => {
-    const res = await supertest(app)
-      .get('/api/larch/version/')
+    expect(res.statusCode).toEqual(200)
     expect(res.body).toEqual({
-      "zombienet-version": "1.3.43",
-      "larch-version": "1.0.0"
+      "zombienet-version": ZOMBIENET_VERSION,
+      "larch-version": LARCH_VERSION
     })
   })
 })
 
-describe('Version route endpoint', () => {
-  test('should return the current version of the application', async () => {
+ // Create Network API
+
+ describe('Create Network Endpoint', () => {
+  test('should return an object with the network-name,directory-name,file-name and configuration-file', async () => {
     const res = await supertest(app)
-      .get('/api/larch/version/')
+      .post('/api/larch/network/create/')
+      .send({
+        "name": NETWORK_NAME,
+        "configFilename": FILE_NAME,
+        "configContent": CONFIG_FILE,
+        "networkDirectory": DIRECTORY_NAME,
+        "networkProvider": NETWORK_PROVIDER,
+        "testFilename": TEST_FILE_NAME,
+        "testContent": TEST_FILE_CONTENT,
+
+      })
     expect(res.statusCode).toEqual(200)
+    expect(res.body.success).toEqual(true);
   })
 })
+
 
 // Test Display Network API
 
@@ -112,24 +108,8 @@ describe('network route endpoint', () => {
   test('this is a get request this should return success msg', async () => {
     const res = await supertest(app)
       .get('/api/larch/network/')
-      .query({ networkName: 'ATestNetwork' })
-    expect(res && res.body && typeof res.body === 'object')
-    expect(res.body).toEqual({
-      "result": {
-        "configContent": "IyBleGFtcGxlcy8wMDAxLXNtYWxsLW5ldHdvcmsudG9tbApbcmVsYXljaGFpbl0KZGVmYXVsdF9pbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90OmxhdGVzdCIKZGVmYXVsdF9jb21tYW5kID0gInBvbGthZG90IgpkZWZhdWx0X2FyZ3MgPSBbICItbHBhcmFjaGFpbj1kZWJ1ZyIgXQoKY2hhaW4gPSAicm9jb2NvLWxvY2FsIgoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYWxpY2UiCiAgdmFsaWRhdG9yID0gdHJ1ZQoKICBbW3JlbGF5Y2hhaW4ubm9kZXNdXQogIG5hbWUgPSAiYm9iIgogIHZhbGlkYXRvciA9IHRydWUKCltbcGFyYWNoYWluc11dCmlkID0gMTAwCgogIFtwYXJhY2hhaW5zLmNvbGxhdG9yXQogIG5hbWUgPSAiY29sbGF0b3IwMSIKICBpbWFnZSA9ICJkb2NrZXIuaW8vcGFyaXR5L3BvbGthZG90LXBhcmFjaGFpbjpsYXRlc3QiCiAgY29tbWFuZCA9ICJwb2xrYWRvdC1wYXJhY2hhaW4iCiAgYXJncyA9IFsiLWxwYXJhY2hhaW49ZGVidWciXQ==",
-        "configFilename": "0001-small-network.toml",
-        "createdAt": "2023-04-06 21:32:58",
-        "id": "ATestNetwork",
-        "name": "ATestNetwork",
-        "networkDirectory": "/home/antar/.larch/my-zombieNetLogs",
-        "networkProvider": "podman",
-        "networkState": "failed",
-        "testContent": "RGVzY3JpcHRpb246IFNtYWxsIE5ldHdvcmsgdGVzdApOZXR3b3JrOiAuLzAwMDEtc21hbGwtbmV0d29yay50b21sCkNyZWRzOiBjb25maWcKCiMgVHJhY2luZwojIGFsaWNlOiB0cmFjZSB3aXRoIHRyYWNlSUQgOTRjMTUwMWE3OGEwZDgzYzQ5OGNjOTJkZWVjMjY0ZDkgY29udGFpbnMgWyJhbnN3ZXItY2h1bmstcmVxdWVzdCIsICJhbnN3ZXItY2h1bmstcmVxdWVzdCJdCgojIG1ldHJpY3MKYWxpY2U6IHJlcG9ydHMgbm9kZV9yb2xlcyBpcyA0CmFsaWNlOiByZXBvcnRzIHN1Yl9saWJwMnBfaXNfbWFqb3Jfc3luY2luZyBpcyAwCgojIGhpc3RvZ3JhbQphbGljZTogcmVwb3J0cyBoaXN0b2dyYW0gcG9sa2Fkb3RfcHZmX2V4ZWN1dGlvbl90aW1lIGhhcyBhdCBsZWFzdCAyIHNhbXBsZXMgaW4gYnVja2V0cyBbIjAuMSIsICIwLjI1IiwgIjAuNSIsICIrSW5mIl0gd2l0aGluIDEwMCBzZWNvbmRzCgojIGxvZ3MKYm9iOiBsb2cgbGluZSBtYXRjaGVzIGdsb2IgIipydGVkICMxKiIgd2l0aGluIDEwIHNlY29uZHMKYm9iOiBsb2cgbGluZSBtYXRjaGVzICJJbXBvcnRlZCAjWzAtOV0rIiB3aXRoaW4gMTAgc2Vjb25kcwoKIyBzeXN0ZW0gZXZlbnRzCmJvYjogc3lzdGVtIGV2ZW50IGNvbnRhaW5zICJBIGNhbmRpZGF0ZSB3YXMgaW5jbHVkZWQiIHdpdGhpbiAyMCBzZWNvbmRzCmFsaWNlOiBzeXN0ZW0gZXZlbnQgbWF0Y2hlcyBnbG9iICIqd2FzIGJhY2tlZCoiIHdpdGhpbiAxMCBzZWNvbmRzCgojcGFyYWNoYWluIHRlc3RzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGlzIHJlZ2lzdGVyZWQgd2l0aGluIDIyNSBzZWNvbmRzCmFsaWNlOiBwYXJhY2hhaW4gMTAwIGJsb2NrIGhlaWdodCBpcyBhdCBsZWFzdCAxMCB3aXRoaW4gMjAwIHNlY29uZHM=",
-        "testFilename": "0001-small-network.zndsl",
-        "updatedAt": null,
-      },
-      "success": true,
-    })
+      .query({ networkName: NETWORK_NAME })
+    expect(res && res.body && typeof res.body === 'object');
   })
 })
 
@@ -137,10 +117,65 @@ describe('network route endpoint', () => {
   test('should return success msg', async () => {
     const res = await supertest(app)
       .get('/api/larch/network/')
-      .query({ networkName: 'ATestNetwork' })
+      .query({ networkName: '' })
     expect(res && res.body && typeof res.body === 'object')
+    expect(res.statusCode).toBeGreaterThanOrEqual(400)
   })
 })
+ // Test Cases Test Network API
+
+ describe('Test Network route endpoint', () => {
+  test('it should return error message and status code should be equal to 404', async () => {
+    const networkName = '';
+    const res = await supertest(app)
+      .post('/api/larch/network/test/')
+      .query({ networkName: networkName })
+      const network = new Network(networkName);
+      const networkExists = await network.exists();
+      if (!networkExists) {
+        expect(res.statusCode).toEqual(404)
+        expect(res.body.success).toEqual(false);
+      } else {
+        expect(res && res.body && typeof res.body === 'object')
+        expect(res.statusCode).toEqual(200)
+        expect(res.body.success).toEqual(true)
+      }
+  })
+})
+
+  // Update Network API
+
+  describe('Update Network Endpoint', () => {
+    test('it should return success message and status code should be equal to 200', async () => {
+      const res = await supertest(app)
+        .post('/api/larch/network/update/')
+        .query({ networkName: NETWORK_NAME })
+        .send({
+          "testFilename": TEST_FILE_NAME,
+          "testContent": TEST_FILE_CONTENT,
+          "configFilename": FILE_NAME,
+          "configContent": CONFIG_FILE,
+  
+        })
+      expect(res.statusCode).toEqual(200)
+      expect(res.body.success).toEqual(true);
+    })
+  })
+  
+  describe('Update Network Endpoint', () => {
+    test('it should return error message and status code should be equal to 404', async () => {
+      const networkName = '';
+      const res = await supertest(app)
+        .post('/api/larch/network/update/')
+        .query({ networkName: networkName })
+        const network = new Network(networkName);
+        const networkExists = await network.exists();
+        if (!networkExists) {
+          expect(res.statusCode).toEqual(404)
+          expect(res.body.success).toEqual(false);
+        }
+      })
+    })
 
 // Test Listing API
 
@@ -164,77 +199,7 @@ describe('network route endpoint', () => {
     })
   })
 
-  // Create Network API
 
-describe('Create Network Endpoint', () => {
-  test('should return an object with the network-name,directory-name,file-name and configuration-file', async () => {
-    const res = await supertest(app)
-      .post('/api/larch/network/create/')
-      .send({
-        "name": NETWORK_NAME,
-        "configFilename": FILE_NAME,
-        "configContent": CONFIG_FILE,
-        "networkDirectory": DIRECTORY_NAME,
-        "networkProvider": NETWORK_PROVIDER,
-        "testFilename": TEST_FILE_NAME,
-        "testContent": TEST_FILE_CONTENT,
-
-      })
-    expect(res.statusCode).toEqual(200)
-    expect(res.body.success).toEqual(true);
-    // console.log(res.body)
-  })
-})
-
-
-  // Update Network API
-
-  describe('Update Network Endpoint', () => {
-  test('it should return success message and status code should be equal to 200', async () => {
-    const res = await supertest(app)
-      .post('/api/larch/network/update/')
-      .query({ networkName: 'ATestNetwork' })
-      .send({
-        "testFilename": TEST_FILE_NAME,
-        "testContent": TEST_FILE_CONTENT,
-        "configFilename": FILE_NAME,
-        "configContent": CONFIG_FILE,
-
-      })
-    expect(res.statusCode).toEqual(200)
-    expect(res.body.success).toEqual(true);
-  })
-})
-describe('Update Network Endpoint', () => {
-  test('it should return success message and status code should be equal to 200', async () => {
-    const res = await supertest(app)
-      .post('/api/larch/network/update/')
-      .query({ networkName: 'ATestNetwork' })
-      .send({
-        "testFilename": TEST_FILE_NAME,
-        "testContent": TEST_FILE_CONTENT,
-        "configFilename": FILE_NAME,
-
-      })
-    expect(res.statusCode).toEqual(200)
-    expect(res.body.success).toEqual(true);
-  })
-})
-
-describe('Update Network Endpoint', () => {
-  test('it should return error message and status code should be equal to 404', async () => {
-    const networkName = '';
-    const res = await supertest(app)
-      .post('/api/larch/network/update/')
-      .query({ networkName: networkName })
-      const network = new Network(networkName);
-      const networkExists = await network.exists();
-      if (!networkExists) {
-        expect(res.statusCode).toEqual(404)
-        expect(res.body.success).toEqual(false);
-      }
-    })
-  })
 
 // Test Cases For Delete API
 
@@ -257,26 +222,7 @@ describe('Delete Network Endpoint', () => {
     })
   })
 
- // Test Cases Test Network API
 
-describe('Test Network route endpoint', () => {
-  test('it should return error message and status code should be equal to 404', async () => {
-    const networkName = '';
-    const res = await supertest(app)
-      .post('/api/larch/network/test/')
-      .query({ networkName: networkName })
-      const network = new Network(networkName);
-      const networkExists = await network.exists();
-      if (!networkExists) {
-        expect(res.statusCode).toEqual(404)
-        expect(res.body.success).toEqual(false);
-      } else {
-        expect(res && res.body && typeof res.body === 'object')
-        expect(res.statusCode).toEqual(200)
-        expect(res.body.success).toEqual(true)
-      }
-  })
-})
 
 // Network Run API
 

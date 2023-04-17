@@ -25,8 +25,10 @@ async function networkStatusUpdate() {
   const networkUpdatePromiseList: Promise<any>[] = [];
   for (let i = 0; i < networkList.length; i++) {
     try {
-      const status = await getLatestStatusCode(networkList[i].name);
       const network = new Network(networkList[i].name);
+      // eslint-disable-next-line no-continue
+      if ((await network.getNetworkState()) === 'failed') continue;
+      const status = await getLatestStatusCode(networkList[i].name);
       let state: NetworkState = 'failed';
       if (status === null) state = 'creating';
       if (status === 0) state = 'running';
@@ -96,16 +98,23 @@ export const createNetwork = async (networkInfo: NetworkInfo): Promise<{
       message: `Network with network name ${networkInfo.name} already exists`,
     });
   }
-  await network.set({ ...networkInfo, networkState: 'creating' });
-
   const networkDirPath = `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkInfo.name}`;
   const networkConfigPath = `${networkDirPath}/${networkInfo.configFilename}`;
-  await createDir(networkDirPath);
-  await createDir(networkInfo.networkDirectory);
-  await writeToFileFromBase64(networkConfigPath, networkInfo.configContent);
-  if (networkInfo.testFilename && networkInfo.testContent) {
-    const networkTestConfigPath = `${networkDirPath}/${networkInfo.testFilename}`;
-    await writeToFileFromBase64(networkTestConfigPath, networkInfo.testContent);
+  try {
+    await network.set({ ...networkInfo, networkState: 'creating' });
+    await createDir(networkDirPath);
+    await createDir(networkInfo.networkDirectory);
+    await writeToFileFromBase64(networkConfigPath, networkInfo.configContent);
+    if (networkInfo.testFilename && networkInfo.testContent) {
+      const networkTestConfigPath = `${networkDirPath}/${networkInfo.testFilename}`;
+      await writeToFileFromBase64(networkTestConfigPath, networkInfo.testContent);
+    }
+  } catch (error) {
+    await network.set({ ...networkInfo, networkState: 'failed' });
+    throw new AppError({
+      kind: 'NETWORK_DIR_CREATE_ERROR',
+      message: `Network dir creation error with network name ${networkInfo.name}`,
+    });
   }
   await runZombienet({
     spawn: true,
@@ -134,7 +143,7 @@ export const testNetwork = async (networkName: string): Promise<{
     });
   }
   const networkInfo = await network.get();
-  const testDirectoryName:string = `${networkInfo.networkDirectory}-test`;
+  const testDirectoryName: string = `${networkInfo.networkDirectory}-test`;
   const networkDirPath = `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkInfo.name}`;
 
   await runZombienet({

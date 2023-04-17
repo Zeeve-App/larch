@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react'
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
-import { myTheme } from './theme';
+import myTheme from './theme';
 import { getStatistics } from './linecount'
 
 

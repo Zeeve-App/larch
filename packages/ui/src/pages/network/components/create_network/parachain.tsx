@@ -1,78 +1,127 @@
-import React, { SyntheticEvent } from 'react';
-import { useEffect } from 'react';
-import NavBar from './navbar';
-import IconUp from "./assets/upload.svg";
-import { Input } from 'postcss';
+/* eslint-disable max-len */
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import NavBar from './navbar';
+import IconUp from './assets/upload.svg';
 
+type Collator = {
+  name: string,
+  image: string,
+  command: string
+  args: string[]
+};
+
+type Parachain = {
+  id: string,
+  addToGenesis: boolean,
+  collator: Collator
+};
 
 export function CreateParachain() {
+  const [parachains, setParachains] = useState<Parachain[]>([]);
+
+  const updateParachains = (updateIndex: number, updateContent: any) => {
+    setParachains(parachains.map((parachain, index) => {
+      if (index !== updateIndex) return parachain;
+      return {
+        ...parachain,
+        ...updateContent,
+      };
+    }));
+  };
+
+  const removeParachainsAtIndex = (delIndex: number) => {
+    if (parachains.length > 0) {
+      setParachains(parachains.filter((ele, index) => !(index === delIndex)));
+    }
+  };
 
   useEffect(() => {
-    onload
-    console.log('create relay netwrok page load')
+    console.log('create relay network page load');
+  }, []);
 
-  }, [])
   return (
     <div className=' flex-col flex'>
       <NavBar pageSlug='parachain_config' />
-      <div className='w-[750px] h-[560px]'>
+      <div className=''>
         <div className='text-white pl-4 py-4 font-rubik flex flex-col gap-y-3'>
           <div className='flex flex-row gap-x-4'>
-            <span className='pt-3'>ID</span>
+            <span className='pt-3 font-extrabold'>Parachain</span>
+            <button
+              type='button'
+              className='bg-red hover:bg-violet-700 text-white font-bold ml-2 py-1 px-4 rounded-full'
+              onClick={() => {
+                setParachains([...parachains, {
+                  id: '',
+                  addToGenesis: false,
+                  collator: {
+                    name: '',
+                    image: '',
+                    command: '',
+                    args: [],
+                  },
+                }]);
+              }}
+            >
+              Add Node
+            </button>
+          </div>
+          {parachains.map((parachain, index) => (
             <div className='flex flex-row items-start py-1.5 px-4'>
-              <input className='bg-black text-white border-2 rounded border-border py-1.5 px-2 flex flex-row'></input>
-            </div>
-
-            <span className='pt-3'>Add to</span>
-            <div className='flex flex-row items-start py-1.5 px-4'>
-              <div className='w-max border-border border-2 gap-x-3 rounded py-0.5 px-0.5 '>
-              <button className=' text-white px-3 py-1 border-border border-2 rounded'>Genesis</button>
-              <button className='text-white px-2 py-1 rounded border-border border-2 '>Runtime</button>
-            </div>
-            </div>
-          </div>
-         
-          <div className='text-white py-4 font-rubik flex flex-row gap-3'>
-            <label className=''>Enable Cumulus</label>
-            <input type="checkbox" className='bg-black ' />
-          </div>
-
-          <div className='text-white  py-4 font-rubik flex flex-col gap-y-3'>
-            <span >WASM file(Create/Edit)</span>
-            <div className='w-max h-max border-border flex flex-col items-center py-12 px-12 rounded border-2 '>
-              <div>
-                <img className="w-6 h-6  m-2.5  " src={IconUp} alt="" />
+              <div className='flex flex-col pl-4 border-stone-200 border-solid items-start py-1.5 px-4'>
+                <div className='flex flex-row gap-x-4'>
+                  <span className='pt-3 font-extrabold'>ID</span>
+                  <input className='bg-black border-border border-2 rounded w-[250px]' type='text' name='id' value={parachain.id} onChange={(element) => updateParachains(index, { id: element.target.value })} />
+                </div>
+                <br />
+                <div className='flex flex-row gap-x-4'>
+                  <span className='pt-3 font-extrabold'>Add to genesis</span>
+                  <input className='bg-black border-border border-2 rounded w-[1em]' type='checkbox' name='add_to_genesis' defaultChecked={parachain.addToGenesis} onChange={() => updateParachains(index, { addToGenesis: !parachains[index].addToGenesis })} />
+                </div>
+                <div className='flex flex-row gap-x-4'>
+                  <span className='pt-3 font-extrabold'>Collator</span>
+                </div>
+                <div className='flex flex-col pl-4 border-stone-200 border-solid items-start py-1.5 px-4'>
+                  <div className='flex flex-row gap-x-4 pt-2'>
+                    <span className='pt-3 font-extrabold'>Name</span>
+                    <input className='bg-black border-border border-2 rounded w-[250px]' type='text' name='id' value={parachain.collator.name} onChange={(element) => updateParachains(index, { collator: { ...parachain.collator, name: element.target.value } })} />
+                  </div>
+                  <br />
+                  <div className='flex flex-row gap-x-4 pt-2'>
+                    <span className='pt-3 font-extrabold'>Image</span>
+                    <input className='bg-black border-border border-2 rounded w-[250px]' type='text' name='image' value={parachain.collator.image} onChange={(element) => updateParachains(index, { collator: { ...parachain.collator, image: element.target.value } })} />
+                  </div>
+                  <br />
+                  <div className='flex flex-row gap-x-4 pt-2'>
+                    <span className='pt-3 font-extrabold'>Command</span>
+                    <input className='bg-black border-border border-2 rounded w-[250px]' type='text' name='command' value={parachain.collator.command} onChange={(element) => updateParachains(index, { collator: { ...parachain.collator, command: element.target.value } })} />
+                  </div>
+                  <br />
+                  <div className='flex flex-row gap-x-4 pt-2'>
+                    <span className='pt-3 font-extrabold'>Arguments</span>
+                    <button type='button' className='bg-red hover:bg-violet-700 text-white font-bold ml-2 py-1 px-4 rounded-full' onClick={() => { updateParachains(index, { collator: { ...parachain.collator, args: [...parachain.collator.args, ''] } }); }}>Add Argument</button>
+                  </div>
+                  {parachain.collator.args && parachain.collator.args.map((argument, argIndex) => (
+                    <div className='flex flex-row items-start py-1.5 px-4'>
+                      <input className='bg-black border-border border-2 rounded w-[250px]' type='arguments' name='arguments' value={argument} />
+                      <button type='button' className='bg-red hover:bg-violet-700 text-white font-bold ml-2 py-1 px-4 rounded-full' onClick={() => { updateParachains(index, { collator: { ...parachain.collator, args: parachain.collator.args.filter((_, currArgIndex) => currArgIndex !== argIndex) } }); }}>Delete Argument</button>
+                      <br />
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div>
-                <h3 className='font-rubik'>Select from Template or upload from spec files</h3>
-              </div>
+              <button type='button' className='bg-red hover:bg-violet-700 text-white font-bold ml-2 py-1 px-4 rounded-full' onClick={() => removeParachainsAtIndex(index)}>Delete Node</button>
+              <br />
             </div>
-            <div className='flex flex-row gap-x-4'>
-              <span className='pt-3'>Command to Genrate WASM</span>
-              <div className='flex flex-row items-start py-1.5 px-4'>
-                <input className='bg-black border-border border-2 rounded py-1 px-2 w-[250px]'></input>
-              </div>
-            </div>
-          </div>
-          <div className='text-white  py-4 font-rubik flex flex-col gap-y-1 pt-2'>
-            <div className='flex flex-row gap-x-4'>
-              <span className='pt-3 font-rubik'>State file</span>
-              <div className='flex flex-row items-start py-1.5 px-4'>
-              </div>              
-            </div>
-          </div>
+          ))}
         </div>
       </div>
       <div className='h-18 gap-x-6 px-6  w-full border-b-2 flex flex-row border-border'></div>
       <div className='flex justify-end py-4 gap-x-4'>
-      <Link to="/template/createNetwork/relaychain"><button className='text-white border-border border-2 rounded py-2 px-4 bg-gray'>Back</button></Link>
-      <Link to="/template/createNetwork/collator"><button className='text-white border-border border-2 rounded py-2 px-4 bg-gray'>Next</button></Link>
+        <Link to='/template/createNetwork/relaychain'><button className='text-white border-border border-2 rounded py-2 px-4 bg-gray'>Back</button></Link>
+        <Link to='/template/createNetwork/collator'><button className='text-white border-border border-2 rounded py-2 px-4 bg-gray'>Next</button></Link>
       </div>
-
     </div>
-
   );
-
 }
 export default CreateParachain;

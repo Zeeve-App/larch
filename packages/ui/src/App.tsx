@@ -4,7 +4,7 @@ import MainLayout from './components/layout/Mainlayout';
 import Dashboard from './pages/dashboard/page';
 import Network from './pages/network/page';
 import CreateNetwork from './pages/network/components/create_network/create_network';
-import CreateRelaychain from './pages/network/components/create_network/relaychain';
+import CreateRelayChain from './pages/network/components/create_network/relaychain';
 import CreateParachain from './pages/network/components/create_network/parachain';
 import CreateCollator from './pages/network/components/create_network/collator';
 import CreateHrmp from './pages/network/components/create_network/hrmp';
@@ -38,7 +38,7 @@ const routes: RouteObject[] = [
       },
       {
         path: ('/template/createNetwork/relaychain'),
-        element: <CreateRelaychain />,
+        element: <CreateRelayChain />,
       },
       {
         path: ('/template/createNetwork/parachain'),

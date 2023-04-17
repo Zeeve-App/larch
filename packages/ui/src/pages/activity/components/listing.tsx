@@ -8,7 +8,7 @@ import {
 } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
 import Filter from './filter';
-import { useActivityFilterStore } from '../../../store/activityStore';
+import { useActivityFilterStore, useFilterSubmit } from '../../../store/activityStore';
 
 export default function Listing() {
   const [activityList, setActivityList] = useState<any[]>([]);
@@ -19,6 +19,9 @@ export default function Listing() {
 
   const activityFilterData = useActivityFilterStore(
     (state) => state.activityFilterData,
+  );
+  const isFilterSubmit = useFilterSubmit(
+    (state) => state.isFilterSubmit,
   );
 
   const onPageChange = (pageNumOnChange: number) => {
@@ -42,6 +45,7 @@ export default function Listing() {
   }, [pageNum]);
 
   useEffect(() => {
+    console.log('isFilterSubmit', isFilterSubmit);
     const filterData = () => {
       console.log('activityFilterData', activityFilterData);
       const payload = {
@@ -71,7 +75,7 @@ export default function Listing() {
         });
     };
     filterData();
-  }, [activityFilterData, sort]);
+  }, [isFilterSubmit, sort]);
 
   return (
     <>

@@ -1,45 +1,20 @@
 /* eslint-disable max-len */
-import React, { useState } from 'react';
+import React from 'react';
 import './filter.css';
 import iconSearch from '../../../components/assets/Search.svg';
-import { useActivityFilterStore } from '../../../store/activityStore';
+import { useActivityFilterStore, useFilterSubmit } from '../../../store/activityStore';
+import { SelectOptions } from '../declaration';
 
-interface SelectOptions {
-  label: string;
-  value: string | number;
-  inputValue: string;
-  isSearchOpen: boolean;
-}
 export default function Filter() {
-  const [options, setOptions] = useState([
-    {
-      label: 'ID',
-      value: 'id',
-      inputValue: '',
-      isSearchOpen: false,
-    },
-    {
-      label: 'Operation Details',
-      value: 'operation_details',
-      inputValue: '',
-      isSearchOpen: false,
-    },
-    {
-      label: 'Date',
-      value: 'date',
-      inputValue: '',
-      isSearchOpen: false,
-    },
-    {
-      label: 'Opeartion',
-      value: 'opeartion',
-      inputValue: '',
-      isSearchOpen: false,
-    },
-  ] as SelectOptions[]);
-
+  const activityFilterData = useActivityFilterStore(
+    (state) => state.activityFilterData,
+  );
   const setActivityFilterData = useActivityFilterStore(
     (state) => state.setActivityFilterData,
+  );
+
+  const setIsFilterSubmit = useFilterSubmit(
+    (state) => state.setIsFilterSubmit,
   );
 
   const optionClick = (value: SelectOptions, index: number) => {
@@ -49,38 +24,39 @@ export default function Filter() {
     } else {
       modifyObj.isSearchOpen = true;
     }
-    const arr: SelectOptions[] = [...options];
+    const arr: SelectOptions[] = [...activityFilterData];
     arr.forEach((item: SelectOptions) => {
       // eslint-disable-next-line no-param-reassign
       item.isSearchOpen = false;
     });
     arr[index] = modifyObj;
-    setOptions(arr);
+    setActivityFilterData(arr);
   };
 
   const closeSearch = () => {
-    const arr: SelectOptions[] = [...options];
+    const arr: SelectOptions[] = [...activityFilterData];
     arr.forEach((item: SelectOptions) => {
       // eslint-disable-next-line no-param-reassign
       item.isSearchOpen = false;
     });
-    setOptions(arr);
+    setActivityFilterData(arr);
   };
 
   const searchHandler = (e: any, index: number) => {
-    const arr: SelectOptions[] = [...options];
+    const arr: SelectOptions[] = [...activityFilterData];
     arr[index].inputValue = e.target.value;
-    setOptions(arr);
+    setActivityFilterData(arr);
   };
 
   const submitSearchData = () => {
-    setActivityFilterData(options);
+    setActivityFilterData(activityFilterData);
+    setIsFilterSubmit(true);
     closeSearch();
   };
 
   return (
     <div className='flex justify-between px-4 gap-3'>
-      {options.map((item, index: number) => (
+      {activityFilterData.map((item, index: number) => (
         <div key={`filter-${index.toString()}`}>
           <span
             aria-hidden

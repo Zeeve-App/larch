@@ -16,15 +16,49 @@ interface ActivityFilterInputStore {
 }
 
 export const useActivityFilterStore = create<ActivityFilterInputStore>((set) => ({
-  activityFilterData: [{
-    label: '',
-    value: '',
-    inputValue: '',
-    isSearchOpen: false,
-  }],
+  activityFilterData: [
+    {
+      label: 'ID',
+      value: 'id',
+      inputValue: '',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Operation Details',
+      value: 'operation_details',
+      inputValue: '',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Date',
+      value: 'date',
+      inputValue: '',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Opeartion',
+      value: 'opeartion',
+      inputValue: '',
+      isSearchOpen: false,
+    },
+  ],
   setActivityFilterData: (activityFilterData: ActivityFilterInput[]) => {
     set(() => ({ activityFilterData }));
   },
 }));
 
 // Activity Filter Input Store End
+
+// Activity Filter Submission Start
+interface ActivityFilterSubmitStore {
+  isFilterSubmit: boolean;
+  setIsFilterSubmit: (value: boolean) => void;
+}
+
+export const useFilterSubmit = create<ActivityFilterSubmitStore>((set) => ({
+  isFilterSubmit: false,
+  setIsFilterSubmit: (value: boolean) => {
+    set(() => ({ isFilterSubmit: value }));
+  },
+}));
+// Activity Filter Submission End

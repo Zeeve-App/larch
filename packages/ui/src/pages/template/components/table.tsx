@@ -86,7 +86,7 @@ export default function TemplateListTable({
                 Duplicate
               </button>
               <button
-                className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red hover:text-black'
+                className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red-500 hover:text-black'
                 onClick={() => {
                   onTemplateDelete(template.id);
                 }}

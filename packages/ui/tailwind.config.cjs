@@ -21,7 +21,7 @@ module.exports = {
         'dark-green': 'green',
         'toast': '#313131',
         'th-start': '#d20171',
-        'th-end': '#a2115e'
+        'th-end': '#a2115e',
       },
     },
   },

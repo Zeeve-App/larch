@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import NetworkListTable from './table';
 import PaginatedItems from '../../../components/pagination';
-import { deleteNetwork, getNetworkList } from '../../../utils/api';
+import { deleteNetwork, getNetworkList, testNetwork } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
 import Filter from '../../../components/filter';
 import { useNetworkFilterStore } from '../../../store/networkStore';
@@ -37,6 +37,16 @@ export default function Listing() {
       })
       .catch(() => {
         notify('error', `Failed delete the network ("${networkName}")`);
+      });
+  };
+
+  const onNetworkTest = (name: string) => {
+    console.log(testNetwork(name));
+    testNetwork(name)
+      .then(() => {
+        notify('success', 'network successfully tested');
+      }).catch(() => {
+        notify('error', 'Failed to test network');
       });
   };
 
@@ -102,6 +112,7 @@ export default function Listing() {
         <NetworkListTable
           networkList={networkList}
           onNetworkDelete={onNetworkDelete}
+          onNetworkTest={onNetworkTest}
           setSort={setSort}
           sort={sort}
         />

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import ReactPaginate from 'react-paginate';
-import './pagination.css';
 
 type PaginatedItemsProps = {
   itemsPerPage: number,
@@ -30,10 +29,14 @@ export default function PaginatedItems({ itemsPerPage, totalRecords, onPageChang
         onPageChange={handlePageClick}
         pageRangeDisplayed={2}
         pageCount={pageCount || 1}
-        containerClassName='pagination'
-        pageLinkClassName='page-link font-normal'
-        previousLinkClassName='page-link font-black'
-        nextLinkClassName='page-link font-black'
+        containerClassName='flex my-2'
+        activeClassName='bg-green rounded-lg'
+        pageClassName='px-0 py-1 rounded-lg font-normal hover:bg-red'
+        pageLinkClassName='px-4 py-2'
+        previousClassName='px-2 py-1 rounded-lg font-normal hover:bg-red'
+        previousLinkClassName='px-2 py-1'
+        nextClassName='px-2 py-1 rounded-lg font-normal hover:bg-red'
+        nextLinkClassName='px-2 py-1'
         previousLabel='<  '
         renderOnZeroPageCount={null}
       />

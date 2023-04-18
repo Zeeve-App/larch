@@ -42,7 +42,7 @@ export default function TemplateListTable({ templateList, onTemplateDelete, onTe
                 {getFormattedLocalTime(template.createdAt)}
               </td>
               <td className='text-center'>
-                <button className='border-border border-2 rounded px-2 bg-create-button mr-2'>edit</button>
+                <button className='border-border border-2 rounded px-2 bg-create-button mr-2'>Edit</button>
                 <button className='border-border border-2 rounded px-2 bg-create-button mr-2' onClick={() => { onCreateModal(template.id); }}>
                   Create
                 </button>

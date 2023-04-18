@@ -68,6 +68,7 @@ export const purgeOperationData = async () => knexInstance(primaryTableName)
   .truncate();
 
 type FilterInfo = {
+  id: string,
   operation: string,
   operationDetail: string,
 };
@@ -89,6 +90,7 @@ export const getOperationList = async (
 ) => {
   const getModel = () => knexInstance.table(primaryTableName).where((builder) => {
     if (!filter) return;
+    if (filter.id) builder.where('id', filter.id);
     if (filter.operation) builder.where('operation', filter.operation);
     if (filter.operationDetail) builder.whereLike('operation_detail', `%${filter.operationDetail}%`);
   });

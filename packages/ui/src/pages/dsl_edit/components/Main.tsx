@@ -38,7 +38,7 @@ export function DslEdit() {
               <td className='px-6 py-3 w-56.25'>@twitter</td>
               <td className='px-6 py-3 w-56.25 text-center'>@twitter</td>
               <td className='px-6 py-3 w-56.25 text-center'>
-                <button className='border-border border-2 rounded px-2 bg-create-button mr-2'>edit</button>
+                <button className='border-border border-2 rounded px-2 bg-create-button mr-2'>Edit</button>
                 <Link to='/template/createNetwork/setting'>
                   <button className='border-border border-2 rounded px-2 bg-create-button mr-2'>Create</button>
                 </Link>

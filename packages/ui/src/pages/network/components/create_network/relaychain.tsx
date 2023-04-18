@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 /* eslint-disable max-len */
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -127,10 +128,14 @@ export default function CreateRelayChain() {
           ))}
         </div>
       </div>
-      <div className='h-18 gap-x-6 px-6  w-full border-b-2 flex flex-row border-border'></div>
+      <div className='h-18 gap-x-6 px-6  w-full border-b-2 flex flex-row border-border' />
       <div className='flex justify-end py-4 gap-x-4'>
-        <Link to='/template/createNetwork/setting'><button className='text-white border-border border-2 rounded py-2 px-4 bg-gray'>Back</button></Link>
-        <Link to='/template/createNetwork/parachain'> <button className='text-white border-border border-2 rounded py-2 px-4 bg-gray'>Next</button></Link>
+        <Link to='/template/createNetwork/setting'>
+          <button className='text-white border-border border-2 rounded py-2 px-4 bg-gray'>Back</button>
+        </Link>
+        <Link to='/template/createNetwork/parachain'>
+          <button className='text-white border-border border-2 rounded py-2 px-4 bg-gray'>Next</button>
+        </Link>
       </div>
     </div>
   );

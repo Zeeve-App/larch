@@ -1,5 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { tags as t } from '@lezer/highlight';
-import CodeMirror from '@uiw/react-codemirror';
 import { createTheme } from '@uiw/codemirror-themes';
 
 export default createTheme({

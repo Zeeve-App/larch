@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import NetworkListTable from './table';
 import PaginatedItems from '../../../components/pagination';
-import { deleteNetwork, getNetworkList } from '../../../utils/api';
+import { deleteNetwork, getNetworkList, testNetwork } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
 
 export default function Listing() {
@@ -26,6 +26,16 @@ export default function Listing() {
       });
   };
 
+  const onNetworkTest = (name: string) => {
+    console.log(testNetwork(name));
+    testNetwork(name)
+      .then(() => {
+        notify('success', 'network successfully tested');
+      }).catch(() => {
+        notify('error', 'Failed to test network');
+      });
+  };
+
   useEffect(() => {
     getNetworkList({
       meta: {
@@ -42,7 +52,11 @@ export default function Listing() {
 
   return (
     <div className='flex flex-col justify-between'>
-      <NetworkListTable networkList={networkList} onNetworkDelete={onNetworkDelete} />
+      <NetworkListTable
+        networkList={networkList}
+        onNetworkDelete={onNetworkDelete}
+        onNetworkTest={onNetworkTest}
+      />
       <div className='right-2 bottom-0 flex flex-row justify-end'>
         <PaginatedItems itemsPerPage={itemPerPage} totalRecords={meta.total} onPageChange={onPageChange} />
       </div>

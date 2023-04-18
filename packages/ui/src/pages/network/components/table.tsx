@@ -11,10 +11,11 @@ type NetworkInfo = {
 
 type NetworkListTableProps = {
   networkList: NetworkInfo[],
-  onNetworkDelete: (templateId: string)=> void
+  onNetworkDelete: (templateId: string) => void
+  onNetworkTest: (name: string) => void
 };
 
-export default function NetworkListTable({ networkList, onNetworkDelete }: NetworkListTableProps) {
+export default function NetworkListTable({ networkList, onNetworkDelete, onNetworkTest }: NetworkListTableProps) {
   return (
     <table className='text-white border-2 border-border font-rubik w-full rounded'>
       <thead className='bg-create-button'>
@@ -37,13 +38,22 @@ export default function NetworkListTable({ networkList, onNetworkDelete }: Netwo
               <td className='px-6 py-3 w-56 text-center'>{getFormattedLocalTime(network.createdAt)}</td>
               <td className='px-6 py-3 w-56.25 '>{network.networkState}</td>
               <td>
-                <button
-                  type='button'
-                  className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red hover:text-black'
-                  onClick={() => { onNetworkDelete(network.name); }}
-                >
-                  Delete
-                </button>
+                <div className='flex flex-row'>
+                  <button
+                    type='button'
+                    className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red hover:text-black'
+                    onClick={() => { onNetworkDelete(network.name); }}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    type='button'
+                    className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-green hover:text-black'
+                    onClick={() => { onNetworkTest(network.name); }}
+                  >
+                    Test
+                  </button>
+                </div>
               </td>
             </tr>
           ))

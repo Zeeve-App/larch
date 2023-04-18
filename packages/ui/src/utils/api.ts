@@ -92,3 +92,7 @@ export const createNetwork = async (networkDetails: any): Promise<Response> => s
 export const deleteNetwork = async (networkName: string): Promise<Response> => getApiCall(
   { api: `/api/larch/network/delete?networkName=${networkName}` },
 );
+
+export const testNetwork = async (name: string): Promise<Response> => getApiCall(
+  { api: `/api/larch/network/test/?networkName=${name}` },
+);

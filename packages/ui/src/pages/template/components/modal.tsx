@@ -45,7 +45,7 @@ export default function PopUpBox({
             </div>
             <div className='flex flex-row gap-x-2 justify-between'>
               <button className='border-2 border-border rounded-lg py-1.5 px-2 bg-green hover:bg-dark-green text-white font-bold' onClick={() => onConfirm(inputText)}>Confirm</button>
-              <button className='border-2 border-border rounded-lg py-1.5 px-2  bg-red hover:md-blue-200  text-white font-bold ' onClick={() => setIsOpen(false)}>Cancel</button>
+              <button className='border-2 border-border rounded-lg py-1.5 px-2 bg-red hover:bg-violet-700  text-white font-bold ' onClick={() => setIsOpen(false)}>Cancel</button>
             </div>
           </div>
         </Dialog.Panel>

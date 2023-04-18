@@ -1,62 +1,59 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable max-len */
 import { MinusCircleIcon, SparklesIcon, XCircleIcon } from '@heroicons/react/20/solid';
-import iconSearch from '../../../components/assets/Search.svg';
-import { ActivityFilterInput, useActivityFilterStore, useFilterSubmit } from '../../../store/activityStore';
+import iconSearch from './assets/Search.svg';
+import { NetworkFilterInput } from '../store/networkStore';
+import { ActivityFilterInput } from '../store/activityStore';
 
-export default function Filter() {
-  const activityFilterData = useActivityFilterStore(
-    (state) => state.activityFilterData,
-  );
-  const setActivityFilterData = useActivityFilterStore(
-    (state) => state.setActivityFilterData,
-  );
+type FilterProps = {
+  filterData: NetworkFilterInput[] | ActivityFilterInput[];
+  isFilterSubmit: boolean;
+  setFilterData: (value: NetworkFilterInput[] | ActivityFilterInput[]) => void;
+  setIsFilterSubmit: (value: boolean) => void;
+};
 
-  const isFilterSubmit = useFilterSubmit(
-    (state) => state.isFilterSubmit,
-  );
-  const setIsFilterSubmit = useFilterSubmit(
-    (state) => state.setIsFilterSubmit,
-  );
-
-  const optionClick = (value: ActivityFilterInput, index: number) => {
-    const modifyObj: ActivityFilterInput = { ...value };
+export default function Filter({
+  filterData, isFilterSubmit, setFilterData, setIsFilterSubmit,
+}: FilterProps) {
+  const optionClick = (value: NetworkFilterInput, index: number) => {
+    const modifyObj: NetworkFilterInput = { ...value };
     if (value.isSearchOpen) {
       modifyObj.isSearchOpen = false;
     } else {
       modifyObj.isSearchOpen = true;
     }
-    const arr: ActivityFilterInput[] = [...activityFilterData];
-    arr.forEach((item: ActivityFilterInput) => {
+    const arr: NetworkFilterInput[] = [...filterData];
+    arr.forEach((item: NetworkFilterInput) => {
       // eslint-disable-next-line no-param-reassign
       item.isSearchOpen = false;
     });
     arr[index] = modifyObj;
-    setActivityFilterData(arr);
+    setFilterData(arr);
   };
 
   const closeSearch = () => {
-    const arr: ActivityFilterInput[] = [...activityFilterData];
-    arr.forEach((item: ActivityFilterInput) => {
+    const arr: NetworkFilterInput[] = [...filterData];
+    arr.forEach((item: NetworkFilterInput) => {
       // eslint-disable-next-line no-param-reassign
       item.isSearchOpen = false;
     });
-    setActivityFilterData(arr);
+    setFilterData(arr);
   };
 
   const searchHandler = (e: any, index: number) => {
-    const arr: ActivityFilterInput[] = [...activityFilterData];
+    const arr: NetworkFilterInput[] = [...filterData];
     arr[index].inputValue = e.target.value;
-    setActivityFilterData(arr);
+    setFilterData(arr);
   };
 
   const submitSearchData = (clear?: boolean) => {
-    setActivityFilterData(activityFilterData.map((d) => ({ ...d, inputValue: clear ? undefined : d.inputValue, isSearchOpen: false })));
+    setFilterData(filterData.map((d) => ({ ...d, inputValue: clear ? undefined : d.inputValue, isSearchOpen: false })));
     setIsFilterSubmit(!isFilterSubmit);
   };
 
   return (
     <div className='flex justify-between px-2 gap-3'>
-      {activityFilterData.map((item, index: number) => (
+      {filterData.map((item, index: number) => (
         <div>
           <button
             type='button'
@@ -72,7 +69,7 @@ export default function Filter() {
             item.isSearchOpen && (
               <div className='mt-1 h-8 bg-white border-2 border-border rounded flex' style={{ position: 'absolute' }}>
                 <input
-                  type={item.key === 'date' ? 'date' : 'text'}
+                  type={item.key === 'createdAt' ? 'date' : 'text'}
                   className='form-control mx-2 rounded text-black focus:outline-none bg-white me-2 font-rubik text-base'
                   placeholder='Search...'
                   value={item.inputValue}

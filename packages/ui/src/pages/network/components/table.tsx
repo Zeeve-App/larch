@@ -41,7 +41,7 @@ export default function NetworkListTable({ networkList, onNetworkDelete, onNetwo
                 <div className='flex flex-row'>
                   <button
                     type='button'
-                    className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red hover:text-black'
+                    className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red-500 hover:text-black'
                     onClick={() => { onNetworkDelete(network.name); }}
                   >
                     Delete

@@ -22,8 +22,6 @@ module.exports = {
         'toast': '#313131',
         'th-start': '#d20171',
         'th-end': '#a2115e',
-        'red':'rgb(239 68 68)',
-        'dark-red':'rgb(185 28 28)'
       },
     },
   },

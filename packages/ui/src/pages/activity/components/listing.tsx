@@ -2,12 +2,13 @@
 import { useEffect, useState } from 'react';
 import ActivityListTable from './table';
 import PaginatedItems from '../../../components/pagination';
-import {
-  getUserActivityList,
-} from '../../../utils/api';
+import { getUserActivityList } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
-import Filter from './filter';
-import { useActivityFilterStore, useFilterSubmit } from '../../../store/activityStore';
+import Filter from '../../../components/filter';
+import {
+  useActivityFilterStore,
+} from '../../../store/activityStore';
+import { useFilterSubmit } from '../../../store/commonStore';
 
 export default function Listing() {
   const [activityList, setActivityList] = useState<any[]>([]);
@@ -19,9 +20,12 @@ export default function Listing() {
   const activityFilterData = useActivityFilterStore(
     (state) => state.activityFilterData,
   );
-  const isFilterSubmit = useFilterSubmit(
-    (state) => state.isFilterSubmit,
+  const setActivityFilterData = useActivityFilterStore(
+    (state) => state.setActivityFilterData,
   );
+
+  const isFilterSubmit = useFilterSubmit((state) => state.isFilterSubmit);
+  const setIsFilterSubmit = useFilterSubmit((state) => state.setIsFilterSubmit);
 
   const onPageChange = (pageNumOnChange: number) => {
     setPageNum(pageNumOnChange);
@@ -61,7 +65,12 @@ export default function Listing() {
   return (
     <>
       <div className='flex w-full justify-end gap-4'>
-        <Filter />
+        <Filter
+          filterData={activityFilterData}
+          isFilterSubmit={isFilterSubmit}
+          setFilterData={setActivityFilterData}
+          setIsFilterSubmit={setIsFilterSubmit}
+        />
       </div>
       <div className='flex flex-col justify-between'>
         <ActivityListTable

@@ -10,44 +10,70 @@ type NetworkInfo = {
 };
 
 type NetworkListTableProps = {
-  networkList: NetworkInfo[],
-  onNetworkDelete: (templateId: string)=> void
+  networkList: NetworkInfo[];
+  onNetworkDelete: (templateId: string) => void;
+  setSort: (value: boolean) => void;
+  sort: boolean;
 };
 
-export default function NetworkListTable({ networkList, onNetworkDelete }: NetworkListTableProps) {
+export default function NetworkListTable({
+  networkList,
+  onNetworkDelete,
+  setSort,
+  sort,
+}: NetworkListTableProps) {
   return (
     <table className='text-white border-2 border-border font-rubik w-full rounded'>
       <thead className='bg-create-button'>
         <tr className=' border-b-2 border-border rounded '>
-          <th className='px-6 py-3 w-56.25 text-left' scope='col'>Network Name</th>
-          <th className='px-6 py-3 text-left' scope='col'>Provider</th>
-          <th className='px-6 py-3 text-left' scope='col'>Network Directory</th>
-          <th className='px-6 py-3' scope='col'>Created On </th>
-          <th className='px-6 py-3' scope='col'>Status </th>
-          <th className='px-6 py-3' scope='col'>Action</th>
+          <th className='px-6 py-3 w-56.25 text-left' scope='col'>
+            Network Name
+          </th>
+          <th className='px-6 py-3 text-left' scope='col'>
+            Provider
+          </th>
+          <th className='px-6 py-3 text-left' scope='col'>
+            Network Directory
+          </th>
+          <th className='px-6 py-3' scope='col'>
+            Created On &nbsp;
+            {' '}
+            <span aria-hidden onClick={() => setSort(!sort)}>
+              {sort ? <span>&darr;</span> : <span>&uarr;</span>}
+            </span>
+          </th>
+          <th className='px-6 py-3' scope='col'>
+            Status
+            {' '}
+          </th>
+          <th className='px-6 py-3' scope='col'>
+            Action
+          </th>
         </tr>
       </thead>
       <tbody>
-        {
-          networkList.map((network) => (
-            <tr className=' border-b-2 border-border rounded '>
-              <td className='px-6 py-3 w-56.25 '>{network.name}</td>
-              <td className='px-6 py-3 w-56.25 '>{network.networkProvider}</td>
-              <td className='px-6 py-3 w-56.25 '>{network.networkDirectory}</td>
-              <td className='px-6 py-3 w-56 text-center'>{getFormattedLocalTime(network.createdAt)}</td>
-              <td className='px-6 py-3 w-56.25 '>{network.networkState}</td>
-              <td>
-                <button
-                  type='button'
-                  className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red hover:text-black'
-                  onClick={() => { onNetworkDelete(network.name); }}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))
-        }
+        {networkList.map((network) => (
+          <tr className=' border-b-2 border-border rounded '>
+            <td className='px-6 py-3 w-56.25 '>{network.name}</td>
+            <td className='px-6 py-3 w-56.25 '>{network.networkProvider}</td>
+            <td className='px-6 py-3 w-56.25 '>{network.networkDirectory}</td>
+            <td className='px-6 py-3 w-56 text-center'>
+              {getFormattedLocalTime(network.createdAt)}
+            </td>
+            <td className='px-6 py-3 w-56.25 '>{network.networkState}</td>
+            <td>
+              <button
+                type='button'
+                className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red hover:text-black'
+                onClick={() => {
+                  onNetworkDelete(network.name);
+                }}
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );

@@ -42,17 +42,3 @@ export const useActivityFilterStore = create<ActivityFilterInputStore>((set) => 
 }));
 
 // Activity Filter Input Store End
-
-// Activity Filter Submission Start
-interface ActivityFilterSubmitStore {
-  isFilterSubmit: boolean;
-  setIsFilterSubmit: (value: boolean) => void;
-}
-
-export const useFilterSubmit = create<ActivityFilterSubmitStore>((set) => ({
-  isFilterSubmit: false,
-  setIsFilterSubmit: (value: boolean) => {
-    set(() => ({ isFilterSubmit: value }));
-  },
-}));
-// Activity Filter Submission End

@@ -4,11 +4,12 @@ import { MinusCircleIcon, SparklesIcon, XCircleIcon } from '@heroicons/react/20/
 import iconSearch from './assets/Search.svg';
 import { NetworkFilterInput } from '../store/networkStore';
 import { ActivityFilterInput } from '../store/activityStore';
+import { TemplateFilterInput } from '../store/templateStore';
 
 type FilterProps = {
-  filterData: NetworkFilterInput[] | ActivityFilterInput[];
+  filterData: NetworkFilterInput[] | ActivityFilterInput[] | TemplateFilterInput[];
   isFilterSubmit: boolean;
-  setFilterData: (value: NetworkFilterInput[] | ActivityFilterInput[]) => void;
+  setFilterData: (value: NetworkFilterInput[] | ActivityFilterInput[] | TemplateFilterInput[]) => void;
   setIsFilterSubmit: (value: boolean) => void;
 };
 

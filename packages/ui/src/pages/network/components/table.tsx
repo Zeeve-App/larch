@@ -71,13 +71,16 @@ export default function NetworkListTable({
                   >
                     Delete
                   </button>
-                  <button
-                    type='button'
-                    className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-green hover:text-black'
-                    onClick={() => { onNetworkTest(network.name); }}
-                  >
-                    Test
-                  </button>
+                  {network.networkState !== 'failed'
+                    && (
+                      <button
+                        type='button'
+                        className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-green hover:text-black'
+                        onClick={() => { onNetworkTest(network.name); }}
+                      >
+                        Test
+                      </button>
+                    )}
                 </div>
               </td>
             </tr>

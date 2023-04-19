@@ -41,7 +41,6 @@ export default function Listing() {
   };
 
   const onNetworkTest = (name: string) => {
-    console.log(testNetwork(name));
     testNetwork(name)
       .then(() => {
         notify('success', 'network successfully tested');

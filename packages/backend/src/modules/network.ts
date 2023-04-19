@@ -143,7 +143,6 @@ export const testNetwork = async (networkName: string): Promise<{
     });
   }
   const networkInfo = await network.get();
-  const testDirectoryName: string = `${networkInfo.networkDirectory}-test`;
   const networkDirPath = `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkInfo.name}`;
 
   await runZombienet({
@@ -151,7 +150,6 @@ export const testNetwork = async (networkName: string): Promise<{
     testConfigPath: `${networkDirPath}/${networkInfo.testFilename}`,
     // @ts-ignore
     provider: networkInfo.networkProvider ?? LARCH_DEFAULT_PROVIDER_NAME,
-    dir: testDirectoryName,
   }, ZOMBIENET_VERSION, runInfo.id, networkName);
 
   return {

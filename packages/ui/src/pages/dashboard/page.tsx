@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import iconNetwork from '../../components/assets/My-Network.svg';
 import iconTemplate from '../../components/assets/template.svg';
 import iconActivity from '../../components/assets/Activity.svg';
+import IconEdit from '../../components/assets/editor.svg';
 import Card from './components/card';
 import {
   getLarchVersionInfo, getNetworkList, getTemplateList, getUserActivityList,
@@ -63,6 +64,13 @@ export default function Dashboard() {
             cardIconSrc={iconTemplate}
             cardDescription='Create and list templates'
             records={templateRecords}
+          />
+          <Card
+            cardTitle='Run List'
+            cardLink='/run-list'
+            cardIconSrc={IconEdit}
+            cardDescription='List Network operations & results'
+            records={activityRecords}
           />
           <Card
             cardTitle='Activity'

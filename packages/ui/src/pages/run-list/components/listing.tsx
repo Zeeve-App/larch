@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import ActivityListTable from './table';
+import RunListTable from './table';
 import PaginatedItems from '../../../components/pagination';
 import { getRunList } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
@@ -8,6 +8,8 @@ import {
   useRunFilterStore,
 } from '../../../store/runStore';
 import { useFilterSubmit } from '../../../store/commonStore';
+import CommandModal from './commandModal';
+import StandardOutputModal from './standardOutputModal';
 
 export default function Listing() {
   const [runList, setRunList] = useState<any[]>([]);
@@ -15,6 +17,14 @@ export default function Listing() {
   const [itemPerPage] = useState(5);
   const [pageNum, setPageNum] = useState(1);
   const [sort, setSort] = useState<boolean>(true);
+
+  const defaultModalView = {
+    command: false,
+    standardOutput: false,
+    standardError: false,
+  };
+  const [isOpen, setIsOpen] = useState(defaultModalView);
+  const [runId, setRunId] = useState('');
 
   const runFilterData = useRunFilterStore(
     (state) => state.runFilterData,
@@ -28,6 +38,20 @@ export default function Listing() {
 
   const onPageChange = (pageNumOnChange: number) => {
     setPageNum(pageNumOnChange);
+  };
+
+  const setModalViewStatus = (modalSlug: string, status: boolean) => {
+    setIsOpen({ ...defaultModalView, [modalSlug]: status });
+  };
+
+  const onViewCommand = (id: string) => {
+    setRunId(id);
+    setModalViewStatus('command', true);
+  };
+
+  const onStandardOutput = (id: string) => {
+    setRunId(id);
+    setModalViewStatus('standardOutput', true);
   };
 
   const filterData = () => {
@@ -72,8 +96,10 @@ export default function Listing() {
         />
       </div>
       <div className='flex flex-col justify-between'>
-        <ActivityListTable
-          activityList={runList}
+        <RunListTable
+          onViewCommand={onViewCommand}
+          onViewStandardOutput={onStandardOutput}
+          runList={runList}
           setSort={setSort}
           sort={sort}
         />
@@ -85,6 +111,20 @@ export default function Listing() {
           />
         </div>
       </div>
+      {isOpen.command && (
+        <CommandModal
+          isOpen={isOpen.command}
+          setIsOpen={(status) => { setModalViewStatus('command', status); }}
+          runId={runId}
+        />
+      )}
+      {isOpen.standardOutput && (
+        <StandardOutputModal
+          isOpen={isOpen.standardOutput}
+          setIsOpen={(status) => { setModalViewStatus('standardOutput', status); }}
+          runId={runId}
+        />
+      )}
     </>
   );
 }

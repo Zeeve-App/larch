@@ -102,6 +102,10 @@ export const testNetwork = async (name: string): Promise<Response> => getApiCall
   { api: `/api/larch/network/test/?networkName=${name}` },
 );
 
+export const getRunData = async (id: string): Promise<Response> => getApiCall(
+  { api: `/api/larch/network/run/?runId=${id}` },
+);
+
 export const getLarchVersionInfo = async (): Promise<{
   result: {
     zombienetVersion: string, larchVersion: string,

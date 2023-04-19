@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { getFormattedLocalTime } from '../../../utils/time';
 
-type ActivityInfo = {
+type RunInfo = {
   id: string;
   intention: string;
   relatedId: string;
@@ -10,17 +10,21 @@ type ActivityInfo = {
   operation: string;
 };
 
-type ActivityListTableProps = {
-  activityList: ActivityInfo[];
+type RunListTableProps = {
+  runList: RunInfo[];
+  onViewCommand: (templateId: string) => void;
+  onViewStandardOutput: (name: string) => void;
   setSort: (value: boolean) => void;
   sort: boolean;
 };
 
 export default function ActivityListTable({
-  activityList,
+  runList,
+  onViewCommand,
+  onViewStandardOutput,
   setSort,
   sort,
-}: ActivityListTableProps) {
+}: RunListTableProps) {
   return (
     <table className='text-white border-2 border-border font-rubik w-full rounded'>
       <thead className='bg-create-button'>
@@ -49,7 +53,7 @@ export default function ActivityListTable({
         </tr>
       </thead>
       <tbody>
-        {activityList.map((activity) => (
+        {runList.map((activity) => (
           <tr className=' border-b-2 border-border rounded '>
             <td className='px-6 py-3 w-56.25'>{activity.id}</td>
             <td className='px-6 py-3 w-56.25 '>{activity.intention}</td>
@@ -63,23 +67,16 @@ export default function ActivityListTable({
                 <button
                   type='button'
                   className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red-500 hover:text-black'
-                  onClick={() => { }}
+                  onClick={() => { onViewCommand(activity.id); }}
                 >
                   View Command
                 </button>
                 <button
                   type='button'
                   className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-green hover:text-black'
-                  onClick={() => { }}
+                  onClick={() => { onViewStandardOutput(activity.id); }}
                 >
-                  View Standard Output
-                </button>
-                <button
-                  type='button'
-                  className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-green hover:text-black'
-                  onClick={() => { }}
-                >
-                  View Standard Error
+                  View Output
                 </button>
               </div>
             </td>

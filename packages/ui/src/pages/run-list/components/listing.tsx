@@ -1,26 +1,26 @@
 import { useEffect, useState } from 'react';
 import ActivityListTable from './table';
 import PaginatedItems from '../../../components/pagination';
-import { getUserActivityList } from '../../../utils/api';
+import { getRunList } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
 import Filter from '../../../components/filter';
 import {
-  useActivityFilterStore,
-} from '../../../store/activityStore';
+  useRunFilterStore,
+} from '../../../store/runStore';
 import { useFilterSubmit } from '../../../store/commonStore';
 
 export default function Listing() {
-  const [activityList, setActivityList] = useState<any[]>([]);
+  const [runList, setRunList] = useState<any[]>([]);
   const [meta, setMeta] = useState<{ total: number }>({ total: 0 });
   const [itemPerPage] = useState(5);
   const [pageNum, setPageNum] = useState(1);
   const [sort, setSort] = useState<boolean>(true);
 
-  const activityFilterData = useActivityFilterStore(
-    (state) => state.activityFilterData,
+  const runFilterData = useRunFilterStore(
+    (state) => state.runFilterData,
   );
-  const setActivityFilterData = useActivityFilterStore(
-    (state) => state.setActivityFilterData,
+  const setRunFilterData = useRunFilterStore(
+    (state) => state.setRunFilterData,
   );
 
   const isFilterSubmit = useFilterSubmit((state) => state.isFilterSubmit);
@@ -32,7 +32,7 @@ export default function Listing() {
 
   const filterData = () => {
     const filter: { [name: string]: string } = {};
-    activityFilterData.forEach((item) => {
+    runFilterData.forEach((item) => {
       if (item.inputValue) filter[item.key] = item.inputValue;
     });
     const payload = {
@@ -48,9 +48,9 @@ export default function Listing() {
         numOfRec: itemPerPage,
       },
     };
-    getUserActivityList(payload)
+    getRunList(payload)
       .then((response) => {
-        setActivityList(response.result);
+        setRunList(response.result);
         setMeta(response.meta);
       })
       .catch(() => {
@@ -65,15 +65,15 @@ export default function Listing() {
     <>
       <div className='flex w-full justify-end gap-4'>
         <Filter
-          filterData={activityFilterData}
+          filterData={runFilterData}
           isFilterSubmit={isFilterSubmit}
-          setFilterData={setActivityFilterData}
+          setFilterData={setRunFilterData}
           setIsFilterSubmit={setIsFilterSubmit}
         />
       </div>
       <div className='flex flex-col justify-between'>
         <ActivityListTable
-          activityList={activityList}
+          activityList={runList}
           setSort={setSort}
           sort={sort}
         />

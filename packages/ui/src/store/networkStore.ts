@@ -1,7 +1,5 @@
-/* eslint-disable linebreak-style */
 import { create } from 'zustand';
 
-// Network List Filter Input Store Start
 export interface NetworkFilterInput {
   label: string;
   key: string | number;
@@ -18,7 +16,7 @@ export const useNetworkFilterStore = create<NetworkFilterInputStore>((set) => ({
   networkFilterData: [
     {
       label: 'Network Name',
-      key: 'networkName',
+      key: 'name',
       isSearchOpen: false,
     },
     {
@@ -46,5 +44,3 @@ export const useNetworkFilterStore = create<NetworkFilterInputStore>((set) => ({
     set(() => ({ networkFilterData }));
   },
 }));
-
-// Network List Filter Input Store End

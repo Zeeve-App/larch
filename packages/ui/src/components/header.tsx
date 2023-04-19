@@ -16,16 +16,10 @@ export default function Header() {
         <div className='item-center '>
           <Link to='/template/createNetwork/setting'>
             <button type='button' className='bg-create-button text-white font-rubik flex  border-2 border-border rounded h-10 px-4 items-center'>
-              <span>Create</span>
+              <span>Create network template</span>
               <img className='w-6 h-6' src={IconPlus} alt='' />
             </button>
           </Link>
-        </div>
-        <div className='flex items-center p-2.5  bg-create-button border-border rounded'>
-          <img className='w-6 h-6 content-center' src={IconNotify} alt='' />
-        </div>
-        <div className='flex items-center p-1 bg-create-button border-border rounded'>
-          <img className='content-center ' src={IconImage} alt='' />
         </div>
       </div>
     </nav>

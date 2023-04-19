@@ -1,7 +1,5 @@
-/* eslint-disable linebreak-style */
 import { create } from 'zustand';
 
-// Template List Filter Input Store Start
 export interface TemplateFilterInput {
   label: string;
   key: string | number;
@@ -23,7 +21,7 @@ export const useTemplateFilterStore = create<TemplateFilterInputStore>((set) => 
     },
     {
       label: 'Template Name',
-      key: 'templateName',
+      key: 'name',
       isSearchOpen: false,
     },
     {
@@ -32,7 +30,7 @@ export const useTemplateFilterStore = create<TemplateFilterInputStore>((set) => 
       isSearchOpen: false,
     },
     {
-      label: 'Networok Directory',
+      label: 'Network Directory',
       key: 'status',
       isSearchOpen: false,
     },
@@ -46,5 +44,3 @@ export const useTemplateFilterStore = create<TemplateFilterInputStore>((set) => 
     set(() => ({ templateFilterData }));
   },
 }));
-
-// Template List Filter Input Store End

@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 
-// Activity Filter Input Store Start
 export interface ActivityFilterInput {
   label: string;
   key: string | number;
@@ -40,5 +39,3 @@ export const useActivityFilterStore = create<ActivityFilterInputStore>((set) => 
     set(() => ({ activityFilterData }));
   },
 }));
-
-// Activity Filter Input Store End

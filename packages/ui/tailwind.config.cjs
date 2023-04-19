@@ -16,7 +16,6 @@ module.exports = {
         'menu': '#080C0F',
         'orange': '#9F125D',
         'grey': '#21262A',
-        'yellow': '#FFC542',
         'green': 'MediumSeaGreen',
         'dark-green': 'green',
         'toast': '#313131',

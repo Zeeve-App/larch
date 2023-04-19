@@ -1,10 +1,7 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable import/prefer-default-export */
-/* eslint-disable linebreak-style */
 import { create } from 'zustand';
 
 // Filter Submission Start
-interface NetworkFilterSubmitStore {
+export interface NetworkFilterSubmitStore {
   isFilterSubmit: boolean;
   setIsFilterSubmit: (value: boolean) => void;
 }

@@ -11,7 +11,7 @@ import CreateHrmp from './pages/network/components/create_network/hrmp';
 import Activity from './pages/activity/page';
 import Template from './pages/template/page';
 import Setting from './pages/setting/page';
-import DslEdit from './pages/dsl_edit/components/Main';
+import RunList from './pages/run-list/page';
 
 const routes: RouteObject[] = [
 
@@ -59,8 +59,8 @@ const routes: RouteObject[] = [
       },
 
       {
-        path: ('/dsledit'),
-        element: <DslEdit />,
+        path: ('/run-list'),
+        element: <RunList />,
       },
 
       {

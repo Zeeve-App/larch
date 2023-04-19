@@ -43,7 +43,7 @@ export default function Menu() {
             <div className='w-64 h-14 flex justify-start bg-menu flex-row flex-nowrap content-center items-center py-2 px-4'>
               <div className='font-rubik text-white text-base font-normal flex items-center gap-2.5'>
                 <img className='w-5 h-5' src={IconEdit} alt='' />
-                <Link to='/dsledit'>Run List</Link>
+                <Link to='/run-list'>Run List</Link>
               </div>
             </div>
 

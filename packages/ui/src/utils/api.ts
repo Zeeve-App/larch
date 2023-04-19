@@ -17,7 +17,7 @@ type GetApiParams = {
 };
 
 type Response = {
-  result: any[],
+  result: any[] | any,
   meta: {
     numOfRec: number,
     pageNum: number,
@@ -63,6 +63,10 @@ export const getTemplateList = async (payload: Payload): Promise<Response> => fe
   { api: '/api/larch/template/list', payload },
 );
 
+export const getRunList = async (payload: Payload): Promise<Response> => fetchData(
+  { api: '/api/larch/network/run-list', payload },
+);
+
 export const getApiCall = async ({ api }: GetApiParams): Promise<Response> => {
   const response = await fetch(`${getCurrentEndpoint()}${api}`, {
     method: 'get',
@@ -85,6 +89,7 @@ export const duplicateTemplate = async (templateId: string): Promise<Response> =
 export const getTemplateData = async (templateId: string): Promise<Response> => getApiCall(
   { api: `/api/larch/template?templateId=${templateId}` },
 );
+
 export const createNetwork = async (networkDetails: any): Promise<Response> => sendData(
   { api: '/api/larch/network/create', payload: networkDetails },
 );
@@ -95,4 +100,12 @@ export const deleteNetwork = async (networkName: string): Promise<Response> => g
 
 export const testNetwork = async (name: string): Promise<Response> => getApiCall(
   { api: `/api/larch/network/test/?networkName=${name}` },
+);
+
+export const getLarchVersionInfo = async (): Promise<{
+  result: {
+    zombienetVersion: string, larchVersion: string,
+  }
+}> => getApiCall(
+  { api: '/api/larch/version' },
 );

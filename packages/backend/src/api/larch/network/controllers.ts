@@ -204,7 +204,6 @@ export const networkDeleteController = async (req: Request, res: Response) => {
 };
 
 export const networkListController = async (req: Request, res: Response): Promise<void> => {
-  addUserOperationEntry('NETWORK_LIST', 'Request to list networks');
   const networkListReq = req.body;
   const pageNum = networkListReq.meta
     && networkListReq.meta.pageNum ? networkListReq.meta.pageNum : 1;
@@ -230,7 +229,6 @@ export const networkListController = async (req: Request, res: Response): Promis
 };
 
 export const networkRunListController = async (req: Request, res: Response): Promise<void> => {
-  addUserOperationEntry('NETWORK_RUN_LIST', 'Request to list networks and test runs');
   const networkRunListReq = req.body;
   const pageNum = networkRunListReq.meta
     && networkRunListReq.meta.pageNum ? networkRunListReq.meta.pageNum : 1;

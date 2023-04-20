@@ -37,33 +37,37 @@ We can also List out network output by their Run ID, intension or command.
 ## Template APIs
 ### Create Template
 - /api/larch/template/create/
+This API is for creating a network template, with the relevant network configurations (network name, network ID, configuration file name, configuration file, network directory, network provider name, network status, testing zndsl file, test file name). User can use this template in future. This API returns a template id as response.
 
 ### Get Template Details
 - /api/larch/template/
+This API is used to get the existing network templates. By passing the template id we can get that perticular template details.
 
 ### Update Template
 - /api/larch/template/update/
-
+This is a POST API. To update the configuration file and network directory path and network provider we can use this API.
 ### List Template
 - /api/larch/template/list/
-
+This is a POST API. We can list out network template by network name, configuration file name, network test file name.
 ### Clone Template
 - /api/larch/template/clone/
-
+To copy the template this api can be used.
 ### Delete Template
 - /api/larch/template/delete/
+To delete a perticular network we can use this API. In this case we can pass the template id as a parameter.
 
 ## User Operation APIs
 ### Get User Operation
 - /api/larch/user_operation/
+To get the all the operations done by the user this API is used.
 
 ### Purge User Operation
 - /api/larch/user_operation/purge/
+This is a GET API. To remove all the user operations this API is used.
 
 ### User Operation List
 - /api/larch/user_operation/list/
-
-
+To get all the user operation list filter by operation and operationDetail.
 
 
 

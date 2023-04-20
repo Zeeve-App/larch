@@ -16,6 +16,7 @@ type TemplateListTableProps = {
   onTemplateDelete: (templateId: string) => void;
   onTemplateDuplicate: (templateId: string) => void;
   onCreateModal: (templateId: string) => void;
+  editNetwork: (templateId: string) => void;
   setSort: (value: boolean) => void;
   sort: boolean;
 };
@@ -25,6 +26,7 @@ export default function TemplateListTable({
   onTemplateDuplicate,
   onCreateModal,
   setSort,
+  editNetwork,
   sort,
 }: TemplateListTableProps) {
   return (
@@ -66,10 +68,17 @@ export default function TemplateListTable({
               {getFormattedLocalTime(template.createdAt)}
             </td>
             <td className='text-center'>
-              <button className='border-border border-2 rounded px-2 bg-create-button mr-2'>
+              <button
+                type='button'
+                className='border-border border-2 rounded px-2 bg-create-button mr-2'
+                onClick={() => {
+                  editNetwork(template.id);
+                }}
+              >
                 Edit
               </button>
               <button
+                type='button'
                 className='border-border border-2 rounded px-2 bg-create-button mr-2'
                 onClick={() => {
                   onCreateModal(template.id);

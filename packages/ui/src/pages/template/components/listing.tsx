@@ -38,6 +38,20 @@ export default function Listing() {
     setIsOpen(true);
   };
 
+  const editNetwork = (templateId: string) => {
+    console.log('templateId', templateId);
+    getTemplateData(templateId)
+      .then((response) => {
+        console.log('res', response);
+      })
+      .then(() => {
+        // notify('success', 'Network created successfully');
+      })
+      .catch(() => {
+        notify('error', 'Failed to create network');
+      });
+  };
+
   const onNetworkCreate = (name: string) => {
     getTemplateData(createNetTemplateId)
       .then((response) => ({
@@ -142,6 +156,7 @@ export default function Listing() {
           onTemplateDelete={onTemplateDelete}
           onTemplateDuplicate={onTemplateDuplicate}
           onCreateModal={onCreateModal}
+          editNetwork={editNetwork}
           setSort={setSort}
           sort={sort}
         />

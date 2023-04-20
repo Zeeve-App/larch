@@ -136,7 +136,6 @@ export default function Listing() {
       <div className='flex flex-col justify-between'>
         <NetworkListTable
           networkList={networkList}
-          onNetworkTest={onNetworkTest}
           setSort={setSort}
           sort={sort}
           onCreateModal={onCreateModal}

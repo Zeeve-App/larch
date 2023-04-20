@@ -6,7 +6,7 @@ import Network from './pages/network/page';
 import CreateNetwork from './pages/create_network/create_network';
 import CreateRelayChain from './pages/create_network/components/relaychain';
 import CreateParachain from './pages/create_network/components/parachain';
-// import CreateCollator from './pages/network/components/create_network/collator';
+import TestConfig from './pages/create_network/components/testConfig';
 import CreateHrmp from './pages/create_network/components/hrmp';
 import Activity from './pages/activity/page';
 import Template from './pages/template/page';
@@ -44,15 +44,14 @@ const routes: RouteObject[] = [
         path: ('/template/createNetwork/parachain'),
         element: <CreateParachain />,
       },
-      // {
-      //   path: ('/template/createNetwork/collator'),
-      //   element: <CreateCollator />,
-      // },
       {
         path: ('/template/createNetwork/hrmp'),
         element: <CreateHrmp />,
       },
-
+      {
+        path: ('/template/createNetwork/testconfig'),
+        element: <TestConfig />,
+      },
       {
         path: ('/setting'),
         element: <Setting />,

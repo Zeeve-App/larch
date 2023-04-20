@@ -98,6 +98,18 @@ export default function CreateNetwork() {
             </select>
           </div>
         </div>
+        <div className='text-white pl-4 py-4 font-rubik flex flex-row'>
+          <div className='flex flex-row gap-x-4'>
+            <span className='pt-1 font-extrabold'>Network Directory:</span>
+            <input
+              className='bg-black border-border border-2 rounded w-[250px]'
+              type='text'
+              name='network_directory'
+              value={settingsData.networkDirectory}
+              onChange={(e) => setSettings({ ...settingsData, networkDirectory: e.target.value })}
+            />
+          </div>
+        </div>
       </div>
       <div className='h-18 gap-x-6 px-6  w-full border-b-2 flex flex-row border-border' />
       <div className='flex justify-end py-4 gap-x-4'>

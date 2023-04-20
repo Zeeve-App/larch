@@ -8,6 +8,7 @@ export interface Settings {
   isBootNode: boolean;
   polkadotIntrospector: boolean;
   provider: string;
+  networkDirectory: string;
 }
 interface SettingsStore {
   settingsData: Settings;
@@ -19,6 +20,7 @@ export const useSettingsStore = create<SettingsStore>((set) => ({
     isBootNode: false,
     polkadotIntrospector: false,
     provider: '',
+    networkDirectory: '',
   },
   setSettings: (value: Settings) => {
     set(() => ({ settingsData: value }));
@@ -28,10 +30,10 @@ export const useSettingsStore = create<SettingsStore>((set) => ({
 
 // Relaychain data store Start
 interface RelayChain {
-  defaultImage: string;
+  default_image: string;
   chain: string;
-  defaultCommand: string;
-  defaultArgs: string[];
+  default_command: string;
+  default_args: string[];
 }
 interface RelayChainStore {
   relayChainData: RelayChain;
@@ -40,10 +42,10 @@ interface RelayChainStore {
 
 export const useRelayChainStore = create<RelayChainStore>((set) => ({
   relayChainData: {
-    defaultImage: 'docker.io/parity/polkadot:latest',
+    default_image: 'docker.io/parity/polkadot:latest',
     chain: 'rococo-local',
-    defaultCommand: 'polkadot',
-    defaultArgs: ['-lparachain=debug'],
+    default_command: 'polkadot',
+    default_args: ['-lparachain=debug'],
   },
   setRelayChainData: (data: RelayChain) => {
     set(() => ({ relayChainData: data }));
@@ -111,7 +113,7 @@ export interface HRMP {
   recipient: string;
   maxCapability: number;
   maxMsgSize: number;
-  editorValue: string;
+  isShowFilds: boolean;
 }
 interface HRMPStore {
   hrmpData: HRMP;
@@ -124,10 +126,31 @@ export const useHRMPStore = create<HRMPStore>((set) => ({
     recipient: '',
     maxCapability: 0,
     maxMsgSize: 0,
-    editorValue: '',
+    isShowFilds: false,
   },
   setHrmpData: (value: HRMP) => {
     set(() => ({ hrmpData: value }));
   },
 }));
 // HRMP data store end
+
+// Test config data store start
+interface TestConfig {
+  editorValue: string;
+  networkName: string;
+}
+interface TestConfigStore {
+  testConfigData: TestConfig;
+  setTestConfigData: (data: TestConfig) => void;
+}
+
+export const useTestConfigStore = create<TestConfigStore>((set) => ({
+  testConfigData: {
+    editorValue: '',
+    networkName: '',
+  },
+  setTestConfigData: (value: TestConfig) => {
+    set(() => ({ testConfigData: value }));
+  },
+}));
+// Test config data store end

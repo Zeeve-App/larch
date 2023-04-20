@@ -3,8 +3,8 @@ type NavProps = {
   | 'settings'
   | 'relaychain_config'
   | 'parachain_config'
-  // | 'colltor_config'
-  | 'hrmp';
+  | 'hrmp'
+  | 'test_config'
 };
 
 export function NavBar({ pageSlug }: NavProps) {
@@ -15,8 +15,8 @@ export function NavBar({ pageSlug }: NavProps) {
     settings: 1,
     relaychain_config: 2,
     parachain_config: 3,
-    // colltor_config: 4,
     hrmp: 4,
+    test_config: 5,
   };
   const currentPageNum = page[pageSlug];
   return (
@@ -30,12 +30,12 @@ export function NavBar({ pageSlug }: NavProps) {
       <div className={elementClasses(currentPageNum >= 3)}>
         Parachain Configuration
       </div>
-      {/* <span className='text-white py-4'>&#8811;</span>
-      <div className={elementClasses(currentPageNum >= 4)}>
-        Collator Configuration
-      </div> */}
       <span className='text-white py-4'>&#8811;</span>
       <div className={elementClasses(currentPageNum >= 4)}>HRMP Channels</div>
+      <span className='text-white py-4'>&#8811;</span>
+      <div className={elementClasses(currentPageNum >= 5)}>
+        Test Configuration
+      </div>
     </div>
   );
 }

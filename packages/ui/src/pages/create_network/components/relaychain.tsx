@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from './navbar';
 import {
@@ -16,11 +15,11 @@ export default function CreateRelayChain() {
   const setNodesList = useNodeListStore((state) => state.setNodesList);
 
   const removeArgumentAtIndex = (delIndex: number) => {
-    if (relayChainData.defaultArgs.length > 1) {
-      const arr: string[] = relayChainData.defaultArgs.filter(
+    if (relayChainData.default_args.length > 1) {
+      const arr: string[] = relayChainData.default_args.filter(
         (ele, index) => !(index === delIndex),
       );
-      setRelayChainData({ ...relayChainData, defaultArgs: arr });
+      setRelayChainData({ ...relayChainData, default_args: arr });
     }
   };
 
@@ -43,9 +42,9 @@ export default function CreateRelayChain() {
   };
 
   const defaultArgsHandler = (value: string, index: number) => {
-    const arr: string[] = [...relayChainData.defaultArgs];
+    const arr: string[] = [...relayChainData.default_args];
     arr[index] = value;
-    setRelayChainData({ ...relayChainData, defaultArgs: arr });
+    setRelayChainData({ ...relayChainData, default_args: arr });
   };
 
   const nodeArgsHandler = (value: string, nodeIdx: number, argsIdex: number) => {
@@ -61,10 +60,6 @@ export default function CreateRelayChain() {
       }
     }
   };
-
-  useEffect(() => {
-    console.log('create relay network page load');
-  }, []);
 
   console.log('relayChainData', relayChainData);
   console.log('nodesList', nodesList);
@@ -82,10 +77,10 @@ export default function CreateRelayChain() {
                 type='text'
                 name='image'
                 id='image'
-                defaultValue={relayChainData.defaultImage}
+                defaultValue={relayChainData.default_image}
                 onChange={(element) => setRelayChainData({
                   ...relayChainData,
-                  defaultImage: element.target.value,
+                  default_image: element.target.value,
                 })}
               />
             </div>
@@ -114,10 +109,10 @@ export default function CreateRelayChain() {
                 type='text'
                 name='chain'
                 id='chain'
-                defaultValue={relayChainData.defaultCommand}
+                defaultValue={relayChainData.default_command}
                 onChange={(e) => setRelayChainData({
                   ...relayChainData,
-                  defaultCommand: e.target.value,
+                  default_command: e.target.value,
                 })}
               />
             </div>
@@ -130,14 +125,14 @@ export default function CreateRelayChain() {
               onClick={() => {
                 setRelayChainData({
                   ...relayChainData,
-                  defaultArgs: [...relayChainData.defaultArgs, ''],
+                  default_args: [...relayChainData.default_args, ''],
                 });
               }}
             >
               Add Default Argument
             </button>
           </div>
-          {relayChainData.defaultArgs.map((argument, index) => (
+          {relayChainData.default_args.map((argument, index) => (
             <div className='flex flex-row items-start py-1.5 px-4'>
               <input
                 className='bg-black border-border border-2 rounded w-[250px]'
@@ -168,7 +163,7 @@ export default function CreateRelayChain() {
                     name: '',
                     validator: false,
                     args: [],
-                    image: relayChainData.defaultImage,
+                    image: relayChainData.default_image,
                   },
                 ]);
               }}

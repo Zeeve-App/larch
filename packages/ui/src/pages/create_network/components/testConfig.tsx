@@ -61,7 +61,7 @@ export function TestConfig() {
       configContent: configContentPrepare(),
       networkDirectory: settingsData.networkDirectory,
       networkProvider: settingsData.provider,
-      testFilename: 'test-config.json',
+      testFilename: `${value}-test-config.zndsl`,
       testContent: testContentPrepare(),
     };
     console.log('payload', payload);

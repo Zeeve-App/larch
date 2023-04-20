@@ -11,16 +11,16 @@ type NetworkInfo = {
 
 type NetworkListTableProps = {
   networkList: NetworkInfo[];
-  onNetworkDelete: (templateId: string) => void;
-  onNetworkTest: (name: string) => void;
+  onCreateModal: (name: string) => void;
+  onCreateTestModal: (name: string) => void
   setSort: (value: boolean) => void;
   sort: boolean;
 };
 
 export default function NetworkListTable({
   networkList,
-  onNetworkDelete,
-  onNetworkTest,
+  onCreateModal,
+  onCreateTestModal,
   setSort,
   sort,
 }: NetworkListTableProps) {
@@ -67,7 +67,7 @@ export default function NetworkListTable({
                   <button
                     type='button'
                     className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red-500 hover:text-black'
-                    onClick={() => { onNetworkDelete(network.name); }}
+                    onClick={() => { onCreateModal(network.name); }}
                   >
                     Delete
                   </button>
@@ -76,7 +76,7 @@ export default function NetworkListTable({
                       <button
                         type='button'
                         className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-green hover:text-black'
-                        onClick={() => { onNetworkTest(network.name); }}
+                        onClick={() => { onCreateTestModal(network.name); }}
                       >
                         Test
                       </button>

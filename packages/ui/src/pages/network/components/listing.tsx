@@ -6,6 +6,8 @@ import { notify } from '../../../utils/notifications';
 import Filter from '../../../components/filter';
 import { useNetworkFilterStore } from '../../../store/networkStore';
 import { useFilterSubmit } from '../../../store/commonStore';
+import DeletePopUpBox from './modaldelete';
+import TestPopUpBox from './modaltest';
 
 export default function Listing() {
   const [networkList, setNetworkList] = useState<any[]>([]);
@@ -14,7 +16,19 @@ export default function Listing() {
   const [pageNum, setPageNum] = useState(1);
   const [pageToggle, setPageToggle] = useState(true);
   const [sort, setSort] = useState<boolean>(true);
+  const [deleteNetworkName, setDeleteNetwork] = useState('');
+  const [testNetworkName, setTestNetwork] = useState('');
 
+  const defaultModalView = {
+    test: false,
+    delete: false,
+
+  };
+  const [isOpen, setIsOpen] = useState(defaultModalView);
+
+  const setModalViewStatus = (modalSlug: string, status: boolean) => {
+    setIsOpen({ ...defaultModalView, [modalSlug]: status });
+  };
   const networkFilterData = useNetworkFilterStore(
     (state) => state.networkFilterData,
   );
@@ -29,9 +43,20 @@ export default function Listing() {
     setPageNum(pageNumOnChange);
   };
 
+  const onCreateModal = (name: string) => {
+    setDeleteNetwork(name);
+    setModalViewStatus('delete', true);
+  };
+
+  const onCreateTestModal = (name: string) => {
+    setTestNetwork(name);
+    setModalViewStatus('test', true);
+  };
+
   const onNetworkDelete = (networkName: string) => {
     deleteNetwork(networkName)
       .then(() => {
+        setModalViewStatus('delete', false);
         notify('success', `Deleted the network ("${networkName}")`);
         setPageToggle(!pageToggle);
       })
@@ -43,6 +68,7 @@ export default function Listing() {
   const onNetworkTest = (name: string) => {
     testNetwork(name)
       .then(() => {
+        setModalViewStatus('test', false);
         notify('success', 'network successfully tested');
       }).catch(() => {
         notify('error', 'Failed to test network');
@@ -110,10 +136,23 @@ export default function Listing() {
       <div className='flex flex-col justify-between'>
         <NetworkListTable
           networkList={networkList}
-          onNetworkDelete={onNetworkDelete}
           onNetworkTest={onNetworkTest}
           setSort={setSort}
           sort={sort}
+          onCreateModal={onCreateModal}
+          onCreateTestModal={onCreateTestModal}
+        />
+        <DeletePopUpBox
+          isOpen={isOpen.delete}
+          setIsOpen={(status) => { setModalViewStatus('delete', status); }}
+          onConfirm={onNetworkDelete}
+          name={deleteNetworkName}
+        />
+        <TestPopUpBox
+          isOpen={isOpen.test}
+          setIsOpen={(status) => { setModalViewStatus('test', status); }}
+          onConfirmTest={onNetworkTest}
+          name={testNetworkName}
         />
         <div className='right-2 bottom-0 flex flex-row justify-end'>
           <PaginatedItems

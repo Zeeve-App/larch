@@ -12,6 +12,7 @@ import Activity from './pages/activity/page';
 import Template from './pages/template/page';
 import Setting from './pages/setting/page';
 import RunList from './pages/run-list/page';
+import Documentation from './pages/documentation/page';
 
 const routes: RouteObject[] = [
 
@@ -26,6 +27,10 @@ const routes: RouteObject[] = [
       {
         path: ('/dashboard'),
         element: <Dashboard />,
+      },
+      {
+        path: ('/documentation'),
+        element: <Documentation />,
       },
       {
         path: ('/network'),

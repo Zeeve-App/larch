@@ -24,7 +24,7 @@ export default function Setting() {
             />
             <button
               type='button'
-              className='bg-red hover:md-blue-200 text-white font-bold ml-4 py-1 px-4 rounded-full'
+              className='bg-yellow-700 hover:bg-yellow-900 text-white font-bold ml-4 py-1 px-4 rounded-full'
               onClick={() => { setEndpoint(getHostDomainWithProtocol()); }}
             >
               Set default

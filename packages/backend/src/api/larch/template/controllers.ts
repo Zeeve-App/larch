@@ -113,7 +113,6 @@ export const templateDeleteController = async (req: Request, res: Response): Pro
 };
 
 export const templateListController = async (req: Request, res: Response): Promise<void> => {
-  addUserOperationEntry('TEMPLATE_LIST', 'Request to list templates');
   const templateListReq = req.body;
   const pageNum = templateListReq.meta
   && templateListReq.meta.pageNum ? templateListReq.meta.pageNum : 1;

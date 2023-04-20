@@ -16,12 +16,11 @@ module.exports = {
         'menu': '#080C0F',
         'orange': '#9F125D',
         'grey': '#21262A',
-        'yellow': '#FFC542',
         'green': 'MediumSeaGreen',
         'dark-green': 'green',
         'toast': '#313131',
         'th-start': '#d20171',
-        'th-end': '#a2115e'
+        'th-end': '#a2115e',
       },
     },
   },

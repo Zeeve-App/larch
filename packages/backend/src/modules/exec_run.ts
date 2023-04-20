@@ -34,21 +34,21 @@ export const execute = async (
     result.stderr.on('data', (data) => {
       if (!wait) resolve(null);
       stderrChunks = stderrChunks.concat(data);
-      const stderr = Buffer.concat(stderrChunks).toString();
+      const stderr = Buffer.concat(stderrChunks).toString('base64');
       execRun.updateStdError(stderr);
     });
     result.stderr.on('end', () => {
-      const stderr = Buffer.concat(stderrChunks).toString();
+      const stderr = Buffer.concat(stderrChunks).toString('base64');
       execRun.updateStdError(stderr);
     });
     result.stdout.on('data', (data) => {
       if (!wait) resolve(null);
       stdoutChunks = stdoutChunks.concat(data);
-      const stdout = Buffer.concat(stdoutChunks).toString();
+      const stdout = Buffer.concat(stdoutChunks).toString('base64');
       execRun.updateStdOutput(stdout);
     });
     result.stdout.on('end', () => {
-      const stdout = Buffer.concat(stdoutChunks).toString();
+      const stdout = Buffer.concat(stdoutChunks).toString('base64');
       execRun.updateStdOutput(stdout);
     });
     result.on('exit', async (code) => {

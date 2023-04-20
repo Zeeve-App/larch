@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cocalc/ansi-to-react": "^7.0.0",
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",
     "@uiw/codemirror-extensions-langs": "^4.19.16",

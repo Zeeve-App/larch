@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
   "author": "Swati Sharma <swati.sharma@zeeve.io>",
   "license": "GPL-3.0-or-later",
   "scripts": {

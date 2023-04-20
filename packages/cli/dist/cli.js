@@ -1,10 +1,11 @@
 import { Command } from 'commander';
 import apiServer from 'larch-backend';
+import * as versionInfo from './version.js';
 export const program = new Command();
 console.log('Welcome to Larch');
 export default () => {
     program
-        .version('1.0.0')
+        .version(versionInfo.default.version)
         .description('An CLI for managing polkadot parachain configuration')
         .option('--disable-ui', 'Disable Frontend')
         .option('--disable-api', 'Disable Backend')

@@ -204,6 +204,7 @@ export const testNetwork = async (networkName: string): Promise<{
     
   */
 ```
+```
 
   await runZombienet({
     test: true,

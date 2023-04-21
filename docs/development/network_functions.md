@@ -140,6 +140,7 @@ export const createNetwork = async (networkInfo: NetworkInfo): Promise<{
     });
   }
 ```
+```
   /*
   runZombienet(): This function is responsible for running the network.
     * @param {boolean} spawn - If the user has coosen to create and run the network the spawn value will be true.
@@ -166,7 +167,7 @@ export const createNetwork = async (networkInfo: NetworkInfo): Promise<{
 };
 ```
 ```
-
+```
 ### testNetwork()
 ```
 export const testNetwork = async (networkName: string): Promise<{

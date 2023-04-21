@@ -9,7 +9,11 @@ import {
 } from '../../../store/activityStore';
 import { useFilterSubmit } from '../../../store/commonStore';
 
-export default function Listing() {
+type ListingProps = {
+  updateList: boolean
+};
+
+export default function Listing({ updateList }: ListingProps) {
   const [activityList, setActivityList] = useState<any[]>([]);
   const [meta, setMeta] = useState<{ total: number }>({ total: 0 });
   const [itemPerPage] = useState(5);
@@ -59,7 +63,7 @@ export default function Listing() {
   };
   useEffect(() => {
     filterData();
-  }, [pageNum, isFilterSubmit, sort]);
+  }, [pageNum, isFilterSubmit, sort, updateList]);
 
   return (
     <>

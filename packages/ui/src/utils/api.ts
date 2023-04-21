@@ -117,3 +117,7 @@ export const getLarchVersionInfo = async (): Promise<{
 }> => getApiCall(
   { api: '/api/larch/version' },
 );
+
+export const purgeActivityRecord = async (): Promise<Response> => getApiCall(
+  { api: '/api/larch/user_operation/purge' },
+);

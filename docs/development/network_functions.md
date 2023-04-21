@@ -192,7 +192,7 @@ export const testNetwork = async (networkName: string): Promise<{
   }
   const networkInfo = await network.get();
   const networkDirPath = `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkInfo.name}`;
-```
+
    /*
   runZombienet(): This function is responsible for running the network.
     * @param {boolean} test - If the user has coosen to test the network the test value will be true.
@@ -203,8 +203,6 @@ export const testNetwork = async (networkName: string): Promise<{
     * @param {string} networkInfo.name - Name of the network to test.
     
   */
-```
-```
 
   await runZombienet({
     test: true,
@@ -218,5 +216,3 @@ export const testNetwork = async (networkName: string): Promise<{
     runId: runInfo.id,
   };
 };
-```
-```

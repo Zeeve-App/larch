@@ -67,7 +67,7 @@ export const deleteNetwork = async (
       }
     }
   }
-``` 
+
   /*
     removeAllExecRunByRelatedId(): 
       * Deletes all the network information regarding that network.
@@ -79,13 +79,13 @@ export const deleteNetwork = async (
   await removeAllExecRunByRelatedId(networkInfo.name);
   await network.remove();
 };
+``` 
 
 ### createNetwork()
 create network function is used to create a new network. The required network information (NetworkInfo) is passed as parameter.
 export const createNetwork = async (networkInfo: NetworkInfo): Promise<{
   name: string; runId: string;
 }> => {
-  ```
   /*
     ExecRun():
     * creates a object named runInfo.
@@ -147,7 +147,7 @@ export const createNetwork = async (networkInfo: NetworkInfo): Promise<{
     * @param {string} networkInfo.name - Network name.
     
   */
-```
+
   await runZombienet({
     spawn: true,
     networkConfigPath: `${networkDirPath}/${networkInfo.configFilename}`,
@@ -164,6 +164,7 @@ export const createNetwork = async (networkInfo: NetworkInfo): Promise<{
 ```
 
 ### testNetwork()
+```
 export const testNetwork = async (networkName: string): Promise<{
   name: string; runId: string;
 }> => {
@@ -216,3 +217,4 @@ export const testNetwork = async (networkName: string): Promise<{
     runId: runInfo.id,
   };
 };
+```

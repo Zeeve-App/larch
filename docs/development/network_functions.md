@@ -80,6 +80,7 @@ export const deleteNetwork = async (
   await removeAllExecRunByRelatedId(networkInfo.name);
   await network.remove();
 };
+``` 
 
 
 ### createNetwork()

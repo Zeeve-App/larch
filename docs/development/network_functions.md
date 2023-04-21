@@ -1,9 +1,10 @@
 ### deleteNetwork()
 Delete network function is used to delete a network from the created network list.
+```
 export const deleteNetwork = async (
   networkName: string,
 ): Promise<void> => {
-```
+
   /*
     Network():
     * The networkName is passing through the constructor Network and creates a new object named network. 
@@ -79,10 +80,11 @@ export const deleteNetwork = async (
   await removeAllExecRunByRelatedId(networkInfo.name);
   await network.remove();
 };
-``` 
+
 
 ### createNetwork()
 create network function is used to create a new network. The required network information (NetworkInfo) is passed as parameter.
+``` 
 export const createNetwork = async (networkInfo: NetworkInfo): Promise<{
   name: string; runId: string;
 }> => {

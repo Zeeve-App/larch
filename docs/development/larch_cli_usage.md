@@ -7,10 +7,12 @@ API only mode and UI only mode
 - `/ui` for UI components
 - `/api` for Backend API's 
 
-``
+```
 Options:
   -V, --version          output the version number
   --disable-ui           Disable Frontend
   --disable-api          Disable Backend
   --service-port <port>  Larch service HTTP listen port (default: "9000")
   -h, --help             display help for command
+
+```

@@ -75,7 +75,7 @@ export const deleteNetwork = async (
     network.remove(): 
       * Deletes all the network information regarding that network from the database.
   */
-```
+
   await removeAllExecRunByRelatedId(networkInfo.name);
   await network.remove();
 };
@@ -96,7 +96,7 @@ export const createNetwork = async (networkInfo: NetworkInfo): Promise<{
     network.exists(): This function  will check the network already exists or not. 
     If the network doesn't exists it will throw an error.
   */
-  ```
+
   const runInfo = new ExecRun();
   const network = new Network(networkInfo.name);
   const networkExists = await network.exists();
@@ -108,23 +108,23 @@ export const createNetwork = async (networkInfo: NetworkInfo): Promise<{
   }
   const networkDirPath = `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkInfo.name}`;
   const networkConfigPath = `${networkDirPath}/${networkInfo.configFilename}`;
-  ```
+
   /*
     network.set(): This function insert the the network informations into the database.
     createDir(): This creates the directory in that perticular path.
 
   */
-  ```
+
   try {
     await network.set({ ...networkInfo, networkState: 'creating' });
     await createDir(networkDirPath);
     await createDir(networkInfo.networkDirectory);
     await writeToFileFromBase64(networkConfigPath, networkInfo.configContent);
- ```    
+   
   /*
       If the testFilename and test config file is given by the user the it will create the directory under the network directory as the test file name convert it to zndsl file from a base64 file.
   */
- ```
+
     if (networkInfo.testFilename && networkInfo.testContent) {
       const networkTestConfigPath = `${networkDirPath}/${networkInfo.testFilename}`;
       await writeToFileFromBase64(networkTestConfigPath, networkInfo.testContent);
@@ -161,12 +161,13 @@ export const createNetwork = async (networkInfo: NetworkInfo): Promise<{
     runId: runInfo.id,
   };
 };
+```
 
 ### testNetwork()
 export const testNetwork = async (networkName: string): Promise<{
   name: string; runId: string;
 }> => {
-    ```
+
   /*
     ExecRun():
     * creates a object named runInfo.
@@ -177,7 +178,7 @@ export const testNetwork = async (networkName: string): Promise<{
     network.exists(): This function  will check the network already exists or not. 
     If the network doesn't exists it will throw an error.
   */
-  ```
+
   const runInfo = new ExecRun();
   const network = new Network(networkName);
   const networkExists = await network.exists();

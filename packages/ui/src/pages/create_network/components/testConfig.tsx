@@ -1,36 +1,32 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable max-len */
-/* eslint-disable linebreak-style */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable import/no-extraneous-dependencies */
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import CodeMirror from '@uiw/react-codemirror';
-import { javascript } from '@codemirror/lang-javascript';
-import NavBar from './navbar';
-import myTheme from './theme';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import CodeMirror from "@uiw/react-codemirror";
+import { javascript } from "@codemirror/lang-javascript";
+import NavBar from "./navbar";
+import myTheme from "./theme";
 import {
   useTestConfigStore,
   useSettingsStore,
   useRelayChainStore,
   useNodeListStore,
   useParaChainListStore,
-} from '../../../store/createNetworkStore';
-import PopUpBox from './modal';
-import { notify } from '../../../utils/notifications';
-import { createTemplateNetwork } from '../../../utils/api';
+  useHRMPStore,
+} from "../../../store/createNetworkStore";
+import PopUpBox from "./modal";
+import { notify } from "../../../utils/notifications";
+import { createTemplateNetwork } from "../../../utils/api";
 
 export function TestConfig() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const testConfigData = useTestConfigStore((state) => state.testConfigData);
   const setTestConfigData = useTestConfigStore(
-    (state) => state.setTestConfigData,
+    (state) => state.setTestConfigData
   );
   const settingsData = useSettingsStore((state) => state.settingsData);
   const relayChainData = useRelayChainStore((state) => state.relayChainData);
   const nodesList = useNodeListStore((state) => state.nodesList);
   const paraChainList = useParaChainListStore((state) => state.paraChainList);
+  const hrmpData = useHRMPStore((state) => state.hrmpData);
 
   const onChange = React.useCallback((value: any, viewUpdate: any) => {
     setTestConfigData({ ...testConfigData, editorValue: value });
@@ -46,11 +42,18 @@ export function TestConfig() {
         nodes: nodesList,
       },
       parachain: paraChainList,
+      hrmp_channels: {
+        sender: hrmpData.sender,
+        recipient: hrmpData.recipient,
+        max_capacity: hrmpData.maxCapability,
+        max_message_size: hrmpData.maxMsgSize,
+      },
     };
     return btoa(JSON.stringify(data));
   };
 
-  const testContentPrepare = (): string => btoa(JSON.stringify(testConfigData.editorValue));
+  const testContentPrepare = (): string =>
+    btoa(JSON.stringify(testConfigData.editorValue));
 
   const onNetworkCreate = (value: string) => {
     setTestConfigData({ ...testConfigData, networkName: value });
@@ -64,49 +67,42 @@ export function TestConfig() {
       testFilename: `${value}-test-config.zndsl`,
       testContent: testContentPrepare(),
     };
-    console.log('payload', payload);
     createTemplateNetwork(payload)
       .then((response) => {
-        console.log('response', response);
+        console.log("response", response);
       })
       .then(() => {
         setIsOpen(false);
-        notify('success', 'Network created successfully');
+        notify("success", "Network created successfully");
       })
       .catch(() => {
-        notify('error', 'Failed to create network');
+        notify("error", "Failed to create network");
       });
   };
 
-  console.log('testConfigData', testConfigData);
   return (
-    <div className=' flex-col flex'>
-      <NavBar pageSlug='hrmp' />
-      <div className='w-[750px]'>
-        <div className='text-white pl-4 py-4 font-rubik flex flex-col gap-y-3'>
-          <div className='text-white  py-4 font-rubik flex flex-col gap-y-4'>
-            <div className='border-border border-2 rounded'>
+    <div className=" flex-col flex">
+      <NavBar pageSlug="hrmp" />
+      <div className="w-[750px]">
+        <div className="text-white pl-4 py-4 font-rubik flex flex-col gap-y-3">
+          <div className="text-white  py-4 font-rubik flex flex-col gap-y-4">
+            <div className="border-border border-2 rounded">
               <CodeMirror
-                value="console.log('hello world!');"
-                height='200px'
+                value=""
+                height="200px"
                 theme={myTheme}
+                placeholder="Enter here you text..."
                 extensions={[javascript({ jsx: true })]}
                 onChange={onChange}
               />
-              <div className='h-[50px] border-t-2 border-border'>
-                {' '}
-                <div className='flex justify-end py-1.5 px-1.5 gap-x-3'>
+              <div className="h-[50px] border-t-2 border-border">
+                {" "}
+                <div className="flex justify-end py-1.5 px-1.5 gap-x-3">
                   <button
-                    type='button'
-                    className='text-white border-border border-2 rounded py-1 px-4 bg-gray hover:bg-grad'
+                    type="button"
+                    className="text-white border-border border-2 rounded py-1 px-4 bg-gray hover:bg-grad"
                   >
-                    Cancel
-                  </button>
-                  <button
-                    type='button'
-                    className='text-white border-border border-2 rounded py-1 px-4 bg-gray'
-                  >
-                    Save
+                    Reset
                   </button>
                 </div>
               </div>
@@ -114,19 +110,19 @@ export function TestConfig() {
           </div>
         </div>
       </div>
-      <div className='h-18 gap-x-6 px-6  w-full border-b-2 flex flex-row border-border' />
-      <div className='flex justify-end py-4 gap-x-4'>
-        <Link to='/template/createNetwork/parachain'>
+      <div className="h-18 gap-x-6 px-6  w-full border-b-2 flex flex-row border-border" />
+      <div className="flex justify-end py-4 gap-x-4">
+        <Link to="/template/createNetwork/parachain">
           <button
-            type='button'
-            className='text-white border-border border-2 rounded py-2 px-4 bg-gray'
+            type="button"
+            className="text-white border-border border-2 rounded py-2 px-4 bg-gray"
           >
             Back
           </button>
         </Link>
         <button
-          type='button'
-          className='text-white border-border border-2 rounded py-2 px-4 bg-gray'
+          type="button"
+          className="text-white border-border border-2 rounded py-2 px-4 bg-gray"
           onClick={() => setIsOpen(true)}
         >
           Save

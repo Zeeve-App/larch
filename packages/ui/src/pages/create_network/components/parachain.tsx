@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from './navbar';
 import { useParaChainListStore } from '../../../store/createNetworkStore';
@@ -48,14 +46,8 @@ export function CreateParachain() {
     }
   };
 
-  useEffect(() => {
-    console.log('create relay network page load');
-  }, []);
-
-  console.log('paraChainList', paraChainList);
-
   return (
-    <div className=' flex-col flex'>
+    <div className='flex-col flex'>
       <NavBar pageSlug='parachain_config' />
       <div className=''>
         <div className='text-white pl-4 py-4 font-rubik flex flex-col gap-y-3'>
@@ -119,10 +111,14 @@ export function CreateParachain() {
                       className='bg-black border-border border-2 rounded w-[250px]'
                       type='text'
                       name='id'
-                      value={parachain.collator.name}
+                      value={
+                        parachain && parachain?.collator.name
+                          ? parachain?.collator.name
+                          : ''
+                      }
                       onChange={(element) => updateParachains(index, {
                         collator: {
-                          ...parachain.collator,
+                          ...parachain?.collator,
                           name: element.target.value,
                         },
                       })}

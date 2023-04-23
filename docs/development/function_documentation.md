@@ -1,4 +1,5 @@
 ### Overview of the Folder Structure
+```
 backend
 ├── __tests__                   # API routes and functions test cases.
 ├── dist                        # Compiled files.
@@ -6,8 +7,10 @@ backend
 ├── src                         # Source files
 |
 └── ...
+```
 
 ### All Controllers Location
+```
 .
 ├── ...
 ├── src                    
@@ -23,9 +26,10 @@ backend
 |           |   ├── controllers.ts # Here you can find version controller function
 |           └── ...
 └── ...
+```
 
 ### Database models and other useful modules.
-
+```
 .
 ├── ...
 ├── src                    
@@ -42,3 +46,4 @@ backend
 |       ├── user_operation.ts         # user operation related functions
 |       ├── zombienet.ts              # zombienet run or test process
 └── ...
+```

@@ -11,7 +11,7 @@ const router = Router();
 
 router.post('/create', templateCreateValidation, handlePromiseController(templateCreateController));
 router.get('/', handlePromiseController(templateGetController));
-router.post('/update', templateUpdateValidation, handlePromiseController(templateUpdateController));
+router.post('/update', handlePromiseController(templateUpdateValidation), handlePromiseController(templateUpdateController));
 router.get('/delete', handlePromiseController(templateDeleteController));
 router.post('/list', handlePromiseController(templateListController));
 router.get('/clone', handlePromiseController(templateCloneController));

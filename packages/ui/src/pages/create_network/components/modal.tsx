@@ -4,17 +4,19 @@ import React, { ChangeEvent, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 
 type PopUpBoxProps = {
+  networkName: string;
   isOpen: boolean;
   setIsOpen: (state: boolean) => void;
   onConfirm: (name: string) => void;
 };
 
 export default function PopUpBox({
+  networkName,
   isOpen,
   setIsOpen,
   onConfirm,
 }: PopUpBoxProps) {
-  const [inputText, setInputText] = useState<string>('');
+  const [inputText, setInputText] = useState<string>(networkName);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputText(e.target.value);
   };
@@ -29,7 +31,7 @@ export default function PopUpBox({
       <div className='fixed inset-0 flex items-center justify-center '>
         <Dialog.Panel className='w-full max-w-lg rounded bg-create-button border-border border-4 p-4'>
           <Dialog.Title className=' text-white font-rubik pb-4 text-center font-bold'>
-            Create Network
+            Template Info
           </Dialog.Title>
           <Dialog.Description />
           <div className='w-full flex justify-center'>
@@ -38,7 +40,7 @@ export default function PopUpBox({
           <div className='flex flex-col gap-y-4'>
             <div className='flex flex-row'>
               <div className='text-white font-rubik text-base w-3/12'>
-                Network name
+                Template name
               </div>
               <div className='text-white pr-2'>:</div>
               <input

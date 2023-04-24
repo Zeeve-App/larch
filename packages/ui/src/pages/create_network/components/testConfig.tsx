@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import NavBar from './navbar';
@@ -11,13 +11,15 @@ import {
   useNodeListStore,
   useParaChainListStore,
   useHRMPStore,
+  useTemplateIdStore,
 } from '../../../store/createNetworkStore';
 import PopUpBox from './modal';
 import { notify } from '../../../utils/notifications';
-import { createTemplateNetwork } from '../../../utils/api';
+import { createTemplateNetwork, updateTemplateNetwork } from '../../../utils/api';
 import { encodeBase64 } from '../../../utils/encoding';
 
 export function TestConfig() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const testConfigData = useTestConfigStore((state) => state.testConfigData);
   const setTestConfigData = useTestConfigStore(
@@ -28,7 +30,9 @@ export function TestConfig() {
   const nodesList = useNodeListStore((state) => state.nodesList);
   const paraChainList = useParaChainListStore((state) => state.paraChainList);
   const hrmpData = useHRMPStore((state) => state.hrmpData);
-
+  const templateId = useTemplateIdStore(
+    (store) => store.templateId,
+  );
   const onChange = React.useCallback((value: any) => {
     setTestConfigData({ ...testConfigData, editorValue: value });
   }, []);
@@ -42,7 +46,7 @@ export function TestConfig() {
         chain: relayChainData.chain,
         nodes: nodesList,
       },
-      parachain: paraChainList,
+      parachains: paraChainList,
       hrmp_channels: {
         sender: hrmpData.sender,
         recipient: hrmpData.recipient,
@@ -63,18 +67,34 @@ export function TestConfig() {
       networkDirectory: settingsData.networkDirectory,
       networkProvider: settingsData.provider,
       testFilename: `${value}-test-config.zndsl`,
-      testContent: encodeBase64(JSON.stringify(testConfigData.editorValue)),
+      testContent: encodeBase64(testConfigData.editorValue),
     };
+    if (templateId) {
+      updateTemplateNetwork(templateId, payload)
+        .then((response) => {
+          console.log('response', response);
+        })
+        .then(() => {
+          setIsOpen(false);
+          notify('success', 'Template updated successfully');
+          navigate('/template');
+        })
+        .catch(() => {
+          notify('error', 'Failed to update template');
+        });
+      return;
+    }
     createTemplateNetwork(payload)
       .then((response) => {
         console.log('response', response);
       })
       .then(() => {
         setIsOpen(false);
-        notify('success', 'Network created successfully');
+        notify('success', 'Template created successfully');
+        navigate('/template');
       })
       .catch(() => {
-        notify('error', 'Failed to create network');
+        notify('error', 'Failed to create template');
       });
   };
 
@@ -86,7 +106,7 @@ export function TestConfig() {
           <div className='text-white  py-4 font-rubik flex flex-col gap-y-4'>
             <div className='border-border border-2 rounded'>
               <CodeMirror
-                value=''
+                value={testConfigData.editorValue}
                 height='200px'
                 theme={myTheme}
                 placeholder='Enter here you text...'
@@ -130,6 +150,7 @@ export function TestConfig() {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         onConfirm={onNetworkCreate}
+        networkName={testConfigData.networkName}
       />
     </div>
   );

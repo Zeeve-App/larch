@@ -84,7 +84,7 @@ export default function TemplateListTable({
                   onCreateModal(template.id);
                 }}
               >
-                Create
+                Create Network
               </button>
               <button
                 className='border-border border-2 rounded px-2 bg-create-button text-white mr-2 hover:bg-yellow-200 hover:text-black'

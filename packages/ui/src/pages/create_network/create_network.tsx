@@ -55,7 +55,7 @@ export default function CreateNetwork() {
           polkadotIntrospector: false,
           provider: data.networkProvider,
           networkDirectory: data.networkDirectory,
-          networkName: data.networkName,
+          networkName: data.name,
         };
         setSettings(obj);
         break;

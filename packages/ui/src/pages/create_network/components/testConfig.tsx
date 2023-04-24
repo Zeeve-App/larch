@@ -18,6 +18,20 @@ import { notify } from '../../../utils/notifications';
 import { createTemplateNetwork, updateTemplateNetwork } from '../../../utils/api';
 import { encodeBase64 } from '../../../utils/encoding';
 
+const updateTestContent = (testContent: string, filename: string): string => {
+  let content = testContent;
+  if (content.search('Description:') === -1) {
+    content = `Description: Sample network test\n${content}`;
+  }
+  const networkLine = `Network: ./${filename}`;
+  if (content.search('Network:') === -1) {
+    content = `${networkLine}\n${content}`;
+  } else {
+    content = content.replace(/^.*Network:.*$/mg, networkLine);
+  }
+  return content;
+};
+
 export function TestConfig() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -100,7 +114,7 @@ export function TestConfig() {
           <div className='text-white  py-4 font-rubik flex flex-col gap-y-4'>
             <div className='border-border border-2 rounded'>
               <CodeMirror
-                value={testConfigData.editorValue}
+                value={updateTestContent(testConfigData.editorValue, `${settingsData.networkName}-config.json`)}
                 height='200px'
                 theme={myTheme}
                 placeholder='Enter here you text...'

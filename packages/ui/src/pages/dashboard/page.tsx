@@ -5,12 +5,13 @@ import iconActivity from '../../components/assets/Activity.svg';
 import IconEdit from '../../components/assets/editor.svg';
 import Card from './components/card';
 import {
-  getLarchVersionInfo, getNetworkList, getTemplateList, getUserActivityList,
+  getLarchVersionInfo, getNetworkList, getRunList, getTemplateList, getUserActivityList,
 } from '../../utils/api';
 
 export default function Dashboard() {
   const [networkRecords, setNetworkRecords] = useState('NA');
   const [templateRecords, setTemplateRecords] = useState('NA');
+  const [runListRecords, setRunListRecords] = useState('NA');
   const [activityRecords, setActivityRecords] = useState('NA');
   const [supportedZombienetVersion, setSupportedZombienetVersion] = useState('');
   const [larchVersion, setLarchVersion] = useState('');
@@ -18,12 +19,14 @@ export default function Dashboard() {
   useEffect(() => {
     const networkRecordsRes = getNetworkList({ meta: { numOfRec: 0 } }).then((data) => data.meta.total);
     const templateRecordsRes = getTemplateList({ meta: { numOfRec: 0 } }).then((data) => data.meta.total);
+    const runListRecordsRes = getRunList({ meta: { numOfRec: 0 } }).then((data) => data.meta.total);
     const activityRecordsRes = getUserActivityList({ meta: { numOfRec: 0 } }).then((data) => data.meta.total);
-    Promise.allSettled([networkRecordsRes, templateRecordsRes, activityRecordsRes])
+    Promise.allSettled([networkRecordsRes, templateRecordsRes, runListRecordsRes, activityRecordsRes])
       .then((values) => {
         setNetworkRecords(values[0].status === 'fulfilled' ? (values[0].value).toString(10) : 'NA');
         setTemplateRecords(values[1].status === 'fulfilled' ? (values[1].value).toString(10) : 'NA');
-        setActivityRecords(values[2].status === 'fulfilled' ? (values[2].value).toString(10) : 'NA');
+        setRunListRecords(values[2].status === 'fulfilled' ? (values[2].value).toString(10) : 'NA');
+        setActivityRecords(values[3].status === 'fulfilled' ? (values[3].value).toString(10) : 'NA');
       });
     getLarchVersionInfo().then(({ result }) => {
       setLarchVersion(result.larchVersion);
@@ -70,7 +73,7 @@ export default function Dashboard() {
             cardLink='/run-list'
             cardIconSrc={IconEdit}
             cardDescription='List Network operations & results'
-            records={activityRecords}
+            records={runListRecords}
           />
           <Card
             cardTitle='Activity'

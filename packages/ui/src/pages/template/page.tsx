@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import IconImage from './assets/Search.svg';
 import Listing from './components/listing';
 
 export default function Template() {

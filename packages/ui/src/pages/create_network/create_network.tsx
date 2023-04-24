@@ -37,6 +37,7 @@ export default function CreateNetwork() {
   );
 
   const setTemplateId = useTemplateIdStore((store) => store.setTemplateId);
+  const templateId = useTemplateIdStore((store) => store.templateId);
 
   const handler = (name: string, value: boolean) => {
     if (name === 'bootNode') {
@@ -54,6 +55,7 @@ export default function CreateNetwork() {
           polkadotIntrospector: false,
           provider: data.networkProvider,
           networkDirectory: data.networkDirectory,
+          networkName: data.networkName,
         };
         setSettings(obj);
         break;
@@ -112,12 +114,16 @@ export default function CreateNetwork() {
           console.log(err);
           notify('error', 'Failed to get network data.');
         });
+    } else if (templateId !== null) {
+      setTemplateId('');
     } else {
+      setTemplateId('');
       setSettings({
         isBootNode: false,
         polkadotIntrospector: false,
         provider: '',
         networkDirectory: '',
+        networkName: '',
       });
       setRelayChainData({
         default_image: '',
@@ -138,15 +144,9 @@ export default function CreateNetwork() {
           },
         },
       ]);
-      setHrmpData([{
-        sender: '',
-        recipient: '',
-        max_capacity: 0,
-        max_message_size: 0,
-      }]);
+      setHrmpData([]);
       setTestConfigData({
         editorValue: '',
-        networkName: '',
       });
     }
   }, [state]);
@@ -235,6 +235,21 @@ export default function CreateNetwork() {
                 ...settingsData,
                 networkDirectory: e.target.value,
               })}
+            />
+          </div>
+        </div>
+        <div className='text-white pl-4 py-4 font-rubik flex flex-row'>
+          <div className='flex flex-row gap-x-4'>
+            <span className='pt-1 font-extrabold'>Template name:</span>
+            <input
+              className='bg-black border-border border-2 rounded w-[250px]'
+              type='text'
+              name='template_name'
+              onChange={(e) => setSettings({
+                ...settingsData,
+                networkName: e.target.value,
+              })}
+              value={settingsData.networkName}
             />
           </div>
         </div>

@@ -1,6 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable import/prefer-default-export */
-/* eslint-disable linebreak-style */
 import { create } from 'zustand';
 
 // Setting data store start
@@ -102,7 +99,6 @@ interface ParaChainListStore {
 export const useParaChainListStore = create<ParaChainListStore>((set) => ({
   paraChainList: [],
   setParaChainList: (data: Parachain[]) => {
-    console.log("data", data);
     set(() => ({ paraChainList: data }));
   },
 }));
@@ -112,24 +108,24 @@ export const useParaChainListStore = create<ParaChainListStore>((set) => ({
 export interface HRMP {
   sender: string;
   recipient: string;
-  maxCapability: number;
-  maxMsgSize: number;
-  isShowFilds: boolean;
+  max_capacity: number;
+  max_message_size: number;
 }
 interface HRMPStore {
-  hrmpData: HRMP;
-  setHrmpData: (data: HRMP) => void;
+  hrmpData: HRMP[];
+  setHrmpData: (hrmpData: HRMP[]) => void;
 }
 
 export const useHRMPStore = create<HRMPStore>((set) => ({
-  hrmpData: {
-    sender: '',
-    recipient: '',
-    maxCapability: 0,
-    maxMsgSize: 0,
-    isShowFilds: false,
-  },
-  setHrmpData: (value: HRMP) => {
+  hrmpData: [
+    {
+      sender: '',
+      recipient: '',
+      max_capacity: 0,
+      max_message_size: 0,
+    },
+  ],
+  setHrmpData: (value: HRMP[]) => {
     set(() => ({ hrmpData: value }));
   },
 }));

@@ -205,7 +205,8 @@ export default function CreateRelayChain() {
                   <input
                     className='bg-black border-border border-2 rounded w-[250px]'
                     type='text'
-                    name='name'
+                    name='image'
+                    autoComplete='off'
                     value={node.image}
                     onChange={(element) => updateNodeList(index, { image: element.target.value })}
                   />

@@ -6,6 +6,7 @@ export interface Settings {
   polkadotIntrospector: boolean;
   provider: string;
   networkDirectory: string;
+  networkName: string;
 }
 interface SettingsStore {
   settingsData: Settings;
@@ -18,6 +19,7 @@ export const useSettingsStore = create<SettingsStore>((set) => ({
     polkadotIntrospector: false,
     provider: '',
     networkDirectory: '',
+    networkName: '',
   },
   setSettings: (value: Settings) => {
     set(() => ({ settingsData: value }));
@@ -117,14 +119,7 @@ interface HRMPStore {
 }
 
 export const useHRMPStore = create<HRMPStore>((set) => ({
-  hrmpData: [
-    {
-      sender: '',
-      recipient: '',
-      max_capacity: 0,
-      max_message_size: 0,
-    },
-  ],
+  hrmpData: [],
   setHrmpData: (value: HRMP[]) => {
     set(() => ({ hrmpData: value }));
   },
@@ -134,7 +129,6 @@ export const useHRMPStore = create<HRMPStore>((set) => ({
 // Test config data store start
 interface TestConfig {
   editorValue: string;
-  networkName: string;
 }
 interface TestConfigStore {
   testConfigData: TestConfig;
@@ -144,7 +138,6 @@ interface TestConfigStore {
 export const useTestConfigStore = create<TestConfigStore>((set) => ({
   testConfigData: {
     editorValue: '',
-    networkName: '',
   },
   setTestConfigData: (value: TestConfig) => {
     set(() => ({ testConfigData: value }));
@@ -153,13 +146,13 @@ export const useTestConfigStore = create<TestConfigStore>((set) => ({
 // Test config data store end
 
 interface TemplateIdStore {
-  templateId: string;
-  setTemplateId: (data: string) => void;
+  templateId: string | null;
+  setTemplateId: (data: string | null) => void;
 }
 
 export const useTemplateIdStore = create<TemplateIdStore>((set) => ({
-  templateId: '',
-  setTemplateId: (value: string) => {
+  templateId: null,
+  setTemplateId: (value: string | null) => {
     set(() => ({ templateId: value }));
   },
 }));

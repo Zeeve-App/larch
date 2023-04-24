@@ -9,7 +9,6 @@ export function CreateHrmp() {
   const hrmpData = useHRMPStore((state) => state.hrmpData);
   const setHrmpData = useHRMPStore((state) => state.setHrmpData);
 
-  console.log('hrmpData', hrmpData);
   const maxCapabilityHandler = (type: string, index: number) => {
     const arr: HRMP[] = [...hrmpData];
     if (type === 'increment') {
@@ -70,7 +69,7 @@ export function CreateHrmp() {
             Add HRMP
           </button>
         </div>
-        {hrmpData && hrmpData.map((item, index) => (
+        {hrmpData.length > 0 && hrmpData.map((item, index) => (
           <>
             <div
               className='text-white pl-4 py-4 font-rubik flex flex-col gap-y-3'

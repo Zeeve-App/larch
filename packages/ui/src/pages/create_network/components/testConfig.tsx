@@ -52,16 +52,15 @@ export function TestConfig() {
     return encodeBase64(JSON.stringify(data));
   };
 
-  const onNetworkCreate = (value: string) => {
-    setTestConfigData({ ...testConfigData, networkName: value });
+  const onNetworkCreate = () => {
     setIsOpen(false);
     const payload = {
-      name: value,
-      configFilename: `${value}-config.json`,
+      name: settingsData.networkName,
+      configFilename: `${settingsData.networkName}-config.json`,
       configContent: configContentPrepare(),
       networkDirectory: settingsData.networkDirectory,
       networkProvider: settingsData.provider,
-      testFilename: `${value}-test-config.zndsl`,
+      testFilename: `${settingsData.networkName}-test-config.zndsl`,
       testContent: encodeBase64(testConfigData.editorValue),
     };
     if (templateId) {
@@ -148,7 +147,6 @@ export function TestConfig() {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         onConfirm={onNetworkCreate}
-        networkName={testConfigData.networkName}
       />
     </div>
   );

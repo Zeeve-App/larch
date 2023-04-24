@@ -8,12 +8,14 @@ import {
   duplicateTemplate,
   getTemplateData,
   createNetwork,
+  testNetwork,
 } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
 import PopUpBox from './modal';
 import { useTemplateFilterStore } from '../../../store/templateStore';
 import { useFilterSubmit } from '../../../store/commonStore';
 import Filter from '../../../components/filter';
+import { NetworkType } from '../types';
 
 export default function Listing() {
   const [templateList, setTemplateList] = useState<any[]>([]);
@@ -23,6 +25,7 @@ export default function Listing() {
   const [pageToggle, setPageToggle] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [createNetTemplateId, setCreateNetTemplateId] = useState('');
+  const [networkType, setNetworkType] = useState<NetworkType>('evaluation');
   const [sort, setSort] = useState<boolean>(true);
 
   const navigate = useNavigate();
@@ -40,7 +43,8 @@ export default function Listing() {
   const updateListing = () => {
     setPageToggle(!pageToggle);
   };
-  const onCreateModal = (templateId: string) => {
+  const onCreateModal = (templateId: string, type: NetworkType) => {
+    setNetworkType(type);
     setCreateNetTemplateId(templateId);
     setIsOpen(true);
   };
@@ -50,7 +54,7 @@ export default function Listing() {
     navigate('/template/createNetwork/setting', { state: { templateId } });
   };
 
-  const onNetworkCreate = (name: string) => {
+  const onNetworkCreate = (name: string, type: NetworkType) => {
     getTemplateData(createNetTemplateId)
       .then((response) => ({
         ...response.result,
@@ -59,7 +63,7 @@ export default function Listing() {
         createdAt: undefined,
         updatedAt: undefined,
       }))
-      .then(createNetwork)
+      .then((type === 'evaluation' ? createNetwork : testNetwork))
       .then(() => {
         setIsOpen(false);
         notify('success', 'Network created successfully');
@@ -167,6 +171,7 @@ export default function Listing() {
           setIsOpen={setIsOpen}
           onConfirm={onNetworkCreate}
           templateId={createNetTemplateId}
+          type={networkType}
         />
         <div className='flex flex-row justify-end'>
           <PaginatedItems

@@ -3,6 +3,7 @@ import { getFormattedLocalTime } from '../../../utils/time';
 
 type NetworkInfo = {
   name: string;
+  type: string;
   networkProvider: string;
   networkDirectory: string;
   createdAt: string;
@@ -12,7 +13,6 @@ type NetworkInfo = {
 type NetworkListTableProps = {
   networkList: NetworkInfo[];
   onCreateModal: (name: string) => void;
-  onCreateTestModal: (name: string) => void
   setSort: (value: boolean) => void;
   sort: boolean;
 };
@@ -20,7 +20,6 @@ type NetworkListTableProps = {
 export default function NetworkListTable({
   networkList,
   onCreateModal,
-  onCreateTestModal,
   setSort,
   sort,
 }: NetworkListTableProps) {
@@ -30,6 +29,9 @@ export default function NetworkListTable({
         <tr className=' border-b-2 border-border rounded '>
           <th className='px-6 py-3 w-56.25 text-left' scope='col'>
             Network Name
+          </th>
+          <th className='px-6 py-3 w-56.25 text-left' scope='col'>
+            Type
           </th>
           <th className='px-6 py-3 text-left' scope='col'>
             Provider
@@ -58,6 +60,7 @@ export default function NetworkListTable({
           networkList.map((network) => (
             <tr className=' border-b-2 border-border rounded '>
               <td className='px-6 py-3 w-56.25 '>{network.name}</td>
+              <td className='px-6 py-3 w-56.25 '>{network.type}</td>
               <td className='px-6 py-3 w-56.25 '>{network.networkProvider}</td>
               <td className='px-6 py-3 w-56.25 '>{network.networkDirectory}</td>
               <td className='px-6 py-3 w-56 text-center'>{getFormattedLocalTime(network.createdAt)}</td>
@@ -71,16 +74,6 @@ export default function NetworkListTable({
                   >
                     Delete
                   </button>
-                  {network.networkState !== 'failed'
-                    && (
-                      <button
-                        type='button'
-                        className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-green hover:text-black'
-                        onClick={() => { onCreateTestModal(network.name); }}
-                      >
-                        Test
-                      </button>
-                    )}
                 </div>
               </td>
             </tr>

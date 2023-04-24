@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import { getFormattedLocalTime } from '../../../utils/time';
+import { NetworkType } from '../types';
 
 /* eslint-disable react/button-has-type */
 type TemplateInfo = {
@@ -15,7 +16,7 @@ type TemplateListTableProps = {
   templateList: TemplateInfo[];
   onTemplateDelete: (templateId: string) => void;
   onTemplateDuplicate: (templateId: string) => void;
-  onCreateModal: (templateId: string) => void;
+  onCreateModal: (templateId: string, type: NetworkType) => void;
   editNetwork: (templateId: string) => void;
   setSort: (value: boolean) => void;
   sort: boolean;
@@ -81,10 +82,19 @@ export default function TemplateListTable({
                 type='button'
                 className='border-border border-2 rounded px-2 bg-create-button mr-2'
                 onClick={() => {
-                  onCreateModal(template.id);
+                  onCreateModal(template.id, 'evaluation');
                 }}
               >
                 Create Network
+              </button>
+              <button
+                type='button'
+                className='border-border border-2 rounded px-2 bg-create-button mr-2'
+                onClick={() => {
+                  onCreateModal(template.id, 'testing');
+                }}
+              >
+                Network Test
               </button>
               <button
                 className='border-border border-2 rounded px-2 bg-create-button text-white mr-2 hover:bg-yellow-200 hover:text-black'

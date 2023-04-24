@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 import { Request, Response } from 'express';
 import {
-  deleteNetwork, createNetwork, testNetwork,
+  deleteNetwork, createNetwork,
 } from '../../../modules/network.js';
 import { addUserOperationEntry } from '../../../modules/user_operation.js';
 import { Network, NetworkInfo, getNetworkList } from '../../../modules/models/network.js';
@@ -72,7 +72,7 @@ export const networkCreateController = async (req: Request, res: Response) => {
   const networkData: NetworkInfo = req.body;
   addUserOperationEntry('NETWORK_CREATE', `Request to create network: '${networkData.name}'`);
   try {
-    const networkRunInfo = await createNetwork(networkData);
+    const networkRunInfo = await createNetwork(networkData, 'evaluation');
     res.status(200).json({
       success: true,
       result: { name: networkRunInfo.name, runId: networkRunInfo.runId },
@@ -122,22 +122,22 @@ export const networkRunGetController = async (req: Request, res: Response) => {
 };
 
 export const networkTestController = async (req: Request, res: Response) => {
-  const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
-  addUserOperationEntry('NETWORK_TEST', `Request to test network: '${networkName}'`);
+  const networkData: NetworkInfo = req.body;
+  addUserOperationEntry('NETWORK_TEST', `Request to create network: '${networkData.name}'`);
   try {
-    const networkTestRunInfo = await testNetwork(networkName);
+    const networkRunInfo = await createNetwork(networkData, 'testing');
     res.status(200).json({
       success: true,
-      result: { name: networkTestRunInfo.name, runId: networkTestRunInfo.runId },
+      result: { name: networkRunInfo.name, runId: networkRunInfo.runId },
     });
   } catch (error) {
-    if (error instanceof AppError && error.kind === 'NETWORK_NOT_FOUND') {
-      res.statusCode = 404;
+    if (error instanceof AppError && error.kind === 'NETWORK_EXISTS') {
+      res.statusCode = 400;
       res.json({
         success: false,
         error: {
           type: error.kind,
-          title: 'Network not found',
+          title: 'Network already exists',
           detail: error.message,
           instance: req.originalUrl,
         },

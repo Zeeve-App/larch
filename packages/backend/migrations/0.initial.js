@@ -2,6 +2,7 @@ export const up = function (knex) {
   return knex.schema
     .createTable('networks', function (table) {
       table.string('name').primary();
+      table.string('type').notNullable();
       table.string('config_filename').notNullable();
       table.string('config_content').notNullable();
       table.string('network_directory').notNullable();

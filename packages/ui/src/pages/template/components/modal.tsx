@@ -2,16 +2,18 @@
 /* eslint-disable max-len */
 import { ChangeEvent, useState } from 'react';
 import { Dialog } from '@headlessui/react';
+import { NetworkType } from '../types';
 
 type PopUpBoxProps = {
   isOpen: boolean,
   setIsOpen: (state: boolean) => void,
-  onConfirm: (name: string) => void,
+  onConfirm: (name: string, type: NetworkType) => void,
   templateId: string,
+  type: NetworkType,
 };
 
 export default function PopUpBox({
-  isOpen, setIsOpen, onConfirm, templateId,
+  isOpen, setIsOpen, onConfirm, templateId, type,
 }: PopUpBoxProps) {
   const [inputText, setInputText] = useState<string>('');
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,8 +45,13 @@ export default function PopUpBox({
               <div className='text-white pr-2'>:</div>
               <div className='text-white font-rubik text-base flex-1'>{templateId}</div>
             </div>
+            <div className='flex flex-row'>
+              <div className='text-white font-rubik text-base w-3/12'>Network Creation type</div>
+              <div className='text-white pr-2'>:</div>
+              <div className='text-white font-rubik text-base flex-1'>{type}</div>
+            </div>
             <div className='flex flex-row gap-x-2 justify-between'>
-              <button className='border-2 border-border rounded-lg py-1.5 px-2 bg-green hover:bg-dark-green text-white font-bold' onClick={() => onConfirm(inputText)}>Confirm</button>
+              <button className='border-2 border-border rounded-lg py-1.5 px-2 bg-green hover:bg-dark-green text-white font-bold' onClick={() => onConfirm(inputText, type)}>Confirm</button>
               <button className='border-2 border-border rounded-lg py-1.5 px-2 bg-red-500 hover:bg-violet-700  text-white font-bold ' onClick={() => setIsOpen(false)}>Cancel</button>
             </div>
           </div>

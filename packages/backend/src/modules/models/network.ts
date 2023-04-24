@@ -9,9 +9,11 @@ const primaryTableName = 'networks';
 
 export type NetworkState = 'creating' | 'running' | 'in-cleanup' | 'failed';
 export type Provider = 'podman' | 'kubernetes' | 'native';
+export type NetworkType = 'evaluation' | 'testing';
 
 export type NetworkInfo = {
   name: string;
+  type: NetworkType;
   configFilename: string;
   configContent: string;
   networkDirectory: string;
@@ -43,6 +45,7 @@ export class Network {
     await this.db()
       .insert({
         name: this.name,
+        type: networkInfo.type,
         config_filename: networkInfo.configFilename,
         config_content: networkInfo.configContent,
         network_directory: networkInfo.networkDirectory,
@@ -72,16 +75,6 @@ export class Network {
       .select('name')
       .where('name', this.name);
     return typeof result !== 'undefined';
-  }
-
-  async testNetwork(network_name: string): Promise<any> {
-    const result = await this.db()
-      .select('test_filename', 'test_content')
-      .where('name', network_name);
-    if (result[0].test_filename != null && result[0].test_content != null) {
-      return result;
-    }
-    return null;
   }
 
   async getNetworkState(): Promise<NetworkState> {
@@ -120,6 +113,7 @@ export class Network {
 
 type FilterInfo = {
   name: string,
+  type: string,
   configFilename: string,
   networkProvider: string,
   testFilename: string
@@ -146,6 +140,7 @@ export const getNetworkList = async (
   const getModel = () => knexInstance.table(primaryTableName).where((builder) => {
     if (!filter) return;
     if (filter.name) builder.whereLike('name', `%${filter.name}%`);
+    if (filter.type) builder.whereLike('type', `%${filter.type}%`);
     if (filter.configFilename) builder.whereLike('config_filename', `%${filter.configFilename}%`);
     if (filter.networkProvider) builder.whereLike('network_provider', `%${filter.networkProvider}%`);
     if (filter.testFilename) builder.whereLike('test_filename', `%${filter.testFilename}%`);

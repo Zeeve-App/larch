@@ -16,7 +16,7 @@ router.post('/list', handlePromiseController(networkListController));
 router.post('/create', networkCreateValidation, handlePromiseController(networkCreateController));
 router.post('/update', networkUpdateValidation, handlePromiseController(networkUpdateController));
 router.get('/delete', handlePromiseController(networkDeleteController));
-router.get('/test', handlePromiseController(networkTestController));
+router.post('/test', networkCreateValidation, handlePromiseController(networkTestController));
 router.get('/run', handlePromiseController(networkRunGetController));
 router.post('/run-list', handlePromiseController(networkRunListController));
 router.get('/status', handlePromiseController(networkStatusController));

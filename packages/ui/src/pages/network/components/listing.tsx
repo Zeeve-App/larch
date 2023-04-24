@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import NetworkListTable from './table';
 import PaginatedItems from '../../../components/pagination';
-import { deleteNetwork, getNetworkList, testNetwork } from '../../../utils/api';
+import { deleteNetwork, getNetworkList } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
 import Filter from '../../../components/filter';
 import { useNetworkFilterStore } from '../../../store/networkStore';
 import { useFilterSubmit } from '../../../store/commonStore';
 import DeletePopUpBox from './modaldelete';
-import TestPopUpBox from './modaltest';
 
 export default function Listing() {
   const [networkList, setNetworkList] = useState<any[]>([]);
@@ -17,7 +16,6 @@ export default function Listing() {
   const [pageToggle, setPageToggle] = useState(true);
   const [sort, setSort] = useState<boolean>(true);
   const [deleteNetworkName, setDeleteNetwork] = useState('');
-  const [testNetworkName, setTestNetwork] = useState('');
 
   const defaultModalView = {
     test: false,
@@ -48,11 +46,6 @@ export default function Listing() {
     setModalViewStatus('delete', true);
   };
 
-  const onCreateTestModal = (name: string) => {
-    setTestNetwork(name);
-    setModalViewStatus('test', true);
-  };
-
   const onNetworkDelete = (networkName: string) => {
     deleteNetwork(networkName)
       .then(() => {
@@ -62,16 +55,6 @@ export default function Listing() {
       })
       .catch(() => {
         notify('error', `Failed delete the network ("${networkName}")`);
-      });
-  };
-
-  const onNetworkTest = (name: string) => {
-    testNetwork(name)
-      .then(() => {
-        setModalViewStatus('test', false);
-        notify('success', 'network successfully tested');
-      }).catch(() => {
-        notify('error', 'Failed to test network');
       });
   };
 
@@ -139,19 +122,12 @@ export default function Listing() {
           setSort={setSort}
           sort={sort}
           onCreateModal={onCreateModal}
-          onCreateTestModal={onCreateTestModal}
         />
         <DeletePopUpBox
           isOpen={isOpen.delete}
           setIsOpen={(status) => { setModalViewStatus('delete', status); }}
           onConfirm={onNetworkDelete}
           name={deleteNetworkName}
-        />
-        <TestPopUpBox
-          isOpen={isOpen.test}
-          setIsOpen={(status) => { setModalViewStatus('test', status); }}
-          onConfirmTest={onNetworkTest}
-          name={testNetworkName}
         />
         <div className='right-2 bottom-0 flex flex-row justify-end'>
           <PaginatedItems

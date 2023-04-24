@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
@@ -105,6 +105,13 @@ export function TestConfig() {
         notify('error', 'Failed to create template');
       });
   };
+
+  useEffect(() => {
+    setTestConfigData({
+      ...testConfigData,
+      editorValue: updateTestContent(testConfigData.editorValue, `${settingsData.networkName}-config.json`),
+    });
+  }, []);
 
   return (
     <div className=' flex-col flex'>

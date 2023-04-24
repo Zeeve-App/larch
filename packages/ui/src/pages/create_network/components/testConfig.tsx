@@ -1,9 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable max-len */
-/* eslint-disable linebreak-style */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable import/no-extraneous-dependencies */
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import CodeMirror from '@uiw/react-codemirror';
@@ -16,10 +10,12 @@ import {
   useRelayChainStore,
   useNodeListStore,
   useParaChainListStore,
+  useHRMPStore,
 } from '../../../store/createNetworkStore';
 import PopUpBox from './modal';
 import { notify } from '../../../utils/notifications';
 import { createTemplateNetwork } from '../../../utils/api';
+import { encodeBase64 } from '../../../utils/encoding';
 
 export function TestConfig() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -31,8 +27,9 @@ export function TestConfig() {
   const relayChainData = useRelayChainStore((state) => state.relayChainData);
   const nodesList = useNodeListStore((state) => state.nodesList);
   const paraChainList = useParaChainListStore((state) => state.paraChainList);
+  const hrmpData = useHRMPStore((state) => state.hrmpData);
 
-  const onChange = React.useCallback((value: any, viewUpdate: any) => {
+  const onChange = React.useCallback((value: any) => {
     setTestConfigData({ ...testConfigData, editorValue: value });
   }, []);
 
@@ -46,11 +43,15 @@ export function TestConfig() {
         nodes: nodesList,
       },
       parachain: paraChainList,
+      hrmp_channels: {
+        sender: hrmpData.sender,
+        recipient: hrmpData.recipient,
+        max_capacity: hrmpData.maxCapability,
+        max_message_size: hrmpData.maxMsgSize,
+      },
     };
-    return btoa(JSON.stringify(data));
+    return encodeBase64(JSON.stringify(data));
   };
-
-  const testContentPrepare = (): string => btoa(JSON.stringify(testConfigData.editorValue));
 
   const onNetworkCreate = (value: string) => {
     setTestConfigData({ ...testConfigData, networkName: value });
@@ -62,9 +63,8 @@ export function TestConfig() {
       networkDirectory: settingsData.networkDirectory,
       networkProvider: settingsData.provider,
       testFilename: `${value}-test-config.zndsl`,
-      testContent: testContentPrepare(),
+      testContent: encodeBase64(JSON.stringify(testConfigData.editorValue)),
     };
-    console.log('payload', payload);
     createTemplateNetwork(payload)
       .then((response) => {
         console.log('response', response);
@@ -78,7 +78,6 @@ export function TestConfig() {
       });
   };
 
-  console.log('testConfigData', testConfigData);
   return (
     <div className=' flex-col flex'>
       <NavBar pageSlug='hrmp' />
@@ -87,9 +86,10 @@ export function TestConfig() {
           <div className='text-white  py-4 font-rubik flex flex-col gap-y-4'>
             <div className='border-border border-2 rounded'>
               <CodeMirror
-                value="console.log('hello world!');"
+                value=''
                 height='200px'
                 theme={myTheme}
+                placeholder='Enter here you text...'
                 extensions={[javascript({ jsx: true })]}
                 onChange={onChange}
               />
@@ -100,13 +100,7 @@ export function TestConfig() {
                     type='button'
                     className='text-white border-border border-2 rounded py-1 px-4 bg-gray hover:bg-grad'
                   >
-                    Cancel
-                  </button>
-                  <button
-                    type='button'
-                    className='text-white border-border border-2 rounded py-1 px-4 bg-gray'
-                  >
-                    Save
+                    Reset
                   </button>
                 </div>
               </div>

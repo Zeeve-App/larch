@@ -1,8 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TemplateListTable from './table';
 import PaginatedItems from '../../../components/pagination';
 import {
-  getTemplateList, deleteTemplate, duplicateTemplate, getTemplateData, createNetwork,
+  getTemplateList,
+  deleteTemplate,
+  duplicateTemplate,
+  getTemplateData,
+  createNetwork,
 } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
 import PopUpBox from './modal';
@@ -20,6 +25,8 @@ export default function Listing() {
   const [createNetTemplateId, setCreateNetTemplateId] = useState('');
   const [sort, setSort] = useState<boolean>(true);
 
+  const navigate = useNavigate();
+
   const templateFilterData = useTemplateFilterStore(
     (state) => state.templateFilterData,
   );
@@ -36,6 +43,11 @@ export default function Listing() {
   const onCreateModal = (templateId: string) => {
     setCreateNetTemplateId(templateId);
     setIsOpen(true);
+  };
+
+  const editNetwork = (templateId: string) => {
+    console.log('templateId', templateId);
+    navigate('/template/createNetwork/setting', { state: { templateId } });
   };
 
   const onNetworkCreate = (name: string) => {
@@ -97,7 +109,8 @@ export default function Listing() {
       .then(() => {
         updateListing();
         notify('success', 'Template deleted successfully');
-      }).catch(() => {
+      })
+      .catch(() => {
         notify('error', 'Failed to delete template');
       });
   };
@@ -107,7 +120,8 @@ export default function Listing() {
       .then(() => {
         updateListing();
         notify('success', 'Template duplicated successfully');
-      }).catch(() => {
+      })
+      .catch(() => {
         notify('error', 'Failed to duplicate template');
       });
   };
@@ -118,12 +132,14 @@ export default function Listing() {
         numOfRec: itemPerPage,
         pageNum,
       },
-    }).then((response) => {
-      setTemplateList(response.result);
-      setMeta(response.meta);
-    }).catch(() => {
-      notify('error', 'Failed to fetch template list');
-    });
+    })
+      .then((response) => {
+        setTemplateList(response.result);
+        setMeta(response.meta);
+      })
+      .catch(() => {
+        notify('error', 'Failed to fetch template list');
+      });
   }, [pageNum, pageToggle]);
 
   return (
@@ -142,10 +158,16 @@ export default function Listing() {
           onTemplateDelete={onTemplateDelete}
           onTemplateDuplicate={onTemplateDuplicate}
           onCreateModal={onCreateModal}
+          editNetwork={editNetwork}
           setSort={setSort}
           sort={sort}
         />
-        <PopUpBox isOpen={isOpen} setIsOpen={setIsOpen} onConfirm={onNetworkCreate} templateId={createNetTemplateId} />
+        <PopUpBox
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          onConfirm={onNetworkCreate}
+          templateId={createNetTemplateId}
+        />
         <div className='flex flex-row justify-end'>
           <PaginatedItems
             itemsPerPage={itemPerPage}

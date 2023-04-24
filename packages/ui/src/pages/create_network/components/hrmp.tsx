@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable react/button-has-type */
-/* eslint-disable import/no-extraneous-dependencies */
 import { Link } from 'react-router-dom';
 import NavBar from './navbar';
 import IconUparrow from './assets/up.svg';
@@ -141,12 +137,12 @@ export function CreateHrmp() {
       <div className='h-18 gap-x-6 px-6  w-full border-b-2 flex flex-row border-border' />
       <div className='flex justify-end py-4 gap-x-4'>
         <Link to='/template/createNetwork/parachain'>
-          <button className='text-white border-border border-2 rounded py-2 px-4 bg-gray'>
+          <button type='button' className='text-white border-border border-2 rounded py-2 px-4 bg-gray'>
             Back
           </button>
         </Link>
         <Link to='/template/createNetwork/testconfig'>
-          <button className='text-white border-border border-2 rounded py-2 px-4 bg-gray'>
+          <button type='button' className='text-white border-border border-2 rounded py-2 px-4 bg-gray'>
             Next
           </button>
         </Link>

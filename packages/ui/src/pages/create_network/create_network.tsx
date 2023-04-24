@@ -1,16 +1,39 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import NavBar from './components/navbar';
-import { useSettingsStore } from '../../store/createNetworkStore';
+import {
+  useTestConfigStore,
+  useSettingsStore,
+  useRelayChainStore,
+  useNodeListStore,
+  useParaChainListStore,
+  useHRMPStore,
+} from '../../store/createNetworkStore';
+import { notify } from '../../utils/notifications';
+import { getTemplateData } from '../../utils/api';
+import { decodeBase64 } from '../../utils/encoding';
 
 export default function CreateNetwork() {
-  const settingsData = useSettingsStore((state) => state.settingsData);
-  const setSettings = useSettingsStore((state) => state.setSettings);
+  const { state } = useLocation();
 
   const providers = [
     { label: 'Podman', value: 'podman' },
     { label: 'Kubernates', value: 'kubernates' },
     { label: 'Native', value: 'native' },
   ];
+  const settingsData = useSettingsStore((store) => store.settingsData);
+  const setSettings = useSettingsStore((store) => store.setSettings);
+  const setRelayChainData = useRelayChainStore(
+    (store) => store.setRelayChainData,
+  );
+  const setNodesList = useNodeListStore((store) => store.setNodesList);
+  const setParaChainList = useParaChainListStore(
+    (store) => store.setParaChainList,
+  );
+  const setHrmpData = useHRMPStore((store) => store.setHrmpData);
+  const setTestConfigData = useTestConfigStore(
+    (store) => store.setTestConfigData,
+  );
 
   const handler = (name: string, value: boolean) => {
     if (name === 'bootNode') {
@@ -20,7 +43,115 @@ export default function CreateNetwork() {
     }
   };
 
-  console.log('settingsData', settingsData);
+  const updateStore = (comp: string, data: any) => {
+    switch (comp) {
+      case 'settings': {
+        const obj = {
+          isBootNode: false,
+          polkadotIntrospector: false,
+          provider: data.networkProvider,
+          networkDirectory: data.networkDirectory,
+        };
+        setSettings(obj);
+        break;
+      }
+      case 'relayChain': {
+        const obj = {
+          default_image: data.default_image,
+          chain: data.chain,
+          default_command: data.default_command,
+          default_args: data.default_args,
+        };
+        setRelayChainData(obj);
+        setNodesList(data.nodes);
+        break;
+      }
+      case 'paraChain': {
+        setParaChainList(data);
+        break;
+      }
+      case 'hrmp': {
+        const obj = {
+          sender: data.sender,
+          recipient: data.recipient,
+          maxCapability: data.max_capacity,
+          maxMsgSize: data.max_message_size,
+          isShowFilds: false,
+        };
+        setHrmpData(obj);
+        break;
+      }
+      case 'testConfig': {
+        const obj = {
+          editorValue: data,
+          networkName: data.name,
+        };
+        setTestConfigData(obj);
+        break;
+      }
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    if (state && state.templateId) {
+      getTemplateData(state.templateId)
+        .then((response) => {
+          if (response && response.result) {
+            const configContent = decodeBase64(response.result.configContent);
+            const testContent = decodeBase64(response.result.testContent);
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            const { parachain, relaychain, hrmp_channels } = JSON.parse(configContent);
+            updateStore('settings', response.result);
+            updateStore('relayChain', relaychain);
+            updateStore('paraChain', parachain);
+            updateStore('hrmp', hrmp_channels);
+            updateStore('testConfig', JSON.parse(testContent));
+          } else {
+            setSettings({
+              isBootNode: false,
+              polkadotIntrospector: false,
+              provider: '',
+              networkDirectory: '',
+            });
+            setRelayChainData({
+              default_image: '',
+              chain: '',
+              default_command: '',
+              default_args: [],
+            });
+            setNodesList([]);
+            setParaChainList([
+              {
+                id: '',
+                addToGenesis: false,
+                collator: {
+                  name: '',
+                  image: '',
+                  command: '',
+                  args: [],
+                },
+              },
+            ]);
+            setHrmpData({
+              sender: '',
+              recipient: '',
+              maxCapability: 0,
+              maxMsgSize: 0,
+              isShowFilds: false,
+            });
+            setTestConfigData({
+              editorValue: '',
+              networkName: '',
+            });
+          }
+        })
+        .catch(() => {
+          notify('error', 'Failed to get network data.');
+        });
+    }
+  }, [state]);
 
   return (
     <div className='flex-col flex'>
@@ -106,7 +237,10 @@ export default function CreateNetwork() {
               type='text'
               name='network_directory'
               value={settingsData.networkDirectory}
-              onChange={(e) => setSettings({ ...settingsData, networkDirectory: e.target.value })}
+              onChange={(e) => setSettings({
+                ...settingsData,
+                networkDirectory: e.target.value,
+              })}
             />
           </div>
         </div>

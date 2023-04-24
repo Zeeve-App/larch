@@ -102,6 +102,7 @@ interface ParaChainListStore {
 export const useParaChainListStore = create<ParaChainListStore>((set) => ({
   paraChainList: [],
   setParaChainList: (data: Parachain[]) => {
+    console.log("data", data);
     set(() => ({ paraChainList: data }));
   },
 }));

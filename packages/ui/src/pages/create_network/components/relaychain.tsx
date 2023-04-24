@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from './navbar';
 import {
@@ -47,7 +47,25 @@ export default function CreateRelayChain() {
     setRelayChainData({ ...relayChainData, default_args: arr });
   };
 
-  const nodeArgsHandler = (value: string, nodeIdx: number, argsIdex: number) => {
+  const handleBeforeUnload = (e: any) => {
+    e.preventDefault();
+    const message: string = 'Are you sure you want to leave? All provided data will be lost.';
+    e.returnValue = message;
+    return message;
+  };
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+  const nodeArgsHandler = (
+    value: string,
+    nodeIdx: number,
+    argsIdex: number,
+  ) => {
     if (nodesList && nodesList[nodeIdx]?.args?.length) {
       const arr: string[] | undefined = nodesList[nodeIdx]?.args;
       if (arr) {
@@ -60,9 +78,6 @@ export default function CreateRelayChain() {
       }
     }
   };
-
-  console.log('relayChainData', relayChainData);
-  console.log('nodesList', nodesList);
 
   return (
     <div className='flex-col flex'>

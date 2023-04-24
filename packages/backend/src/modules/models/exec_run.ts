@@ -148,7 +148,7 @@ export const getExecStatusCode = async (
   const [result] = await knexInstance.table(primaryTableName)
     .select('status_code')
     .where('related_id', relatedId)
-    .where('intention', intention)
+    .andWhere('intention', intention)
     .orderBy('created_at', 'desc')
     .limit(1);
   if (!result) {

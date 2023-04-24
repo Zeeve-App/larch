@@ -155,3 +155,15 @@ export const useTestConfigStore = create<TestConfigStore>((set) => ({
   },
 }));
 // Test config data store end
+
+interface TemplateIdStore {
+  templateId: string;
+  setTemplateId: (data: string) => void;
+}
+
+export const useTemplateIdStore = create<TemplateIdStore>((set) => ({
+  templateId: '',
+  setTemplateId: (value: string) => {
+    set(() => ({ templateId: value }));
+  },
+}));

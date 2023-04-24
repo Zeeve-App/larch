@@ -8,6 +8,7 @@ import {
   useNodeListStore,
   useParaChainListStore,
   useHRMPStore,
+  useTemplateIdStore,
 } from '../../store/createNetworkStore';
 import { notify } from '../../utils/notifications';
 import { getTemplateData } from '../../utils/api';
@@ -35,6 +36,8 @@ export default function CreateNetwork() {
     (store) => store.setTestConfigData,
   );
 
+  const setTemplateId = useTemplateIdStore((store) => store.setTemplateId);
+
   const handler = (name: string, value: boolean) => {
     if (name === 'bootNode') {
       setSettings({ ...settingsData, isBootNode: value });
@@ -43,7 +46,7 @@ export default function CreateNetwork() {
     }
   };
 
-  const updateStore = (comp: string, data: any) => {
+  const updateStore = (comp: string, data: any, additionalInfo?: any) => {
     switch (comp) {
       case 'settings': {
         const obj = {
@@ -66,7 +69,7 @@ export default function CreateNetwork() {
         setNodesList(data.nodes);
         break;
       }
-      case 'paraChain': {
+      case 'parachains': {
         setParaChainList(data);
         break;
       }
@@ -84,7 +87,7 @@ export default function CreateNetwork() {
       case 'testConfig': {
         const obj = {
           editorValue: data,
-          networkName: data.name,
+          networkName: additionalInfo,
         };
         setTestConfigData(obj);
         break;
@@ -96,18 +99,20 @@ export default function CreateNetwork() {
 
   useEffect(() => {
     if (state && state.templateId) {
+      setTemplateId(state.templateId);
       getTemplateData(state.templateId)
         .then((response) => {
           if (response && response.result) {
             const configContent = decodeBase64(response.result.configContent);
             const testContent = decodeBase64(response.result.testContent);
+            console.log(configContent);
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            const { parachain, relaychain, hrmp_channels } = JSON.parse(configContent);
+            const { parachains, relaychain, hrmp_channels } = JSON.parse(configContent);
             updateStore('settings', response.result);
             updateStore('relayChain', relaychain);
-            updateStore('paraChain', parachain);
-            updateStore('hrmp', hrmp_channels);
-            updateStore('testConfig', JSON.parse(testContent));
+            updateStore('parachains', parachains);
+            if (hrmp_channels) updateStore('hrmp', hrmp_channels);
+            updateStore('testConfig', testContent, response.result.name);
           } else {
             setSettings({
               isBootNode: false,
@@ -147,7 +152,8 @@ export default function CreateNetwork() {
             });
           }
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err);
           notify('error', 'Failed to get network data.');
         });
     }
@@ -164,8 +170,7 @@ export default function CreateNetwork() {
           <div className='w-max border-border border-2 gap-x-2 rounded py-0.5 px-0.5'>
             <button
               type='button'
-              className={`text-white px-3 py-1.5 rounded ${
-                settingsData.isBootNode ? 'bg-grad' : ''
+              className={`text-white px-3 py-1.5 rounded ${settingsData.isBootNode ? 'bg-grad' : ''
               }`}
               onClick={() => handler('bootNode', true)}
             >
@@ -173,8 +178,7 @@ export default function CreateNetwork() {
             </button>
             <button
               type='button'
-              className={`text-white px-3 py-1.5 rounded ${
-                settingsData.isBootNode ? '' : 'bg-grad'
+              className={`text-white px-3 py-1.5 rounded ${settingsData.isBootNode ? '' : 'bg-grad'
               }`}
               onClick={() => handler('bootNode', false)}
             >
@@ -188,8 +192,7 @@ export default function CreateNetwork() {
           <div className='w-max border-border border-2 gap-x-2 rounded py-0.5 px-0.5'>
             <button
               type='button'
-              className={`text-white px-3 py-1.5 rounded ${
-                settingsData.polkadotIntrospector ? 'bg-grad' : ''
+              className={`text-white px-3 py-1.5 rounded ${settingsData.polkadotIntrospector ? 'bg-grad' : ''
               }`}
               onClick={() => handler('polkadotIntrospector', true)}
             >
@@ -197,8 +200,7 @@ export default function CreateNetwork() {
             </button>
             <button
               type='button'
-              className={`text-white px-3 py-1.5 rounded ${
-                settingsData.polkadotIntrospector ? '' : 'bg-grad'
+              className={`text-white px-3 py-1.5 rounded ${settingsData.polkadotIntrospector ? '' : 'bg-grad'
               }`}
               onClick={() => handler('polkadotIntrospector', false)}
             >

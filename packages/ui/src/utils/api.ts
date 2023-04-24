@@ -98,6 +98,10 @@ export const createTemplateNetwork = async (networkDetails: any): Promise<Respon
   { api: '/api/larch/template/create', payload: networkDetails },
 );
 
+export const updateTemplateNetwork = async (templateId: string, networkDetails: any): Promise<Response> => sendData(
+  { api: `/api/larch/template/update?templateId=${templateId}`, payload: networkDetails },
+);
+
 export const deleteNetwork = async (networkName: string): Promise<Response> => getApiCall(
   { api: `/api/larch/network/delete?networkName=${networkName}` },
 );

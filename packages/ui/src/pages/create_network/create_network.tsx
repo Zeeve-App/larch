@@ -16,7 +16,6 @@ import { decodeBase64 } from '../../utils/encoding';
 
 export default function CreateNetwork() {
   const { state } = useLocation();
-  console.log('state', state);
 
   const providers = [
     { label: 'Podman', value: 'podman' },

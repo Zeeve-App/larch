@@ -17,7 +17,9 @@ type ZombienetCliOptions = {
 };
 
 const zombienetBinNameByVersion = (zombienetVersion: string): string => `zombienet-${zombienetVersion}`;
-const zombienetBinPathByVersion = (zombienetVersion: string): string => `${ZOMBIENET_BIN_COLLECTION_DIR}/${zombienetBinNameByVersion(zombienetVersion)}`;
+const zombienetBinPathByVersion = (
+  zombienetVersion: string,
+): string => `${ZOMBIENET_BIN_COLLECTION_DIR}/${zombienetBinNameByVersion(zombienetVersion)}`;
 
 export const downloadZombienetBinary = async (zombienetVersion: string): Promise<void> => {
   const binaryDownloadUrl = `${ZOMBIENET_BINARY_DOWNLOAD_BASE_URL}/v${zombienetVersion}/zombienet-linux-x64`;

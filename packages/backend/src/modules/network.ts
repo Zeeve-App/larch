@@ -126,7 +126,7 @@ export const createNetwork = async (networkInfo: NetworkInfo, type: NetworkType)
     spawn: type === 'evaluation',
     test: type === 'testing',
     networkConfigPath: `${networkDirPath}/${networkInfo.configFilename}`,
-    // @ts-ignore
+    testConfigPath: `${networkDirPath}/${networkInfo.testFilename}`,
     provider: networkInfo.networkProvider ?? LARCH_DEFAULT_PROVIDER_NAME,
     dir: networkInfo.networkDirectory,
   }, ZOMBIENET_VERSION, runInfo.id, networkInfo.name);

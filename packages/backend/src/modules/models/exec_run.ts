@@ -141,10 +141,14 @@ export const removeAllExecRunByRelatedId = async (relatedId: string): Promise<vo
     .where('related_id', relatedId);
 };
 
-export const getLatestStatusCode = async (relatedId: string): Promise<number | null> => {
+export const getExecStatusCode = async (
+  relatedId: string,
+  intention: Intention,
+): Promise<number | null> => {
   const [result] = await knexInstance.table(primaryTableName)
     .select('status_code')
     .where('related_id', relatedId)
+    .where('intention', intention)
     .orderBy('created_at', 'desc')
     .limit(1);
   if (!result) {

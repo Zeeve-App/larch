@@ -113,49 +113,49 @@ export default function CreateNetwork() {
             updateStore('parachains', parachains);
             if (hrmp_channels) updateStore('hrmp', hrmp_channels);
             updateStore('testConfig', testContent, response.result.name);
-          } else {
-            setSettings({
-              isBootNode: false,
-              polkadotIntrospector: false,
-              provider: '',
-              networkDirectory: '',
-            });
-            setRelayChainData({
-              default_image: '',
-              chain: '',
-              default_command: '',
-              default_args: [],
-            });
-            setNodesList([]);
-            setParaChainList([
-              {
-                id: '',
-                addToGenesis: false,
-                collator: {
-                  name: '',
-                  image: '',
-                  command: '',
-                  args: [],
-                },
-              },
-            ]);
-            setHrmpData({
-              sender: '',
-              recipient: '',
-              maxCapability: 0,
-              maxMsgSize: 0,
-              isShowFilds: false,
-            });
-            setTestConfigData({
-              editorValue: '',
-              networkName: '',
-            });
           }
         })
         .catch((err) => {
           console.log(err);
           notify('error', 'Failed to get network data.');
         });
+    } else {
+      setSettings({
+        isBootNode: false,
+        polkadotIntrospector: false,
+        provider: '',
+        networkDirectory: '',
+      });
+      setRelayChainData({
+        default_image: '',
+        chain: '',
+        default_command: '',
+        default_args: [],
+      });
+      setNodesList([]);
+      setParaChainList([
+        {
+          id: '',
+          addToGenesis: false,
+          collator: {
+            name: '',
+            image: '',
+            command: '',
+            args: [],
+          },
+        },
+      ]);
+      setHrmpData({
+        sender: '',
+        recipient: '',
+        maxCapability: 0,
+        maxMsgSize: 0,
+        isShowFilds: false,
+      });
+      setTestConfigData({
+        editorValue: '',
+        networkName: '',
+      });
     }
   }, [state]);
 

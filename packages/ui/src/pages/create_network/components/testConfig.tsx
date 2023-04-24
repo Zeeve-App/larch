@@ -119,6 +119,9 @@ export function TestConfig() {
                   <button
                     type='button'
                     className='text-white border-border border-2 rounded py-1 px-4 bg-gray hover:bg-grad'
+                    onClick={() => {
+                      setTestConfigData({ ...testConfigData, editorValue: '' });
+                    }}
                   >
                     Reset
                   </button>

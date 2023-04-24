@@ -1,6 +1,7 @@
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import { execute } from '../exec_run.js';
+import { checkPathExists } from '../../utils/fs_helper.js';
 
 export const do1 = '';
 
@@ -34,3 +35,9 @@ export const deleteDirUnshare = async (dirPath: string, networkName: string): Pr
   const { code } = await execute(undefined, 'podman', args, 'NETWORK_CLEANUP', networkName, true);
   if (code !== 0) throw new Error('Not able to deleted directory');
 };
+
+export const checkZombieJson = async (
+  networkDirectory: string,
+): Promise<boolean> => checkPathExists(
+  path.join(networkDirectory, 'zombie.json'),
+);

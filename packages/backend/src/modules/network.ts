@@ -9,10 +9,10 @@ import {
   LARCH_DEFAULT_PROVIDER_NAME,
   ZOMBIENET_NETWORKS_COLLECTION_DIR, ZOMBIENET_VERSION,
 } from '../config.js';
-import { ExecRun, removeAllExecRunByRelatedId, getLatestStatusCode } from './models/exec_run.js';
+import { ExecRun, removeAllExecRunByRelatedId, getExecStatusCode } from './models/exec_run.js';
 import { runZombienet } from './zombienet.js';
 import { AppError } from '../utils/declaration.js';
-import { networkCleanUp } from './providers/common.js';
+import { isNetworkReady, networkCleanUp } from './providers/common.js';
 import { deleteDirUnshare } from './providers/podman.js';
 import { removeInProgressNetwork } from './exec_run.js';
 
@@ -28,10 +28,15 @@ async function networkStatusUpdate() {
       const network = new Network(networkList[i].name);
       // eslint-disable-next-line no-continue
       if ((await network.getNetworkState()) === 'failed') continue;
-      const status = await getLatestStatusCode(networkList[i].name);
+      const networkInfo = await network.get();
+      const status = await getExecStatusCode(networkList[i].name, 'NETWORK_CREATE');
+      const networkReady = await isNetworkReady(
+        networkInfo.networkProvider,
+        networkInfo.networkDirectory,
+      );
       let state: NetworkState = 'failed';
       if (status === null) state = 'creating';
-      if (status === 0) state = 'running';
+      if (status === 0 || networkReady) state = 'running';
       networkUpdatePromiseList.push(network.updateNetworkStatus(state));
     } catch (error) {
       console.error(error);

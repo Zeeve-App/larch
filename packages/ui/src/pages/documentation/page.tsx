@@ -1,13 +1,13 @@
 /* eslint-disable max-len */
 export default function Documentation() {
   return (
-    <div className='h-[44rem] bg-black p-6 overflow-y-scroll w-full flex flex-col flex-nowrap content-center justify-left items-left font-rubik'>
+    <div className='h-[90vh] bg-black p-6 overflow-y-scroll w-full flex flex-col flex-nowrap content-center justify-left items-left font-rubik'>
       <div className='flex flex-col gap-4'>
         <div className=''>
           <h1 className='text-white font-rubik  text-2xl font-bold '>Larch Documentation</h1>
         </div>
         <div className='w-full flex justify-left'>
-          <div className='h-0.5 w-[16rem] bg-grey mb-4 px-5' />
+          <div className='h-0.5 w-full bg-grey mb-4 px-5' />
         </div>
         <div className=''>
           <h2 className='text-white font-rubik  text-xl font-bold'>Features</h2>

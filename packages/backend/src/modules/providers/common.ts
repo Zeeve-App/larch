@@ -19,3 +19,13 @@ export const networkCleanUp = async (
     }
   }
 };
+
+export const isNetworkReady = async (
+  provider: Provider,
+  networkDirectory: string,
+) => {
+  switch (provider) {
+    case 'podman': return podman.checkZombieJson(networkDirectory);
+    default: return true;
+  }
+};

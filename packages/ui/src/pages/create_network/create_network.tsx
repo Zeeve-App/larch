@@ -74,14 +74,7 @@ export default function CreateNetwork() {
         break;
       }
       case 'hrmp': {
-        const obj = {
-          sender: data.sender,
-          recipient: data.recipient,
-          maxCapability: data.max_capacity,
-          maxMsgSize: data.max_message_size,
-          isShowFilds: false,
-        };
-        setHrmpData(obj);
+        setHrmpData(data);
         break;
       }
       case 'testConfig': {
@@ -145,13 +138,12 @@ export default function CreateNetwork() {
           },
         },
       ]);
-      setHrmpData({
+      setHrmpData([{
         sender: '',
         recipient: '',
-        maxCapability: 0,
-        maxMsgSize: 0,
-        isShowFilds: false,
-      });
+        max_capacity: 0,
+        max_message_size: 0,
+      }]);
       setTestConfigData({
         editorValue: '',
         networkName: '',

@@ -47,12 +47,7 @@ export function TestConfig() {
         nodes: nodesList,
       },
       parachains: paraChainList,
-      hrmp_channels: {
-        sender: hrmpData.sender,
-        recipient: hrmpData.recipient,
-        max_capacity: hrmpData.maxCapability,
-        max_message_size: hrmpData.maxMsgSize,
-      },
+      hrmp_channels: hrmpData,
     };
     return encodeBase64(JSON.stringify(data));
   };
@@ -133,7 +128,7 @@ export function TestConfig() {
       </div>
       <div className='h-18 gap-x-6 px-6  w-full border-b-2 flex flex-row border-border' />
       <div className='flex justify-end py-4 gap-x-4'>
-        <Link to='/template/createNetwork/parachain'>
+        <Link to='/template/createNetwork/hrmp'>
           <button
             type='button'
             className='text-white border-border border-2 rounded py-2 px-4 bg-gray'

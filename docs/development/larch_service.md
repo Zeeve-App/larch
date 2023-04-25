@@ -28,8 +28,8 @@ WantedBy=multi-user.target
 - `$ systemctl status larch.service`
 
 ### Verify it is running
-- `$ journalctl -u myserver.service`
+- `$ journalctl -u larch.service`
 
 ### Reload all services if you make changes to the service
 - `$ systemctl daemon-reload`
-- `$ systemctl restart myserver.service`
+- `$ systemctl restart larch.service`

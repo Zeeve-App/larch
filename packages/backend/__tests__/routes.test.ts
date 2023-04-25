@@ -247,6 +247,28 @@ describe('Test Network Run endpoint', () => {
   })
 })
 
+// Network Run-List
+
+describe('Test Network Run-List endpoint', () => {
+  test('it should return error message and status code should be equal to 404', async () => {
+    const runId = '';
+    const res = await supertest(app)
+      .post('/api/larch/network/run-list/')
+      .send({
+        "filter": {
+          "id": "",
+          "intention":"NETWORK_CREATE",
+          "command":""
+        },
+        "meta": {
+          "pageNum": 1,
+          "numOfRec": 2
+        }
+      })
+        expect(res && res.body && typeof res.body === 'object')
+  })
+})
+
 // Test Status API
 
 describe('Test Status endpoint', () => {

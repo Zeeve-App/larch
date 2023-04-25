@@ -17,7 +17,7 @@ export default function Activity() {
       });
   };
   return (
-    <div className='p-6 gap-6 flex-col flex'>
+    <div className='p-6 gap-6 w-full flex-col flex'>
       <div className='h-12 w-full flex'>
         <div className='h-full flex w-full flex-wrap content-center item-center justify-end gap-4'>
           <div className='item-center'>
@@ -28,7 +28,6 @@ export default function Activity() {
           </div>
         </div>
       </div>
-      <div className='w-full' />
       <Listing updateList={updateList} />
     </div>
   );

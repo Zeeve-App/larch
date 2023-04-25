@@ -1,24 +1,24 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable react/button-has-type */
 /* eslint-disable max-len */
 import { Dialog } from '@headlessui/react';
+import { TemplateDelete } from '../types';
 
 type DeletePopUpBoxProps = {
-  isOpen: boolean;
-  setIsOpen: (state: boolean) => void;
+  setIsOpen: (obj: TemplateDelete) => void;
   onConfirm: (name: string) => void;
-  name: string;
+  deleteTemplateObj: TemplateDelete;
 };
 
 export default function DeletePopUpBox({
-  isOpen,
   setIsOpen,
   onConfirm,
-  name,
+  deleteTemplateObj,
 }: DeletePopUpBoxProps) {
   return (
     <Dialog
-      open={isOpen}
-      onClose={() => setIsOpen(false)}
+      open={deleteTemplateObj.isOpen}
+      onClose={() => setIsOpen({ ...deleteTemplateObj, isOpen: false })}
       className='relative z-50'
     >
       <div className='fixed inset-0 bg-black/80' aria-hidden='true' />
@@ -29,20 +29,20 @@ export default function DeletePopUpBox({
             <div className='flex flex-row'>
               <div className='text-white font-rubik text-base flex-1 text-center'>
                 Do you want to delete '
-                {name}
+                {deleteTemplateObj.templateName}
                 '
               </div>
             </div>
             <div className='flex flex-row justify-between'>
               <button
                 className='border-2 border-border rounded-lg py-1.5 px-2 bg-green hover:bg-dark-green text-white font-bold'
-                onClick={() => onConfirm(name)}
+                onClick={() => onConfirm(deleteTemplateObj.templateId)}
               >
                 Confirm
               </button>
               <button
                 className='border-2 border-border rounded-lg py-1.5 px-2 bg-red-500 hover:bg-violet-700  text-white font-bold '
-                onClick={() => setIsOpen(false)}
+                onClick={() => setIsOpen({ ...deleteTemplateObj, isOpen: false })}
               >
                 Cancel
               </button>

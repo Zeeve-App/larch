@@ -138,11 +138,12 @@ export const templateListController = async (req: Request, res: Response): Promi
 
 export const templateCloneController = async (req: Request, res: Response): Promise<void> => {
   const templateId = typeof req.query.templateId === 'string' ? req.query.templateId : '';
+  const templateName: string = req.body.name;
   addUserOperationEntry('TEMPLATE_CLONE', `Request to clone template: ${templateId}`);
   const template = new Template(templateId);
   const currentTemplateInfo = await template.get();
   const newTemplate = new Template();
-  await newTemplate.set(currentTemplateInfo);
+  await newTemplate.set({ ...currentTemplateInfo, name: templateName });
   const duplicateTemplateInfo = await newTemplate.get();
   res.json({
     success: true,

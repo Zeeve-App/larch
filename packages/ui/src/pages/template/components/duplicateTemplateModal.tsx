@@ -1,0 +1,72 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable react/button-has-type */
+/* eslint-disable max-len */
+import { Dialog } from '@headlessui/react';
+import { TemplateDelete } from '../types';
+
+type PopUpBoxProps = {
+  duplicateTemplateObj: TemplateDelete;
+  setDuplicateTemplateObj: (state: TemplateDelete) => void;
+  onConfirm: () => void;
+};
+
+export default function DuplicateTempPopUpBox({
+  duplicateTemplateObj,
+  setDuplicateTemplateObj,
+  onConfirm,
+}: PopUpBoxProps) {
+  return (
+    <Dialog
+      open={duplicateTemplateObj.isOpen}
+      onClose={() => setDuplicateTemplateObj({ ...duplicateTemplateObj, isOpen: false })}
+      className='relative z-50'
+    >
+      <div className='fixed inset-0 bg-black/80' aria-hidden='true' />
+      <div className='fixed inset-0 flex items-center justify-center '>
+        <Dialog.Panel className='w-full max-w-lg rounded bg-create-button border-border border-4 p-4'>
+          <Dialog.Title className=' text-white font-rubik pb-4 text-center font-bold'>
+            Duplicate Template
+          </Dialog.Title>
+          <Dialog.Description />
+          <div className='w-full flex justify-center'>
+            <div className='h-0.5 w-10/12 bg-grey mb-4 px-5' />
+          </div>
+          <div className='flex flex-col gap-y-4'>
+            <div className='flex flex-row'>
+              <div className='text-white font-rubik text-base w-3/12'>
+                Template name
+              </div>
+              <div className='text-white pr-2'>:</div>
+              <input
+                className=' border-border border-2 rounded bg-create-button text-white font-rubik flex-1'
+                onChange={(e) => setDuplicateTemplateObj({
+                  ...duplicateTemplateObj,
+                  templateName: e.target.value,
+                })}
+                value={duplicateTemplateObj.templateName}
+              />
+            </div>
+            <div className='flex flex-row gap-x-2 justify-between'>
+              <button
+                type='button'
+                className='border-2 border-border rounded-lg py-1.5 px-2 bg-green hover:bg-dark-green text-white font-bold'
+                onClick={onConfirm}
+              >
+                Confirm
+              </button>
+              <button
+                className='border-2 border-border rounded-lg py-1.5 px-2 bg-red-500 hover:bg-violet-700  text-white font-bold '
+                onClick={() => setDuplicateTemplateObj({
+                  ...duplicateTemplateObj,
+                  isOpen: false,
+                })}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </Dialog.Panel>
+      </div>
+    </Dialog>
+  );
+}

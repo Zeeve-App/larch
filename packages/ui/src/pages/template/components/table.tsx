@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { getFormattedLocalTime } from '../../../utils/time';
-import { NetworkType } from '../types';
+import { NetworkType, TemplateDelete } from '../types';
 
 /* eslint-disable react/button-has-type */
 type TemplateInfo = {
@@ -11,11 +11,18 @@ type TemplateInfo = {
   createdAt: string;
   operation: string;
 };
-
 type TemplateListTableProps = {
   templateList: TemplateInfo[];
-  onTemplateDelete: (templateId: string) => void;
-  onTemplateDuplicate: (templateId: string) => void;
+  setDeleteTemplateObj: ({
+    isOpen,
+    templateId,
+    templateName,
+  }: TemplateDelete) => void;
+  setDuplicateTemplateObj: ({
+    isOpen,
+    templateId,
+    templateName,
+  }: TemplateDelete) => void;
   onCreateModal: (templateId: string, type: NetworkType) => void;
   editNetwork: (templateId: string) => void;
   setSort: (value: boolean) => void;
@@ -23,8 +30,8 @@ type TemplateListTableProps = {
 };
 export default function TemplateListTable({
   templateList,
-  onTemplateDelete,
-  onTemplateDuplicate,
+  setDeleteTemplateObj,
+  setDuplicateTemplateObj,
   onCreateModal,
   setSort,
   editNetwork,
@@ -99,7 +106,11 @@ export default function TemplateListTable({
               <button
                 className='border-border border-2 rounded px-2 bg-create-button text-white mr-2 hover:bg-yellow-200 hover:text-black'
                 onClick={() => {
-                  onTemplateDuplicate(template.id);
+                  setDuplicateTemplateObj({
+                    isOpen: true,
+                    templateId: template.id,
+                    templateName: '',
+                  });
                 }}
               >
                 Duplicate
@@ -107,7 +118,11 @@ export default function TemplateListTable({
               <button
                 className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red-500 hover:text-black'
                 onClick={() => {
-                  onTemplateDelete(template.id);
+                  setDeleteTemplateObj({
+                    isOpen: true,
+                    templateId: template.id,
+                    templateName: template.name,
+                  });
                 }}
               >
                 Delete

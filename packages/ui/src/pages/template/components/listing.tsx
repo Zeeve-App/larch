@@ -12,10 +12,12 @@ import {
 } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
 import PopUpBox from './modal';
+import DeletePopUpBox from './deleteTemplateModal';
+import DuplicateTempPopUpBox from './duplicateTemplateModal';
 import { useTemplateFilterStore } from '../../../store/templateStore';
 import { useFilterSubmit } from '../../../store/commonStore';
 import Filter from '../../../components/filter';
-import { NetworkType } from '../types';
+import { NetworkType, TemplateDelete } from '../types';
 
 export default function Listing() {
   const [templateList, setTemplateList] = useState<any[]>([]);
@@ -27,6 +29,16 @@ export default function Listing() {
   const [createNetTemplateId, setCreateNetTemplateId] = useState('');
   const [networkType, setNetworkType] = useState<NetworkType>('evaluation');
   const [sort, setSort] = useState<boolean>(true);
+  const [deleteTemplateObj, setDeleteTemplateObj] = useState({
+    isOpen: false,
+    templateId: '',
+    templateName: '',
+  } as TemplateDelete);
+  const [duplicateTemplateObj, setDuplicateTemplateObj] = useState({
+    isOpen: false,
+    templateId: '',
+    templateName: '',
+  } as TemplateDelete);
 
   const navigate = useNavigate();
 
@@ -63,7 +75,7 @@ export default function Listing() {
         createdAt: undefined,
         updatedAt: undefined,
       }))
-      .then((type === 'evaluation' ? createNetwork : testNetwork))
+      .then(type === 'evaluation' ? createNetwork : testNetwork)
       .then(() => {
         setIsOpen(false);
         notify('success', 'Network created successfully');
@@ -113,17 +125,33 @@ export default function Listing() {
       .then(() => {
         updateListing();
         notify('success', 'Template deleted successfully');
+        setDeleteTemplateObj({
+          isOpen: false,
+          templateId: '',
+          templateName: '',
+        });
       })
       .catch(() => {
         notify('error', 'Failed to delete template');
       });
   };
 
-  const onTemplateDuplicate = (templateId: string) => {
-    duplicateTemplate(templateId)
+  const deleteTheTemplate = (templateId: string) => {
+    onTemplateDelete(templateId);
+  };
+
+  const onTemplateDuplicate = () => {
+    duplicateTemplate(duplicateTemplateObj.templateId, {
+      name: duplicateTemplateObj.templateName,
+    })
       .then(() => {
         updateListing();
         notify('success', 'Template duplicated successfully');
+        setDuplicateTemplateObj({
+          isOpen: false,
+          templateId: '',
+          templateName: '',
+        });
       })
       .catch(() => {
         notify('error', 'Failed to duplicate template');
@@ -159,12 +187,12 @@ export default function Listing() {
       <div className='flex flex-col justify-between'>
         <TemplateListTable
           templateList={templateList}
-          onTemplateDelete={onTemplateDelete}
-          onTemplateDuplicate={onTemplateDuplicate}
+          setDuplicateTemplateObj={setDuplicateTemplateObj}
           onCreateModal={onCreateModal}
           editNetwork={editNetwork}
           setSort={setSort}
           sort={sort}
+          setDeleteTemplateObj={setDeleteTemplateObj}
         />
         <PopUpBox
           isOpen={isOpen}
@@ -172,6 +200,16 @@ export default function Listing() {
           onConfirm={onNetworkCreate}
           templateId={createNetTemplateId}
           type={networkType}
+        />
+        <DeletePopUpBox
+          setIsOpen={setDeleteTemplateObj}
+          onConfirm={deleteTheTemplate}
+          deleteTemplateObj={deleteTemplateObj}
+        />
+        <DuplicateTempPopUpBox
+          onConfirm={onTemplateDuplicate}
+          duplicateTemplateObj={duplicateTemplateObj}
+          setDuplicateTemplateObj={setDuplicateTemplateObj}
         />
         <div className='flex flex-row justify-end'>
           <PaginatedItems

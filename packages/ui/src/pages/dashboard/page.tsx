@@ -37,9 +37,9 @@ export default function Dashboard() {
     });
   }, []);
   return (
-    <div className='h-full bg-black p-6'>
+    <div className='h-full w-full bg-black p-6'>
       {/* eslint-disable-next-line max-len */}
-      <div className='bg-create-button flex flex-col gap-6 p-6 border-2 border-border rounded-2xl border-solid box-border max-w-max'>
+      <div className='bg-create-button flex flex-col gap-6 p-6 border-2 border-border rounded-2xl border-solid box-border'>
         <h3 className='text-white font-rubik text-2xl font-bold text-center'>Explore Larch</h3>
         <div className='text-white font-rubik w-1/2 font-bold  border-solid border-dark-green border-4 rounded-xl p-2'>
           <div className='flex flex-row'>

@@ -18,6 +18,6 @@ router.post(
 );
 router.get('/delete', handlePromiseController(templateDeleteController));
 router.post('/list', handlePromiseController(templateListController));
-router.get('/clone', handlePromiseController(templateCloneController));
+router.post('/clone', handlePromiseController(templateCloneController));
 
 export default router;

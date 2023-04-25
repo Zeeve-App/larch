@@ -1,5 +1,4 @@
 import { test, expect, describe } from 'vitest'
-import { testNetwork } from '../src/modules/network';
 import { checkPathExists, createDir, deleteDir, writeToFileFromBase64 } from '../src/utils/fs_helper';
 import { downloadFileToAPath } from '../src/utils/download';
 import { ZOMBIENET_BINARY_DOWNLOAD_BASE_URL, ZOMBIENET_BIN_COLLECTION_DIR } from '../src/config';
@@ -43,14 +42,14 @@ describe('deleteDir', () => {
     })
 })
 
-describe('testNetwork', () => {
-    test("testNetwork", async () => {
-        const networkName = 'ATestNetwork'
-        const result = testNetwork(networkName);
-        expect(typeof result).not.toBe('');
+// describe('testNetwork', () => {
+//     test("testNetwork", async () => {
+//         const networkName = 'ATestNetwork'
+//         const result = testNetwork(networkName);
+//         expect(typeof result).not.toBe('');
 
-    })
-})
+//     })
+// })
 describe('download', () => {
     test("download", async () => {
         const zombienetVersion = '1.3.43';

@@ -1,20 +1,18 @@
 import { test, describe } from 'vitest'
-import { networkCleanUp } from '../src/modules/providers/common';
-import { getNamespace, cleanUp, deleteDirUnshare } from '../src/modules/providers/podman';
+import { networkCleanUp , isNetworkReady} from '../src/modules/providers/common';
+import { cleanUp, deleteDirUnshare, checkZombieJson } from '../src/modules/providers/podman';
 
 
 describe('networkCleanUp', () => {
     test("networkCleanUp", async () => {
-        const result = networkCleanUp('podman','TestNetwork','/home/antar/Desktop/Example');
+        const result = networkCleanUp('podman','','');
     })
 })
-
-describe('getNamespace', () => {
-    test("getNamespace", async () => {
-        const result = getNamespace('Example');
+describe('isNetworkReady', () => {
+    test("isNetworkReady", async () => {
+        const result = isNetworkReady('podman','');
     })
 })
-
 describe('cleanUp', () => {
     test("cleanUp", async () => {
         const result = cleanUp('','');
@@ -25,5 +23,9 @@ describe('deleteDirUnshare', () => {
         const result = deleteDirUnshare('','');
     })
 })
-
+describe('checkZombieJson', () => {
+    test("checkZombieJson", async () => {
+        const result = checkZombieJson('');
+    })
+})
 

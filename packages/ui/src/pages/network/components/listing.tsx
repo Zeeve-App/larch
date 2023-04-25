@@ -7,6 +7,7 @@ import Filter from '../../../components/filter';
 import { useNetworkFilterStore } from '../../../store/networkStore';
 import { useFilterSubmit } from '../../../store/commonStore';
 import DeletePopUpBox from './modaldelete';
+import RefreshButton from '../../../components/refresh';
 
 export default function Listing() {
   const [networkList, setNetworkList] = useState<any[]>([]);
@@ -115,6 +116,7 @@ export default function Listing() {
           setFilterData={setNetworkFilterData}
           setIsFilterSubmit={setIsFilterSubmit}
         />
+        <RefreshButton onClick={() => setPageToggle(!pageToggle)} />
       </div>
       <div className='flex flex-col justify-between'>
         <NetworkListTable

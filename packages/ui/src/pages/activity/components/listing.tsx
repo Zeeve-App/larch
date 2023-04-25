@@ -8,6 +8,7 @@ import {
   useActivityFilterStore,
 } from '../../../store/activityStore';
 import { useFilterSubmit } from '../../../store/commonStore';
+import RefreshButton from '../../../components/refresh';
 
 type ListingProps = {
   updateList: boolean
@@ -19,6 +20,7 @@ export default function Listing({ updateList }: ListingProps) {
   const [itemPerPage] = useState(5);
   const [pageNum, setPageNum] = useState(1);
   const [sort, setSort] = useState<boolean>(true);
+  const [pageToggle, setPageToggle] = useState(true);
 
   const activityFilterData = useActivityFilterStore(
     (state) => state.activityFilterData,
@@ -63,7 +65,7 @@ export default function Listing({ updateList }: ListingProps) {
   };
   useEffect(() => {
     filterData();
-  }, [pageNum, isFilterSubmit, sort, updateList]);
+  }, [pageNum, isFilterSubmit, sort, updateList, pageToggle]);
 
   return (
     <>
@@ -74,6 +76,7 @@ export default function Listing({ updateList }: ListingProps) {
           setFilterData={setActivityFilterData}
           setIsFilterSubmit={setIsFilterSubmit}
         />
+        <RefreshButton onClick={() => setPageToggle(!pageToggle)} />
       </div>
       <div className='flex flex-col justify-between'>
         <ActivityListTable

@@ -10,7 +10,6 @@ import { ExecRun, getExecRunList } from '../../../modules/models/exec_run.js';
 
 export const networkGetController = async (req: Request, res: Response): Promise<void> => {
   const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
-  addUserOperationEntry('NETWORK_GET', `Request to fetch network information: '${networkName}'`);
   const network = new Network(networkName);
   const networkExists = await network.exists();
   if (!networkExists) {
@@ -97,7 +96,6 @@ export const networkCreateController = async (req: Request, res: Response) => {
 
 export const networkRunGetController = async (req: Request, res: Response) => {
   const runId = typeof req.query.runId === 'string' ? req.query.runId : '';
-  addUserOperationEntry('NETWORK_RUN_GET', `Request to fetch network run information: '${runId}'`);
   const execRun = new ExecRun(runId);
   const execRunExists = await execRun.exists();
   if (!execRunExists) {

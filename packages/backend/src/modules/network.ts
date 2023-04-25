@@ -34,9 +34,12 @@ async function networkStatusUpdate() {
         networkInfo.networkProvider,
         networkInfo.networkDirectory,
       );
-      let state: NetworkState = 'failed';
-      if (status === null) state = 'creating';
-      if (status === 0 || networkReady) state = 'running';
+      const state: NetworkState = (() => {
+        if (status !== null && status !== 0) return 'failed';
+        if (networkReady) return 'running';
+        if (status === null) return 'creating';
+        return 'running';
+      })();
       networkUpdatePromiseList.push(network.updateNetworkStatus(state));
     } catch (error) {
       console.error(error);
@@ -109,7 +112,6 @@ export const createNetwork = async (networkInfo: NetworkInfo, type: NetworkType)
   try {
     await setNetworkWithState('creating');
     await createDir(networkDirPath);
-    await createDir(networkInfo.networkDirectory);
     await writeToFileFromBase64(networkConfigPath, networkInfo.configContent);
     if (networkInfo.testFilename && networkInfo.testContent) {
       const networkTestConfigPath = `${networkDirPath}/${networkInfo.testFilename}`;

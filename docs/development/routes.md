@@ -11,10 +11,10 @@ This API will return the zombienet version and larch version respectively
 This is a POST API. This will use to create a new network. This will return the Network name and the Run ID respectively. This Run ID will use to see the Network Running Output.
 ### Check Network Status API
 - /api/larch/network/status/
-This is a GET API. This will use to check the network status of a perticular network. This API will take networkName as a parameter (?networkName=ATestNetwork).
+This is a GET API. This will use to check the network status of a particular network. This API will take networkName as a parameter (?networkName=ATestNetwork).
 ### Display Network Info API
 - /api/larch/network/
-This is a GET API. This is used to display the network informations like network name, network ID, configuration file name, configuration file, network directory, network provider name, network status, testing zndsl file, test file name and network creation time.
+This is a GET API. This is used to display the network information like network name, network ID, configuration file name, configuration file, network directory, network provider name, network status, testing zndsl file, test file name and network creation time.
 ### Test Network API
 - /api/larch/network/test/
 This GET API takes network name as a parameter and run the network test with the given dsl test file and will return a Run ID.
@@ -41,7 +41,7 @@ This API is for creating a network template, with the relevant network configura
 
 ### Get Template Details
 - /api/larch/template/
-This API is used to get the existing network templates. By passing the template id we can get that perticular template details.
+This API is used to get the existing network templates. By passing the template id we can get that particular template details.
 
 ### Update Template
 - /api/larch/template/update/

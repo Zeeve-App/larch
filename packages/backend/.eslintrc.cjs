@@ -19,6 +19,6 @@ module.exports = {
         "no-console": "off",
         "no-bitwise": "off",
         "no-plusplus": "off",
-        "max-len": ["error", { "code": 120, "comments": 120 }],
+        "max-len": ["error", { "code": 120, "comments": 120, "ignoreTemplateLiterals": true  }],
     }
 }

@@ -28,7 +28,6 @@ export const templateCreateController = async (req: Request, res: Response): Pro
 
 export const templateGetController = async (req: Request, res: Response): Promise<void> => {
   const templateId = typeof req.query.templateId === 'string' ? req.query.templateId : '';
-  addUserOperationEntry('TEMPLATE_GET', `Request to fetch template information: '${templateId}'`);
   const template = new Template(templateId);
   const templateExists = await template.exists();
   if (!templateExists) {

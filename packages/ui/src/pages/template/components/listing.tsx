@@ -13,6 +13,7 @@ import {
 import { notify } from '../../../utils/notifications';
 import PopUpBox from './modal';
 import DeletePopUpBox from './deleteTemplateModal';
+import DuplicateTempPopUpBox from './duplicateTemplateModal';
 import { useTemplateFilterStore } from '../../../store/templateStore';
 import { useFilterSubmit } from '../../../store/commonStore';
 import Filter from '../../../components/filter';
@@ -29,6 +30,11 @@ export default function Listing() {
   const [networkType, setNetworkType] = useState<NetworkType>('evaluation');
   const [sort, setSort] = useState<boolean>(true);
   const [deleteTemplateObj, setDeleteTemplateObj] = useState({
+    isOpen: false,
+    templateId: '',
+    templateName: '',
+  } as TemplateDelete);
+  const [duplicateTemplateObj, setDuplicateTemplateObj] = useState({
     isOpen: false,
     templateId: '',
     templateName: '',
@@ -130,15 +136,22 @@ export default function Listing() {
       });
   };
 
-  const onNetworkDelete = (templateId: string) => {
+  const deleteTheTemplate = (templateId: string) => {
     onTemplateDelete(templateId);
   };
 
-  const onTemplateDuplicate = (templateId: string) => {
-    duplicateTemplate(templateId)
+  const onTemplateDuplicate = () => {
+    duplicateTemplate(duplicateTemplateObj.templateId, {
+      name: duplicateTemplateObj.templateName,
+    })
       .then(() => {
         updateListing();
         notify('success', 'Template duplicated successfully');
+        setDuplicateTemplateObj({
+          isOpen: false,
+          templateId: '',
+          templateName: '',
+        });
       })
       .catch(() => {
         notify('error', 'Failed to duplicate template');
@@ -174,7 +187,7 @@ export default function Listing() {
       <div className='flex flex-col justify-between'>
         <TemplateListTable
           templateList={templateList}
-          onTemplateDuplicate={onTemplateDuplicate}
+          setDuplicateTemplateObj={setDuplicateTemplateObj}
           onCreateModal={onCreateModal}
           editNetwork={editNetwork}
           setSort={setSort}
@@ -190,8 +203,13 @@ export default function Listing() {
         />
         <DeletePopUpBox
           setIsOpen={setDeleteTemplateObj}
-          onConfirm={onNetworkDelete}
+          onConfirm={deleteTheTemplate}
           deleteTemplateObj={deleteTemplateObj}
+        />
+        <DuplicateTempPopUpBox
+          onConfirm={onTemplateDuplicate}
+          duplicateTemplateObj={duplicateTemplateObj}
+          setDuplicateTemplateObj={setDuplicateTemplateObj}
         />
         <div className='flex flex-row justify-end'>
           <PaginatedItems

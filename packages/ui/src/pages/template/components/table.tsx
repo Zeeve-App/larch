@@ -18,7 +18,11 @@ type TemplateListTableProps = {
     templateId,
     templateName,
   }: TemplateDelete) => void;
-  onTemplateDuplicate: (templateId: string) => void;
+  setDuplicateTemplateObj: ({
+    isOpen,
+    templateId,
+    templateName,
+  }: TemplateDelete) => void;
   onCreateModal: (templateId: string, type: NetworkType) => void;
   editNetwork: (templateId: string) => void;
   setSort: (value: boolean) => void;
@@ -27,7 +31,7 @@ type TemplateListTableProps = {
 export default function TemplateListTable({
   templateList,
   setDeleteTemplateObj,
-  onTemplateDuplicate,
+  setDuplicateTemplateObj,
   onCreateModal,
   setSort,
   editNetwork,
@@ -102,7 +106,11 @@ export default function TemplateListTable({
               <button
                 className='border-border border-2 rounded px-2 bg-create-button text-white mr-2 hover:bg-yellow-200 hover:text-black'
                 onClick={() => {
-                  onTemplateDuplicate(template.id);
+                  setDuplicateTemplateObj({
+                    isOpen: true,
+                    templateId: template.id,
+                    templateName: '',
+                  });
                 }}
               >
                 Duplicate

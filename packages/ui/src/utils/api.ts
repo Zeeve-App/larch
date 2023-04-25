@@ -82,8 +82,8 @@ export const deleteTemplate = async (templateId: string): Promise<Response> => g
   { api: `/api/larch/template/delete?templateId=${templateId}` },
 );
 
-export const duplicateTemplate = async (templateId: string): Promise<Response> => getApiCall(
-  { api: `/api/larch/template/clone?templateId=${templateId}` },
+export const duplicateTemplate = async (templateId: string, payload: { name: string }): Promise<Response> => sendData(
+  { api: `/api/larch/template/clone?templateId=${templateId}`, payload },
 );
 
 export const getTemplateData = async (templateId: string): Promise<Response> => getApiCall(

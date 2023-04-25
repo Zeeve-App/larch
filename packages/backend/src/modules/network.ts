@@ -7,7 +7,7 @@ import {
 } from '../utils/fs_helper.js';
 import {
   LARCH_DEFAULT_PROVIDER_NAME,
-  ZOMBIENET_NETWORKS_COLLECTION_DIR, ZOMBIENET_VERSION,
+  ZOMBIENET_NETWORKS_COLLECTION_DIR, ZOMBIENET_NETWORKS_EXECUTION_DIR, ZOMBIENET_VERSION,
 } from '../config.js';
 import { ExecRun, removeAllExecRunByRelatedId, getExecStatusCode } from './models/exec_run.js';
 import { runZombienet } from './zombienet.js';
@@ -107,11 +107,18 @@ export const createNetwork = async (networkInfo: NetworkInfo, type: NetworkType)
     });
   }
   const networkDirPath = `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkInfo.name}`;
+  const networkExecPath = `${ZOMBIENET_NETWORKS_EXECUTION_DIR}/${networkInfo.name}`;
   const networkConfigPath = `${networkDirPath}/${networkInfo.configFilename}`;
-  const setNetworkWithState = (networkState: NetworkState) => network.set({ ...networkInfo, type, networkState });
+  const setNetworkWithState = (networkState: NetworkState) => network.set({
+    ...networkInfo,
+    type,
+    networkState,
+    networkDirectory: networkExecPath,
+  });
   try {
     await setNetworkWithState('creating');
     await createDir(networkDirPath);
+    await createDir(ZOMBIENET_NETWORKS_EXECUTION_DIR);
     await writeToFileFromBase64(networkConfigPath, networkInfo.configContent);
     if (networkInfo.testFilename && networkInfo.testContent) {
       const networkTestConfigPath = `${networkDirPath}/${networkInfo.testFilename}`;
@@ -130,7 +137,7 @@ export const createNetwork = async (networkInfo: NetworkInfo, type: NetworkType)
     networkConfigPath: `${networkDirPath}/${networkInfo.configFilename}`,
     testConfigPath: `${networkDirPath}/${networkInfo.testFilename}`,
     provider: networkInfo.networkProvider ?? LARCH_DEFAULT_PROVIDER_NAME,
-    dir: networkInfo.networkDirectory,
+    dir: networkExecPath,
   }, ZOMBIENET_VERSION, runInfo.id, networkInfo.name);
 
   return {

@@ -1,12 +1,12 @@
 /* eslint-disable import/prefer-default-export */
-import knex, { Knex } from 'knex';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import * as knex from 'knex';
+import { Knex } from 'knex';
+import { join } from 'path';
 
 import { LARCH_CONTEXT_DIR } from '../../config.js';
 import { convertRowFieldToCamelCase } from '../../utils/misc.js';
 
-const currentSourcePath = dirname(fileURLToPath(import.meta.url));
+const currentSourcePath = __dirname;
 
 const config: Knex.Config = {
   client: 'sqlite3',

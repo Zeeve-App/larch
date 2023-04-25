@@ -54,7 +54,6 @@ export default function CreateNetwork() {
           isBootNode: false,
           polkadotIntrospector: false,
           provider: data.networkProvider,
-          networkDirectory: data.networkDirectory,
           networkName: data.name,
         };
         setSettings(obj);
@@ -120,7 +119,6 @@ export default function CreateNetwork() {
         isBootNode: false,
         polkadotIntrospector: false,
         provider: '',
-        networkDirectory: '',
         networkName: '',
       });
       setRelayChainData({
@@ -219,21 +217,6 @@ export default function CreateNetwork() {
                 </option>
               ))}
             </select>
-          </div>
-        </div>
-        <div className='text-white pl-4 py-4 font-rubik flex flex-row'>
-          <div className='flex flex-row gap-x-4'>
-            <span className='pt-1 font-extrabold'>Network Directory:</span>
-            <input
-              className='bg-black border-border border-2 rounded w-[250px]'
-              type='text'
-              name='network_directory'
-              value={settingsData.networkDirectory}
-              onChange={(e) => setSettings({
-                ...settingsData,
-                networkDirectory: e.target.value,
-              })}
-            />
           </div>
         </div>
         <div className='text-white pl-4 py-4 font-rubik flex flex-row'>

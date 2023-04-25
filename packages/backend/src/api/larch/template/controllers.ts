@@ -10,7 +10,6 @@ export const templateCreateController = async (req: Request, res: Response): Pro
     name: templateData.name,
     configFilename: templateData.configFilename,
     configContent: templateData.configContent,
-    networkDirectory: templateData.networkDirectory,
     networkProvider: templateData.networkProvider,
     testFilename: templateData.testFilename,
     testContent: templateData.testContent,

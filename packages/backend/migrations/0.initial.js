@@ -1,4 +1,4 @@
-export const up = function (knex) {
+exports.up = function (knex) {
   return knex.schema
     .createTable('networks', function (table) {
       table.string('name').primary();
@@ -18,7 +18,6 @@ export const up = function (knex) {
       table.string('name').notNullable();
       table.string('config_filename').notNullable();
       table.string('config_content').notNullable();
-      table.string('network_directory').notNullable();
       table.string('network_provider').notNullable();
       table.string('test_filename').notNullable();
       table.string('test_content').notNullable();
@@ -43,11 +42,11 @@ export const up = function (knex) {
     });
 };
 
-export const down = function (knex) {
+exports.down = function (knex) {
   // return knex.schema
   //   .dropTable("products")
   //   .dropTable("users");
   return null;
 };
 
-export const config = { transaction: true };
+exports.config = { transaction: true };

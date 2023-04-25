@@ -1,7 +1,8 @@
 /* eslint-disable import/prefer-default-export */
-import nodeFetch from 'node-fetch';
 import * as fs from 'node:fs/promises';
 import { createWriteStream } from 'node:fs';
+import { Readable } from 'node:stream';
+import { finished } from 'node:stream/promises';
 import { DownloadFileToAPathParams } from './declaration.js';
 
 /**
@@ -12,7 +13,7 @@ import { DownloadFileToAPathParams } from './declaration.js';
  */
 export const downloadFileToAPath = (
   downloadFileToAPathParams: DownloadFileToAPathParams,
-): Promise<void> => nodeFetch(downloadFileToAPathParams.downloadUrl, {
+): Promise<void> => fetch(downloadFileToAPathParams.downloadUrl, {
   method: 'GET',
   redirect: 'follow',
 }).then((response) => new Promise((resolve, reject) => {
@@ -34,12 +35,13 @@ export const downloadFileToAPath = (
     interval = setInterval(updateFileSize, progressRefreshInMs);
   }
 
-  response.body?.pipe(dest);
-  response.body?.on('end', async () => {
-    clearInterval(interval);
-    if (downloadFileToAPathParams.progressCb) await updateFileSize();
-    resolve();
-  });
+  // @ts-ignore
+  finished(Readable.fromWeb(response.body!).pipe(dest))
+    .then(async () => {
+      clearInterval(interval);
+      if (downloadFileToAPathParams.progressCb) await updateFileSize();
+      resolve();
+    });
 
   dest.on('error', (err) => {
     clearInterval(interval);

@@ -72,7 +72,6 @@ export function TestConfig() {
       name: settingsData.networkName,
       configFilename: `${settingsData.networkName}-config.json`,
       configContent: configContentPrepare(),
-      networkDirectory: settingsData.networkDirectory,
       networkProvider: settingsData.provider,
       testFilename: `${settingsData.networkName}-test-config.zndsl`,
       testContent: encodeBase64(testConfigData.editorValue),

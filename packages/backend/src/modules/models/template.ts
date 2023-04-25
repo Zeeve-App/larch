@@ -10,7 +10,6 @@ type TemplateInfo = {
   name: string;
   configFilename: string;
   configContent: string;
-  networkDirectory: string;
   networkProvider: string;
   testFilename: string;
   testContent: string;
@@ -43,7 +42,6 @@ export class Template {
         name: templateInfo.name,
         config_filename: templateInfo.configFilename,
         config_content: templateInfo.configContent,
-        network_directory: templateInfo.networkDirectory,
         network_provider: templateInfo.networkProvider,
         test_filename: templateInfo.testFilename,
         test_content: templateInfo.testContent,

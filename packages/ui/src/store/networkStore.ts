@@ -25,11 +25,6 @@ export const useNetworkFilterStore = create<NetworkFilterInputStore>((set) => ({
       isSearchOpen: false,
     },
     {
-      label: 'Network Directory',
-      key: 'networkDirectory',
-      isSearchOpen: false,
-    },
-    {
       label: 'Created On',
       key: 'createdAt',
       isSearchOpen: false,

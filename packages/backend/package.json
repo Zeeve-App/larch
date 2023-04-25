@@ -4,7 +4,6 @@
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "type": "module",
   "bin": {
     "larch": "./dist/module/index.js"
   },
@@ -44,7 +43,9 @@
     "express": "^4.18.2",
     "joi": "^17.9.1",
     "knex": "^2.4.2",
-    "node-fetch": "^3.3.0",
     "sqlite3": "^5.1.6"
+  },
+  "pkg": {
+    "assets": ["migrations/*", "dist/ui/**/*"]
   }
 }

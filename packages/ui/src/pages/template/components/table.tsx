@@ -7,7 +7,6 @@ type TemplateInfo = {
   id: string;
   name: string;
   networkProvider: string;
-  networkDirectory: string;
   createdAt: string;
   operation: string;
 };
@@ -50,9 +49,6 @@ export default function TemplateListTable({
           <th className='px-6 py-3 text-left' scope='col'>
             Provider
           </th>
-          <th className='px-6 py-3 text-left' scope='col'>
-            Network Directory
-          </th>
           <th className='px-6 py-3' scope='col'>
             Created On &nbsp;
             {' '}
@@ -71,7 +67,6 @@ export default function TemplateListTable({
             <td className='px-6 py-3 w-max'>{template.id}</td>
             <td className='px-6 py-3 w-max '>{template.name}</td>
             <td className='px-6 py-3 w-max '>{template.networkProvider}</td>
-            <td className='px-6 py-3 w-max '>{template.networkDirectory}</td>
             <td className='px-6 py-3 w-max text-center'>
               {getFormattedLocalTime(template.createdAt)}
             </td>

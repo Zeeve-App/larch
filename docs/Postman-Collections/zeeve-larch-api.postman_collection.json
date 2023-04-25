@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"{{networkName}}\",\n    \"configFilename\":\"{{configFileName}}\",\n    \"configContent\":\"{{configFile}}\",\n    \"networkDirectory\":\"{{directoryName}}\",\n    \"networkProvider\":\"{{networkProvider}}\",\n    \"testFilename\":\"{{dslFileName}}\",\n    \"testContent\":\"{{dslFile}}\"\n}",
+							"raw": "{\n    \"name\":\"{{networkName}}\",\n    \"configFilename\":\"{{configFileName}}\",\n    \"configContent\":\"{{configFile}}\",\n    \"networkProvider\":\"{{networkProvider}}\",\n    \"testFilename\":\"{{dslFileName}}\",\n    \"testContent\":\"{{dslFile}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -208,7 +208,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"{{networkName}}\",\n    \"configFilename\":\"{{configFileName}}\",\n    \"configContent\":\"{{configFile}}\",\n    \"networkDirectory\":\"{{directoryName}}\",\n    \"networkProvider\":\"{{networkProvider}}\"\n}",
+							"raw": "{\n    \"name\":\"{{networkName}}\",\n    \"configFilename\":\"{{configFileName}}\",\n    \"configContent\":\"{{configFile}}\",\n    \"networkProvider\":\"{{networkProvider}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -243,7 +243,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\":\"{{networkName}}\",\n    \"configFilename\":\"{{configFileName}}\",\n    \"configContent\":\"{{configFile}}\",\n    \"networkDirectory\":\"{{directoryName}}\",\n    \"networkProvider\":\"{{networkProvider}}\"\n}",
+									"raw": "{\n    \"name\":\"{{networkName}}\",\n    \"configFilename\":\"{{configFileName}}\",\n    \"configContent\":\"{{configFile}}\",\n    \"networkProvider\":\"{{networkProvider}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -634,7 +634,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"{{networkName}}\",\n    \"configFilename\":\"{{configFileName}}\",\n    \"configContent\":\"{{configFile}}\",\n    \"networkDirectory\":\"{{directoryName}}\",\n    \"networkProvider\":\"{{networkProvider}}\",\n    \"testFilename\":\"{{dslFileName}}\",\n    \"testContent\":\"{{dslFile}}\"\n}",
+							"raw": "{\n    \"name\":\"{{networkName}}\",\n    \"configFilename\":\"{{configFileName}}\",\n    \"configContent\":\"{{configFile}}\",\n    \"networkProvider\":\"{{networkProvider}}\",\n    \"testFilename\":\"{{dslFileName}}\",\n    \"testContent\":\"{{dslFile}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -662,7 +662,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\":\"{{networkName}}\",\n    \"configFilename\":\"{{configFileName}}\",\n    \"configContent\":\"{{configFile}}\",\n    \"networkDirectory\":\"{{directoryName}}\",\n    \"networkProvider\":\"{{networkProvider}}\",\n    \"testFilename\":\"{{dslFileName}}\",\n    \"testContent\":\"{{dslFile}}\"\n}",
+									"raw": "{\n    \"name\":\"{{networkName}}\",\n    \"configFilename\":\"{{configFileName}}\",\n    \"configContent\":\"{{configFile}}\",\n    \"networkProvider\":\"{{networkProvider}}\",\n    \"testFilename\":\"{{dslFileName}}\",\n    \"testContent\":\"{{dslFile}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"

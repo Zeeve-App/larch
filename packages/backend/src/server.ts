@@ -1,9 +1,9 @@
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
-import express, {
+import { join } from 'path';
+import * as express from 'express';
+import {
   Request, Response, NextFunction, Application,
 } from 'express';
-import cors from 'cors';
+import * as cors from 'cors';
 import apiRouter from './api/index.js';
 
 export type ServiceStartOptions = {
@@ -24,9 +24,9 @@ export const startService = (serviceStartOptions: ServiceStartOptions) => {
   if (serviceStartOptions.disableUi !== true) {
     console.log('ui enabled');
     app.get('/', (req, res) => res.redirect('/ui'));
-    app.use('/ui', express.static(join(dirname(fileURLToPath(import.meta.url)), 'ui')));
+    app.use('/ui', express.static(join(__dirname, 'ui')));
     app.get('/ui/*', (req, res) => {
-      res.sendFile(join(dirname(fileURLToPath(import.meta.url)), 'ui/index.html'));
+      res.sendFile(join(__dirname, 'ui/index.html'));
     });
   }
   if (serviceStartOptions.disableApi !== true) {

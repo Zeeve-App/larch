@@ -5,7 +5,6 @@ export interface Settings {
   isBootNode: boolean;
   polkadotIntrospector: boolean;
   provider: string;
-  networkDirectory: string;
   networkName: string;
 }
 interface SettingsStore {
@@ -18,7 +17,6 @@ export const useSettingsStore = create<SettingsStore>((set) => ({
     isBootNode: false,
     polkadotIntrospector: false,
     provider: '',
-    networkDirectory: '',
     networkName: '',
   },
   setSettings: (value: Settings) => {

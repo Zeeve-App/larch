@@ -49,9 +49,9 @@ async function networkStatusUpdate() {
 }
 
 function startInterval() {
-  if (mutex) return;
-  mutex = true;
   setInterval(() => {
+    if (mutex) return;
+    mutex = true;
     networkStatusUpdate()
       .catch(console.error)
       .finally(() => { mutex = false; });

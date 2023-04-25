@@ -19,7 +19,7 @@ export default function CreateNetwork() {
 
   const providers = [
     { label: 'Podman', value: 'podman' },
-    { label: 'Kubernates', value: 'kubernates' },
+    { label: 'Kubernetes', value: 'kubernetes' },
     { label: 'Native', value: 'native' },
   ];
   const settingsData = useSettingsStore((store) => store.settingsData);
@@ -114,9 +114,7 @@ export default function CreateNetwork() {
           console.log(err);
           notify('error', 'Failed to get network data.');
         });
-    } else if (templateId !== null) {
-      setTemplateId('');
-    } else {
+    } else if (templateId === null) {
       setTemplateId('');
       setSettings({
         isBootNode: false,
@@ -157,7 +155,7 @@ export default function CreateNetwork() {
       <div className='mx-5'>
         <div className='py-4 px-4 flex flex-row gap-x-8'>
           <span className='text-white flex flex-row pt-2 font-rubik'>
-            Add a bootnode
+            Add a boot node
           </span>
           <div className='w-max border-border border-2 gap-x-2 rounded py-0.5 px-0.5'>
             <button

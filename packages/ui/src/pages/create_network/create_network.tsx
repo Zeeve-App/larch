@@ -131,7 +131,7 @@ export default function CreateNetwork() {
       setParaChainList([
         {
           id: '',
-          addToGenesis: false,
+          add_to_genesis: false,
           collator: {
             name: '',
             image: '',

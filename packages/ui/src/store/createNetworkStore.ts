@@ -87,7 +87,7 @@ export type Collator = {
 
 export type Parachain = {
   id: string;
-  addToGenesis: boolean;
+  add_to_genesis: boolean;
   collator: Collator;
 };
 

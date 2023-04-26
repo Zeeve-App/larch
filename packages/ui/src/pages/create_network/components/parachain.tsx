@@ -61,7 +61,7 @@ export function CreateParachain() {
                   ...paraChainList,
                   {
                     id: '',
-                    addToGenesis: false,
+                    add_to_genesis: false,
                     collator: {
                       name: '',
                       image: '',
@@ -95,9 +95,9 @@ export function CreateParachain() {
                     className='bg-black border-border border-2 rounded w-[1em]'
                     type='checkbox'
                     name='add_to_genesis'
-                    defaultChecked={parachain.addToGenesis}
+                    defaultChecked={parachain.add_to_genesis}
                     onChange={() => updateParachains(index, {
-                      addToGenesis: !paraChainList[index].addToGenesis,
+                      add_to_genesis: !paraChainList[index].add_to_genesis,
                     })}
                   />
                 </div>

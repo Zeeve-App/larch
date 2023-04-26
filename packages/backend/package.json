@@ -4,9 +4,6 @@
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "bin": {
-    "larch": "./dist/module/index.js"
-  },
   "scripts": {
     "lint": "eslint --ext .ts .",
     "test": "vitest",
@@ -46,6 +43,6 @@
     "sqlite3": "^5.1.6"
   },
   "pkg": {
-    "assets": ["migrations/*", "dist/ui/**/*"]
+    "assets": ["migrations/*", "dist/ui/**/*", "../../node_modules/sqlite3/lib/binding/**/*"]
   }
 }

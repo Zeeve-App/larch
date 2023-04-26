@@ -18,6 +18,7 @@ import { useTemplateFilterStore } from '../../../store/templateStore';
 import { useFilterSubmit } from '../../../store/commonStore';
 import Filter from '../../../components/filter';
 import { NetworkType, TemplateDelete } from '../types';
+import RefreshButton from '../../../components/refresh';
 
 export default function Listing() {
   const [templateList, setTemplateList] = useState<any[]>([]);
@@ -183,6 +184,7 @@ export default function Listing() {
           setFilterData={setTemplateFilterData}
           setIsFilterSubmit={setIsFilterSubmit}
         />
+        <RefreshButton onClick={() => setPageToggle(!pageToggle)} />
       </div>
       <div className='flex flex-col justify-between'>
         <TemplateListTable

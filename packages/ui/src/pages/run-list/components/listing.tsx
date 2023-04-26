@@ -10,6 +10,7 @@ import {
 import { useFilterSubmit } from '../../../store/commonStore';
 import CommandModal from './commandModal';
 import StandardOutputModal from './standardOutputModal';
+import RefreshButton from '../../../components/refresh';
 
 export default function Listing() {
   const [runList, setRunList] = useState<any[]>([]);
@@ -17,6 +18,7 @@ export default function Listing() {
   const [itemPerPage] = useState(5);
   const [pageNum, setPageNum] = useState(1);
   const [sort, setSort] = useState<boolean>(true);
+  const [pageToggle, setPageToggle] = useState(true);
 
   const defaultModalView = {
     command: false,
@@ -83,7 +85,7 @@ export default function Listing() {
   };
   useEffect(() => {
     filterData();
-  }, [pageNum, isFilterSubmit, sort]);
+  }, [pageNum, isFilterSubmit, sort, pageToggle]);
 
   return (
     <>
@@ -94,6 +96,7 @@ export default function Listing() {
           setFilterData={setRunFilterData}
           setIsFilterSubmit={setIsFilterSubmit}
         />
+        <RefreshButton onClick={() => setPageToggle(!pageToggle)} />
       </div>
       <div className='flex flex-col justify-between'>
         <RunListTable

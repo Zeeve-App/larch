@@ -11,6 +11,7 @@ import { useFilterSubmit } from '../../../store/commonStore';
 import CommandModal from './commandModal';
 import StandardOutputModal from './standardOutputModal';
 import RefreshButton from '../../../components/refresh';
+import Loader from '../../../components/loader';
 
 export default function Listing() {
   const [runList, setRunList] = useState<any[]>([]);
@@ -19,6 +20,7 @@ export default function Listing() {
   const [pageNum, setPageNum] = useState(1);
   const [sort, setSort] = useState<boolean>(true);
   const [pageToggle, setPageToggle] = useState(true);
+  const [isShowLoader, setIsShowLoader] = useState<boolean>(false);
 
   const defaultModalView = {
     command: false,
@@ -57,6 +59,7 @@ export default function Listing() {
   };
 
   const filterData = () => {
+    setIsShowLoader(true);
     const filter: { [name: string]: string } = {};
     runFilterData.forEach((item) => {
       if (item.inputValue) filter[item.key] = item.inputValue;
@@ -78,8 +81,10 @@ export default function Listing() {
       .then((response) => {
         setRunList(response.result);
         setMeta(response.meta);
+        setIsShowLoader(false);
       })
       .catch(() => {
+        setIsShowLoader(false);
         notify('error', 'Failed to fetch activity list');
       });
   };
@@ -89,6 +94,7 @@ export default function Listing() {
 
   return (
     <>
+      {isShowLoader && <Loader />}
       <div className='flex w-full justify-end gap-4'>
         <Filter
           filterData={runFilterData}

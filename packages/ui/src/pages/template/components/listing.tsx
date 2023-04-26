@@ -19,6 +19,7 @@ import { useFilterSubmit } from '../../../store/commonStore';
 import Filter from '../../../components/filter';
 import { NetworkType, TemplateDelete } from '../types';
 import RefreshButton from '../../../components/refresh';
+import Loader from '../../../components/loader';
 
 export default function Listing() {
   const [templateList, setTemplateList] = useState<any[]>([]);
@@ -40,6 +41,7 @@ export default function Listing() {
     templateId: '',
     templateName: '',
   } as TemplateDelete);
+  const [isShowLoader, setIsShowLoader] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -68,6 +70,7 @@ export default function Listing() {
   };
 
   const onNetworkCreate = (name: string, type: NetworkType) => {
+    setIsShowLoader(true);
     getTemplateData(createNetTemplateId)
       .then((response) => ({
         ...response.result,
@@ -79,14 +82,17 @@ export default function Listing() {
       .then(type === 'evaluation' ? createNetwork : testNetwork)
       .then(() => {
         setIsOpen(false);
+        setIsShowLoader(false);
         notify('success', 'Network created successfully');
       })
       .catch(() => {
+        setIsShowLoader(false);
         notify('error', 'Failed to create network');
       });
   };
 
   const filterData = () => {
+    setIsShowLoader(true);
     const filter: { [name: string]: string } = {};
     templateFilterData.forEach((item) => {
       if (item.inputValue) filter[item.key] = item.inputValue;
@@ -108,8 +114,10 @@ export default function Listing() {
       .then((response) => {
         setTemplateList(response.result);
         setMeta(response.meta);
+        setIsShowLoader(false);
       })
       .catch(() => {
+        setIsShowLoader(false);
         notify('error', 'Failed to fetch activity list');
       });
   };
@@ -122,6 +130,7 @@ export default function Listing() {
     setPageNum(pageNumOnChange);
   };
   const onTemplateDelete = (templateId: string) => {
+    setIsShowLoader(true);
     deleteTemplate(templateId)
       .then(() => {
         updateListing();
@@ -131,8 +140,10 @@ export default function Listing() {
           templateId: '',
           templateName: '',
         });
+        setIsShowLoader(false);
       })
       .catch(() => {
+        setIsShowLoader(false);
         notify('error', 'Failed to delete template');
       });
   };
@@ -142,6 +153,7 @@ export default function Listing() {
   };
 
   const onTemplateDuplicate = () => {
+    setIsShowLoader(true);
     duplicateTemplate(duplicateTemplateObj.templateId, {
       name: duplicateTemplateObj.templateName,
     })
@@ -153,13 +165,16 @@ export default function Listing() {
           templateId: '',
           templateName: '',
         });
+        setIsShowLoader(false);
       })
       .catch(() => {
+        setIsShowLoader(false);
         notify('error', 'Failed to duplicate template');
       });
   };
 
   useEffect(() => {
+    setIsShowLoader(true);
     getTemplateList({
       meta: {
         numOfRec: itemPerPage,
@@ -169,14 +184,17 @@ export default function Listing() {
       .then((response) => {
         setTemplateList(response.result);
         setMeta(response.meta);
+        setIsShowLoader(false);
       })
       .catch(() => {
+        setIsShowLoader(false);
         notify('error', 'Failed to fetch template list');
       });
   }, [pageNum, pageToggle]);
 
   return (
     <>
+      {isShowLoader && <Loader />}
       <div className='flex w-full justify-end gap-4'>
         <Filter
           filterData={templateFilterData}

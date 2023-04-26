@@ -59,7 +59,7 @@ export default function Dashboard() {
       .then(({ result }) => {
         setLarchVersion(result.larchVersion);
         setSupportedZombienetVersion(result.zombienetVersion);
-        // setIsShowLoader(false);
+        setIsShowLoader(false);
       })
       .catch(() => {
         setLarchVersion('NA');

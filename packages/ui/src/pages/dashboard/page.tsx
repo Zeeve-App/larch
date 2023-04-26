@@ -62,6 +62,7 @@ export default function Dashboard() {
         setIsShowLoader(false);
       })
       .catch(() => {
+        setIsShowLoader(false);
         setLarchVersion('NA');
         setSupportedZombienetVersion('NA');
       });

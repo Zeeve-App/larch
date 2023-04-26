@@ -8,6 +8,7 @@ import { useNetworkFilterStore } from '../../../store/networkStore';
 import { useFilterSubmit } from '../../../store/commonStore';
 import DeletePopUpBox from './modaldelete';
 import RefreshButton from '../../../components/refresh';
+import Loader from '../../../components/loader';
 
 export default function Listing() {
   const [networkList, setNetworkList] = useState<any[]>([]);
@@ -17,6 +18,7 @@ export default function Listing() {
   const [pageToggle, setPageToggle] = useState(true);
   const [sort, setSort] = useState<boolean>(true);
   const [deleteNetworkName, setDeleteNetwork] = useState('');
+  const [isShowLoader, setIsShowLoader] = useState<boolean>(false);
 
   const defaultModalView = {
     test: false,
@@ -48,18 +50,22 @@ export default function Listing() {
   };
 
   const onNetworkDelete = (networkName: string) => {
+    setIsShowLoader(true);
     deleteNetwork(networkName)
       .then(() => {
         setModalViewStatus('delete', false);
         notify('success', `Deleted the network ("${networkName}")`);
         setPageToggle(!pageToggle);
+        setIsShowLoader(false);
       })
       .catch(() => {
+        setIsShowLoader(false);
         notify('error', `Failed delete the network ("${networkName}")`);
       });
   };
 
   useEffect(() => {
+    setIsShowLoader(true);
     getNetworkList({
       meta: {
         numOfRec: itemPerPage,
@@ -69,13 +75,16 @@ export default function Listing() {
       .then((response) => {
         setNetworkList(response.result);
         setMeta(response.meta);
+        setIsShowLoader(false);
       })
       .catch(() => {
+        setIsShowLoader(false);
         notify('error', 'Failed to fetch network list');
       });
   }, [pageNum, pageToggle]);
 
   const filterData = () => {
+    setIsShowLoader(true);
     const filter: { [name: string]: string } = {};
     networkFilterData.forEach((item) => {
       if (item.inputValue) filter[item.key] = item.inputValue;
@@ -97,8 +106,10 @@ export default function Listing() {
       .then((response) => {
         setNetworkList(response.result);
         setMeta(response.meta);
+        setIsShowLoader(false);
       })
       .catch(() => {
+        setIsShowLoader(false);
         notify('error', 'Failed to fetch activity list');
       });
   };
@@ -109,6 +120,7 @@ export default function Listing() {
 
   return (
     <>
+      {isShowLoader && <Loader />}
       <div className='flex w-full justify-end gap-4'>
         <Filter
           filterData={networkFilterData}

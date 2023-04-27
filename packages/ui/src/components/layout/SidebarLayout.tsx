@@ -1,32 +1,21 @@
 /* eslint-disable max-len */
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { IconArrowDown, IconArrowUp1 } from 'zeeve-icons/Arrow/Linear';
 import ZeeveIcon from 'public/assets/svg/zeeve_icon.svg';
-import { IconChartFavorite } from 'zeeve-icons/Business/Linear';
+import { IconElement3 } from 'zeeve-icons/Grid/Linear';
 import {
-  IconFolder3,
-  IconFolderOpen,
-  IconFolderRemove,
-} from 'zeeve-icons/Document/Linear';
-import { IconKeyboard } from 'zeeve-icons/Electronics/Linear';
-import { IconBubble } from 'zeeve-icons/Essential/Linear';
-import { Icon3Square, IconElement3 } from 'zeeve-icons/Grid/Linear';
-import { IconVideoSquare } from 'zeeve-icons/Media/Linear';
-import {
-  IconData,
-  IconData2,
-  IconEndpoint,
-} from 'zeeve-icons/Programming/Linear';
+  IconActivity,
+  IconMyNetwork,
+  IconTemplate,
+  IconUserEdit,
+} from 'zeeve-icons/Larch/Linear';
+import { IconSetting2 } from 'zeeve-icons/Settings/Linear';
 import { IconBook2 } from 'zeeve-icons/School/Linear';
-import { IconFingerScan } from 'zeeve-icons/Security/Linear';
-import { IconCallCalling } from 'zeeve-icons/Call/Linear';
+import { IconCall } from 'zeeve-icons/Call/Linear';
 import LarchLogo from 'public/assets/svg/logo.svg';
-import { Badge } from 'src/components/zeeve-platform/Badge';
 import { SidebarSection } from 'src/components/zeeve-platform/Sidebar/SidebarSection';
 import { SidebarItem } from 'src/components/zeeve-platform/Sidebar/SidebarItem';
 import { SidebarItemList } from 'src/components/zeeve-platform/Sidebar/SidebarItemList';
-import { SidebarItemDropdown } from 'src/components/zeeve-platform/Sidebar/SidebarItemDropdown';
 import { SidebarSectionTitle } from 'src/components/zeeve-platform/Sidebar/SidebarSectionTitle';
 import { Sidebar } from 'src/components/zeeve-platform/Sidebar/Sidebar';
 import { SidebarDivider } from 'src/components/zeeve-platform/Sidebar/SidebarDivider';
@@ -54,7 +43,7 @@ const mainMenuitems: Item[] = [
   {
     title: 'My Network',
     icon: (
-      <IconElement3
+      <IconMyNetwork
         className='text-2xl'
         aria-label='My network navigation link logo'
       />
@@ -64,7 +53,7 @@ const mainMenuitems: Item[] = [
   {
     title: 'Template',
     icon: (
-      <IconElement3
+      <IconTemplate
         className='text-2xl'
         aria-label='Template navigation link logo'
       />
@@ -74,7 +63,7 @@ const mainMenuitems: Item[] = [
   {
     title: 'Run List',
     icon: (
-      <IconElement3
+      <IconUserEdit
         className='text-2xl'
         aria-label='Run list navigation link logo'
       />
@@ -84,7 +73,7 @@ const mainMenuitems: Item[] = [
   {
     title: 'Activity',
     icon: (
-      <IconElement3
+      <IconActivity
         className='text-2xl'
         aria-label='Activity navigation link logo'
       />
@@ -97,7 +86,7 @@ const Othersitems: Item[] = [
   {
     title: 'Setting',
     icon: (
-      <IconElement3
+      <IconSetting2
         className='text-2xl'
         aria-label='Setting navigation link logo'
       />
@@ -107,7 +96,7 @@ const Othersitems: Item[] = [
   {
     title: 'Documentation',
     icon: (
-      <IconElement3
+      <IconBook2
         className='text-2xl'
         aria-label='Documentation navigation link logo'
       />
@@ -118,11 +107,13 @@ const Othersitems: Item[] = [
 
 const Contact: Item = {
   title: 'Email Us',
+  // Todo: replace call icon with mail icon
   icon: (
-    <IconElement3 className='text-2xl' aria-label='Contact Email link logo' />
+    <IconCall className='text-2xl' aria-label='Contact Email link logo' />
   ),
   path: '/contact',
 };
+
 function SidebarLayout() {
   const location = useLocation();
   const parentPathname = `/${location.pathname.split('/').at(1)}`;
@@ -212,4 +203,4 @@ function SidebarLayout() {
   );
 }
 
-export { SidebarLayout };
+export default SidebarLayout;

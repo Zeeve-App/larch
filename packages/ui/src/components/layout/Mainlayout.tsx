@@ -2,8 +2,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import { SidebarLayout } from './SidebarLayout';
-import { HeaderLayout } from './HeaderLayout';
+import SidebarLayout from './SidebarLayout';
+import HeaderLayout from './HeaderLayout';
 
 export default function MainLayout() {
   return (

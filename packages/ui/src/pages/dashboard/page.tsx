@@ -68,25 +68,25 @@ export default function Dashboard() {
       });
   }, []);
   return (
-    <div className='h-full w-full bg-black p-6 relative'>
+    <div className='h-full w-full bg-black p-6'>
       {isShowLoader && <Loader />}
       <div className='bg-create-button flex flex-col gap-6 p-6 border-2 border-border rounded-2xl border-solid box-border'>
-        <h3 className='text-white font-rubik text-2xl font-bold text-center'>
+        <h3 className='text-white font-rubik text-2xl font-bold text-left'>
           Explore Larch
         </h3>
-        <div className='text-white font-rubik w-1/2 font-bold  border-solid border-dark-green border-4 rounded-xl p-2'>
-          <div className='flex flex-row'>
-            <div className='w-10/12'>Supported Zombienet version</div>
-            <div className='pr-2 flex-1'>:</div>
-            <div className=' text-green'>{supportedZombienetVersion}</div>
+        <div className='font-rubik w-full font-bold border border-pink-800 border-[3px] rounded-xl p-3'>
+          <div className='flex'>
+            <div className='flex-1 text-white'>Supported Zombienet version</div>
+            <div className='flex-1 text-right pr-2 text-white'>:</div>
+            <div className='flex-0 text-gradient'>{supportedZombienetVersion}</div>
           </div>
-          <div className='flex flex-row'>
-            <div className='w-10/12'>Larch version</div>
-            <div className='pr-2 flex-1'>:</div>
-            <div className='text-green'>{larchVersion}</div>
+          <div className='flex'>
+            <div className='flex-1 text-white'>Larch version</div>
+            <div className='flex-1 pr-[18px] text-right text-white'>:</div>
+            <div className='flex-0 text-gradient'>{larchVersion}</div>
           </div>
         </div>
-        <div className='flex flex-row gap-6 flex-wrap'>
+        <div className='w-full grid lg:grid-cols-4 md:grid-cols-2 gap-6'>
           <Card
             cardTitle='Networks'
             cardLink='/network'

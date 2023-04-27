@@ -12,9 +12,9 @@ export default function Card({
   cardTitle, cardLink, cardIconSrc, cardDescription, records,
 }: CardProp) {
   return (
-    <div className='flex flex-col gap-6 p-6 rounded-2xl border-2 border-border bg-black max-w-[350px]'>
+    <div className='w-full gap-6 p-6 rounded-2xl border-2 border-border bg-black'>
       <Link to={cardLink}>
-        <div className='w-74 h-50.5 p-0 gap-6.25 gap-y-1'>
+        <div className=''>
           {/* eslint-disable-next-line max-len */}
           <div className='w-20 h-20 items-center flex justify-center content-center border-2 border-border mb-6 rounded-2xl border-solid'>
             <img className='w-8 h-8 ' src={cardIconSrc} alt='' />
@@ -23,9 +23,9 @@ export default function Card({
           <span className='text-gradient font-rubik leading-8'>
             Records:
             {' '}
-            {records}
+            {records || 'N/A'}
           </span>
-          <p className='text-white font-rubik leading-8'>{cardDescription}</p>
+          <p className='text-gray-400 font-rubik leading-8'>{cardDescription}</p>
         </div>
       </Link>
     </div>

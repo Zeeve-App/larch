@@ -70,7 +70,7 @@ export default function standardOutputModal({
               </div>
             </div>
             <div className='flex flex-row'>
-              <div className="text-white font-rubik text-base w-2/12">
+              <div className='text-white font-rubik text-base w-2/12'>
                 Network Name
               </div>
               <div className='text-white pr-2'>:</div>

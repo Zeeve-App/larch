@@ -17,12 +17,16 @@ export default function Activity() {
       });
   };
   return (
-    <div className='p-6 gap-6 w-full flex-col flex'>
+    <div className='p-6 gap-6 flex-col flex'>
       <div className='h-12 w-full flex'>
         <div className='h-full flex w-full flex-wrap content-center item-center justify-end gap-4'>
           <div className='item-center'>
             {/* eslint-disable-next-line max-len */}
-            <button type='button' className='bg-create-button text-white font-rubik flex border-2 border-border rounded h-10 px-4 items-center' onClick={purgeRecord}>
+            <button
+              type='button'
+              className='bg-create-button text-white font-rubik flex border-2 border-border rounded h-10 px-4 items-center'
+              onClick={purgeRecord}
+            >
               <span>Purge Activity Record</span>
             </button>
           </div>

@@ -22,12 +22,17 @@
     "@uiw/codemirror-themes": "^4.19.11",
     "@uiw/codemirror-themes-all": "^4.19.16",
     "@uiw/react-codemirror": "^4.19.16",
+    "class-variance-authority": "^0.5.3",
+    "framer-motion": "^10.12.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-focus-lock": "^2.9.4",
     "react-paginate": "^8.1.5",
     "react-router-dom": "^6.10.0",
     "react-toastify": "^9.1.2",
+    "tailwind-merge": "^1.12.0",
     "vite-plugin-svgr": "^2.4.0",
+    "zeeve-icons": "file:../../zeeve-icons-0.0.9.tgz",
     "zustand": "^4.3.7"
   },
   "devDependencies": {

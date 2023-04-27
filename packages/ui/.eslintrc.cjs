@@ -1,3 +1,4 @@
+
 module.exports = {
     "env": {
         "browser": true,
@@ -5,7 +6,8 @@ module.exports = {
     },
     "extends": [
         "airbnb",
-        "airbnb-typescript"
+        "airbnb-typescript",
+        "eslint:recommended",
     ],
     "overrides": [],
     "parserOptions": {

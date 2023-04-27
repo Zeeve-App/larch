@@ -68,7 +68,7 @@ export default function Dashboard() {
       });
   }, []);
   return (
-    <div className='h-full w-full bg-black p-6 relative'>
+    <div className='bg-black p-6 relative'>
       {isShowLoader && <Loader />}
       <div className='bg-create-button flex flex-col gap-6 p-6 border-2 border-border rounded-2xl border-solid box-border'>
         <h3 className='text-white font-rubik text-2xl font-bold text-center'>

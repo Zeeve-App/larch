@@ -1,36 +1,24 @@
 /* eslint-disable max-len */
-import { Link } from 'react-router-dom';
-import { NavLink, useLocation } from 'react-router-dom';
-import { IconArrowDown, IconArrowUp1 } from 'zeeve-icons/Arrow/Linear';
-import ZeeveIcon from 'public/assets/svg/zeeve_icon.svg';
-import { IconChartFavorite } from 'zeeve-icons/Business/Linear';
-import {
-  IconFolder3,
-  IconFolderOpen,
-  IconFolderRemove,
-} from 'zeeve-icons/Document/Linear';
-import { IconKeyboard } from 'zeeve-icons/Electronics/Linear';
-import { IconBubble } from 'zeeve-icons/Essential/Linear';
-import { Icon3Square, IconElement3 } from 'zeeve-icons/Grid/Linear';
-import { IconVideoSquare } from 'zeeve-icons/Media/Linear';
-import {
-  IconData,
-  IconData2,
-  IconEndpoint,
-} from 'zeeve-icons/Programming/Linear';
-import { IconBook2 } from 'zeeve-icons/School/Linear';
-import { IconFingerScan } from 'zeeve-icons/Security/Linear';
-import { IconCallCalling } from 'zeeve-icons/Call/Linear';
-import LarchLogo from 'public/assets/svg/logo.svg';
-import { Badge } from 'src/components/zeeve-platform/Badge';
-import { SidebarSection } from 'src/components/zeeve-platform/Sidebar/SidebarSection';
-import { SidebarItem } from 'src/components/zeeve-platform/Sidebar/SidebarItem';
-import { SidebarItemList } from 'src/components/zeeve-platform/Sidebar/SidebarItemList';
-import { SidebarItemDropdown } from 'src/components/zeeve-platform/Sidebar/SidebarItemDropdown';
-import { SidebarSectionTitle } from 'src/components/zeeve-platform/Sidebar/SidebarSectionTitle';
-import { Sidebar } from 'src/components/zeeve-platform/Sidebar/Sidebar';
-import { SidebarDivider } from 'src/components/zeeve-platform/Sidebar/SidebarDivider';
-import { SidebarLogo } from 'src/components/zeeve-platform/Sidebar/SidebarLogo';
+import React, { useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { ReactComponent as IconActivity } from "src/assets/Activity.svg";
+import { ReactComponent as IconDashboard } from "src/assets/Dashboard.svg";
+import { ReactComponent as IconDocumentation } from "src/assets/Documentation.svg";
+import { ReactComponent as IconEmail } from "src/assets/Email.svg";
+import { ReactComponent as IconMyNetwork } from "src/assets/MyNetwork.svg";
+import { ReactComponent as IconSetting } from "src/assets/Setting.svg";
+import { ReactComponent as IconTemplate } from "src/assets/Template.svg";
+import { ReactComponent as IconUserEditor } from "src/assets/UserEditor.svg";
+import LarchLogo from "src/assets/Logo.svg";
+import { SidebarSection } from "src/components/Sidebar/SidebarSection";
+import { SidebarItem } from "src/components/Sidebar/SidebarItem";
+import { SidebarItemList } from "src/components/Sidebar/SidebarItemList";
+import { SidebarSectionTitle } from "src/components/Sidebar/SidebarSectionTitle";
+import { Sidebar } from "src/components/Sidebar/Sidebar";
+import { SidebarDivider } from "src/components/Sidebar/SidebarDivider";
+import { SidebarLogo } from "src/components/Sidebar/SidebarLogo";
+
+import { getLarchVersionInfo } from "src/utils/api";
 
 interface Item {
   icon: React.ReactElement;
@@ -42,100 +30,112 @@ interface Item {
 
 const mainMenuitems: Item[] = [
   {
-    title: 'Dashboard',
+    title: "Dashboard",
     icon: (
-      <IconElement3
-        className='text-2xl'
-        aria-label='Dashboard navigation link logo'
+      <IconDashboard
+        className="text-2xl"
+        aria-label="Dashboard navigation link logo"
       />
     ),
-    path: '/dashboard',
+    path: "/dashboard",
   },
   {
-    title: 'My Network',
+    title: "My Network",
     icon: (
-      <IconElement3
-        className='text-2xl'
-        aria-label='My network navigation link logo'
+      <IconMyNetwork
+        className="text-2xl"
+        aria-label="My network navigation link logo"
       />
     ),
-    path: '/network',
+    path: "/network",
   },
   {
-    title: 'Template',
+    title: "Template",
     icon: (
-      <IconElement3
-        className='text-2xl'
-        aria-label='Template navigation link logo'
+      <IconTemplate
+        className="text-2xl"
+        aria-label="Template navigation link logo"
       />
     ),
-    path: '/template',
+    path: "/template",
   },
   {
-    title: 'Run List',
+    title: "Run List",
     icon: (
-      <IconElement3
-        className='text-2xl'
-        aria-label='Run list navigation link logo'
+      <IconUserEditor
+        className="text-2xl"
+        aria-label="Run list navigation link logo"
       />
     ),
-    path: '/run-list',
+    path: "/run-list",
   },
   {
-    title: 'Activity',
+    title: "Activity",
     icon: (
-      <IconElement3
-        className='text-2xl'
-        aria-label='Activity navigation link logo'
+      <IconActivity
+        className="text-2xl"
+        aria-label="Activity navigation link logo"
       />
     ),
-    path: '/activity',
+    path: "/activity",
   },
 ];
 
 const Othersitems: Item[] = [
   {
-    title: 'Setting',
+    title: "Setting",
     icon: (
-      <IconElement3
-        className='text-2xl'
-        aria-label='Setting navigation link logo'
+      <IconSetting
+        className="text-2xl"
+        aria-label="Setting navigation link logo"
       />
     ),
-    path: '/setting',
+    path: "/setting",
   },
   {
-    title: 'Documentation',
+    title: "Documentation",
     icon: (
-      <IconElement3
-        className='text-2xl'
-        aria-label='Documentation navigation link logo'
+      <IconDocumentation
+        className="text-2xl"
+        aria-label="Documentation navigation link logo"
       />
     ),
-    path: '/documentation',
+    path: "/documentation",
   },
 ];
 
 const Contact: Item = {
-  title: 'Email Us',
-  icon: (
-    <IconElement3 className='text-2xl' aria-label='Contact Email link logo' />
-  ),
-  path: '/contact',
+  title: "Email Us",
+  // Todo: replace call icon with mail icon
+  icon: <IconEmail className="text-2xl" aria-label="Contact Email link logo" />,
+  path: "/contact",
 };
+
 function SidebarLayout() {
   const location = useLocation();
-  const parentPathname = `/${location.pathname.split('/').at(1)}`;
+  const parentPathname = `/${location.pathname.split("/").at(1)}`;
+
+  const [larchVersion, setLarchVersion] = useState("NA");
+
+  useEffect(() => {
+    getLarchVersionInfo()
+      .then(({ result }) => {
+        setLarchVersion(result.larchVersion);
+      })
+      .catch(() => {
+        setLarchVersion("NA");
+      });
+  }, []);
 
   return (
-    <Sidebar className='bg-larch-dark'>
-      <div className='flex-grow'>
-        <SidebarLogo href='/' src={LarchLogo} />
+    <Sidebar className="bg-larch-dark">
+      <div className="flex-grow">
+        <SidebarLogo href="/" src={LarchLogo} />
         <SidebarSection>
-          <SidebarSectionTitle title='Main Menu' />
+          <SidebarSectionTitle title="Main Menu" />
           <SidebarItemList>
-            {mainMenuitems.length
-              && mainMenuitems.map((item) => (
+            {mainMenuitems.length &&
+              mainMenuitems.map((item) => (
                 <SidebarItem
                   as={NavLink}
                   key={item.title}
@@ -144,8 +144,7 @@ function SidebarLayout() {
                   to={item.path}
                   badge={item.badge}
                   active={
-                    parentPathname === item.path
-                    || (item.path === '/dashboard' && parentPathname === '/')
+                    parentPathname === item.path || parentPathname === "/"
                   }
                 />
               ))}
@@ -153,10 +152,10 @@ function SidebarLayout() {
         </SidebarSection>
         <SidebarDivider />
         <SidebarSection>
-          <SidebarSectionTitle title='Buy Services' />
+          <SidebarSectionTitle title="Buy Services" />
           <SidebarItemList>
-            {Othersitems.length
-              && Othersitems.map((item) => (
+            {Othersitems.length &&
+              Othersitems.map((item) => (
                 <SidebarItem
                   as={NavLink}
                   key={item.title}
@@ -171,45 +170,27 @@ function SidebarLayout() {
         </SidebarSection>
         <SidebarDivider />
         <SidebarSection>
-          <SidebarSectionTitle title='Contact' />
+          <SidebarSectionTitle title="Contact" />
           <SidebarItemList>
             <SidebarItem
-              as='a'
+              as="a"
               iconLeft={Contact.icon}
               title={Contact.title}
-              href='mailto:support@zeeve.io'
+              href="mailto:support@zeeve.io"
               badge={Contact.badge}
               active={location.pathname === Contact.path}
             />
           </SidebarItemList>
         </SidebarSection>
       </div>
-      <div className='flex-grow-0 m-4'>
-        <h5 className='my-1'>
-          <a
-            href='https://www.zeeve.io/'
-            className='flex flex-grow-0'
-            target='_blank'
-            rel='noreferrer'
-          >
-            <img
-              src={ZeeveIcon}
-              width={16}
-              height={16}
-              className='me-2'
-              alt='Zeeve Inc. Icon'
-            />
-            Zeeve Inc.
-          </a>
-        </h5>
-        <div className='flex justify-between my-1'>
-          <h5 className='font-bold'>Version :</h5>
-          <h5 className='font-semibold'>1.0.0</h5>
-          {/* Todo: Version will be fetched from the global state */}
+      <div className="flex-grow-0 m-4">
+        <div className="flex justify-between my-1">
+          <h5 className="font-bold">Version :</h5>
+          <h5 className="font-semibold">{larchVersion}</h5>
         </div>
       </div>
     </Sidebar>
   );
 }
 
-export { SidebarLayout };
+export default SidebarLayout;

@@ -7,7 +7,6 @@ module.exports = {
     "extends": [
         "airbnb",
         "airbnb-typescript",
-        "eslint:recommended",
     ],
     "overrides": [],
     "parserOptions": {
@@ -24,10 +23,13 @@ module.exports = {
         "no-console": "off",
         "no-bitwise": "off",
         "no-plusplus": "off",
+        "react/display-name": "off",
         "import/no-named-as-default": "off",
         "react/react-in-jsx-scope": "off",
+        "react/jsx-props-no-spreading": "off",
+        "react/require-default-props": "off",
         "jsx-quotes": ["error", "prefer-single"],
-        "max-len": ["error", { "code": 120, "comments": 120 }],
+        "max-len": ["error", { "code": 140, "comments": 140, "ignoreString": true }],
         "jsx-a11y/label-has-associated-control": ["error", { assert: "either" } ]
     }
 }

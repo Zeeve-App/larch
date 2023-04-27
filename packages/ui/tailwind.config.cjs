@@ -3,6 +3,7 @@ const plugin = require("tailwindcss/plugin");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  darkMode: "class",
   theme: {
     fontFamily: {
       rubik: ["Rubik"],
@@ -32,51 +33,65 @@ module.exports = {
           info: "#1057FF",
           error: "#FF7F7F",
         },
+        brand: {
+          blue: "#4054b2",
+          red: "#FF7F7F",
+          green: "#4FC898",
+          yellow: "#FFC542",
+          gray: "#57647D",
+          dark: "#080e12",
+          teal: "#32b8b2",
+          cyan: "#088DB2",
+          light: "#F8FAFA",
+          outline: "#8F92A133",
+          purple: "#4F47B4",
+          pink: "#FF5592"
+        },
       },
       zIndex: {
+        sidebar: 300,
         dropdown: 500,
         overlay: 800,
-        modal: 900,
-        sidebar: 300
+        modal: 900
       },
     },
   },
   plugins: [
-    plugin(function ({ addBase, addUtilities,theme }) {
+    plugin(function ({ addBase, addUtilities, theme }) {
       addBase({
         "*": {
           fontFamily: "Rubik",
         },
-         h1: {
-                fontSize: theme("fontSize.3xl"),
-                fontWeight: theme("fontWeight.bold"),
-                fontFamily: "Rubik",
-            },
-            h2: {
-                fontSize: theme("fontSize.2xl"),
-                fontWeight: theme("fontWeight.semibold"),
-                fontFamily: "Rubik",
-            },
-            h3: {
-                fontSize: theme("fontSize.xl"),
-                fontWeight: theme("fontWeight.semibold"),
-                fontFamily: "Rubik",
-            },
-            h4: {
-                fontSize: theme("fontSize.lg"),
-                fontWeight: theme("fontWeight.semibold"),
-                fontFamily: "Rubik",
-            },
-            h5: {
-                fontSize: theme("fontSize.base"),
-                fontWeight: theme("fontWeight.semibold"),
-                fontFamily: "Rubik",
-            },
-            h6: {
-                fontSize: theme("fontSize.sm"),
-                fontWeight: theme("fontWeight.semibold"),
-                fontFamily: "Rubik",
-            },
+        h1: {
+          fontSize: theme("fontSize.3xl"),
+          fontWeight: theme("fontWeight.bold"),
+          fontFamily: "Rubik",
+        },
+        h2: {
+          fontSize: theme("fontSize.2xl"),
+          fontWeight: theme("fontWeight.semibold"),
+          fontFamily: "Rubik",
+        },
+        h3: {
+          fontSize: theme("fontSize.xl"),
+          fontWeight: theme("fontWeight.semibold"),
+          fontFamily: "Rubik",
+        },
+        h4: {
+          fontSize: theme("fontSize.lg"),
+          fontWeight: theme("fontWeight.semibold"),
+          fontFamily: "Rubik",
+        },
+        h5: {
+          fontSize: theme("fontSize.base"),
+          fontWeight: theme("fontWeight.semibold"),
+          fontFamily: "Rubik",
+        },
+        h6: {
+          fontSize: theme("fontSize.sm"),
+          fontWeight: theme("fontWeight.semibold"),
+          fontFamily: "Rubik",
+        },
       });
 
       addUtilities({

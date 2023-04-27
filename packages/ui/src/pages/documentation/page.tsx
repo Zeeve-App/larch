@@ -23,7 +23,7 @@ export default function Documentation() {
                 <ul className='list-disc list-inside text-white gap-4'>
                   <li className='pb-4'>Network Progress</li>
                   <li className='pb-4'>
-                    Network logs (Zombinet CLI logs and Podman (on demand,
+                    Network logs (Zombienet CLI logs and Podman (on demand,
                     separate tab))
                   </li>
                 </ul>

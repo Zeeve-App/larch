@@ -1,7 +1,7 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable max-len */
 import { MinusCircleIcon, SparklesIcon, XCircleIcon } from '@heroicons/react/20/solid';
-import iconSearch from './assets/Search.svg';
+import iconSearch from 'src/assets/Search.svg';
 import { NetworkFilterInput } from '../store/networkStore';
 import { ActivityFilterInput } from '../store/activityStore';
 import { TemplateFilterInput } from '../store/templateStore';

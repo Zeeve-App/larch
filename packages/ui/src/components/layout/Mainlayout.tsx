@@ -2,19 +2,21 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import { SidebarLayout } from './SidebarLayout';
-import { HeaderLayout } from './HeaderLayout';
+import SidebarLayout from './SidebarLayout';
+import HeaderLayout from './HeaderLayout';
 
 export default function MainLayout() {
   return (
     <>
-      <main className='flex relative'>
-        <section className='border-r border-dark-700 z-sidebar'>
+      <main className='flex relative h-screen w-screen'>
+        <section className='fixed md:relative border-r border-dark-700 z-sidebar'>
           <SidebarLayout />
         </section>
         <section className='flex-grow absolute md:relative inset-0'>
           <HeaderLayout />
-          <Outlet />
+          <div className='h-[80vh]'>
+            <Outlet />
+          </div>
         </section>
       </main>
       <ToastContainer

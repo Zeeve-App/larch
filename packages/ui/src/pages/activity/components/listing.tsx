@@ -4,12 +4,9 @@ import PaginatedItems from '../../../components/pagination';
 import { getUserActivityList } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
 import Filter from '../../../components/filter';
-import {
-  useActivityFilterStore,
-} from '../../../store/activityStore';
-import { useFilterSubmit } from '../../../store/commonStore';
 import RefreshButton from '../../../components/refresh';
 import Loader from '../../../components/loader';
+import { ActivityFilterInput } from '../../../types/filter.types';
 
 type ListingProps = {
   updateList: boolean
@@ -23,16 +20,29 @@ export default function Listing({ updateList }: ListingProps) {
   const [sort, setSort] = useState<boolean>(true);
   const [pageToggle, setPageToggle] = useState(true);
   const [isShowLoader, setIsShowLoader] = useState<boolean>(false);
-
-  const activityFilterData = useActivityFilterStore(
-    (state) => state.activityFilterData,
-  );
-  const setActivityFilterData = useActivityFilterStore(
-    (state) => state.setActivityFilterData,
-  );
-
-  const isFilterSubmit = useFilterSubmit((state) => state.isFilterSubmit);
-  const setIsFilterSubmit = useFilterSubmit((state) => state.setIsFilterSubmit);
+  const [activityFilterData, setActivityFilterData] = useState([
+    {
+      label: 'ID',
+      key: 'id',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Operation Details',
+      key: 'operationDetail',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Date',
+      key: 'createdAt',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Operation',
+      key: 'operation',
+      isSearchOpen: false,
+    },
+  ] as ActivityFilterInput[]);
+  const [isFilterSubmit, setIsFilterSubmit] = useState<boolean>(false);
 
   const onPageChange = (pageNumOnChange: number) => {
     setPageNum(pageNumOnChange);

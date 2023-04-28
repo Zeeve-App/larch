@@ -2,10 +2,7 @@
 /* eslint-disable max-len */
 import { MinusCircleIcon, SparklesIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import iconSearch from 'src/assets/Search.svg';
-import { NetworkFilterInput } from '../store/networkStore';
-import { ActivityFilterInput } from '../store/activityStore';
-import { TemplateFilterInput } from '../store/templateStore';
-
+import { NetworkFilterInput, ActivityFilterInput, TemplateFilterInput } from '../types/filter.types';
 type FilterProps = {
   filterData: NetworkFilterInput[] | ActivityFilterInput[] | TemplateFilterInput[];
   isFilterSubmit: boolean;
@@ -59,7 +56,7 @@ export default function Filter({
           <button
             type='button'
             key={`filter-${index.toString()}`}
-            className='h-8 bg-gradient-to-r from-th-start to-th-end text-white-800 text-md font-medium flex flex-row rounded dark:text-white-400 border border-black-400 w-36 px-2 pt-1'
+            className='h-8 bg-brand-gradient from-th-start to-th-end text-white-800 text-md font-medium flex flex-row rounded dark:text-white-400 border border-black-400 w-36 px-2 pt-1'
             onClick={() => optionClick(item, index)}
           >
             <div className='text-ellipsis overflow-hidden truncate flex-1 text-left'>{item.label}</div>
@@ -84,7 +81,7 @@ export default function Filter({
       ))}
       <button
         type='button'
-        className='w-[50px] h-8 bg-green border-2 border-white-400 rounded-xl'
+        className='w-[50px] h-8 border-2 border-white-400 rounded-xl'
         aria-hidden
         onClick={() => submitSearchData()}
       >

@@ -4,11 +4,10 @@ import PaginatedItems from '../../../components/pagination';
 import { deleteNetwork, getNetworkList } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
 import Filter from '../../../components/filter';
-import { useNetworkFilterStore } from '../../../store/networkStore';
-import { useFilterSubmit } from '../../../store/commonStore';
 import DeletePopUpBox from './modaldelete';
 import RefreshButton from '../../../components/refresh';
 import Loader from '../../../components/loader';
+import { NetworkFilterInput, } from '../../../types/filter.types';
 
 export default function Listing() {
   const [networkList, setNetworkList] = useState<any[]>([]);
@@ -23,22 +22,35 @@ export default function Listing() {
   const defaultModalView = {
     test: false,
     delete: false,
-
   };
   const [isOpen, setIsOpen] = useState(defaultModalView);
+  const [networkFilterData, setNetworkFilterData] = useState([
+    {
+      label: 'Network Name',
+      key: 'name',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Provider',
+      key: 'provider',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Created On',
+      key: 'createdAt',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Status',
+      key: 'status',
+      isSearchOpen: false,
+    },
+  ] as NetworkFilterInput[]);
+  const [isFilterSubmit, setIsFilterSubmit] = useState<boolean>(false);
 
   const setModalViewStatus = (modalSlug: string, status: boolean) => {
     setIsOpen({ ...defaultModalView, [modalSlug]: status });
   };
-  const networkFilterData = useNetworkFilterStore(
-    (state) => state.networkFilterData,
-  );
-  const setNetworkFilterData = useNetworkFilterStore(
-    (state) => state.setNetworkFilterData,
-  );
-
-  const isFilterSubmit = useFilterSubmit((state) => state.isFilterSubmit);
-  const setIsFilterSubmit = useFilterSubmit((state) => state.setIsFilterSubmit);
 
   const onPageChange = (pageNumOnChange: number) => {
     setPageNum(pageNumOnChange);

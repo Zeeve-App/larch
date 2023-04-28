@@ -4,14 +4,12 @@ import PaginatedItems from '../../../components/pagination';
 import { getRunList } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
 import Filter from '../../../components/filter';
-import {
-  useRunFilterStore,
-} from '../../../store/runStore';
 import { useFilterSubmit } from '../../../store/commonStore';
 import CommandModal from './commandModal';
 import StandardOutputModal from './standardOutputModal';
 import RefreshButton from '../../../components/refresh';
 import Loader from '../../../components/loader';
+import { ActivityFilterInput } from '../../../types/filter.types';
 
 export default function Listing() {
   const [runList, setRunList] = useState<any[]>([]);
@@ -21,6 +19,34 @@ export default function Listing() {
   const [sort, setSort] = useState<boolean>(true);
   const [pageToggle, setPageToggle] = useState(true);
   const [isShowLoader, setIsShowLoader] = useState<boolean>(false);
+  const [runFilterData, setRunFilterData] = useState([
+    {
+      label: 'ID',
+      key: 'id',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Operation',
+      key: 'intention',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Network Name',
+      key: 'relatedId',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Status Code',
+      key: 'statusCode',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Date',
+      key: 'createdAt',
+      isSearchOpen: false,
+    },
+  ] as ActivityFilterInput[]);
+  const [isFilterSubmit, setIsFilterSubmit] = useState<boolean>(false);
 
   const defaultModalView = {
     command: false,
@@ -29,16 +55,6 @@ export default function Listing() {
   };
   const [isOpen, setIsOpen] = useState(defaultModalView);
   const [runId, setRunId] = useState('');
-
-  const runFilterData = useRunFilterStore(
-    (state) => state.runFilterData,
-  );
-  const setRunFilterData = useRunFilterStore(
-    (state) => state.setRunFilterData,
-  );
-
-  const isFilterSubmit = useFilterSubmit((state) => state.isFilterSubmit);
-  const setIsFilterSubmit = useFilterSubmit((state) => state.setIsFilterSubmit);
 
   const onPageChange = (pageNumOnChange: number) => {
     setPageNum(pageNumOnChange);

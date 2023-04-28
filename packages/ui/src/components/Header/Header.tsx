@@ -3,9 +3,9 @@ import { twMerge } from 'tailwind-merge';
 
 interface HeaderProps
   extends React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLElement>,
-  HTMLElement
-  > {}
+    React.HTMLAttributes<HTMLElement>,
+    HTMLElement
+  > { }
 
 const Header = forwardRef<HTMLDivElement, HeaderProps>((props, ref) => {
   const { className, children, ...rest } = props;

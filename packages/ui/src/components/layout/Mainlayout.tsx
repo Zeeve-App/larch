@@ -8,13 +8,13 @@ import HeaderLayout from './HeaderLayout';
 export default function MainLayout() {
   return (
     <>
-      <main className='flex relative h-screen w-screen'>
-        <section className='fixed md:relative border-r border-dark-700 z-sidebar'>
-          <SidebarLayout />
-        </section>
-        <section className='flex-grow absolute md:relative inset-0'>
+      <main className='flex relative h-screen w-screen overflow-hidden'>
+        <SidebarLayout />
+        <section className='flex-grow absolute md:relative inset-0 h-screen'>
           <HeaderLayout />
-          <div className='h-[80vh]'>
+          <div className='overflow-y-auto overflow-x-hidden' style={{
+            height: 'calc(99vh - 5rem)'
+          }}>
             <Outlet />
           </div>
         </section>

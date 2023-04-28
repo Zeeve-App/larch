@@ -19,6 +19,7 @@ import { SidebarDivider } from "src/components/Sidebar/SidebarDivider";
 import { SidebarLogo } from "src/components/Sidebar/SidebarLogo";
 
 import { getLarchVersionInfo } from "src/utils/api";
+import { useSidebarStore } from 'src/store/SidebarStore'
 
 interface Item {
   icon: React.ReactElement;
@@ -115,7 +116,10 @@ function SidebarLayout() {
   const location = useLocation();
   const parentPathname = `/${location.pathname.split("/").at(1)}`;
 
+  const { isOpen, setSidebar } = useSidebarStore()
+
   const [larchVersion, setLarchVersion] = useState("NA");
+
 
   useEffect(() => {
     getLarchVersionInfo()
@@ -128,68 +132,71 @@ function SidebarLayout() {
   }, []);
 
   return (
-    <Sidebar className="bg-larch-dark">
-      <div className="flex-grow">
-        <SidebarLogo href="/" src={LarchLogo} />
-        <SidebarSection>
-          <SidebarSectionTitle title="Main Menu" />
-          <SidebarItemList>
-            {mainMenuitems.length &&
-              mainMenuitems.map((item) => (
-                <SidebarItem
-                  as={NavLink}
-                  key={item.title}
-                  iconLeft={item.icon}
-                  title={item.title}
-                  to={item.path}
-                  badge={item.badge}
-                  active={
-                    parentPathname === item.path || parentPathname === "/"
-                  }
-                />
-              ))}
-          </SidebarItemList>
-        </SidebarSection>
-        <SidebarDivider />
-        <SidebarSection>
-          <SidebarSectionTitle title="Buy Services" />
-          <SidebarItemList>
-            {Othersitems.length &&
-              Othersitems.map((item) => (
-                <SidebarItem
-                  as={NavLink}
-                  key={item.title}
-                  iconLeft={item.icon}
-                  title={item.title}
-                  to={item.path}
-                  badge={item.badge}
-                  active={parentPathname === item.path}
-                />
-              ))}
-          </SidebarItemList>
-        </SidebarSection>
-        <SidebarDivider />
-        <SidebarSection>
-          <SidebarSectionTitle title="Contact" />
-          <SidebarItemList>
-            <SidebarItem
-              as="a"
-              iconLeft={Contact.icon}
-              title={Contact.title}
-              href="mailto:support@zeeve.io"
-              badge={Contact.badge}
-              active={location.pathname === Contact.path}
-            />
-          </SidebarItemList>
-        </SidebarSection>
-      </div>
-      <div className="flex-grow-0 m-4">
-        <div className="flex justify-between my-1">
-          <h5 className="font-bold">Version :</h5>
-          <h5 className="font-semibold">{larchVersion}</h5>
+    <section className={` ${isOpen ? 'w-screen md:w-fit' : 'w-fit'} z-sidebar`} onClick={() => setSidebar(false)}>
+      <Sidebar expanded={isOpen} toggleExpanded={setSidebar} className="bg-larch-dark fixed md:relative border-r overflow-x-hidden border-dark-700 z-sidebar">
+        <div className="flex-grow">
+          <SidebarLogo href="/" src={LarchLogo} />
+          <SidebarSection>
+            <SidebarSectionTitle title="Main Menu" />
+            <SidebarItemList>
+              {mainMenuitems.length &&
+                mainMenuitems.map((item) => (
+                  <SidebarItem
+                    as={NavLink}
+                    key={item.title}
+                    iconLeft={item.icon}
+                    title={item.title}
+                    to={item.path}
+                    badge={item.badge}
+                    active={
+                      parentPathname === item.path || parentPathname === "/"
+                    }
+                  />
+                ))}
+            </SidebarItemList>
+          </SidebarSection>
+          <SidebarDivider />
+          <SidebarSection>
+            <SidebarSectionTitle title="Buy Services" />
+            <SidebarItemList>
+              {Othersitems.length &&
+                Othersitems.map((item) => (
+                  <SidebarItem
+                    as={NavLink}
+                    key={item.title}
+                    iconLeft={item.icon}
+                    title={item.title}
+                    to={item.path}
+                    badge={item.badge}
+                    active={parentPathname === item.path}
+                  />
+                ))}
+            </SidebarItemList>
+          </SidebarSection>
+          <SidebarDivider />
+          <SidebarSection>
+            <SidebarSectionTitle title="Contact" />
+            <SidebarItemList>
+              <SidebarItem
+                as="a"
+                iconLeft={Contact.icon}
+                title={Contact.title}
+                href="mailto:support@zeeve.io"
+                badge={Contact.badge}
+                active={location.pathname === Contact.path}
+              />
+            </SidebarItemList>
+          </SidebarSection>
         </div>
-      </div>
-    </Sidebar>
+        <div className="flex-grow-0 m-4">
+          <div className="flex justify-between my-1">
+            <h5 className="font-bold">Version :</h5>
+            <h5 className="font-semibold">{larchVersion}</h5>
+          </div>
+        </div>
+      </Sidebar>
+    </section>
+
   );
 }
 

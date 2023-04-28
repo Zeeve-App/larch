@@ -128,13 +128,13 @@ export default function Listing() {
           setSort={setSort}
           sort={sort}
         />
-        <div className='right-2 bottom-0 flex flex-row justify-end'>
+        {runList.length > 0 && <div className='right-2 bottom-0 flex flex-row justify-end'>
           <PaginatedItems
             itemsPerPage={itemPerPage}
             totalRecords={meta.total}
             onPageChange={onPageChange}
           />
-        </div>
+        </div>}
       </div>
       {isOpen.command && (
         <CommandModal

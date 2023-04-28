@@ -155,13 +155,13 @@ export default function Listing() {
           onConfirm={onNetworkDelete}
           name={deleteNetworkName}
         />
-        <div className='right-2 bottom-0 flex flex-row justify-end'>
+       {networkList.length > 0 && <div className='right-2 bottom-0 flex flex-row justify-end'>
           <PaginatedItems
             itemsPerPage={itemPerPage}
             totalRecords={meta.total}
             onPageChange={onPageChange}
           />
-        </div>
+        </div>}
       </div>
     </>
   );

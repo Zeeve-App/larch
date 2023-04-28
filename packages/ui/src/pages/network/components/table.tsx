@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import { Link } from 'react-router-dom';
 import { getFormattedLocalTime } from '../../../utils/time';
 
 type NetworkInfo = {
@@ -24,9 +25,11 @@ export default function NetworkListTable({
   sort,
 }: NetworkListTableProps) {
   return (
-    <table className='text-white border-2 border-border font-rubik w-full rounded'>
-      <thead className='bg-create-button'>
-        <tr className=' border-b-2 border-border rounded '>
+    <>
+    <div className='rounded-xl border-2 border-dark-700 p-1'>
+    <table className='text-white w-full'>
+      <thead className='rounded-xl bg-larch-dark_2'>
+        <tr className='border-b-2 border-dark-700'>
           <th className='px-6 py-3 w-56.25 text-left' scope='col'>
             Network Name
           </th>
@@ -55,10 +58,9 @@ export default function NetworkListTable({
           </th>
         </tr>
       </thead>
-      <tbody>
-        {
-          networkList.map((network) => (
-            <tr className=' border-b-2 border-border rounded '>
+      <tbody className='rounded-lg'>
+        {networkList.map((network, index) => (
+            <tr className={(index + 1) < networkList.length ? 'border-b-2 border-dark-700' : ''}>
               <td className='px-6 py-3 w-56.25 '>{network.name}</td>
               <td className='px-6 py-3 w-56.25 '>{network.type}</td>
               <td className='px-6 py-3 w-56.25 '>{network.networkProvider}</td>
@@ -77,9 +79,18 @@ export default function NetworkListTable({
                 </div>
               </td>
             </tr>
-          ))
-        }
+          ))}
       </tbody>
     </table>
+    </div>
+    {networkList.length === 0 && 
+    <div className='w-full text-white text-center pt-5'>
+      <div>To get started, please create network from {' '}
+        <Link to='/template'>
+          <span className='text-center text-blue-500 cursor-pointer'>Network Templates</span>
+        </Link>
+      </div>
+    </div>}
+    </>
   );
 }

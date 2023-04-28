@@ -81,7 +81,7 @@ export default function Filter({
       ))}
       <button
         type='button'
-        className='w-[50px] h-8 border-2 border-white-400 rounded-xl'
+        className='w-[50px] h-8 border-2 bg-larch-success border-white-400 rounded-xl'
         aria-hidden
         onClick={() => submitSearchData()}
       >
@@ -89,7 +89,7 @@ export default function Filter({
       </button>
       <button
         type='button'
-        className='px-3 pt-0 h-8 bg-red-500 border-2 border-white-400 rounded-xl font-rubik font-medium flex flex-row align-middle'
+        className='px-3 pt-0 h-8 bg-larch-error border-2 border-white-400 rounded-xl font-rubik font-medium flex flex-row align-middle'
         aria-hidden
         onClick={() => submitSearchData(true)}
       >

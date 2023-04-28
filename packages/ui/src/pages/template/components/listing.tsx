@@ -247,13 +247,13 @@ export default function Listing() {
           duplicateTemplateObj={duplicateTemplateObj}
           setDuplicateTemplateObj={setDuplicateTemplateObj}
         />
-        <div className='flex flex-row justify-end'>
+        {templateList.length > 0 && <div className='flex flex-row justify-end'>
           <PaginatedItems
             itemsPerPage={itemPerPage}
             totalRecords={meta.total}
             onPageChange={onPageChange}
           />
-        </div>
+        </div>}
       </div>
     </>
   );

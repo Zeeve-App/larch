@@ -9,7 +9,7 @@ export default function RefreshButton({ onClick }: Props) {
     <div>
       <button
         type='button'
-        className='w-[50px] flex items-center justify-center h-8 bg-green border-2 border-white-500 rounded-xl'
+        className='w-[50px] bg-larch-warning flex items-center justify-center h-8 border-2 border-white-500 rounded-xl'
         onClick={onClick}
       >
         <svg

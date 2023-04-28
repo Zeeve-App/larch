@@ -12,11 +12,11 @@ export default function Card({
   cardTitle, cardLink, cardIcon, cardDescription, records,
 }: CardProp) {
   return (
-    <div className='w-full gap-6 p-6 rounded-2xl border-2 border-border bg-black'>
+    <div className='w-full gap-6 p-6 rounded-2xl border-2 border-gray-500 bg-dark'>
       <Link to={cardLink}>
         <div className=''>
           {/* eslint-disable-next-line max-len */}
-          <div className='w-20 h-20 items-center flex justify-center content-center border-2 border-border mb-6 rounded-2xl border-solid'>
+          <div className='w-20 h-20 items-center flex justify-center content-center border-2 border-gray-500 mb-6 rounded-2xl border-solid'>
             {cardIcon}
           </div>
           <h4 className='text-white font-rubik leading-8 font-bold'>{cardTitle}</h4>

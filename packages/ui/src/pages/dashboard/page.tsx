@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
 import { useEffect, useState } from 'react';
-import iconNetwork from '../../components/assets/My-Network.svg';
-import iconTemplate from '../../components/assets/template.svg';
-import iconActivity from '../../components/assets/Activity.svg';
-import IconEdit from '../../components/assets/editor.svg';
+import { ReactComponent as IconNetwork } from 'src/assets/MyNetwork.svg';
+import { ReactComponent as IconTemplate } from 'src/assets/Template.svg';
+import { ReactComponent as IconActivity } from 'src/assets/Activity.svg';
+import { ReactComponent as IconEdit } from 'src/assets/UserEditor.svg';
 import Card from './components/card';
 import {
   getLarchVersionInfo,
@@ -68,7 +68,7 @@ export default function Dashboard() {
       });
   }, []);
   return (
-    <div className='h-full w-full bg-black p-6'>
+    <div className='h-full w-full bg-black p-6 relative'>
       {isShowLoader && <Loader />}
       <div className='bg-create-button flex flex-col gap-6 p-6 border-2 border-border rounded-2xl border-solid box-border'>
         <h3 className='text-white font-rubik text-2xl font-bold text-left'>
@@ -90,28 +90,31 @@ export default function Dashboard() {
           <Card
             cardTitle='Networks'
             cardLink='/network'
-            cardIconSrc={iconNetwork}
+            cardIcon={<IconNetwork className='text-white w-6 h-6' />}
+
             cardDescription='Create and list networks'
             records={networkRecords}
           />
           <Card
             cardTitle='Templates'
             cardLink='/template'
-            cardIconSrc={iconTemplate}
+            cardIcon={<IconTemplate className='text-white w-6 h-6' />}
             cardDescription='Create and list templates'
             records={templateRecords}
           />
           <Card
             cardTitle='Run List'
             cardLink='/run-list'
-            cardIconSrc={IconEdit}
+            cardIcon={<IconEdit className='text-white w-6 h-6' />}
+
             cardDescription='List Network operations & results'
             records={runListRecords}
           />
           <Card
             cardTitle='Activity'
             cardLink='/activity'
-            cardIconSrc={iconActivity}
+            cardIcon={<IconActivity className='text-white file:w-6 h-6' />}
+
             cardDescription='List activity actions'
             records={activityRecords}
           />

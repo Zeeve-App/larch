@@ -1,4 +1,4 @@
-import { useRoutes, RouteObject } from 'react-router-dom';
+import { useRoutes, RouteObject, Navigate } from 'react-router-dom';
 import './App.css';
 import MainLayout from './components/layout/Mainlayout';
 import Dashboard from './pages/dashboard/page';
@@ -15,68 +15,64 @@ import RunList from './pages/run-list/page';
 import Documentation from './pages/documentation/page';
 
 const routes: RouteObject[] = [
-
   {
     element: <MainLayout />,
     children: [
-
       {
-        path: ('/'),
+        path: '/',
+        element: <Navigate to='/dashboard' replace />,
+      },
+      {
+        path: '/dashboard',
         element: <Dashboard />,
       },
       {
-        path: ('/dashboard'),
-        element: <Dashboard />,
-      },
-      {
-        path: ('/documentation'),
+        path: '/documentation',
         element: <Documentation />,
       },
       {
-        path: ('/network'),
+        path: '/network',
         element: <Network />,
-
       },
       {
-        path: ('/template/createNetwork/setting'),
+        path: '/template/createNetwork/setting',
         element: <CreateNetwork />,
       },
       {
-        path: ('/template/createNetwork/relaychain'),
+        path: '/template/createNetwork/relaychain',
         element: <CreateRelayChain />,
       },
       {
-        path: ('/template/createNetwork/parachain'),
+        path: '/template/createNetwork/parachain',
         element: <CreateParachain />,
       },
       {
-        path: ('/template/createNetwork/hrmp'),
+        path: '/template/createNetwork/hrmp',
         element: <CreateHrmp />,
       },
       {
-        path: ('/template/createNetwork/testconfig'),
+        path: '/template/createNetwork/testconfig',
         element: <TestConfig />,
       },
       {
-        path: ('/setting'),
+        path: '/setting',
         element: <Setting />,
       },
 
       {
-        path: ('/run-list'),
+        path: '/run-list',
         element: <RunList />,
       },
 
       {
-        path: ('/activity'),
+        path: '/activity',
         element: <Activity />,
       },
 
       {
-        path: ('/template'),
+        path: '/template',
         element: <Template />,
       },
-
     ],
   },
 ];

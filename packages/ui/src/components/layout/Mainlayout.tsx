@@ -1,30 +1,37 @@
+import 'react-toastify/dist/ReactToastify.css';
 import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import Header from '../header';
-import Menu from '../main_menu';
-import 'react-toastify/dist/ReactToastify.css';
+
+import SidebarLayout from './SidebarLayout';
+import HeaderLayout from './HeaderLayout';
 
 export default function MainLayout() {
   return (
     <>
-      <Header />
-      <div className='flex flex-row gap-0 bg-black flex-1'>
-        <Menu />
-        <Outlet />
-        <ToastContainer
-          position='bottom-right'
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme='dark'
-          toastClassName='border-solid border-toast border-2'
-        />
-      </div>
+      <main className='flex relative h-screen w-screen'>
+        <section className='fixed md:relative border-r border-dark-700 z-sidebar'>
+          <SidebarLayout />
+        </section>
+        <section className='flex-grow absolute md:relative inset-0'>
+          <HeaderLayout />
+          <div className='h-[80vh]'>
+            <Outlet />
+          </div>
+        </section>
+      </main>
+      <ToastContainer
+        position='bottom-right'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='dark'
+        toastClassName='border-solid border-toast border-2'
+      />
     </>
   );
 }

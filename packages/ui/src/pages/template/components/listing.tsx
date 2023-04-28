@@ -14,12 +14,11 @@ import { notify } from '../../../utils/notifications';
 import PopUpBox from './modal';
 import DeletePopUpBox from './deleteTemplateModal';
 import DuplicateTempPopUpBox from './duplicateTemplateModal';
-import { useTemplateFilterStore } from '../../../store/templateStore';
-import { useFilterSubmit } from '../../../store/commonStore';
 import Filter from '../../../components/filter';
 import { NetworkType, TemplateDelete } from '../types';
 import RefreshButton from '../../../components/refresh';
 import Loader from '../../../components/loader';
+import { TemplateFilterInput } from '../../../types/filter.types';
 
 export default function Listing() {
   const [templateList, setTemplateList] = useState<any[]>([]);
@@ -42,19 +41,36 @@ export default function Listing() {
     templateName: '',
   } as TemplateDelete);
   const [isShowLoader, setIsShowLoader] = useState<boolean>(false);
+  const [templateFilterData, setTemplateFilterData] = useState([
+    {
+      label: 'ID',
+      key: 'id',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Template Name',
+      key: 'name',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Provider',
+      key: 'provider',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Network Directory',
+      key: 'status',
+      isSearchOpen: false,
+    },
+    {
+      label: 'Created On',
+      key: 'createdAt',
+      isSearchOpen: false,
+    },
+  ] as TemplateFilterInput[]);
+  const [isFilterSubmit, setIsFilterSubmit] = useState<boolean>(false);
 
   const navigate = useNavigate();
-
-  const templateFilterData = useTemplateFilterStore(
-    (state) => state.templateFilterData,
-  );
-  const setTemplateFilterData = useTemplateFilterStore(
-    (state) => state.setTemplateFilterData,
-  );
-
-  const isFilterSubmit = useFilterSubmit((state) => state.isFilterSubmit);
-  const setIsFilterSubmit = useFilterSubmit((state) => state.setIsFilterSubmit);
-
   const updateListing = () => {
     setPageToggle(!pageToggle);
   };

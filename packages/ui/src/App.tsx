@@ -3,16 +3,13 @@ import './App.css';
 import MainLayout from './components/layout/Mainlayout';
 import Dashboard from './pages/dashboard/page';
 import Network from './pages/network/page';
-import CreateNetwork from './pages/create_network/create_network';
-import CreateRelayChain from './pages/create_network/components/relaychain';
-import CreateParachain from './pages/create_network/components/parachain';
-import TestConfig from './pages/create_network/components/testConfig';
-import CreateHrmp from './pages/create_network/components/hrmp';
 import Activity from './pages/activity/page';
 import Template from './pages/template/page';
 import Setting from './pages/setting/page';
 import RunList from './pages/run-list/page';
 import Documentation from './pages/documentation/page';
+
+import CreateTemplate from 'src/pages/create_template'
 
 const routes: RouteObject[] = [
   {
@@ -35,24 +32,8 @@ const routes: RouteObject[] = [
         element: <Network />,
       },
       {
-        path: '/template/createNetwork/setting',
-        element: <CreateNetwork />,
-      },
-      {
-        path: '/template/createNetwork/relaychain',
-        element: <CreateRelayChain />,
-      },
-      {
-        path: '/template/createNetwork/parachain',
-        element: <CreateParachain />,
-      },
-      {
-        path: '/template/createNetwork/hrmp',
-        element: <CreateHrmp />,
-      },
-      {
-        path: '/template/createNetwork/testconfig',
-        element: <TestConfig />,
+        path: '/template/createNetwork',
+        element: <CreateTemplate />
       },
       {
         path: '/setting',

@@ -4,7 +4,6 @@ import PaginatedItems from '../../../components/pagination';
 import { getRunList } from '../../../utils/api';
 import { notify } from '../../../utils/notifications';
 import Filter from '../../../components/filter';
-import { useFilterSubmit } from '../../../store/commonStore';
 import CommandModal from './commandModal';
 import StandardOutputModal from './standardOutputModal';
 import RefreshButton from '../../../components/refresh';

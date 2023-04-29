@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 export default function Documentation() {
   return (
-    <div className='bg-black p-6 overflow-y-scroll flex flex-col flex-nowrap content-center justify-left items-left font-rubik'>
+    <div className='bg-black p-6 flex flex-col flex-nowrap content-center justify-left items-left font-rubik'>
       <div className='flex flex-col gap-4'>
         <div className=''>
           <h1 className='text-white font-rubik  text-2xl font-bold '>

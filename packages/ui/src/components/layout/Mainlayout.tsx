@@ -12,7 +12,7 @@ export default function MainLayout() {
         <SidebarLayout />
         <section className='flex-grow absolute md:relative inset-0 h-screen'>
           <HeaderLayout />
-          <div className='overflow-y-auto overflow-x-hidden' style={{
+          <div className='overflow-y-auto overflow-x-auto' style={{
             height: 'calc(99vh - 5rem)'
           }}>
             <Outlet />

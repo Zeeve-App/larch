@@ -19,7 +19,7 @@ import { SidebarDivider } from "src/components/Sidebar/SidebarDivider";
 import { SidebarLogo } from "src/components/Sidebar/SidebarLogo";
 
 import { getLarchVersionInfo } from "src/utils/api";
-import { useSidebarStore } from 'src/store/SidebarStore'
+import { useSidebarStore } from "src/store/SidebarStore";
 
 interface Item {
   icon: React.ReactElement;
@@ -116,10 +116,9 @@ function SidebarLayout() {
   const location = useLocation();
   const parentPathname = `/${location.pathname.split("/").at(1)}`;
 
-  const { isOpen, setSidebar } = useSidebarStore()
+  const { isOpen, setSidebar } = useSidebarStore();
 
   const [larchVersion, setLarchVersion] = useState("NA");
-
 
   useEffect(() => {
     getLarchVersionInfo()
@@ -132,8 +131,16 @@ function SidebarLayout() {
   }, []);
 
   return (
-    <section className={` ${isOpen ? 'w-screen md:w-fit' : 'w-fit'} z-sidebar`} onClick={() => setSidebar(false)}>
-      <Sidebar expanded={isOpen} toggleExpanded={setSidebar} className="bg-larch-dark fixed md:relative border-r overflow-x-hidden border-dark-700 z-sidebar">
+    <section
+      className={` ${isOpen ? "w-screen md:w-fit" : "w-fit"
+        } z-sidebar backdrop-blur-sm`}
+      onClick={() => setSidebar(false)}
+    >
+      <Sidebar
+        expanded={isOpen}
+        toggleExpanded={setSidebar}
+        className="bg-larch-dark fixed md:relative border-r overflow-x-hidden border-dark-700 z-sidebar"
+      >
         <div className="flex-grow">
           <SidebarLogo href="/" src={LarchLogo} />
           <SidebarSection>
@@ -196,7 +203,6 @@ function SidebarLayout() {
         </div>
       </Sidebar>
     </section>
-
   );
 }
 

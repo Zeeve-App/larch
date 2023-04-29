@@ -82,7 +82,7 @@ export default function Listing() {
 
   const editNetwork = (templateId: string) => {
     console.log('templateId', templateId);
-    navigate('/template/createNetwork/setting', { state: { templateId } });
+    navigate('/template/createNetwork', { state: { templateId } });
   };
 
   const onNetworkCreate = (name: string, type: NetworkType) => {

@@ -50,18 +50,12 @@ module.exports = {
       },
       zIndex: {
         sidebar: 300,
-        dropdown: 500,
-        overlay: 800,
-        modal: 900
       },
     },
   },
   plugins: [
     plugin(function ({ addBase, addUtilities, theme }) {
       addBase({
-        "*": {
-          fontFamily: "Rubik",
-        },
         h1: {
           fontSize: theme("fontSize.3xl"),
           fontWeight: theme("fontWeight.bold"),
@@ -100,5 +94,8 @@ module.exports = {
         },
       });
     }),
+    require('@tailwindcss/forms')({
+      strategy: 'base'
+    })
   ],
 };

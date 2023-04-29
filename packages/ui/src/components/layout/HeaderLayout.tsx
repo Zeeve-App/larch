@@ -25,16 +25,12 @@ function HeaderLayout() {
 
   const goToCreateNet = () => {
     setTemplateId(null);
-    navigate('/template/createNetwork/setting');
+    navigate('/template/createNetwork');
   };
 
   const checkPath = () => {
     if (
-      location.pathname === '/template/createNetwork/setting'
-      || location.pathname === '/template/createNetwork/relaychain'
-      || location.pathname === '/template/parachain'
-      || location.pathname === '/template/createNetwork/hrmp'
-      || location.pathname === '/template/createNetwork/testconfig'
+      location.pathname === '/template/createNetwork'
     ) {
       return false;
     }

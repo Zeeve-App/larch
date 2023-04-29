@@ -32,7 +32,7 @@ export default function PopUpBox({
           <Dialog.Title className=' text-white font-rubik pb-4 text-center font-bold'>Create Network</Dialog.Title>
           <Dialog.Description />
           <div className='w-full flex justify-center'>
-            <div className='h-0.5 w-10/12 bg-grey mb-4 px-5' />
+            <div className='h-0.5 w-10/12 bg-brand-gray mb-4 px-5' />
           </div>
           <div className='flex flex-col gap-y-4'>
             <div className='flex flex-row'>

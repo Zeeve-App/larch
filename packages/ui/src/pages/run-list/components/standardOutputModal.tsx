@@ -51,13 +51,13 @@ export default function standardOutputModal({
     >
       <div className='fixed inset-0 bg-black/80' aria-hidden='true' />
       <div className='fixed inset-0 flex items-center justify-center'>
-        <Dialog.Panel className='w-full w-min-1/2 max-w-fit rounded bg-create-button border-border border-4 p-4'>
+        <Dialog.Panel className='bg-black w-full w-min-1/2 max-w-fit rounded bg-create-button border-brand-gray border-4 p-4'>
           <Dialog.Title className='text-white font-rubik pb-4 text-center font-bold'>
             Output
           </Dialog.Title>
           <Dialog.Description />
           <div className='w-full flex justify-center'>
-            <div className='h-0.5 w-10/12 bg-grey mb-4 px-5' />
+            <div className='h-0.5 w-10/12 bg-brand-gray mb-4 px-5' />
           </div>
           <div className='flex flex-col gap-y-4'>
             <div className='flex flex-row'>
@@ -91,7 +91,7 @@ export default function standardOutputModal({
               Standard Output
             </div>
             <div className='flex flex-row'>
-              <pre className='text-white font-rubik flex-1 bg-grey rounded-md p-1 overflow-y-auto min-h-min max-h-96 px-2'>
+              <pre className='text-white flex-1 bg-brand-gray rounded-md p-1 overflow-y-auto min-h-min max-h-96 px-2'>
                 <Ansi className=''>{standardOutput}</Ansi>
               </pre>
             </div>
@@ -99,7 +99,7 @@ export default function standardOutputModal({
               Standard Error
             </div>
             <div className='flex flex-row'>
-              <pre className='text-white font-rubik flex-1 bg-grey rounded-md p-1 overflow-y-auto min-h-min max-h-96 px-2'>
+              <pre className='text-white font-rubik flex-1 bg-brand-gray rounded-md p-1 overflow-y-auto min-h-min max-h-96 px-2'>
                 <Ansi className=''>{standardError}</Ansi>
               </pre>
             </div>

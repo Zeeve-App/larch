@@ -38,11 +38,11 @@ export default function CommandModal({
     >
       <div className='fixed inset-0 bg-black/80' aria-hidden='true' />
       <div className='fixed inset-0 flex items-center justify-center '>
-        <Dialog.Panel className='w-full max-w-3xl rounded bg-create-button border-border border-4 p-4'>
+        <Dialog.Panel className='bg-black w-full max-w-3xl rounded bg-create-button border-brand-gray border-4 p-4'>
           <Dialog.Title className=' text-white font-rubik pb-4 text-center font-bold'>Run Command Info</Dialog.Title>
           <Dialog.Description />
           <div className='w-full flex justify-center'>
-            <div className='h-0.5 w-10/12 bg-grey mb-4 px-5' />
+            <div className='h-0.5 w-10/12 bg-brand-gray mb-4 px-5' />
           </div>
           <div className='flex flex-col gap-y-4'>
 
@@ -64,7 +64,7 @@ export default function CommandModal({
             <div className='flex flex-row'>
               <div className='text-white font-rubik text-base w-2/12'>Command</div>
               <div className='text-white pr-2'>:</div>
-              <code className='text-white font-rubik bg-grey flex-1 rounded-md p-1'>{command}</code>
+              <code className='text-white font-rubik bg-brand-gray flex-1 rounded-md p-1'>{command}</code>
             </div>
             <div className='flex flex-row gap-x-2 justify-end'>
               <button

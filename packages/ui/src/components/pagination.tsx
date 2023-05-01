@@ -31,11 +31,11 @@ export default function PaginatedItems({ itemsPerPage, totalRecords, onPageChang
         pageCount={pageCount || 1}
         containerClassName='flex my-2'
         activeClassName='bg-green rounded-lg'
-        pageClassName='px-0 py-1 rounded-lg font-normal hover:bg-cyan-700'
+        pageClassName='px-0 py-1 rounded-lg font-normal hover:bg-larch-pink'
         pageLinkClassName='px-4 py-2'
-        previousClassName='px-2 py-1 rounded-lg font-normal hover:bg-cyan-700'
+        previousClassName='px-2 py-1 rounded-lg font-normal hover:bg-larch-pink'
         previousLinkClassName='px-2 py-1'
-        nextClassName='px-2 py-1 rounded-lg font-normal hover:bg-cyan-700'
+        nextClassName='px-2 py-1 rounded-lg font-normal hover:bg-larch-pink'
         nextLinkClassName='px-2 py-1'
         previousLabel='<  '
         renderOnZeroPageCount={null}

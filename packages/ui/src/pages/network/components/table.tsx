@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import { Link } from 'react-router-dom';
 import { getFormattedLocalTime } from '../../../utils/time';
+import { ReactComponent as IconDelete } from 'src/assets/Trash.svg';
 
 type NetworkInfo = {
   name: string;
@@ -61,21 +62,15 @@ export default function NetworkListTable({
           <tbody className='rounded-lg'>
             {networkList.map((network, index) => (
               <tr className={(index + 1) < networkList.length ? 'border-b-2 border-dark-700' : ''}>
-                <td className='px-6 py-3 w-56.25 '>{network.name}</td>
-                <td className='px-6 py-3 w-56.25 '>{network.type}</td>
-                <td className='px-6 py-3 w-56.25 '>{network.networkProvider}</td>
-                <td className='px-6 py-3 w-56.25 '>{network.networkDirectory}</td>
+                <td className='px-6 py-3 w-56.25'>{network.name}</td>
+                <td className='px-6 py-3 w-56.25'>{network.type}</td>
+                <td className='px-6 py-3 w-56.25'>{network.networkProvider}</td>
+                <td className='px-6 py-3 w-56.25'>{network.networkDirectory}</td>
                 <td className='px-6 py-3 w-56 text-center'>{getFormattedLocalTime(network.createdAt)}</td>
-                <td className='px-6 py-3 w-56.25 '>{network.networkState}</td>
-                <td>
-                  <div className='flex flex-row'>
-                    <button
-                      type='button'
-                      className='border-border border-2 rounded px-2 bg-create-button mr-2 hover:bg-red-500 hover:text-black'
-                      onClick={() => { onCreateModal(network.name); }}
-                    >
-                      Delete
-                    </button>
+                <td className='px-6 py-3 w-56.25'>{network.networkState}</td>
+                <td className='flex flex-row text-center justify-center items-center content-center px-6 py-3'>
+                  <div className='flex justify-center items-center content-center bg-larch-error border-border border-2 rounded px-1 py-1 cursor-pointer'>
+                    <IconDelete className="text-md" onClick={() => { onCreateModal(network.name); }} />
                   </div>
                 </td>
               </tr>

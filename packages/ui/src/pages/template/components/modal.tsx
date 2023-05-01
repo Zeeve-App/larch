@@ -38,7 +38,7 @@ export default function PopUpBox({
             <div className='flex flex-row'>
               <div className='text-white font-rubik text-base w-3/12'>Network name</div>
               <div className='text-white pr-2'>:</div>
-              <input className=' border-border border-2 rounded bg-create-button text-white font-rubik flex-1' onChange={handleChange} value={inputText} />
+              <input className='border-border text-black border-2 rounded bg-create-button font-rubik flex-1' onChange={handleChange} value={inputText} />
             </div>
             <div className='flex flex-row'>
               <div className='text-white font-rubik text-base w-3/12'>Template ID</div>

@@ -93,10 +93,9 @@ export default function TemplateListTable({
                 <td className='px-6 py-3 w-max text-center'>
                   {getFormattedLocalTime(template.createdAt)}
                 </td>
-                <td className='flex text-center justify-center items-center content-center px-6 py-3 w-max'>
+                <td className='flex justify-center items-center  py-3 '>
                   <Button
-                    type='button'
-                    className='border-border border-2 rounded px-2 bg-create-button'
+                    className='border-dark-700 border-2 rounded-md px-2 bg-larch-dark_3 hover:bg-brand-gradient'
                     onClick={() => {
                       onCreateModal(template.id, 'evaluation');
                     }}
@@ -105,8 +104,7 @@ export default function TemplateListTable({
                   </Button>
                   &nbsp;&nbsp;
                   <Button
-                    type='button'
-                    className='border-border border-2 rounded px-2 bg-create-button mr-2'
+                    className='border-dark-700 border-2 rounded-md px-2 bg-larch-dark_3 hover:bg-brand-gradient mr-2'
                     onClick={() => {
                       onCreateModal(template.id, 'testing');
                     }}
@@ -119,18 +117,17 @@ export default function TemplateListTable({
                   >
                     <DropdownMenuButton
                       as={Button}
-                      className='border-border border-2 rounded'
+                      className='border-dark-700 border-2 rounded-md bg-larch-dark_3 hover:bg-brand-gradient'
                       colorScheme='dark'
-                      iconRight={<IconThreeDots className='text-md w-5 h-5' />}
+                      iconRight={<IconThreeDots className='text-md w-6 h-6 font-bold' />}
                       onClick={handleToggle}
                     >
-                      More
                     </DropdownMenuButton>
                     {actionIdx === index && (
                       <DropdownMenuList
                         direction='right'
                         isOpen={isOpen}
-                        className='z-[501] bg-larch-dark_3 text-white'
+                        className='z-[501] bg-larch-dark_2 text-white'
                       >
                         <DropdownMenuItem
                           onClick={() => {
@@ -143,7 +140,7 @@ export default function TemplateListTable({
                           iconLeft={
                             <IconDuplicate className='text-md w-5 h-5' />
                           }
-                          className='text-white hover:bg-larch-dark_2'
+                          className='text-white hover:bg-larch-pink'
                         >
                           Duplicate
                         </DropdownMenuItem>
@@ -152,7 +149,7 @@ export default function TemplateListTable({
                             editNetwork(template.id);
                           }}
                           iconLeft={<IconEdit className='text-md w-4 h-4' />}
-                          className='text-white hover:bg-larch-dark_2'
+                          className='text-white hover:bg-larch-pink'
                         >
                           Edit
                         </DropdownMenuItem>
@@ -165,7 +162,7 @@ export default function TemplateListTable({
                             });
                           }}
                           iconLeft={<IconDelete className='text-md w-5 h-5' />}
-                          className='text-white hover:bg-larch-dark_2'
+                          className='text-white hover:bg-larch-pink'
                         >
                           Delete
                         </DropdownMenuItem>

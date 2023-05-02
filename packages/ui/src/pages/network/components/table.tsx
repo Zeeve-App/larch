@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { getFormattedLocalTime } from '../../../utils/time';
 import { ReactComponent as IconDelete } from 'src/assets/Trash.svg';
+import { Button, IconButton } from 'src/components/Button';
 
 type NetworkInfo = {
   name: string;
@@ -34,7 +35,7 @@ export default function NetworkListTable({
               <th className='px-6 py-3 w-56.25 text-left' scope='col'>
                 Network Name
               </th>
-              <th className='px-6 py-3 w-56.25 text-left' scope='col'>
+              <th className='px-6 py-3 w-56.25 text-center' scope='col'>
                 Type
               </th>
               <th className='px-6 py-3 text-left' scope='col'>
@@ -63,15 +64,14 @@ export default function NetworkListTable({
             {networkList.map((network, index) => (
               <tr className={(index + 1) < networkList.length ? 'border-b-2 border-dark-700' : ''}>
                 <td className='px-6 py-3 w-56.25'>{network.name}</td>
-                <td className='px-6 py-3 w-56.25'>{network.type}</td>
+                <td className='px-6 py-3 w-56.25 text-center'>{network.type}</td>
                 <td className='px-6 py-3 w-56.25'>{network.networkProvider}</td>
                 <td className='px-6 py-3 w-56.25'>{network.networkDirectory}</td>
                 <td className='px-6 py-3 w-56 text-center'>{getFormattedLocalTime(network.createdAt)}</td>
-                <td className='px-6 py-3 w-56.25'>{network.networkState}</td>
+                <td className='px-6 py-3 w-56.25 text-center'>{network.networkState}</td>
                 <td className='flex flex-row text-center justify-center items-center content-center px-6 py-3'>
-                  <div className='flex justify-center items-center content-center bg-larch-error border-border border-2 rounded px-1 py-1 cursor-pointer'>
-                    <IconDelete className="text-md" onClick={() => { onCreateModal(network.name); }} />
-                  </div>
+                  <IconButton variant={'outline'} icon={<IconDelete className="text-md" />} className='border-larch-error text-larch-error' onClick={() => onCreateModal(network.name)} title="Delete" />
+
                 </td>
               </tr>
             ))}

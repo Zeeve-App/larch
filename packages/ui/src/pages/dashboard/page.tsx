@@ -1,37 +1,32 @@
 /* eslint-disable max-len */
-import { useEffect, useState } from 'react';
-import { ReactComponent as IconNetwork } from 'src/assets/MyNetwork.svg';
-import { ReactComponent as IconTemplate } from 'src/assets/Template.svg';
-import { ReactComponent as IconActivity } from 'src/assets/Activity.svg';
-import { ReactComponent as IconEdit } from 'src/assets/UserEditor.svg';
-import Card from './components/card';
+import { useEffect, useState } from "react";
+import { ReactComponent as IconNetwork } from "src/assets/MyNetwork.svg";
+import { ReactComponent as IconTemplate } from "src/assets/Template.svg";
+import { ReactComponent as IconActivity } from "src/assets/Activity.svg";
+import { ReactComponent as IconEdit } from "src/assets/UserEditor.svg";
+import Card from "./components/card";
 import {
-  getLarchVersionInfo,
   getNetworkList,
   getRunList,
   getTemplateList,
   getUserActivityList,
-} from '../../utils/api';
-import Loader from '../../components/loader';
+} from "../../utils/api";
 
 export default function Dashboard() {
-  const [networkRecords, setNetworkRecords] = useState('NA');
-  const [templateRecords, setTemplateRecords] = useState('NA');
-  const [runListRecords, setRunListRecords] = useState('NA');
-  const [activityRecords, setActivityRecords] = useState('NA');
-  const [supportedZombienetVersion, setSupportedZombienetVersion] = useState('');
-  const [larchVersion, setLarchVersion] = useState('');
-  const [isShowLoader, setIsShowLoader] = useState<boolean>(true);
+  const [networkRecords, setNetworkRecords] = useState("NA");
+  const [templateRecords, setTemplateRecords] = useState("NA");
+  const [runListRecords, setRunListRecords] = useState("NA");
+  const [activityRecords, setActivityRecords] = useState("NA");
 
   useEffect(() => {
     const networkRecordsRes = getNetworkList({ meta: { numOfRec: 0 } }).then(
-      (data) => data.meta.total,
+      (data) => data.meta.total
     );
     const templateRecordsRes = getTemplateList({ meta: { numOfRec: 0 } }).then(
-      (data) => data.meta.total,
+      (data) => data.meta.total
     );
     const runListRecordsRes = getRunList({ meta: { numOfRec: 0 } }).then(
-      (data) => data.meta.total,
+      (data) => data.meta.total
     );
     const activityRecordsRes = getUserActivityList({
       meta: { numOfRec: 0 },
@@ -43,79 +38,56 @@ export default function Dashboard() {
       activityRecordsRes,
     ]).then((values) => {
       setNetworkRecords(
-        values[0].status === 'fulfilled' ? values[0].value.toString(10) : 'NA',
+        values[0].status === "fulfilled" ? values[0].value.toString(10) : "NA"
       );
       setTemplateRecords(
-        values[1].status === 'fulfilled' ? values[1].value.toString(10) : 'NA',
+        values[1].status === "fulfilled" ? values[1].value.toString(10) : "NA"
       );
       setRunListRecords(
-        values[2].status === 'fulfilled' ? values[2].value.toString(10) : 'NA',
+        values[2].status === "fulfilled" ? values[2].value.toString(10) : "NA"
       );
       setActivityRecords(
-        values[3].status === 'fulfilled' ? values[3].value.toString(10) : 'NA',
+        values[3].status === "fulfilled" ? values[3].value.toString(10) : "NA"
       );
     });
-    getLarchVersionInfo()
-      .then(({ result }) => {
-        setLarchVersion(result.larchVersion);
-        setSupportedZombienetVersion(result.zombienetVersion);
-        setIsShowLoader(false);
-      })
-      .catch(() => {
-        setIsShowLoader(false);
-        setLarchVersion('NA');
-        setSupportedZombienetVersion('NA');
-      });
   }, []);
   return (
-    <div className='h-full w-full bg-dark p-6 relative'>
-      {isShowLoader && <Loader />}
-      <div className='bg-larch-dark_2 flex flex-col gap-6 p-6 border-2 border-gray-500 rounded-2xl border-solid box-border'>
-        <h3 className='text-white font-rubik text-2xl font-bold text-left'>
-          Explore Larch
+    <div className="h-full w-full bg-dark p-6 relative">
+      <div className="flex flex-col gap-6 rounded-2xl border-solid box-border">
+        <h3 className="text-white font-rubik text-4xl font-semibold text-left">
+          Explore Dashboard
         </h3>
-        <div className='font-rubik w-full font-bold border border-pink-800 border-[3px] rounded-xl p-3'>
-          <div className='flex'>
-            <div className='flex-1 text-white'>Supported Zombienet version</div>
-            <div className='flex-1 text-right pr-2 text-white'>:</div>
-            <div className='flex-0 text-gradient'>{supportedZombienetVersion}</div>
-          </div>
-          <div className='flex'>
-            <div className='flex-1 text-white'>Larch version</div>
-            <div className='flex-1 pr-[18px] text-right text-white'>:</div>
-            <div className='flex-0 text-gradient'>{larchVersion}</div>
-          </div>
-        </div>
-        <div className='w-full grid lg:grid-cols-4 md:grid-cols-2 gap-6'>
+        <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 gap-6">
           <Card
-            cardTitle='Networks'
-            cardLink='/network'
-            cardIcon={<IconNetwork className='text-white w-6 h-6' />}
-
-            cardDescription='Create and list networks'
+            cardTitle="Networks"
+            cardLink="/network"
+            cardIcon={<IconNetwork className="text-white w-8 h-8" />}
+            cardDescription=" Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus
+            beatae modi voluptas molestiae"
             records={networkRecords}
           />
           <Card
-            cardTitle='Templates'
-            cardLink='/template'
-            cardIcon={<IconTemplate className='text-white w-6 h-6' />}
-            cardDescription='Create and list templates'
+            cardTitle="Templates"
+            cardLink="/templates"
+            cardIcon={<IconTemplate className="text-white w-8 h-8" />}
+            cardDescription=" Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus
+          beatae modi voluptas molestiae"
             records={templateRecords}
           />
           <Card
-            cardTitle='Run List'
-            cardLink='/run-list'
-            cardIcon={<IconEdit className='text-white w-6 h-6' />}
-
-            cardDescription='List Network operations & results'
+            cardTitle="Executions"
+            cardLink="/executions"
+            cardIcon={<IconEdit className="text-white w-8 h-8" />}
+            cardDescription=" Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus
+            beatae modi voluptas molestiae"
             records={runListRecords}
           />
           <Card
-            cardTitle='Activity'
-            cardLink='/activity'
-            cardIcon={<IconActivity className='text-white file:w-6 h-6' />}
-
-            cardDescription='List activity actions'
+            cardTitle="Activity"
+            cardLink="/activity"
+            cardIcon={<IconActivity className="text-white w-8 h-8" />}
+            cardDescription=" Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus
+            beatae modi voluptas molestiae"
             records={activityRecords}
           />
         </div>

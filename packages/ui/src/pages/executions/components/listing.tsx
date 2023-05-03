@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import NetworkListTable from "./table";
+import RunListTable from "./table";
 import PaginatedItems from "../../../components/pagination";
-import { deleteNetwork, getNetworkList } from "../../../utils/api";
+import { getRunList } from "../../../utils/api";
 import { notify } from "../../../utils/notifications";
-import DeletePopUpBox from "./modaldelete";
+import CommandModal from "./commandModal";
+import StandardOutputModal from "./standardOutputModal";
 import Loader from "../../../components/loader";
 import { Filter } from "src/components/Filter/Filter";
 import { Button, IconButton } from "src/components/Button";
@@ -11,106 +12,111 @@ import { FilterItem } from "src/components/Filter/type";
 import { ReactComponent as IconRefresh } from "src/assets/Refresh.svg";
 import { ReactComponent as IconCross } from "src/assets/Cross.svg";
 import { FilterInput } from "src/components/Filter/FilterInput";
+import { useSearchParams } from "react-router-dom";
 
 export default function Listing() {
-  const [networkList, setNetworkList] = useState<any[]>([]);
+  const [runList, setRunList] = useState<any[]>([]);
   const [meta, setMeta] = useState<{ total: number }>({ total: 0 });
   const [itemPerPage] = useState(5);
   const [pageNum, setPageNum] = useState(1);
   const [sort, setSort] = useState<boolean>(true);
-  const [deleteNetworkName, setDeleteNetwork] = useState("");
   const [isShowLoader, setIsShowLoader] = useState<boolean>(false);
+  const [query] = useSearchParams();
 
-  const defaultModalView = {
-    test: false,
-    delete: false,
-  };
-  const [isOpen, setIsOpen] = useState(defaultModalView);
+  const id = query.get("id");
+  const opearation = query.get("intention");
+  const networkName = query.get("networkName");
+  const statusCode = query.get("statusCode");
+  const date = query.get("createdAt");
 
   const [filters, setFilters] = useState<FilterItem[]>([
     {
+      label: "ID",
+      key: "id",
+      checked: id ? true : false,
+      isOpen: false,
+      type: "searchable",
+      value: id || "",
+    },
+    {
+      label: "Operation",
+      key: "intention",
+      checked: opearation ? true : false,
+      isOpen: false,
+      type: "searchable",
+      value: opearation || "",
+    },
+    {
       label: "Network Name",
-      key: "name",
-      checked: false,
+      key: "relatedId",
+      checked: networkName ? true : false,
       isOpen: false,
       type: "searchable",
-      value: "",
+      value: networkName || "",
     },
     {
-      label: "Provider",
-      key: "provider",
-      checked: false,
+      label: "Status Code",
+      key: "statusCode",
+      checked: statusCode ? true : false,
       isOpen: false,
       type: "searchable",
-      value: "",
+      value: statusCode || "",
     },
     {
-      label: "Created On",
+      label: "Date",
       key: "createdAt",
-      checked: false,
+      checked: date ? true : false,
       isOpen: false,
       type: "date",
-      value: "",
-    },
-    {
-      label: "Status",
-      key: "status",
-      checked: false,
-      isOpen: false,
-      type: "searchable",
-      value: new Date().toISOString().split("T")[0],
+      value: date || "",
     },
   ]);
 
-  const setModalViewStatus = (modalSlug: string, status: boolean) => {
-    setIsOpen({ ...defaultModalView, [modalSlug]: status });
+  const defaultModalView = {
+    command: false,
+    standardOutput: false,
+    standardError: false,
   };
+  const [isOpen, setIsOpen] = useState(defaultModalView);
+  const [runId, setRunId] = useState("");
 
   const onPageChange = (pageNumOnChange: number) => {
     setPageNum(pageNumOnChange);
   };
 
-  const onCreateModal = (name: string) => {
-    setDeleteNetwork(name);
-    setModalViewStatus("delete", true);
+  const setModalViewStatus = (modalSlug: string, status: boolean) => {
+    setIsOpen({ ...defaultModalView, [modalSlug]: status });
   };
 
-  const onNetworkDelete = (networkName: string) => {
-    setIsShowLoader(true);
-    deleteNetwork(networkName)
-      .then(() => {
-        setModalViewStatus("delete", false);
-        notify("success", `Deleted the network ("${networkName}")`);
-        setIsShowLoader(false);
-      })
-      .catch(() => {
-        setIsShowLoader(false);
-        notify("error", `Failed delete the network ("${networkName}")`);
-      });
+  const onViewCommand = (id: string) => {
+    setRunId(id);
+    setModalViewStatus("command", true);
   };
 
-  const fetchNetworkList = () => {
+  const onStandardOutput = (id: string) => {
+    setRunId(id);
+    setModalViewStatus("standardOutput", true);
+  };
+
+  const fetchRunList = () => {
     setIsShowLoader(true);
-    getNetworkList({
+    const payload = {
       meta: {
-        numOfRec: itemPerPage,
         pageNum,
+        numOfRec: itemPerPage,
       },
-    })
+    };
+    getRunList(payload)
       .then((response) => {
-        setNetworkList(response.result);
+        setRunList(response.result);
         setMeta(response.meta);
         setIsShowLoader(false);
       })
       .catch(() => {
         setIsShowLoader(false);
-        notify("error", "Failed to fetch network list");
+        notify("error", "Failed to fetch activity list");
       });
   };
-
-  useEffect(() => {
-    fetchNetworkList();
-  }, []);
 
   const filterData = () => {
     const filter: { [name: string]: string } = {};
@@ -139,9 +145,9 @@ export default function Listing() {
         numOfRec: itemPerPage,
       },
     };
-    getNetworkList(payload)
+    getRunList(payload)
       .then((response) => {
-        setNetworkList(response.result);
+        setRunList(response.result);
         setMeta(response.meta);
         setIsShowLoader(false);
       })
@@ -150,10 +156,14 @@ export default function Listing() {
         notify("error", "Failed to fetch activity list");
       });
   };
-
   useEffect(() => {
     filterData();
   }, [pageNum, sort]);
+
+  useEffect(() => {
+    if (filters.some((filter) => filter.checked)) filterData();
+    else fetchRunList();
+  }, []);
 
   const clearFilter = () => {
     setFilters((_filters) => {
@@ -235,11 +245,10 @@ export default function Listing() {
               </Button>
               <Button
                 iconLeft={<IconCross className="w-6 h-6" />}
-
                 className="bg-larch-dark_3 gap-1"
                 onClick={() => {
                   clearFilter();
-                  fetchNetworkList();
+                  fetchRunList();
                 }}
               >
                 Clear
@@ -252,7 +261,7 @@ export default function Listing() {
           className="bg-larch-dark_2 border-2 border-dark-700 gap-2"
           onClick={() => {
             clearFilter();
-            fetchNetworkList();
+            fetchRunList();
           }}
         >
           Refresh
@@ -295,21 +304,14 @@ export default function Listing() {
         </div>
       )}
       <div className="flex flex-col justify-between">
-        <NetworkListTable
-          networkList={networkList}
+        <RunListTable
+          onViewCommand={onViewCommand}
+          onViewStandardOutput={onStandardOutput}
+          runList={runList}
           setSort={setSort}
           sort={sort}
-          onCreateModal={onCreateModal}
         />
-        <DeletePopUpBox
-          isOpen={isOpen.delete}
-          setIsOpen={(status) => {
-            setModalViewStatus("delete", status);
-          }}
-          onConfirm={onNetworkDelete}
-          name={deleteNetworkName}
-        />
-        {networkList.length > 0 && (
+        {runList.length > 0 && (
           <div className="right-2 bottom-0 flex flex-row justify-end">
             <PaginatedItems
               itemsPerPage={itemPerPage}
@@ -319,6 +321,24 @@ export default function Listing() {
           </div>
         )}
       </div>
+      {isOpen.command && (
+        <CommandModal
+          isOpen={isOpen.command}
+          setIsOpen={(status) => {
+            setModalViewStatus("command", status);
+          }}
+          runId={runId}
+        />
+      )}
+      {isOpen.standardOutput && (
+        <StandardOutputModal
+          isOpen={isOpen.standardOutput}
+          setIsOpen={(status) => {
+            setModalViewStatus("standardOutput", status);
+          }}
+          runId={runId}
+        />
+      )}
     </>
   );
 }

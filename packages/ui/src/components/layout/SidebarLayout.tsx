@@ -6,7 +6,6 @@ import { ReactComponent as IconDashboard } from "src/assets/Dashboard.svg";
 import { ReactComponent as IconDocumentation } from "src/assets/Documentation.svg";
 import { ReactComponent as IconEmail } from "src/assets/Email.svg";
 import { ReactComponent as IconMyNetwork } from "src/assets/MyNetwork.svg";
-import { ReactComponent as IconSetting } from "src/assets/Setting.svg";
 import { ReactComponent as IconTemplate } from "src/assets/Template.svg";
 import { ReactComponent as IconUserEditor } from "src/assets/UserEditor.svg";
 import LarchLogo from "src/assets/Logo.svg";
@@ -17,7 +16,7 @@ import { SidebarSectionTitle } from "src/components/Sidebar/SidebarSectionTitle"
 import { Sidebar } from "src/components/Sidebar/Sidebar";
 import { SidebarDivider } from "src/components/Sidebar/SidebarDivider";
 import { SidebarLogo } from "src/components/Sidebar/SidebarLogo";
-
+import { ReactComponent as IconGitHub } from "src/assets/Github.svg";
 import { getLarchVersionInfo } from "src/utils/api";
 import { useSidebarStore } from "src/store/SidebarStore";
 
@@ -34,7 +33,7 @@ const mainMenuitems: Item[] = [
     title: "Dashboard",
     icon: (
       <IconDashboard
-        className="text-2xl"
+        className="w-7 h-7"
         aria-label="Dashboard navigation link logo"
       />
     ),
@@ -44,37 +43,37 @@ const mainMenuitems: Item[] = [
     title: "My Network",
     icon: (
       <IconMyNetwork
-        className="text-2xl"
+        className="w-7 h-7"
         aria-label="My network navigation link logo"
       />
     ),
     path: "/network",
   },
   {
-    title: "Template",
+    title: "Templates",
     icon: (
       <IconTemplate
-        className="text-2xl"
-        aria-label="Template navigation link logo"
+        className="w-7 h-7"
+        aria-label="Templates navigation link logo"
       />
     ),
-    path: "/template",
+    path: "/templates",
   },
   {
-    title: "Run List",
+    title: "Executions",
     icon: (
       <IconUserEditor
-        className="text-2xl"
-        aria-label="Run list navigation link logo"
+        className="w-7 h-7"
+        aria-label="Executions navigation link logo"
       />
     ),
-    path: "/run-list",
+    path: "/executions",
   },
   {
     title: "Activity",
     icon: (
       <IconActivity
-        className="text-2xl"
+        className="w-7 h-7"
         aria-label="Activity navigation link logo"
       />
     ),
@@ -84,20 +83,10 @@ const mainMenuitems: Item[] = [
 
 const Othersitems: Item[] = [
   {
-    title: "Setting",
-    icon: (
-      <IconSetting
-        className="text-2xl"
-        aria-label="Setting navigation link logo"
-      />
-    ),
-    path: "/setting",
-  },
-  {
     title: "Documentation",
     icon: (
       <IconDocumentation
-        className="text-2xl"
+        className="w-7 h-7"
         aria-label="Documentation navigation link logo"
       />
     ),
@@ -105,12 +94,22 @@ const Othersitems: Item[] = [
   },
 ];
 
-const Contact: Item = {
-  title: "Email Us",
-  // Todo: replace call icon with mail icon
-  icon: <IconEmail className="text-2xl" aria-label="Contact Email link logo" />,
-  path: "/contact",
-};
+const Contactitems: Item[] = [
+  {
+    title: "Email Us",
+    // Todo: replace call icon with mail icon
+    icon: (
+      <IconEmail className="w-7 h-7" aria-label="Contact Email link logo" />
+    ),
+    path: "mailto:support@zeeve.io",
+  },
+  {
+    title: "Github",
+    // Todo: replace call icon with mail icon
+    icon: <IconGitHub className="w-7 h-7" aria-label="Github logo" />,
+    path: "https://github.com/Zeeve-App/larch",
+  },
+];
 
 function SidebarLayout() {
   const location = useLocation();
@@ -118,15 +117,24 @@ function SidebarLayout() {
 
   const { isOpen, setSidebar } = useSidebarStore();
 
-  const [larchVersion, setLarchVersion] = useState("NA");
+  const [versions, setVersions] = useState<{
+    larch: string;
+    zombienet: string;
+  }>({
+    larch: "NA",
+    zombienet: "NA",
+  });
 
   useEffect(() => {
     getLarchVersionInfo()
       .then(({ result }) => {
-        setLarchVersion(result.larchVersion);
+        setVersions({
+          larch: result.larchVersion,
+          zombienet: result.zombienetVersion,
+        });
       })
       .catch(() => {
-        setLarchVersion("NA");
+        setVersions({ larch: "NA", zombienet: "NA" });
       });
   }, []);
 
@@ -155,6 +163,7 @@ function SidebarLayout() {
                     title={item.title}
                     to={item.path}
                     badge={item.badge}
+                    className="py-8"
                     active={
                       parentPathname === item.path || parentPathname === "/"
                     }
@@ -164,7 +173,7 @@ function SidebarLayout() {
           </SidebarSection>
           <SidebarDivider />
           <SidebarSection>
-            <SidebarSectionTitle title="Buy Services" />
+            <SidebarSectionTitle title="General" />
             <SidebarItemList>
               {Othersitems.length &&
                 Othersitems.map((item) => (
@@ -182,23 +191,32 @@ function SidebarLayout() {
           </SidebarSection>
           <SidebarDivider />
           <SidebarSection>
-            <SidebarSectionTitle title="Contact" />
+            <SidebarSectionTitle title="Social" />
             <SidebarItemList>
-              <SidebarItem
-                as="a"
-                iconLeft={Contact.icon}
-                title={Contact.title}
-                href="mailto:support@zeeve.io"
-                badge={Contact.badge}
-                active={location.pathname === Contact.path}
-              />
+              {Contactitems.length &&
+                Contactitems.map((item) => (
+                  <SidebarItem
+                    as={"a"}
+                    key={item.title}
+                    iconLeft={item.icon}
+                    title={item.title}
+                    target="_blank"
+                    href={item.path}
+                    badge={item.badge}
+                    active={parentPathname === item.path}
+                  />
+                ))}
             </SidebarItemList>
           </SidebarSection>
         </div>
-        <div className="flex-grow-0 m-4">
-          <div className="flex justify-between my-1">
-            <h5 className="font-bold">Version :</h5>
-            <h5 className="font-semibold">{larchVersion}</h5>
+        <div className="flex justify-center items-start flex-col flex-grow-0 p-5 border-t-2 border-dark-700">
+          <div className="flex gap-2">
+            <h5 className="font-bold">Larch : </h5>
+            <h5 className="font-semibold">{versions.larch}</h5>
+          </div>
+          <div className="flex gap-2">
+            <h5 className="font-bold">Zombienet : </h5>
+            <h5 className="font-semibold">{versions.zombienet}</h5>
           </div>
         </div>
       </Sidebar>

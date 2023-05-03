@@ -45,12 +45,13 @@ module.exports = {
           light: "#F8FAFA",
           outline: "#8F92A133",
           purple: "#4F47B4",
-          pink: "#FF5592"
+          pink: "#FF5592",
         },
       },
       zIndex: {
         sidebar: 300,
-      },
+        dropdown: 500,
+      }
     },
   },
   plugins: [
@@ -94,8 +95,8 @@ module.exports = {
         },
       });
     }),
-    require('@tailwindcss/forms')({
-      strategy: 'base'
-    })
+    require("@tailwindcss/forms")({
+      strategy: "base",
+    }),
   ],
 };

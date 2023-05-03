@@ -4,14 +4,14 @@ import { PolymorphicComponentPropWithRef, PolymorphicRef } from 'src/core';
 
 type SidebarItemComponentProps<C extends React.ElementType> =
   PolymorphicComponentPropWithRef<
-  C,
-  {
-    title: string;
-    active: boolean;
-    iconLeft?: React.ReactElement;
-    badge?: React.ReactElement;
-    isChild?: boolean;
-  }
+    C,
+    {
+      title: string;
+      active: boolean;
+      iconLeft?: React.ReactElement;
+      badge?: React.ReactElement;
+      isChild?: boolean;
+    }
   >;
 
 type SidebarItemProps = <C extends React.ElementType = 'a'>(
@@ -46,12 +46,11 @@ const SidebarItem: SidebarItemProps = React.forwardRef(
         {...rest}
       >
         <div
-          className={`absolute left-0 rounded-r-full border-l-4 border-white py-4 group-hover:block ${
-            active ? 'block' : 'hidden'
-          }`}
+          className={`absolute left-0 rounded-r-full border-l-4 border-white py-4 group-hover:block ${active ? 'block' : 'hidden'
+            }`}
         />
         {iconLeft && iconLeft}
-        <span className='flex flex-col gap-y-1 text-base font-normal leading-4'>
+        <span className='flex flex-col gap-y-1 text-xl font-normal leading-4'>
           {title}
           {badge && badge}
         </span>

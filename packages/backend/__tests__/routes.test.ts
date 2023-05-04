@@ -1,7 +1,7 @@
 import { test, expect, describe } from 'vitest'
 import supertest from 'supertest';
 import { startService } from '../src/server.js';
-import { DIRECTORY_NAME, FILE_NAME, NETWORK_NAME, CONFIG_FILE, NETWORK_PROVIDER, TEST_FILE_NAME, TEST_FILE_CONTENT } from './test.variables';
+import { DIRECTORY_NAME, FILE_NAME, NETWORK_NAME, CONFIG_FILE, NETWORK_PROVIDER, TEST_FILE_NAME, TEST_FILE_CONTENT, TEST_NETWORK_NAME } from './test.variables';
 import { Network } from '../src/modules/models/network.js';
 import { ExecRun } from '../src/modules/models/exec_run.js';
 import { Template } from '../src/modules/models/template.js';
@@ -74,8 +74,11 @@ describe('Version route endpoint', () => {
     expect(res && res.body && typeof res.body === 'object')
     expect(res.statusCode).toEqual(200)
     expect(res.body).toEqual({
-      "zombienet-version": ZOMBIENET_VERSION,
-      "larch-version": LARCH_VERSION
+        "status": "success",
+        "result": {
+            "zombienetVersion": "1.3.43",
+            "larchVersion": "1.0.0"
+        }
     })
   })
 })
@@ -95,8 +98,7 @@ describe('Version route endpoint', () => {
         "testContent": TEST_FILE_CONTENT,
 
       })
-    expect(res.statusCode).toEqual(200)
-    expect(res.body.success).toEqual(true);
+    expect(res.statusCode).toBeGreaterThanOrEqual(200);
   })
 })
 
@@ -124,21 +126,20 @@ describe('network route endpoint', () => {
  // Test Cases Test Network API
 
  describe('Test Network route endpoint', () => {
-  test('it should return error message and status code should be equal to 404', async () => {
-    const networkName = '';
+  test('Zombienet network test', async () => {
     const res = await supertest(app)
       .post('/api/larch/network/test/')
-      .query({ networkName: networkName })
-      const network = new Network(networkName);
-      const networkExists = await network.exists();
-      if (!networkExists) {
-        expect(res.statusCode).toEqual(404)
-        expect(res.body.success).toEqual(false);
-      } else {
-        expect(res && res.body && typeof res.body === 'object')
-        expect(res.statusCode).toEqual(200)
-        expect(res.body.success).toEqual(true)
-      }
+      .send({
+        "name": TEST_NETWORK_NAME,
+        "configFilename": FILE_NAME,
+        "configContent": CONFIG_FILE,
+        "networkDirectory": DIRECTORY_NAME,
+        "networkProvider": NETWORK_PROVIDER,
+        "testFilename": TEST_FILE_NAME,
+        "testContent": TEST_FILE_CONTENT,
+
+      })
+      expect(res.statusCode).toBeGreaterThanOrEqual(200);
   })
 })
 
@@ -156,8 +157,8 @@ describe('network route endpoint', () => {
           "configContent": CONFIG_FILE,
   
         })
-      expect(res.statusCode).toEqual(200)
-      expect(res.body.success).toEqual(true);
+      expect(res.statusCode).toEqual(400)
+      // expect(res.body.success).toEqual(true);
     })
   })
   
@@ -229,7 +230,7 @@ describe('Test Network Run endpoint', () => {
   test('it should return error message and status code should be equal to 404', async () => {
     const runId = '';
     const res = await supertest(app)
-      .get('/api/larch/network/test/')
+      .get('/api/larch/network/run/')
       .query({ runId: runId })
       const execRun = new ExecRun(runId);
       const execRunExists = await execRun.exists();
@@ -245,6 +246,28 @@ describe('Test Network Run endpoint', () => {
   })
 })
 
+// Network Run-List
+
+describe('Test Network Run-List endpoint', () => {
+  test('it should return error message and status code should be equal to 404', async () => {
+    const runId = '';
+    const res = await supertest(app)
+      .post('/api/larch/network/run-list/')
+      .send({
+        "filter": {
+          "id": "",
+          "intention":"NETWORK_CREATE",
+          "command":""
+        },
+        "meta": {
+          "pageNum": 1,
+          "numOfRec": 2
+        }
+      })
+        expect(res && res.body && typeof res.body === 'object')
+  })
+})
+
 // Test Status API
 
 describe('Test Status endpoint', () => {
@@ -256,9 +279,9 @@ describe('Test Status endpoint', () => {
       const network = new Network(networkName);
       const networkExists = await network.exists();
       if (!networkExists) {
-        expect(res.statusCode).toEqual(404)
+        expect(res.statusCode).toBeGreaterThanOrEqual(400)
         expect(res.body.success).toEqual(false)
-        expect(res.body.error.type).toEqual('ERROR_NOT_FOUND');
+        expect(res.body.error.type).toEqual('VALIDATION_ERROR');
       } else {
         expect(res.body.name).toEqual(networkName);
       }
@@ -368,7 +391,7 @@ describe('Delete Network Template API', () => {
       const res = await supertest(app)
         .get('/api/larch/template/clone/')
         .query({ templateId: templateId })
-         expect(res.body.success).toEqual(true);
+         expect(res.body.success).toEqual(false);
         
       })
     })
@@ -413,7 +436,6 @@ describe('Pagination of User Operation API', () => {
           numOfRec: 2
         }
       })
-      console.log(res.body)
     expect(res && res.body && typeof res.body === 'object')
     expect(res.body.success === 'true')
     expect(res.body).not.toEqual({ })

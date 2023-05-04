@@ -1,8 +1,16 @@
 /* eslint-disable max-len */
-import { Link } from 'react-router-dom';
-import { getFormattedLocalTime } from '../../../utils/time';
-import { ReactComponent as IconDelete } from 'src/assets/Trash.svg';
-import { Button, IconButton } from 'src/components/Button';
+import {
+  Link,
+  useNavigate,
+} from "react-router-dom";
+import { getFormattedLocalTime } from "../../../utils/time";
+import { ReactComponent as IconDelete } from "src/assets/Trash.svg";
+import { ReactComponent as IconArrowUp2 } from "src/assets/ArrowUp2.svg";
+import { ReactComponent as IconEye } from "src/assets/Eye.svg";
+import { IconButton } from "src/components/Button";
+import { ReactComponent as IconError } from "src/assets/NotificationError.svg";
+import { ReactComponent as IconSuccess } from "src/assets/NotificationSuccess.svg";
+import { ReactComponent as IconInfo } from "src/assets/NotificationInfo.svg";
 
 type NetworkInfo = {
   name: string;
@@ -20,72 +28,137 @@ type NetworkListTableProps = {
   sort: boolean;
 };
 
+const getStatusIcon = (status: string) => {
+  switch (status) {
+    case "failed":
+      return <IconError className="text-md w-5 h-5" />;
+    case "in-cleanup":
+    case "creating":
+      return <IconInfo className="text-md w-5 h-5" />;
+    case "running":
+    default:
+      return <IconSuccess className="text-md w-5 h-5" />;
+  }
+};
+
 export default function NetworkListTable({
   networkList,
   onCreateModal,
   setSort,
   sort,
 }: NetworkListTableProps) {
+  const navigate = useNavigate();
+
   return (
     <>
-      <div className='rounded-xl border-2 border-dark-700 p-1'>
-        <table className='text-white w-full'>
-          <thead className='rounded-xl bg-larch-dark_2'>
-            <tr className='border-b-2 border-dark-700'>
-              <th className='px-6 py-3 w-56.25 text-left' scope='col'>
+      <div className="rounded-xl border-2 border-dark-700 p-1">
+        <table className="text-white w-full">
+          <thead className="rounded-xl text-xl bg-larch-dark_2">
+            <tr className="border-b-2 border-dark-700">
+              <th className="px-6 py-3 h-[48px] text-left" scope="col">
                 Network Name
               </th>
-              <th className='px-6 py-3 w-56.25 text-center' scope='col'>
+              <th className="px-6 py-3 h-[48px] text-center" scope="col">
                 Type
               </th>
-              <th className='px-6 py-3 text-left' scope='col'>
+              <th className="px-6 py-3 h-[48px] text-left" scope="col">
                 Provider
               </th>
-              <th className='px-6 py-3 text-left' scope='col'>
+              <th className="px-6 py-3 h-[48px] text-left" scope="col">
                 Network Directory
               </th>
-              <th className='px-6 py-3' scope='col'>
-                Created On &nbsp;
-                {' '}
-                <span aria-hidden onClick={() => setSort(!sort)}>
-                  {sort ? <span>&darr;</span> : <span>&uarr;</span>}
+              <th
+                className="px-6 py-3 h-[48px] flex gap-2 justify-center items-center"
+                scope="col"
+              >
+                <p className="cursor-pointer" onClick={() => setSort(!sort)}>
+                  Created On
+                </p>
+                <span aria-hidden>
+                  {sort ? (
+                    <IconArrowUp2 className="w-5 h-5 rotate-180" />
+                  ) : (
+                    <IconArrowUp2 className="w-5 h-5 " />
+                  )}
                 </span>
               </th>
-              <th className='px-6 py-3' scope='col'>
+              <th className="px-6 h-[48px] text-start py-3" scope="col">
                 Status
-                {' '}
               </th>
-              <th className='px-6 py-3' scope='col'>
+              <th className="py-3 h-[48px]" scope="col">
                 Action
               </th>
             </tr>
           </thead>
-          <tbody className='rounded-lg'>
+          <tbody className="rounded-lg text-xl">
             {networkList.map((network, index) => (
-              <tr className={(index + 1) < networkList.length ? 'border-b-2 border-dark-700' : ''}>
-                <td className='px-6 py-3 w-56.25'>{network.name}</td>
-                <td className='px-6 py-3 w-56.25 text-center'>{network.type}</td>
-                <td className='px-6 py-3 w-56.25'>{network.networkProvider}</td>
-                <td className='px-6 py-3 w-56.25'>{network.networkDirectory}</td>
-                <td className='px-6 py-3 w-56 text-center'>{getFormattedLocalTime(network.createdAt)}</td>
-                <td className='px-6 py-3 w-56.25 text-center'>{network.networkState}</td>
-                <td className='flex flex-row text-center justify-center items-center content-center px-6 py-3'>
-                  <IconButton variant={'outline'} icon={<IconDelete className="text-md" />} className='border-larch-error text-larch-error' onClick={() => onCreateModal(network.name)} title="Delete" />
+              <tr
+                className={
+                  index + 1 < networkList.length
+                    ? "border-b-2 border-dark-700"
+                    : ""
+                }
+              >
+                <td className="px-6 h-[72px] py-3">{network.name}</td>
+                <td className="px-6 h-[72px] py-3 text-center">
+                  {network.type}
+                </td>
+                <td className="px-6 h-[72px] py-3">
+                  {network.networkProvider}
+                </td>
+                <td className="px-6 h-[72px] py-3">
+                  {network.networkDirectory}
+                </td>
+                <td className="px-6 h-[72px] py-3 text-center">
+                  {getFormattedLocalTime(network.createdAt)}
+                </td>
+                <td className="px-6 h-[72px] py-3 text-center">
+                  <div className="flex items-center gap-2 capitalize">
+                    {getStatusIcon(network.networkState)}
+                    {network.networkState}
+                  </div>
+                </td>
+                <td className="h-[72px]">
+                  <div className="flex justify-center gap-3 items-center">
+                    <IconButton
+                      variant={"outline"}
+                      icon={<IconEye className="text-md w-5 h-5" />}
+                      className="border-white p-0 m-0 text-white"
+                      onClick={() => {
+                        const searchQuery = new URLSearchParams({
+                          networkName: network.name,
+                        });
 
+                        navigate(`/executions/?${searchQuery.toString()}`);
+                      }}
+                      title="search executions with network name"
+                    />
+                    <IconButton
+                      variant={"outline"}
+                      icon={<IconDelete className="text-md" />}
+                      className="border-larch-error p-0 m-0 text-larch-error"
+                      onClick={() => onCreateModal(network.name)}
+                      title="Delete"
+                    />
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      {networkList.length === 0 &&
-        <div className='w-full text-white text-center pt-5'>
-          <div>To get started, please create network from {' '}
-            <Link to='/template'>
-              <span className='text-center text-blue-500 cursor-pointer'>Network Templates</span>
+      {networkList.length === 0 && (
+        <div className="w-full text-white text-center pt-5">
+          <div>
+            To get started, please create network from{" "}
+            <Link to="/templates">
+              <span className="text-center text-blue-500 cursor-pointer">
+                Network Templates
+              </span>
             </Link>
           </div>
-        </div>}
+        </div>
+      )}
     </>
   );
 }

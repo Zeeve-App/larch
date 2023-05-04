@@ -6,7 +6,7 @@ export default createTheme({
   theme: 'dark',
   settings: {
     background: '#090D11',
-    foreground: '#75baff',
+    foreground: '#FFFFFF',
     caret: '#5d00ff',
     selection: '#036dd626',
     selectionMatch: '#036dd626',
@@ -16,7 +16,7 @@ export default createTheme({
   },
   styles: [
     { tag: t.comment, color: '#787b8099' },
-    { tag: t.variableName, color: '#0080ff' },
+    { tag: t.variableName, color: '#E6007A' },
     { tag: [t.string, t.special(t.brace)], color: '#5c6166' },
     { tag: t.number, color: '#5c6166' },
     { tag: t.bool, color: '#5c6166' },

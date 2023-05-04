@@ -1,7 +1,7 @@
-import React, { MutableRefObject, forwardRef, useRef } from "react";
+import { forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 import { motion, HTMLMotionProps, Variants } from "framer-motion";
-import { useOnClickOutside, useCompact } from "../../hooks";
+import { useCompact } from "../../hooks";
 import { SidebarContext } from "./useSidebarContext";
 
 const motionVariant: Variants = {
@@ -24,13 +24,20 @@ interface SidebarProps extends HTMLMotionProps<"aside"> {
 }
 
 const Sidebar = forwardRef<HTMLDivElement, SidebarProps>((props, ref) => {
-  const { className, expanded = false, toggleExpanded, compact, children, ...rest } = props;
+  const {
+    className,
+    expanded = false,
+    toggleExpanded,
+    compact,
+    children,
+    ...rest
+  } = props;
 
   const isCompact = useCompact(compact);
 
-  const localRef = useRef(null);
-  const SidebarRef = ref || localRef;
-  useOnClickOutside(SidebarRef as MutableRefObject<HTMLDivElement>, () => toggleExpanded(false));
+  // const localRef = useRef(null);
+  // const sidebarRef = ref || localRef;
+  // useOnClickOutside(sidebarRef as MutableRefObject<HTMLDivElement>, () => toggleExpanded(false));
 
   const isSidebarExpanded = () => {
     if (isCompact) return expanded;
@@ -47,13 +54,13 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>((props, ref) => {
     >
       <motion.aside
         className={twMerge(
-          'scrollbar-hide flex relative h-screen min-h-screen w-4/5 flex-col overflow-y-auto bg-brand-dark text-white md:w-72',
-          className,
+          "scrollbar-hide flex relative h-screen min-h-screen w-4/5 flex-col overflow-y-auto bg-brand-dark text-white md:w-72",
+          className
         )}
         variants={motionVariant}
         animate="animate"
         transition={{
-          bounce: 0
+          bounce: 0,
         }}
         custom={isSidebarExpanded()}
         ref={ref}

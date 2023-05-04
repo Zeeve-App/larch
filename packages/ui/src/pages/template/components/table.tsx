@@ -4,8 +4,10 @@ import { getFormattedLocalTime } from 'src/utils/time';
 import { NetworkType, TemplateDelete } from '../types';
 import { ReactComponent as IconThreeDots } from 'src/assets/ThreeDots.svg';
 import { ReactComponent as IconEdit } from 'src/assets/Edit.svg';
+import { ReactComponent as IconArrowUp2 } from "src/assets/ArrowUp2.svg";
 import { ReactComponent as IconDuplicate } from 'src/assets/Template.svg';
 import { ReactComponent as IconDelete } from 'src/assets/Trash.svg';
+import { ReactComponent as IconMyNetwork } from 'src/assets/MyNetwork.svg'
 import { useToggle } from 'src/hooks';
 import {
   DropdownMenu,
@@ -54,31 +56,40 @@ export default function TemplateListTable({
   const [actionIdx, setActionIdx] = useState<number | null>(null);
   return (
     <>
-      <div className='rounded-xl border-2 border-dark-700 p-1'>
-        <table className='text-white w-full'>
-          <thead className='rounded-xl bg-larch-dark_2'>
-            <tr className='border-b-2 border-dark-700'>
-              <th className='px-6 py-3 w-56.25 text-left' scope='col'>
-                ID
+      <div className="rounded-xl border-2 border-dark-700 p-1">
+        <table className="text-white w-full text-xl">
+          <thead className="rounded-xl bg-larch-dark_2">
+            <tr className="border-b-2 border-dark-700">
+              <th className="px-6 py-3 h-[48px] text-left" scope="col">
+                Template ID
               </th>
-              <th className='px-6 py-3 w-56.25 text-left' scope='col'>
+              <th className="px-6 py-3 h-[48px] text-left" scope="col">
                 Template Name
               </th>
-              <th className='px-6 py-3 text-left' scope='col'>
+              <th className="px-6 py-3 h-[48px] text-left" scope="col">
                 Provider
               </th>
-              <th className='px-6 py-3 text-center' scope='col'>
-                Created On &nbsp;{" "}
-                <span aria-hidden onClick={() => setSort(!sort)}>
-                  {sort ? <span>&darr;</span> : <span>&uarr;</span>}
+              <th
+                className="px-6 py-3 h-[48px] flex gap-2 justify-center items-center"
+                scope="col"
+              >
+                <p className="cursor-pointer" onClick={() => setSort(!sort)}>
+                  Created On
+                </p>
+                <span aria-hidden>
+                  {sort ? (
+                    <IconArrowUp2 className="w-5 h-5 rotate-180" />
+                  ) : (
+                    <IconArrowUp2 className="w-5 h-5 " />
+                  )}
                 </span>
               </th>
-              <th className='px-6 py-3' scope='col'>
+              <th className='py-3 h-[48px]' scope='col'>
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className='text-xl'>
             {templateList.map((template, index) => (
               <tr
                 className={
@@ -87,29 +98,33 @@ export default function TemplateListTable({
                     : ''
                 }
               >
-                <td className='px-6 py-3 w-max'>{template.id}</td>
-                <td className='px-6 py-3 w-max'>{template.name}</td>
-                <td className='px-6 py-3 w-max'>{template.networkProvider}</td>
-                <td className='px-6 py-3 w-max text-center'>
+                <td className='px-6 h-[72px] py-3'>{template.id}</td>
+                <td className='px-6 h-[72px] py-3'>{template.name}</td>
+                <td className='px-6 h-[72px] py-3'>{template.networkProvider}</td>
+                <td className='px-6 h-[72px] py-3 text-center'>
                   {getFormattedLocalTime(template.createdAt)}
                 </td>
-                <td className='flex justify-center items-center  py-3 '>
+                <td className='flex justify-center items-center h-[72px] py-3 '>
                   <Button
-                    className='border-dark-700 border-2 rounded-md px-2 bg-larch-dark_3 hover:bg-brand-gradient'
+                    className='bg-larch-dark_2 border-2 border-dark-700 rounded-md px-3 gap-3 hover:bg-brand-gradient'
                     onClick={() => {
-                      onCreateModal(template.id, 'evaluation');
+                      onCreateModal(template.id, "evaluation");
                     }}
+                    iconLeft={<IconMyNetwork className="w-5 h-5" />}
+                    title='Create network for evaluation.'
                   >
-                    Create Network
+                    Create
                   </Button>
                   &nbsp;&nbsp;
                   <Button
-                    className='border-dark-700 border-2 rounded-md px-2 bg-larch-dark_3 hover:bg-brand-gradient mr-2'
+                    className='border-dark-700 border-2 rounded-md px-3 gap-3 bg-larch-dark_2 hover:bg-brand-gradient mr-2'
                     onClick={() => {
-                      onCreateModal(template.id, 'testing');
+                      onCreateModal(template.id, "testing");
                     }}
+                    iconLeft={<IconMyNetwork className="w-5 h-5" />}
+                    title='Create network for testing.'
                   >
-                    Network Test
+                    Test
                   </Button>
                   <DropdownMenu
                     onClose={handleClose}
@@ -117,7 +132,7 @@ export default function TemplateListTable({
                   >
                     <DropdownMenuButton
                       as={Button}
-                      className='border-dark-700 border-2 rounded-md bg-larch-dark_3 hover:bg-brand-gradient'
+                      className=' p-0 w-[48px] rounded-md bg-larch-dark_2 border-2 border-dark-700 hover:bg-brand-gradient'
                       colorScheme='dark'
                       iconRight={<IconThreeDots className='text-md w-6 h-6 font-bold' />}
                       onClick={handleToggle}
@@ -127,7 +142,7 @@ export default function TemplateListTable({
                       <DropdownMenuList
                         direction='right'
                         isOpen={isOpen}
-                        className='z-[501] bg-larch-dark_2 text-white'
+                        className='z-[501] bg-larch-dark_2 border-4 border-dark-700 text-white'
                       >
                         <DropdownMenuItem
                           onClick={() => {
@@ -140,7 +155,7 @@ export default function TemplateListTable({
                           iconLeft={
                             <IconDuplicate className='text-md w-5 h-5' />
                           }
-                          className='text-white hover:bg-larch-pink'
+                          className='text-white hover:bg-larch-dark_3'
                         >
                           Duplicate
                         </DropdownMenuItem>
@@ -149,7 +164,7 @@ export default function TemplateListTable({
                             editNetwork(template.id);
                           }}
                           iconLeft={<IconEdit className='text-md w-4 h-4' />}
-                          className='text-white hover:bg-larch-pink'
+                          className='text-white hover:bg-larch-dark_3'
                         >
                           Edit
                         </DropdownMenuItem>
@@ -162,7 +177,7 @@ export default function TemplateListTable({
                             });
                           }}
                           iconLeft={<IconDelete className='text-md w-5 h-5' />}
-                          className='text-white hover:bg-larch-pink'
+                          className='text-white hover:bg-larch-dark_3 hover:text-larch-error'
                         >
                           Delete
                         </DropdownMenuItem>
@@ -179,7 +194,7 @@ export default function TemplateListTable({
         <div className='w-full text-white text-center pt-5'>
           <div>
             To get started, please{' '}
-            <Link to='/template/createNetwork'>
+            <Link to='/templates/createNetwork'>
               <span className='text-center text-blue-500 cursor-pointer'>
                 create network template
               </span>

@@ -18,7 +18,7 @@ const styles = cva(
       size: {
         small: 'text-sm h-9',
         medium: 'text-base h-10',
-        large: 'text-lg h-12',
+        large: 'text-xl h-12',
       },
       fullWidth: {
         true: 'w-full',
@@ -53,7 +53,7 @@ const styles = cva(
     ],
     defaultVariants: {
       colorScheme: 'blue',
-      size: 'medium',
+      size: 'large',
     },
   },
 );

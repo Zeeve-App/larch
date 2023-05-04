@@ -1,10 +1,10 @@
 body {
-  background-color: #090D11;
+  background-color: #090d11;
   height: 100vh;
 }
 
 #root {
-  background-color: #090D11;
+  background-color: #090d11;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -24,4 +24,37 @@ body {
 }
 .text-grad {
   color: linear-gradient(to right, #e6007a 0%, #9f125d 100%);
+}
+
+input[type="text"]:focus {
+  border-color: white !important;
+}
+
+::selection {
+  background: #e6007a;
+  color: white;
+}
+
+.doc::-webkit-scrollbar-thumb {
+  background-color: #e6007a;
+  border-radius: 1rem;
+}
+.doc::-webkit-scrollbar-track {
+  background-color: #21262a;
+}
+.doc::-webkit-scrollbar-corner {
+  background-color: #21262a;
+}
+.doc::-webkit-scrollbar {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+.doc {
+  -ms-overflow-style: auto;
+  scrollbar-color: #e6007a #21262a;
+  scrollbar-width: thin;
+}
+
+.list-circle {
+  list-style-type: circle;
 }

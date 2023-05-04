@@ -105,6 +105,7 @@ export class ExecRun {
 type FilterInfo = {
   id: string,
   intention: string,
+  relatedId: string,
   command: string,
 };
 
@@ -129,6 +130,7 @@ export const getExecRunList = async (
   const getModel = () => knexInstance.table(primaryTableName).where((builder) => {
     if (!filter) return;
     if (filter.id) builder.whereLike('id', `%${filter.id}%`);
+    if (filter.relatedId) builder.whereLike('related_id', `%${filter.relatedId}%`);
     if (filter.intention) builder.whereLike('intention', `%${filter.intention}%`);
     if (filter.command) builder.whereLike('network_provider', `%${filter.command}%`);
   });

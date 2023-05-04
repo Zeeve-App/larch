@@ -5,8 +5,7 @@ import Dashboard from './pages/dashboard/page';
 import Network from './pages/network/page';
 import Activity from './pages/activity/page';
 import Template from './pages/template/page';
-import Setting from './pages/setting/page';
-import RunList from './pages/run-list/page';
+import RunList from './pages/executions/page';
 import Documentation from './pages/documentation/page';
 
 import CreateTemplate from 'src/pages/create_template'
@@ -32,16 +31,11 @@ const routes: RouteObject[] = [
         element: <Network />,
       },
       {
-        path: '/template/createNetwork',
+        path: '/templates/createNetwork',
         element: <CreateTemplate />
       },
       {
-        path: '/setting',
-        element: <Setting />,
-      },
-
-      {
-        path: '/run-list',
+        path: '/executions',
         element: <RunList />,
       },
 
@@ -51,7 +45,7 @@ const routes: RouteObject[] = [
       },
 
       {
-        path: '/template',
+        path: '/templates',
         element: <Template />,
       },
     ],

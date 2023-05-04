@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { HTMLMotionProps, motion } from 'framer-motion';
 import { RemoveProperties } from 'src/core';
@@ -28,7 +28,7 @@ const SidebarLogo = forwardRef<HTMLImageElement, SidebarLogoProps>(
         <motion.img
           src={src}
           alt='Zeeve Logo'
-          className={twMerge('', className)}
+          className={twMerge('w-32', className)}
           ref={ref}
           {...rest}
         />

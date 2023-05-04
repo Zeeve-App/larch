@@ -58,9 +58,7 @@ export default function standardOutputModal({
     getRunData(runId)
       .then((response) => response.result)
       .then((info) => {
-        setStandardOutput(
-          (prev) => (info.stdOutput ? decodeBase64(info.stdOutput) : "") + prev
-        );
+        setStandardOutput(info.stdOutput ? decodeBase64(info.stdOutput) : "");
         setStandardError(info.stdError ? decodeBase64(info.stdError) : "");
         setNetworkName(info.relatedId);
         setOperation(info.intention);

@@ -1,14 +1,14 @@
 /* eslint-disable max-len */
-import { Link } from 'react-router-dom';
-import { getFormattedLocalTime } from 'src/utils/time';
-import { NetworkType, TemplateDelete } from '../types';
-import { ReactComponent as IconThreeDots } from 'src/assets/ThreeDots.svg';
-import { ReactComponent as IconEdit } from 'src/assets/Edit.svg';
+import { Link } from "react-router-dom";
+import { getFormattedLocalTime } from "src/utils/time";
+import { NetworkType, TemplateDelete } from "../types";
+import { ReactComponent as IconThreeDots } from "src/assets/ThreeDots.svg";
+import { ReactComponent as IconEdit } from "src/assets/Edit.svg";
 import { ReactComponent as IconArrowUp2 } from "src/assets/ArrowUp2.svg";
-import { ReactComponent as IconDuplicate } from 'src/assets/Template.svg';
-import { ReactComponent as IconDelete } from 'src/assets/Trash.svg';
-import { ReactComponent as IconMyNetwork } from 'src/assets/MyNetwork.svg'
-import { useToggle } from 'src/hooks';
+import { ReactComponent as IconDuplicate } from "src/assets/Template.svg";
+import { ReactComponent as IconDelete } from "src/assets/Trash.svg";
+import { ReactComponent as IconMyNetwork } from "src/assets/MyNetwork.svg";
+import { useToggle } from "src/hooks";
 import {
   DropdownMenu,
   DropdownMenuButton,
@@ -84,45 +84,46 @@ export default function TemplateListTable({
                   )}
                 </span>
               </th>
-              <th className='py-3 h-[48px]' scope='col'>
+              <th className="px-6 py-3 h-[48px]" scope="col">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className='text-xl'>
+          <tbody className="text-xl">
             {templateList.map((template, index) => (
               <tr
                 className={
                   index + 1 < templateList.length
-                    ? 'border-b-2 border-dark-700'
-                    : ''
+                    ? "border-b-2 border-dark-700"
+                    : ""
                 }
               >
-                <td className='px-6 h-[72px] py-3'>{template.id}</td>
-                <td className='px-6 h-[72px] py-3'>{template.name}</td>
-                <td className='px-6 h-[72px] py-3'>{template.networkProvider}</td>
-                <td className='px-6 h-[72px] py-3 text-center'>
+                <td className="px-6 h-[72px] py-3">{template.id}</td>
+                <td className="px-6 h-[72px] py-3">{template.name}</td>
+                <td className="px-6 h-[72px] py-3">
+                  {template.networkProvider}
+                </td>
+                <td className="px-6 h-[72px] py-3 text-center">
                   {getFormattedLocalTime(template.createdAt)}
                 </td>
-                <td className='flex justify-center items-center h-[72px] py-3 '>
+                <td className="flex justify-center items-center h-[72px] py-3 gap-3 px-6">
                   <Button
-                    className='bg-larch-dark_2 border-2 border-dark-700 rounded-md px-3 gap-3 hover:bg-brand-gradient'
+                    className="bg-larch-dark_2 border-2 border-dark-700 rounded-md px-3 gap-3 hover:bg-brand-gradient"
                     onClick={() => {
                       onCreateModal(template.id, "evaluation");
                     }}
                     iconLeft={<IconMyNetwork className="w-5 h-5" />}
-                    title='Create network for evaluation.'
+                    title="Create network for evaluation."
                   >
                     Create
                   </Button>
-                  &nbsp;&nbsp;
                   <Button
-                    className='border-dark-700 border-2 rounded-md px-3 gap-3 bg-larch-dark_2 hover:bg-brand-gradient mr-2'
+                    className="border-dark-700 border-2 rounded-md px-3 gap-3 bg-larch-dark_2 hover:bg-brand-gradient"
                     onClick={() => {
                       onCreateModal(template.id, "testing");
                     }}
                     iconLeft={<IconMyNetwork className="w-5 h-5" />}
-                    title='Create network for testing.'
+                    title="Create network for testing."
                   >
                     Test
                   </Button>
@@ -132,30 +133,31 @@ export default function TemplateListTable({
                   >
                     <DropdownMenuButton
                       as={Button}
-                      className=' p-0 w-[48px] rounded-md bg-larch-dark_2 border-2 border-dark-700 hover:bg-brand-gradient'
-                      colorScheme='dark'
-                      iconRight={<IconThreeDots className='text-md w-6 h-6 font-bold' />}
+                      className=" p-0 w-[48px] rounded-md bg-larch-dark_2 border-2 border-dark-700 hover:bg-brand-gradient"
+                      colorScheme="dark"
+                      iconRight={
+                        <IconThreeDots className="text-md w-6 h-6 font-bold" />
+                      }
                       onClick={handleToggle}
-                    >
-                    </DropdownMenuButton>
+                    ></DropdownMenuButton>
                     {actionIdx === index && (
                       <DropdownMenuList
-                        direction='right'
+                        direction="right"
                         isOpen={isOpen}
-                        className='z-[501] bg-larch-dark_2 border-4 border-dark-700 text-white'
+                        className="z-[501] bg-larch-dark_2 border-4 border-dark-700 text-white"
                       >
                         <DropdownMenuItem
                           onClick={() => {
                             setDuplicateTemplateObj({
                               isOpen: true,
                               templateId: template.id,
-                              templateName: '',
+                              templateName: "",
                             });
                           }}
                           iconLeft={
-                            <IconDuplicate className='text-md w-5 h-5' />
+                            <IconDuplicate className="text-md w-5 h-5" />
                           }
-                          className='text-white hover:bg-larch-dark_3'
+                          className="text-white hover:bg-larch-dark_3"
                         >
                           Duplicate
                         </DropdownMenuItem>
@@ -163,8 +165,8 @@ export default function TemplateListTable({
                           onClick={() => {
                             editNetwork(template.id);
                           }}
-                          iconLeft={<IconEdit className='text-md w-4 h-4' />}
-                          className='text-white hover:bg-larch-dark_3'
+                          iconLeft={<IconEdit className="text-md w-4 h-4" />}
+                          className="text-white hover:bg-larch-dark_3"
                         >
                           Edit
                         </DropdownMenuItem>
@@ -176,8 +178,8 @@ export default function TemplateListTable({
                               templateName: template.name,
                             });
                           }}
-                          iconLeft={<IconDelete className='text-md w-5 h-5' />}
-                          className='text-white hover:bg-larch-dark_3 hover:text-larch-error'
+                          iconLeft={<IconDelete className="text-md w-5 h-5" />}
+                          className="text-white hover:bg-larch-dark_3 hover:text-larch-error"
                         >
                           Delete
                         </DropdownMenuItem>
@@ -191,11 +193,11 @@ export default function TemplateListTable({
         </table>
       </div>
       {templateList.length === 0 && (
-        <div className='w-full text-white text-center pt-5'>
+        <div className="w-full text-white text-center pt-5">
           <div>
-            To get started, please{' '}
-            <Link to='/templates/createNetwork'>
-              <span className='text-center text-blue-500 cursor-pointer'>
+            To get started, please{" "}
+            <Link to="/templates/createNetwork">
+              <span className="text-center text-blue-500 cursor-pointer">
                 create network template
               </span>
             </Link>

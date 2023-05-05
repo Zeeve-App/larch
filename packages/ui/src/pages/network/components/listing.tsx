@@ -20,6 +20,7 @@ export default function Listing() {
   const [sort, setSort] = useState<boolean>(true);
   const [deleteNetworkName, setDeleteNetwork] = useState("");
   const [isShowLoader, setIsShowLoader] = useState<boolean>(false);
+  const [updateList, setUpdateList] = useState(true);
 
   const defaultModalView = {
     test: false,
@@ -39,6 +40,14 @@ export default function Listing() {
     {
       label: "Provider",
       key: "provider",
+      checked: false,
+      isOpen: false,
+      type: "searchable",
+      value: "",
+    },
+    {
+      label: "Network Directory",
+      key: "networkDirectory",
       checked: false,
       isOpen: false,
       type: "searchable",
@@ -90,29 +99,6 @@ export default function Listing() {
   };
 
   const fetchNetworkList = () => {
-    setIsShowLoader(true);
-    getNetworkList({
-      meta: {
-        numOfRec: itemPerPage,
-        pageNum,
-      },
-    })
-      .then((response) => {
-        setNetworkList(response.result);
-        setMeta(response.meta);
-        setIsShowLoader(false);
-      })
-      .catch(() => {
-        setIsShowLoader(false);
-        notify("error", "Failed to fetch network list");
-      });
-  };
-
-  useEffect(() => {
-    fetchNetworkList();
-  }, []);
-
-  const filterData = () => {
     const filter: { [name: string]: string } = {};
     filters.forEach((item) => {
       if (item.value) filter[item.key] = item.value;
@@ -150,10 +136,13 @@ export default function Listing() {
         notify("error", "Failed to fetch activity list");
       });
   };
+  useEffect(() => {
+    fetchNetworkList();
+  }, []);
 
   useEffect(() => {
-    filterData();
-  }, [pageNum, sort]);
+    fetchNetworkList();
+  }, [pageNum, sort, updateList]);
 
   const clearFilter = () => {
     setFilters((_filters) => {
@@ -166,6 +155,7 @@ export default function Listing() {
         };
       });
     });
+    setUpdateList((prev) => !prev);
   };
 
   const handleInput = (option: FilterItem, value: string) => {
@@ -230,7 +220,7 @@ export default function Listing() {
           <Filter filters={filters} setFilters={setFilters} />
           {filters.some((filter) => filter.checked) && (
             <>
-              <Button className="bg-larch-pink gap-2" onClick={filterData}>
+              <Button className="bg-larch-pink gap-2" onClick={fetchNetworkList}>
                 Apply Filter
               </Button>
               <Button
@@ -251,7 +241,6 @@ export default function Listing() {
           iconLeft={<IconRefresh className="w-5 h-5" />}
           className="bg-larch-dark_2 border-2 border-dark-700 gap-2"
           onClick={() => {
-            clearFilter();
             fetchNetworkList();
           }}
         >

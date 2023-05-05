@@ -70,14 +70,6 @@ export default function Listing() {
       value: "",
     },
     {
-      label: "Network Directory",
-      key: "status",
-      checked: false,
-      isOpen: false,
-      type: "searchable",
-      value: "",
-    },
-    {
       label: "Created On",
       key: "createdAt",
       checked: false,
@@ -89,7 +81,7 @@ export default function Listing() {
 
   const navigate = useNavigate();
   const updateListing = () => {
-    setPageToggle(!pageToggle);
+    setPageToggle((prev)=> !prev);
   };
   const onCreateModal = (templateId: string, type: NetworkType) => {
     setNetworkType(type);
@@ -125,36 +117,10 @@ export default function Listing() {
   };
 
   const fetchTemplates = () => {
-    setIsShowLoader(true);
-    getTemplateList({
-      meta: {
-        numOfRec: itemPerPage,
-        pageNum,
-      },
-    })
-      .then((response) => {
-        setTemplateList(response.result);
-        setMeta(response.meta);
-        setIsShowLoader(false);
-      })
-      .catch(() => {
-        setIsShowLoader(false);
-        notify("error", "Failed to fetch template list");
-      });
-  };
-
-  const filterData = () => {
     const filter: { [name: string]: string } = {};
     filters.forEach((item) => {
       if (item.value) filter[item.key] = item.value;
     });
-
-    if (
-      filter &&
-      Object.keys(filter).length === 0 &&
-      Object.getPrototypeOf(filter) === Object.prototype
-    )
-      return;
 
     setIsShowLoader(true);
     const payload = {
@@ -183,8 +149,8 @@ export default function Listing() {
   };
 
   useEffect(() => {
-    filterData();
-  }, [pageNum, sort]);
+    fetchTemplates();
+  }, [pageNum, sort, pageToggle]);
 
   const onPageChange = (pageNumOnChange: number) => {
     setPageNum(pageNumOnChange);
@@ -248,6 +214,7 @@ export default function Listing() {
         };
       });
     });
+    updateListing();
   };
 
   const handleInput = (option: FilterItem, value: string) => {
@@ -312,7 +279,7 @@ export default function Listing() {
           <Filter filters={filters} setFilters={setFilters} />
           {filters.some((filter) => filter.checked) && (
             <>
-              <Button className="bg-larch-pink gap-2" onClick={filterData}>
+              <Button className="bg-larch-pink gap-2" onClick={fetchTemplates}>
                 Apply Filter
               </Button>
               <Button
@@ -332,7 +299,6 @@ export default function Listing() {
           iconLeft={<IconRefresh className="w-5 h-5" />}
           className="bg-larch-dark_2 border-2 border-dark-700 gap-2"
           onClick={() => {
-            clearFilter();
             fetchTemplates();
           }}
         >

@@ -21,10 +21,11 @@ export default function Listing() {
   const [pageNum, setPageNum] = useState(1);
   const [sort, setSort] = useState<boolean>(true);
   const [isShowLoader, setIsShowLoader] = useState<boolean>(false);
+  const [updateList, setUpdateList] = useState(true);
   const [query] = useSearchParams();
 
   const id = query.get("id");
-  const opearation = query.get("intention");
+  const operation = query.get("intention");
   const networkName = query.get("networkName");
   const statusCode = query.get("statusCode");
   const date = query.get("createdAt");
@@ -41,10 +42,10 @@ export default function Listing() {
     {
       label: "Operation",
       key: "intention",
-      checked: opearation ? true : false,
+      checked: operation ? true : false,
       isOpen: false,
       type: "searchable",
-      value: opearation || "",
+      value: operation || "",
     },
     {
       label: "Network Name",
@@ -99,37 +100,10 @@ export default function Listing() {
   };
 
   const fetchRunList = () => {
-    setIsShowLoader(true);
-    const payload = {
-      meta: {
-        pageNum,
-        numOfRec: itemPerPage,
-      },
-    };
-    getRunList(payload)
-      .then((response) => {
-        setRunList(response.result);
-        setMeta(response.meta);
-        setIsShowLoader(false);
-      })
-      .catch(() => {
-        setIsShowLoader(false);
-        notify("error", "Failed to fetch activity list");
-      });
-  };
-
-  const filterData = () => {
     const filter: { [name: string]: string } = {};
     filters.forEach((item) => {
       if (item.value) filter[item.key] = item.value;
     });
-
-    if (
-      filter &&
-      Object.keys(filter).length === 0 &&
-      Object.getPrototypeOf(filter) === Object.prototype
-    )
-      return;
 
     setIsShowLoader(true);
     const payload = {
@@ -157,11 +131,11 @@ export default function Listing() {
       });
   };
   useEffect(() => {
-    filterData();
-  }, [pageNum, sort]);
+    fetchRunList();
+  }, [pageNum, sort, updateList]);
 
   useEffect(() => {
-    if (filters.some((filter) => filter.checked)) filterData();
+    if (filters.some((filter) => filter.checked)) fetchRunList();
     else fetchRunList();
   }, []);
 
@@ -176,6 +150,7 @@ export default function Listing() {
         };
       });
     });
+    setUpdateList(!updateList);
   };
 
   const handleInput = (option: FilterItem, value: string) => {
@@ -240,7 +215,7 @@ export default function Listing() {
           <Filter filters={filters} setFilters={setFilters} />
           {filters.some((filter) => filter.checked) && (
             <>
-              <Button className="bg-larch-pink gap-2" onClick={filterData}>
+              <Button className="bg-larch-pink gap-2" onClick={fetchRunList}>
                 Apply Filter
               </Button>
               <Button
@@ -260,7 +235,6 @@ export default function Listing() {
           iconLeft={<IconRefresh className="w-5 h-5" />}
           className="bg-larch-dark_2 border-2 border-dark-700 gap-2"
           onClick={() => {
-            clearFilter();
             fetchRunList();
           }}
         >

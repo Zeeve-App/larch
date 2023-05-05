@@ -63,38 +63,11 @@ export default function Listing({ updateList, setUpdateList }: ListingProps) {
     setPageNum(pageNumOnChange);
   };
 
-  const fetchActivies = () => {
-    setIsShowLoader(true);
-    const payload = {
-      meta: {
-        pageNum,
-        numOfRec: itemPerPage,
-      },
-    };
-    getUserActivityList(payload)
-      .then((response) => {
-        setActivityList(response.result);
-        setMeta(response.meta);
-        setIsShowLoader(false);
-      })
-      .catch(() => {
-        setIsShowLoader(false);
-        notify("error", "Failed to fetch activity list");
-      });
-  };
-
-  const filterData = () => {
+  const fetchActivities = () => {
     const filter: { [name: string]: string } = {};
     filters.forEach((item) => {
       if (item.value) filter[item.key] = item.value;
     });
-
-    if (
-      filter &&
-      Object.keys(filter).length === 0 &&
-      Object.getPrototypeOf(filter) === Object.prototype
-    )
-      return;
 
     setIsShowLoader(true);
     const payload = {
@@ -126,18 +99,18 @@ export default function Listing({ updateList, setUpdateList }: ListingProps) {
     purgeActivityRecord()
       .then(() => {
         setUpdateList(!updateList);
-        notify("success", "Purge Record");
+        notify("success", "Records purged successfully !!");
       })
       .catch(() => {
         notify("error", "Failed to Purge Record");
       });
   };
   useEffect(() => {
-    filterData();
+    fetchActivities();
   }, [pageNum, sort, updateList]);
 
   useEffect(() => {
-    fetchActivies();
+    fetchActivities();
   }, []);
 
   const clearFilter = () => {
@@ -151,6 +124,7 @@ export default function Listing({ updateList, setUpdateList }: ListingProps) {
         };
       });
     });
+    setUpdateList(!updateList);
   };
 
   const handleInput = (option: FilterItem, value: string) => {
@@ -215,16 +189,15 @@ export default function Listing({ updateList, setUpdateList }: ListingProps) {
           <Filter filters={filters} setFilters={setFilters} />
           {filters.some((filter) => filter.checked) && (
             <>
-              <Button className="bg-larch-pink gap-2" onClick={filterData}>
+              <Button className="bg-larch-pink gap-2" onClick={fetchActivities}>
                 Apply Filter
               </Button>
               <Button
                 iconLeft={<IconCross className="w-6 h-6" />}
-
                 className="bg-larch-dark_3 gap-1"
                 onClick={() => {
                   clearFilter();
-                  fetchActivies();
+                  // filterData();
                 }}
               >
                 Clear
@@ -237,14 +210,13 @@ export default function Listing({ updateList, setUpdateList }: ListingProps) {
             iconLeft={<IconRefresh className="w-5 h-5" />}
             className="bg-larch-dark_2 border-2 border-dark-700 gap-2"
             onClick={() => {
-              clearFilter();
-              fetchActivies();
+              fetchActivities();
             }}
           >
             Refresh
           </Button>
           <Button className="bg-larch-dark_2 border-2 border-dark-700 gap-2" onClick={purgeRecord}>
-            Purge Record Activies
+            Purge Record Activities
           </Button>
         </div>
       </div>

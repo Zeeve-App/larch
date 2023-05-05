@@ -151,7 +151,7 @@ export default function TemplateListTable({
                             setDuplicateTemplateObj({
                               isOpen: true,
                               templateId: template.id,
-                              templateName: "",
+                              templateName: `${template.name}-copy`,
                             });
                           }}
                           iconLeft={

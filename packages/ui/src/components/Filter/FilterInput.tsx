@@ -40,7 +40,7 @@ const FilterInput = forwardRef<HTMLInputElement, FilterInputProps>(
               {...rest}
             />
             <IconCheck
-              className="absolute w-6 h-6 -right-[17.3rem] -bottom-8 cursor-pointer"
+              className="absolute w-6 h-6 -right-[16rem] -bottom-8 cursor-pointer"
               onClick={(e) => {
                 close();
               }}
@@ -63,7 +63,7 @@ const FilterInput = forwardRef<HTMLInputElement, FilterInputProps>(
               {...rest}
             />
             <IconCheck
-              className="absolute w-6 h-6 -right-[14rem] text-white -bottom-9 cursor-pointer"
+              className="absolute w-6 h-6 -right-[17rem] text-white -bottom-9 cursor-pointer"
               onClick={(e) => {
                 close();
               }}

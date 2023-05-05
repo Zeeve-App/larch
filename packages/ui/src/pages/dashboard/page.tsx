@@ -62,32 +62,28 @@ export default function Dashboard() {
             cardTitle="Networks"
             cardLink="/network"
             cardIcon={<IconNetwork className="text-white w-8 h-8" />}
-            cardDescription=" Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus
-            beatae modi voluptas molestiae"
+            cardDescription="List of Zombienet networks which are launched for either evaluation or testing purposes"
             records={networkRecords}
           />
           <Card
             cardTitle="Templates"
             cardLink="/templates"
             cardIcon={<IconTemplate className="text-white w-8 h-8" />}
-            cardDescription=" Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus
-          beatae modi voluptas molestiae"
+            cardDescription="List of Zombienet network templates which can be used to create Zombienet networks for either evaluation or testing purposes"
             records={templateRecords}
           />
           <Card
             cardTitle="Executions"
             cardLink="/executions"
             cardIcon={<IconEdit className="text-white w-8 h-8" />}
-            cardDescription=" Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus
-            beatae modi voluptas molestiae"
+            cardDescription="List of network executions, which include information like Zombienet logs and command used to launch"
             records={runListRecords}
           />
           <Card
             cardTitle="Activity"
             cardLink="/activity"
             cardIcon={<IconActivity className="text-white w-8 h-8" />}
-            cardDescription=" Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus
-            beatae modi voluptas molestiae"
+            cardDescription="List of user activity done on Larch like Template creation, Network Launch, Network Delete, etc."
             records={activityRecords}
           />
         </div>

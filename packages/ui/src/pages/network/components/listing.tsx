@@ -85,16 +85,18 @@ export default function Listing() {
   };
 
   const onNetworkDelete = (networkName: string) => {
+    setModalViewStatus("delete", false);
     setIsShowLoader(true);
     deleteNetwork(networkName)
       .then(() => {
-        setModalViewStatus("delete", false);
         notify("success", `Deleted the network ("${networkName}")`);
-        setIsShowLoader(false);
       })
       .catch(() => {
-        setIsShowLoader(false);
         notify("error", `Failed delete the network ("${networkName}")`);
+      })
+      .finally(() => {
+        fetchNetworkList();
+        setIsShowLoader(false);
       });
   };
 

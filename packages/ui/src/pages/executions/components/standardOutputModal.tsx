@@ -29,8 +29,8 @@ export default function standardOutputModal({
     output: boolean;
     error: boolean;
   }>({
-    output: false,
-    error: false,
+    output: true,
+    error: true,
   });
 
   const outputRef = useRef<HTMLDivElement | null>(null);

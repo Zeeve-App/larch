@@ -1,15 +1,10 @@
-import { FC, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { FC, useState } from "react";
 import { Button } from "src/components/Button";
 import { useCreateTemplate } from "src/store/CreateTemplate";
-import { notify } from "src/utils/notifications";
-import { getTemplateData } from "src/utils/api";
-import { decodeBase64 } from "src/utils/encoding";
 import {
   DropdownMenu,
   DropdownMenuButton,
   DropdownMenuList,
-  DropdownMenuItem,
 } from "src/components/DropdownMenu";
 import { ReactComponent as IconArrowDown } from "src/assets/ArrowDown.svg";
 
@@ -19,25 +14,17 @@ export interface Step01Props {
 }
 
 const Step01: FC<Step01Props> = ({ onNextStep, onPreviousStep }) => {
-  const { state } = useLocation();
   const {
     settings,
     setSettings,
-    setRelayChain,
-    setNodeList,
-    setParaChainList,
-    setHRMPList,
-    setTestConfig,
-    setTemplateId,
-    templateId,
   } = useCreateTemplate();
 
   const [isProviderOpen, toggleProviderOpen] = useState<boolean>(false);
 
   const providers = [
     { label: "Podman", value: "podman" },
-    { label: "Kubernetes", value: "kubernetes" },
-    { label: "Native", value: "native" },
+    // { label: "Kubernetes", value: "kubernetes" },
+    // { label: "Native", value: "native" },
   ];
 
   const handler = (name: string, value: boolean) => {
@@ -47,106 +34,6 @@ const Step01: FC<Step01Props> = ({ onNextStep, onPreviousStep }) => {
       setSettings({ ...settings, polkadotIntrospector: value });
     }
   };
-
-  const updateStore = (comp: string, data: any, additionalInfo?: any) => {
-    switch (comp) {
-      case "settings": {
-        const obj = {
-          isBootNode: false,
-          polkadotIntrospector: false,
-          provider: data.networkProvider,
-          networkName: data.name,
-        };
-        setSettings(obj);
-        break;
-      }
-      case "relayChain": {
-        const obj = {
-          default_image: data.default_image,
-          chain: data.chain,
-          default_command: data.default_command,
-          default_args: data.default_args,
-        };
-        setRelayChain(obj);
-        setNodeList(data.nodes);
-        break;
-      }
-      case "parachains": {
-        setParaChainList(data);
-        break;
-      }
-      case "hrmp": {
-        setHRMPList(data);
-        break;
-      }
-      case "testConfig": {
-        const obj = {
-          editorValue: data,
-          networkName: additionalInfo,
-        };
-        setTestConfig(obj);
-        break;
-      }
-      default:
-        break;
-    }
-  };
-
-  useEffect(() => {
-    if (state && state.templateId) {
-      setTemplateId(state.templateId);
-      getTemplateData(state.templateId)
-        .then((response) => {
-          if (response && response.result) {
-            const configContent = decodeBase64(response.result.configContent);
-            const testContent = decodeBase64(response.result.testContent);
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            const { parachains, relaychain, hrmp_channels } =
-              JSON.parse(configContent);
-            updateStore("settings", response.result);
-            updateStore("relayChain", relaychain);
-            updateStore("parachains", parachains);
-            if (hrmp_channels) updateStore("hrmp", hrmp_channels);
-            updateStore("testConfig", testContent, response.result.name);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          notify("error", "Failed to get network data.");
-        });
-    } else if (templateId === null) {
-      setTemplateId("");
-      setSettings({
-        isBootNode: false,
-        polkadotIntrospector: false,
-        provider: "podman",
-        networkName: "",
-      });
-      setRelayChain({
-        default_image: "",
-        chain: "",
-        default_command: "",
-        default_args: [],
-      });
-      setNodeList([]);
-      setParaChainList([
-        {
-          id: "",
-          add_to_genesis: false,
-          collator: {
-            name: "",
-            image: "",
-            command: "",
-            args: [],
-          },
-        },
-      ]);
-      setHRMPList([]);
-      setTestConfig({
-        editorValue: "",
-      });
-    }
-  }, [state]);
 
   return (
     <div className="h-full flex flex-col">

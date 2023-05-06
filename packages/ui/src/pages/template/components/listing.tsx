@@ -81,7 +81,7 @@ export default function Listing() {
 
   const navigate = useNavigate();
   const updateListing = () => {
-    setPageToggle((prev)=> !prev);
+    setPageToggle((prev) => !prev);
   };
   const onCreateModal = (templateId: string, type: NetworkType) => {
     setNetworkType(type);
@@ -95,6 +95,7 @@ export default function Listing() {
   };
 
   const onNetworkCreate = (name: string, type: NetworkType) => {
+    setIsOpen(false);
     setIsShowLoader(true);
     getTemplateData(createNetTemplateId)
       .then((response) => ({
@@ -106,14 +107,15 @@ export default function Listing() {
       }))
       .then(type === "evaluation" ? createNetwork : testNetwork)
       .then(() => {
-        setIsOpen(false);
-        setIsShowLoader(false);
         notify("success", "Network created successfully");
+        navigate("/network")
       })
       .catch(() => {
-        setIsShowLoader(false);
         notify("error", "Failed to create network");
-      });
+      })
+      .finally(() => {
+        setIsShowLoader(false);
+      })
   };
 
   const fetchTemplates = () => {
@@ -156,26 +158,23 @@ export default function Listing() {
     setPageNum(pageNumOnChange);
   };
   const onTemplateDelete = (templateId: string) => {
+    setDeleteTemplateObj({
+      isOpen: false,
+      templateId: "",
+      templateName: "",
+    });
     setIsShowLoader(true);
     deleteTemplate(templateId)
       .then(() => {
         updateListing();
         notify("success", "Template deleted successfully");
-        setDeleteTemplateObj({
-          isOpen: false,
-          templateId: "",
-          templateName: "",
-        });
-        setIsShowLoader(false);
       })
       .catch(() => {
-        setIsShowLoader(false);
         notify("error", "Failed to delete template");
-      });
-  };
-
-  const deleteTheTemplate = (templateId: string) => {
-    onTemplateDelete(templateId);
+      })
+      .finally(() => {
+        setIsShowLoader(false);
+      })
   };
 
   const onTemplateDuplicate = () => {
@@ -273,7 +272,7 @@ export default function Listing() {
 
   return (
     <>
-      {isShowLoader && <Loader />}
+      {isShowLoader && <Loader text={""} />}
       <div className="flex flex-wrap justify-between items-center gap-5">
         <div className="flex flex-wrap gap-5">
           <Filter filters={filters} setFilters={setFilters} />
@@ -360,7 +359,7 @@ export default function Listing() {
         />
         <DeletePopUpBox
           setIsOpen={setDeleteTemplateObj}
-          onConfirm={deleteTheTemplate}
+          onConfirm={onTemplateDelete}
           deleteTemplateObj={deleteTemplateObj}
         />
         <DuplicateTempPopUpBox

@@ -3,12 +3,10 @@ import { useNavigate } from "react-router-dom";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { Button } from "src/components/Button";
-import { useCreateTemplate, HRMP } from "src/store/CreateTemplate";
+import { useCreateTemplate } from "src/store/CreateTemplate";
 import Theme from "../Theme";
 import PopUpBox from "../Modal";
-import { notify } from "src/utils/notifications";
-import { createTemplateNetwork, updateTemplateNetwork } from "src/utils/api";
-import { encodeBase64 } from "src/utils/encoding";
+import Loader from "src/components/loader";
 
 const updateTestContent = (testContent: string, filename: string): string => {
   let content = testContent;
@@ -32,73 +30,28 @@ export interface Step05Props {
 const Step05: FC<Step05Props> = ({ onNextStep, onPreviousStep }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isShowLoader, setIsShowLoader] = useState<boolean>(false);
 
   const {
     testConfig,
     setTestConfig,
     settings,
-    relayChain,
-    nodeList,
-    paraChainList,
-    HRMPList,
-    templateId,
+    updateTemplateOnSource,
   } = useCreateTemplate();
 
   const onChange = useCallback((value: any) => {
     setTestConfig({ ...testConfig, editorValue: value });
   }, []);
 
-  const configContentPrepare = (): string => {
-    const data = {
-      relaychain: {
-        default_image: relayChain.default_image,
-        default_command: relayChain.default_command,
-        default_args: relayChain.default_args,
-        chain: relayChain.chain,
-        nodes: nodeList,
-      },
-      parachains: paraChainList,
-      hrmp_channels: HRMPList,
-    };
-    return encodeBase64(JSON.stringify(data));
-  };
-
   const onNetworkCreate = () => {
     setIsOpen(false);
-    const payload = {
-      name: settings.networkName,
-      configFilename: `${settings.networkName}-config.json`,
-      configContent: configContentPrepare(),
-      networkProvider: settings.provider,
-      testFilename: `${settings.networkName}-test-config.zndsl`,
-      testContent: encodeBase64(testConfig.editorValue),
-    };
-    if (templateId) {
-      updateTemplateNetwork(templateId, payload)
-        .then((response) => {
-          console.log("response", response);
-        })
-        .then(() => {
-          setIsOpen(false);
-          notify("success", "Template updated successfully");
-          navigate("/templates");
-        })
-        .catch(() => {
-          notify("error", "Failed to update template");
-        });
-      return;
-    }
-    createTemplateNetwork(payload)
-      .then((response) => {
-        console.log("response", response);
-      })
+    setIsShowLoader(true);
+    updateTemplateOnSource()
       .then(() => {
-        setIsOpen(false);
-        notify("success", "Template created successfully");
         navigate("/templates");
       })
-      .catch(() => {
-        notify("error", "Failed to create template");
+      .finally(() => {
+        setIsShowLoader(false);
       });
   };
 
@@ -114,6 +67,7 @@ const Step05: FC<Step05Props> = ({ onNextStep, onPreviousStep }) => {
 
   return (
     <div className="flex flex-col h-full">
+      {isShowLoader && <Loader />}
       <div className="flex-grow overflow-auto p-6">
         <div className="border-dark-700 border-4 rounded-lg">
           <CodeMirror

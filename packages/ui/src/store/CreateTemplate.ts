@@ -26,9 +26,9 @@ export interface NodeInfo {
 
 export type Collator = {
   name: string;
-  image: string;
   command: string;
-  args: string[];
+  args?: string[];
+  image?: string;
 };
 
 export type Parachain = {
@@ -48,7 +48,23 @@ interface TestConfig {
   editorValue: string;
 }
 
-export const DEFAULT = {
+interface Template {
+  templateId: string | null,
+  settings: Settings,
+  relayChain: RelayChain,
+  nodeList: NodeInfo[],
+  paraChainList: Parachain[],
+  HRMPList: HRMP[],
+  testConfig: TestConfig,
+}
+
+export const DEFAULT_IMAGES = [
+  "docker.io/parity/polkadot:latest"
+];
+
+export const DEFAULT_ARGUMENTS = ["-lparachain=debug"];
+
+export const DEFAULT: Template = {
   templateId: null,
   settings: {
     isBootNode: false,
@@ -57,17 +73,17 @@ export const DEFAULT = {
     networkName: "",
   },
   relayChain: {
-    default_image: "docker.io/parity/polkadot:latest",
+    default_image: DEFAULT_IMAGES[0],
     chain: "rococo-local",
     default_command: "polkadot",
-    default_args: ["-lparachain=debug"],
+    default_args: [DEFAULT_ARGUMENTS[0]],
   },
   nodeList: [
     {
       name: "",
       validator: false,
-      image: undefined,
-      args: undefined,
+      image: DEFAULT_IMAGES[0],
+      args: [DEFAULT_ARGUMENTS[0]],
     },
   ],
   paraChainList: [],
@@ -77,14 +93,9 @@ export const DEFAULT = {
   },
 };
 
-export interface CreateTemplate {
-  templateId: string | null;
-  settings: Settings;
-  relayChain: RelayChain;
-  nodeList: NodeInfo[];
-  paraChainList: Parachain[];
-  HRMPList: HRMP[];
-  testConfig: TestConfig;
+
+
+export interface CreateTemplate extends Template {
   updateTemplateFromSource: (templateId: string) => Promise<void>;
   updateTemplateOnSource: () => Promise<void>;
   resetTemplate: () => void;

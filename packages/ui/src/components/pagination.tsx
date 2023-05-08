@@ -35,12 +35,11 @@ export default function PaginatedItems({
         pageCount={pageCount || 1}
         containerClassName="flex items-center gap-2 my-2"
         activeClassName="bg-larch-dark_3 rounded-lg"
-        pageClassName="cursor-pointer w-10 h-10 flex justify-center items-center font-normal rounded-md hover:bg-larch-pink"
-        pageLinkClassName="cursor-pointer "
-        previousClassName="cursor-pointer w-10 h-10 flex justify-center items-center rounded-s-xl h-10 font-normal bg-larch-pink"
-        previousLinkClassName="cursor-pointer inline-block font-bold"
-        nextClassName="w-10 h-10 cursor-pointer flex justify-center items-center rounded-e-xl font-normal bg-larch-pink"
-        nextLinkClassName="cursor-pointer inline-block font-bold"
+        pageLinkClassName="cursor-pointer w-10 h-10 flex justify-center items-center font-normal rounded-md hover:bg-larch-pink"
+        // previousClassName="cursor-pointer w-10 h-10 flex justify-center items-center rounded-s-xl h-10 font-normal bg-larch-pink"
+        previousLinkClassName="w-10 h-10 flex justify-center items-center rounded-s-xl h-10 font-normal bg-larch-pink"
+        // nextClassName="w-10 h-10 cursor-pointer flex justify-center items-center rounded-e-xl font-normal bg-larch-pink"
+        nextLinkClassName="w-10 h-10 flex justify-center items-center rounded-e-xl h-10 font-normal bg-larch-pink"
         previousLabel="<"
         renderOnZeroPageCount={null}
       />

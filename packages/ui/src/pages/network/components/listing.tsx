@@ -67,7 +67,7 @@ export default function Listing() {
       checked: false,
       isOpen: false,
       type: "searchable",
-      value: new Date().toISOString().split("T")[0],
+      value: "",
     },
   ]);
 
@@ -106,13 +106,6 @@ export default function Listing() {
       if (item.value) filter[item.key] = item.value;
     });
 
-    if (
-      filter &&
-      Object.keys(filter).length === 0 &&
-      Object.getPrototypeOf(filter) === Object.prototype
-    )
-      return;
-
     setIsShowLoader(true);
     const payload = {
       filter,
@@ -146,6 +139,11 @@ export default function Listing() {
     fetchNetworkList();
   }, [pageNum, sort, updateList]);
 
+  useEffect(() => {
+    if (!filters.some((filter) => filter.checked))
+      fetchNetworkList(); //call the api when every filter is removed
+  }, [filters])
+
   const clearFilter = () => {
     setFilters((_filters) => {
       return _filters.map((_filter) => {
@@ -157,7 +155,6 @@ export default function Listing() {
         };
       });
     });
-    setUpdateList((prev) => !prev);
   };
 
   const handleInput = (option: FilterItem, value: string) => {
@@ -222,12 +219,14 @@ export default function Listing() {
           <Filter filters={filters} setFilters={setFilters} />
           {filters.some((filter) => filter.checked) && (
             <>
-              <Button className="bg-larch-pink gap-2" onClick={fetchNetworkList}>
+              <Button
+                className="bg-larch-pink gap-2"
+                onClick={fetchNetworkList}
+              >
                 Apply Filter
               </Button>
               <Button
                 iconLeft={<IconCross className="w-6 h-6" />}
-
                 className="bg-larch-dark_3 gap-1"
                 onClick={() => {
                   clearFilter();

@@ -90,7 +90,7 @@ export default function standardOutputModal({
           style={{
             marginLeft: compact ? "" : "286px",
           }}
-          className=" w-full w-min-1/2 max-w-fit rounded-xl bg-larch-dark_2 border-dark-700 border-4"
+          className="w-[70%] h-[80%] 2xl:w-3/4 rounded-xl bg-larch-dark_2 border-dark-700 border-4"
         >
           <Dialog.Title className="text-white font-rubik pb-4 flex justify-between text-3xl p-6 font-bold">
             <h1>Output</h1>
@@ -130,9 +130,8 @@ export default function standardOutputModal({
                 <div className="text-white font-rubik  flex-1">{operation}</div>
               </div>
             </div>
-
             <div className="grid gap-6">
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 overflow-auto">
                 <div className="flex justify-between items-center text-white">
                   <div className=" font-rubik text-start text-xl font-semibold">
                     Standard Output
@@ -150,15 +149,15 @@ export default function standardOutputModal({
                     />
                   </div>
                 </div>
-                <div className="flex flex-row">
-                  <pre className="text-white flex-1 bg-brand-gray rounded-md p-6 overflow-y-auto min-h-[100px] max-h-96">
+                <div className="flex flex-row justify-center ">
+                  <pre className="text-white bg-brand-gray rounded-md p-6 overflow-auto min-h-[100px] max-h-96 w-full">
                     <div ref={outputRef}>
                       <Ansi>{standardOutput}</Ansi>
                     </div>
                   </pre>
                 </div>
               </div>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 overflow-auto">
                 <div className="flex justify-between items-center text-white">
                   <div className=" font-rubik text-start text-xl font-semibold">
                     Standard Error
@@ -176,8 +175,8 @@ export default function standardOutputModal({
                     />
                   </div>
                 </div>
-                <div className="flex flex-row">
-                  <pre className="text-white font-rubik flex-1 bg-brand-gray rounded-md p-6 overflow-y-auto min-h-[100px] max-h-96">
+                <div className="flex flex-row justify-center">
+                  <pre className="text-white font-rubik flex-1 bg-brand-gray rounded-md p-6 overflow-auto min-h-[100px] max-h-96 w-full">
                     <div ref={errorRef}>
                       <Ansi>{standardError}</Ansi>
                     </div>

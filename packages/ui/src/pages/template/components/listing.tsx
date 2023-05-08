@@ -154,6 +154,7 @@ export default function Listing() {
     fetchTemplates();
   }, [pageNum, sort, pageToggle]);
 
+
   const onPageChange = (pageNumOnChange: number) => {
     setPageNum(pageNumOnChange);
   };
@@ -202,6 +203,11 @@ export default function Listing() {
     fetchTemplates();
   }, []);
 
+  useEffect(() => {
+    if (!filters.some((filter) => filter.checked))
+      fetchTemplates(); //call the api when every filter is removed
+  }, [filters])
+
   const clearFilter = () => {
     setFilters((_filters) => {
       return _filters.map((_filter) => {
@@ -213,7 +219,6 @@ export default function Listing() {
         };
       });
     });
-    updateListing();
   };
 
   const handleInput = (option: FilterItem, value: string) => {

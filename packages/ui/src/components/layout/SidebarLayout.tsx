@@ -136,12 +136,13 @@ function SidebarLayout() {
       .catch(() => {
         setVersions({ larch: "NA", zombienet: "NA" });
       });
-  }, []);
+  }, [location]); // remove location from dependency list to avoid calling api every time.
 
   return (
     <section
-      className={` ${isOpen ? "w-screen md:w-fit" : "w-fit"
-        } z-sidebar backdrop-blur-sm`}
+      className={` ${
+        isOpen ? "w-screen md:w-fit" : "w-fit"
+      } z-sidebar backdrop-blur-sm`}
       onClick={() => setSidebar(false)}
     >
       <Sidebar

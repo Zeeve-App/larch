@@ -5,7 +5,7 @@ import { getRunData } from "../../../utils/api";
 import { notify } from "../../../utils/notifications";
 import { IconButton } from "src/components/Button";
 import { ReactComponent as IconCross } from "src/assets/Cross.svg";
-import { useCompact } from 'src/hooks'
+import { useCompact } from "src/hooks";
 
 type CommandModalProps = {
   isOpen: boolean;
@@ -35,7 +35,7 @@ export default function CommandModal({
       });
   }, []);
 
-  const compact = useCompact()
+  const compact = useCompact();
 
   return (
     <Dialog
@@ -48,9 +48,12 @@ export default function CommandModal({
         aria-hidden="true"
       />
       <div className="fixed inset-0 flex items-center justify-center">
-        <Dialog.Panel style={{
-          marginLeft: compact ? "" : '286px'
-        }} className="w-1/2 rounded-xl bg-larch-dark_2 border-dark-700 border-4">
+        <Dialog.Panel
+          style={{
+            marginLeft: compact ? "" : "286px",
+          }}
+          className="w-[70%] h-[80%] 2xl:h-auto 2xl:w-1/2 rounded-xl bg-larch-dark_2 border-dark-700 border-4"
+        >
           <Dialog.Title className="text-white font-rubik pb-4 flex justify-between text-3xl p-6 font-bold">
             <h1>Execution Command Info</h1>
             <IconButton
@@ -83,7 +86,9 @@ export default function CommandModal({
                 <div className="text-white font-rubik min-w-[175px] font-bold">
                   Operation
                 </div>
-                <div className="text-white font-rubik  flex-1">: {operation}</div>
+                <div className="text-white font-rubik  flex-1">
+                  : {operation}
+                </div>
               </div>
             </div>
             <div className="grid gap-6">

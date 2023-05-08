@@ -212,7 +212,7 @@ const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
                         {
                           name: "",
                           validator: false,
-                          args: [],
+                          args: undefined,
                           image: relayChain.default_image,
                         },
                       ]);
@@ -249,7 +249,7 @@ const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
                             value={node.image}
                             onChange={(element) =>
                               updateNodeList(index, {
-                                image: element.target.value,
+                                image: element.target.value ? element.target.value : undefined,
                               })
                             }
                           />
@@ -261,7 +261,7 @@ const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
                           <input
                             className="bg-larch-dark_2 border-dark-700 border-2 checked:border-dark-700 checked:bg-transparent focus:checked:bg-transparent hover:checked:bg-transparent rounded w-5 h-5"
                             type="checkbox"
-                            name="arguments"
+                            name="validator"
                             defaultChecked={node.validator}
                             onChange={() =>
                               updateNodeList(index, {
@@ -278,7 +278,7 @@ const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
                               iconLeft={<IconAdd className="m-0 p-0" />}
                               onClick={() => {
                                 updateNodeList(index, {
-                                  args: [...nodeList[index].args!, ""],
+                                  args: [...(Array.isArray(nodeList[index].args) ? nodeList[index].args! : []), ""],
                                 });
                               }}
                             />

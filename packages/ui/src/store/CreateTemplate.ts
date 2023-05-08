@@ -66,8 +66,8 @@ export const DEFAULT = {
     {
       name: "",
       validator: false,
-      image: "",
-      args: [""],
+      image: undefined,
+      args: undefined,
     },
   ],
   paraChainList: [],

@@ -1,15 +1,9 @@
 import { FC, useEffect, useState } from "react";
 import { Combobox } from "@headlessui/react";
 import { Button } from "src/components/Button";
-import { useCreateTemplate } from "src/store/CreateTemplate";
+import { useCreateTemplate, DEFAULT_ARGUMENTS, DEFAULT_IMAGES } from "src/store/CreateTemplate";
 import { ReactComponent as IconAdd } from "src/assets/Add.svg";
 import { ReactComponent as IconTrash } from "src/assets/Trash.svg";
-
-const DEFAULT_IMAGES = [
-  "docker.io/parity/polkadot:latest",
-  "docker.io/parity/polkadot:beta",
-  "docker.io/parity/polkadot:alpha",
-];
 
 export interface Step02Props {
   onNextStep: () => void;
@@ -21,12 +15,12 @@ const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
     useCreateTemplate();
 
   const removeArgumentAtIndex = (delIndex: number) => {
-    if (relayChain.default_args.length > 1) {
-      const arr: string[] = relayChain.default_args.filter(
-        (ele, index) => !(index === delIndex)
-      );
-      setRelayChain({ ...relayChain, default_args: arr });
-    }
+    // if (relayChain.default_args.length > 1) {
+    const arr: string[] = relayChain.default_args.filter(
+      (ele, index) => !(index === delIndex)
+    );
+    setRelayChain({ ...relayChain, default_args: arr });
+    // }
   };
 
   const removeNodeAtIndex = (delIndex: number) => {
@@ -116,7 +110,7 @@ const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
                     }
                     defaultValue={relayChain.default_image}
                   />
-                  <Combobox.Options className="absolute bg-larch-dark_2 border-2 border-dark-700 rounded-md flex flex-col gap-3 w-full mt-2 p-3">
+                  <Combobox.Options className="absolute bg-larch-dark_2 border-2 border-dark-700 rounded-md flex flex-col gap-3 w-full mt-2 p-3 z-10">
                     {DEFAULT_IMAGES.map((image) => (
                       <Combobox.Option
                         className="hover:bg-larch-dark_3 p-2 rounded-md cursor-pointer"
@@ -161,7 +155,7 @@ const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex-grow border-2 border-dark-700 p-6 rounded-xl">
                 <div className="flex items-start justify-between gap-x-12">
                   <span className="font-extrabold min-w-[10rem]">
@@ -180,16 +174,35 @@ const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
                 </div>
                 <div className="flex flex-col gap-6 mt-7">
                   {relayChain.default_args.map((argument, index) => (
-                    <div className="flex justify-between gap-5">
-                      <input
-                        className="flex-grow bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md"
-                        type="text"
-                        name="arguments"
-                        defaultValue={argument}
+                    <div className="flex justify-between gap-5" key={index}>
+                      <Combobox
+                        value={argument}
+                        as={"div"}
+                        className="relative flex-grow"
                         onChange={(e) =>
-                          defaultArgsHandler(e.target.value, index)
+                          defaultArgsHandler(e, index)
                         }
-                      />
+                      >
+                        <Combobox.Input
+                          as={"input"}
+                          className=" bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md w-full h-full"
+                          defaultValue={argument}
+                          onChange={(e) =>
+                            defaultArgsHandler(e.target.value, index)
+                          }
+                        />
+                        <Combobox.Options className="absolute bg-larch-dark_2 border-2 border-dark-700 rounded-md flex flex-col gap-3 w-full mt-2 p-3 z-10">
+                          {DEFAULT_ARGUMENTS.map((arg) => (
+                            <Combobox.Option
+                              className="hover:bg-larch-dark_3 p-2 rounded-md cursor-pointer"
+                              key={arg}
+                              value={arg}
+                            >
+                              {arg}
+                            </Combobox.Option>
+                          ))}
+                        </Combobox.Options>
+                      </Combobox>
                       <Button
                         className="p-3 text-larch-error focus:ring-white"
                         variant={"outline"}
@@ -221,7 +234,7 @@ const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
                 </div>
                 <div className="flex flex-col gap-6 mt-7">
                   {nodeList.map((node, index) => (
-                    <div className="flex justify-between gap-5">
+                    <div className="flex justify-between gap-5" key={index}>
                       <div className="flex flex-col flex-grow border-2 border-dark-700 rounded-xl p-6 gap-6">
                         <div className="flex items-center justify-between gap-x-12 ">
                           <span className="font-extrabold min-w-[10rem]">
@@ -242,17 +255,42 @@ const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
                           <span className="font-extrabold min-w-[10rem]">
                             Image
                           </span>
-                          <input
-                            className="flex-grow bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md"
-                            type="text"
-                            autoComplete="off"
+                          <Combobox
                             value={node.image}
+                            as={"div"}
+                            className="relative flex-grow "
                             onChange={(element) =>
                               updateNodeList(index, {
-                                image: element.target.value ? element.target.value : undefined,
+                                image: element
+                                  ? element
+                                  : undefined,
                               })
                             }
-                          />
+                          >
+                            <Combobox.Input
+                              as={"input"}
+                              className=" bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md w-full"
+                              onChange={(element) =>
+                                updateNodeList(index, {
+                                  image: element.target.value
+                                    ? element.target.value
+                                    : undefined,
+                                })
+                              }
+                              defaultValue={node.image}
+                            />
+                            <Combobox.Options className="absolute bg-larch-dark_2 border-2 border-dark-700 rounded-md flex flex-col gap-3 w-full mt-2 p-3 z-10">
+                              {DEFAULT_IMAGES.map((image) => (
+                                <Combobox.Option
+                                  className="hover:bg-larch-dark_3 p-2 rounded-md cursor-pointer"
+                                  key={image}
+                                  value={image}
+                                >
+                                  {image}
+                                </Combobox.Option>
+                              ))}
+                            </Combobox.Options>
+                          </Combobox>
                         </div>
                         <div className="flex items-center justify-start gap-x-12">
                           <span className="font-extrabold min-w-[10rem]">
@@ -278,7 +316,12 @@ const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
                               iconLeft={<IconAdd className="m-0 p-0" />}
                               onClick={() => {
                                 updateNodeList(index, {
-                                  args: [...(Array.isArray(nodeList[index].args) ? nodeList[index].args! : []), ""],
+                                  args: [
+                                    ...(Array.isArray(nodeList[index].args)
+                                      ? nodeList[index].args!
+                                      : []),
+                                    "",
+                                  ],
                                 });
                               }}
                             />
@@ -286,19 +329,43 @@ const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
                           <div className="flex flex-col gap-6 mt-7">
                             {node.args &&
                               node.args.map((argument, argIndex) => (
-                                <div className="flex justify-between gap-5">
-                                  <input
-                                    className="flex-grow bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md"
-                                    type="text"
+                                <div className="flex justify-between gap-5" key={index}>
+                                  <Combobox
                                     value={argument}
+                                    as={"div"}
+                                    className="relative flex-grow"
                                     onChange={(element) =>
                                       nodeArgsHandler(
-                                        element.target.value,
+                                        element,
                                         index,
                                         argIndex
                                       )
                                     }
-                                  />
+                                  >
+                                    <Combobox.Input
+                                      as={"input"}
+                                      className=" bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md w-full h-full"
+                                      defaultValue={argument}
+                                      onChange={(element) =>
+                                        nodeArgsHandler(
+                                          element.target.value,
+                                          index,
+                                          argIndex
+                                        )
+                                      }
+                                    />
+                                    <Combobox.Options className="absolute bg-larch-dark_2 border-2 border-dark-700 rounded-md flex flex-col gap-3 w-full mt-2 p-3 z-10">
+                                      {DEFAULT_ARGUMENTS.map((arg) => (
+                                        <Combobox.Option
+                                          className="hover:bg-larch-dark_3 p-2 rounded-md cursor-pointer"
+                                          key={arg}
+                                          value={arg}
+                                        >
+                                          {arg}
+                                        </Combobox.Option>
+                                      ))}
+                                    </Combobox.Options>
+                                  </Combobox>
                                   <Button
                                     className="p-3 text-larch-error"
                                     variant={"outline"}

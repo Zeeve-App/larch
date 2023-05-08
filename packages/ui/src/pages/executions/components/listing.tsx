@@ -27,8 +27,6 @@ export default function Listing() {
   const id = query.get("id");
   const operation = query.get("intention");
   const networkName = query.get("networkName");
-  const statusCode = query.get("statusCode");
-  const date = query.get("createdAt");
 
   const [filters, setFilters] = useState<FilterItem[]>([
     {
@@ -58,18 +56,18 @@ export default function Listing() {
     {
       label: "Status Code",
       key: "statusCode",
-      checked: statusCode ? true : false,
+      checked: false,
       isOpen: false,
       type: "searchable",
-      value: statusCode || "",
+      value: "",
     },
     {
       label: "Date",
       key: "createdAt",
-      checked: date ? true : false,
+      checked: false,
       isOpen: false,
       type: "date",
-      value: date || "",
+      value: "",
     },
   ]);
 
@@ -135,9 +133,14 @@ export default function Listing() {
   }, [pageNum, sort, updateList]);
 
   useEffect(() => {
-    if (filters.some((filter) => filter.checked)) fetchRunList();
-    else fetchRunList();
+    fetchRunList();
   }, []);
+
+  useEffect(() => {
+    if (!filters.some((filter) => filter.checked))
+      fetchRunList(); //call the api when every filter is removed
+  }, [filters])
+
 
   const clearFilter = () => {
     setFilters((_filters) => {
@@ -150,7 +153,6 @@ export default function Listing() {
         };
       });
     });
-    setUpdateList(!updateList);
   };
 
   const handleInput = (option: FilterItem, value: string) => {

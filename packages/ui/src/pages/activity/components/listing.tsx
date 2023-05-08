@@ -113,6 +113,11 @@ export default function Listing({ updateList, setUpdateList }: ListingProps) {
     fetchActivities();
   }, []);
 
+  useEffect(() => {
+    if (!filters.some((filter) => filter.checked))
+      fetchActivities(); //call the api when every filter is removed
+  }, [filters])
+
   const clearFilter = () => {
     setFilters((_filters) => {
       return _filters.map((_filter) => {
@@ -124,7 +129,6 @@ export default function Listing({ updateList, setUpdateList }: ListingProps) {
         };
       });
     });
-    setUpdateList(!updateList);
   };
 
   const handleInput = (option: FilterItem, value: string) => {

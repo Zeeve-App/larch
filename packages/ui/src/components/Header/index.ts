@@ -5,4 +5,3 @@ export { type HeaderLogoContainerProps, HeaderLogoContainer } from './HeaderLogo
 export { HeaderMenuButton } from './HeaderMenuButton';
 export { type HeaderNavContainerProps, HeaderNavContainer } from './HeaderNavContainer';
 export { type HeaderNavGroupProps, HeaderNavGroup } from './HeaderNavGroup';
-export { type HeaderSubscriptionDetailsProps, HeaderSubscriptionDetails } from './HeaderSubscriptionDetails';

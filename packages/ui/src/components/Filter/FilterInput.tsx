@@ -1,8 +1,4 @@
-import {
-  HTMLAttributes,
-  DetailedHTMLProps,
-  forwardRef,
-} from "react";
+import { HTMLAttributes, DetailedHTMLProps, forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 import FocusLock from "react-focus-lock";
 import { FilterItem } from "./type";
@@ -23,13 +19,13 @@ const FilterInput = forwardRef<HTMLInputElement, FilterInputProps>(
     const { className, close, item, handler, ...rest } = props;
 
     return (
-      <FocusLock className="absolute -left-1 -bottom-2 z-[499]">
+      <FocusLock className="absolute left-0 -bottom-[55px] z-[499]">
         {item.type === "searchable" && (
-          <label className="">
+          <label className="relative w-full">
             <input
               type="text"
               className={twMerge(
-                "absolute bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md pe-12 max-w-[18rem]",
+                "bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md pe-12 max-w-[18rem]",
                 className
               )}
               value={item.value}
@@ -40,7 +36,7 @@ const FilterInput = forwardRef<HTMLInputElement, FilterInputProps>(
               {...rest}
             />
             <IconCheck
-              className="absolute w-6 h-6 -right-[16rem] -bottom-8 cursor-pointer"
+              className="absolute w-6 h-6 -top-1 right-3 cursor-pointer"
               onClick={(e) => {
                 close();
               }}
@@ -48,14 +44,18 @@ const FilterInput = forwardRef<HTMLInputElement, FilterInputProps>(
           </label>
         )}
         {item.type === "date" && (
-          <label className="">
+          <label className="relative w-full">
             <input
               type="datetime-local"
               className={twMerge(
-                "absolute left-1 -bottom-11 flex bg-larch-dark_2 focus:bg-larch-dark  text-white focus:ring-larch-dark border-dark-700 border-2 rounded-md max-w-[18rem]",
+                "relative flex bg-larch-dark_2 focus:bg-larch-dark  text-white focus:ring-larch-dark border-dark-700 border-2 rounded-md max-w-[18rem]",
                 className
               )}
-              value={item.value ? item.value : new Date().toISOString().split('T').join(' ').split(".")[0]}
+              value={
+                item.value
+                  ? item.value
+                  : new Date().toISOString().split("T").join(" ").split(".")[0]
+              }
               onChange={(e) => {
                 handler(e.target.value);
               }}
@@ -63,7 +63,7 @@ const FilterInput = forwardRef<HTMLInputElement, FilterInputProps>(
               {...rest}
             />
             <IconCheck
-              className="absolute w-6 h-6 -right-[17rem] text-white -bottom-9 cursor-pointer"
+              className="absolute w-6 h-6 top-[50%] -translate-y-1/2 right-3 text-white cursor-pointer"
               onClick={(e) => {
                 close();
               }}

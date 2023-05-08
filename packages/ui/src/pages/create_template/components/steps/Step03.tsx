@@ -1,7 +1,8 @@
 import { FC } from "react";
 import { useLocation } from "react-router-dom";
+import { Combobox } from '@headlessui/react'
 import { Button } from "src/components/Button";
-import { useCreateTemplate } from "src/store/CreateTemplate";
+import { useCreateTemplate, DEFAULT_ARGUMENTS, DEFAULT_IMAGES } from "src/store/CreateTemplate";
 import { ReactComponent as IconAdd } from "src/assets/Add.svg";
 import { ReactComponent as IconTrash } from "src/assets/Trash.svg";
 
@@ -73,9 +74,9 @@ const Step03: FC<Step03Props> = ({ onNextStep, onPreviousStep }) => {
                         add_to_genesis: false,
                         collator: {
                           name: "",
-                          image: "",
+                          image: DEFAULT_IMAGES[0],
                           command: "",
-                          args: [],
+                          args: [DEFAULT_ARGUMENTS[0]],
                         },
                       },
                     ]);
@@ -84,7 +85,7 @@ const Step03: FC<Step03Props> = ({ onNextStep, onPreviousStep }) => {
               </div>
               <div className="flex flex-col gap-6 mt-7">
                 {paraChainList.map((parachain, index) => (
-                  <div className="flex justify-between gap-6">
+                  <div className="flex justify-between gap-6" key={index}>
                     <div className="flex flex-col flex-grow border-2 border-dark-700 rounded-xl gap-6 p-6">
                       <div className="flex items-center justify-start gap-x-12 ">
                         <span className="font-extrabold min-w-[10rem]">
@@ -143,7 +144,7 @@ const Step03: FC<Step03Props> = ({ onNextStep, onPreviousStep }) => {
                             </div>
                             <div className="flex items-center gap-6">
                               <span className="font-extrabold">Image</span>
-                              <input
+                              {/* <input
                                 className="flex-grow bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md"
                                 type="text"
                                 value={parachain.collator.image}
@@ -155,7 +156,45 @@ const Step03: FC<Step03Props> = ({ onNextStep, onPreviousStep }) => {
                                     },
                                   })
                                 }
-                              />
+                              /> */}
+                              <Combobox
+                                value={parachain.collator.image}
+                                as={"div"}
+                                className="relative flex-grow"
+                                onChange={(element) =>
+                                  updateParachains(index, {
+                                    collator: {
+                                      ...parachain.collator,
+                                      image: element,
+                                    },
+                                  })
+                                }
+                              >
+                                <Combobox.Input
+                                  as={"input"}
+                                  className=" bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md w-full h-full"
+                                  defaultValue={parachain.collator.image}
+                                  onChange={(element) =>
+                                    updateParachains(index, {
+                                      collator: {
+                                        ...parachain.collator,
+                                        image: element.target.value,
+                                      },
+                                    })
+                                  }
+                                />
+                                <Combobox.Options className="absolute bg-larch-dark_2 border-2 border-dark-700 rounded-md flex flex-col gap-3 w-full mt-2 p-3 z-10">
+                                  {DEFAULT_IMAGES.map((image) => (
+                                    <Combobox.Option
+                                      className="hover:bg-larch-dark_3 p-2 rounded-md cursor-pointer"
+                                      key={image}
+                                      value={image}
+                                    >
+                                      {image}
+                                    </Combobox.Option>
+                                  ))}
+                                </Combobox.Options>
+                              </Combobox>
                             </div>
                             <div className="flex items-center gap-6">
                               <span className="font-extrabold">Command</span>
@@ -201,19 +240,43 @@ const Step03: FC<Step03Props> = ({ onNextStep, onPreviousStep }) => {
                               {paraChainList &&
                                 paraChainList[index].collator.args?.map(
                                   (argument, argIndex) => (
-                                    <div className="flex justify-between gap-6">
-                                      <input
-                                        className="flex-grow bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md"
-                                        type="text"
+                                    <div className="flex justify-between gap-6" key={index}>
+                                      <Combobox
                                         value={argument}
+                                        as={"div"}
+                                        className="relative flex-grow"
                                         onChange={(element) =>
                                           argumentsHandler(
-                                            element.target.value,
+                                            element,
                                             index,
                                             argIndex
                                           )
                                         }
-                                      />
+                                      >
+                                        <Combobox.Input
+                                          as={"input"}
+                                          className=" bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md w-full h-full"
+                                          defaultValue={argument}
+                                          onChange={(element) =>
+                                            argumentsHandler(
+                                              element.target.value,
+                                              index,
+                                              argIndex
+                                            )
+                                          }
+                                        />
+                                        <Combobox.Options className="absolute bg-larch-dark_2 border-2 border-dark-700 rounded-md flex flex-col gap-3 w-full mt-2 p-3 z-10">
+                                          {DEFAULT_ARGUMENTS.map((arg) => (
+                                            <Combobox.Option
+                                              className="hover:bg-larch-dark_3 p-2 rounded-md cursor-pointer"
+                                              key={arg}
+                                              value={arg}
+                                            >
+                                              {arg}
+                                            </Combobox.Option>
+                                          ))}
+                                        </Combobox.Options>
+                                      </Combobox>
                                       <Button
                                         className="p-3 text-larch-error"
                                         variant={"outline"}
@@ -224,7 +287,7 @@ const Step03: FC<Step03Props> = ({ onNextStep, onPreviousStep }) => {
                                           updateParachains(index, {
                                             collator: {
                                               ...parachain.collator,
-                                              args: parachain.collator.args.filter(
+                                              args: parachain.collator.args?.filter(
                                                 (_, currArgIndex) =>
                                                   currArgIndex !== argIndex
                                               ),

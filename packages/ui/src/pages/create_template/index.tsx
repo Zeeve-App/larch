@@ -30,15 +30,14 @@ export default function Page() {
 
   useEffect(() => {
     if (state && state.templateId) {
-      console.log({ templateId: state.templateId });
       setIsShowLoader(true);
       updateTemplateFromSource(state.templateId)
-      .catch(()=> {
-        navigate("/templates");
-      })
-      .finally(() => {
-        setIsShowLoader(false);
-      })
+        .catch(() => {
+          navigate("/templates");
+        })
+        .finally(() => {
+          setIsShowLoader(false);
+        })
     } else if (templateId === null) {
       resetTemplate();
     }

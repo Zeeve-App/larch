@@ -72,7 +72,7 @@ export default function Dashboard() {
         <h3 className="text-white font-rubik text-4xl font-semibold text-left">
           Explore Dashboard
         </h3>
-        <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 gap-6">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-6">
           <Card
             cardTitle="Networks"
             cardLink="/network"

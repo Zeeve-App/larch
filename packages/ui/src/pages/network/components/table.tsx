@@ -67,9 +67,9 @@ export default function NetworkListTable({
   return (
     <>
       <div className="rounded-xl border-2 border-dark-700 p-1">
-        <table className="text-white w-full">
-          <thead className="rounded-xl text-xl bg-larch-dark_2">
-            <tr className="border-b-2 border-dark-700">
+        <table className="text-white w-full table-auto">
+          <thead className="rounded-xl text-xl bg-larch-dark_2 ">
+            <tr className="border-b-2 border-dark-700 align-middle">
               <th className="px-6 py-3 h-[48px] text-left" scope="col">
                 Network Name
               </th>
@@ -83,19 +83,21 @@ export default function NetworkListTable({
                 Network Directory
               </th>
               <th
-                className="px-6 py-3 h-[48px] flex gap-2 justify-center items-center"
+                className="px-6 py-3 h-[48px]"
                 scope="col"
               >
+                <div className="flex items-center gap-3">
                 <p className="cursor-pointer" onClick={() => setSort(!sort)}>
                   Created On
                 </p>
                 <span aria-hidden>
                   {sort ? (
                     <IconArrowUp2 className="w-5 h-5 rotate-180" />
-                  ) : (
-                    <IconArrowUp2 className="w-5 h-5 " />
-                  )}
+                    ) : (
+                      <IconArrowUp2 className="w-5 h-5 " />
+                      )}
                 </span>
+                      </div>
               </th>
               <th className="px-6 h-[48px] text-start py-3" scope="col">
                 Status
@@ -113,15 +115,16 @@ export default function NetworkListTable({
                     ? "border-b-2 border-dark-700"
                     : ""
                 }
+                key={index}
               >
-                <td className="px-6 h-[72px] py-3">{network.name}</td>
+                <td className="px-6 h-[72px] break-all py-3">{network.name}</td>
                 <td className="px-6 h-[72px] py-3 text-center">
                   {network.type}
                 </td>
-                <td className="px-6 h-[72px] py-3">
+                <td className="px-6 h-[72px] break-all py-3">
                   {network.networkProvider}
                 </td>
-                <td className="px-6 h-[72px] py-3">
+                <td className="px-6 h-[72px] break-all py-3">
                   {network.networkDirectory}
                 </td>
                 <td className="px-6 h-[72px] py-3 text-center">
@@ -134,7 +137,7 @@ export default function NetworkListTable({
                   </div>
                 </td>
                 <td className="h-[72px]">
-                  <div className="flex justify-center gap-3 items-center">
+                  <div className="flex justify-center gap-3 m-3 items-center">
                     <IconButton
                       variant={"outline"}
                       icon={<IconEye className="text-md w-5 h-5" />}

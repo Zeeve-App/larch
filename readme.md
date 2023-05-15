@@ -2,6 +2,8 @@
 
 A GUI for Substrate / Polkadot Zombienet application
 
+<img alt="Larch Dashboard" src="./docs/assets/larch-dashboard.png" width="100%"/>
+
 ## Usage
 
 - Execute following commands to start Larch

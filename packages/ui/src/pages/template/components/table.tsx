@@ -85,19 +85,21 @@ export default function TemplateListTable({
                 Provider
               </th>
               <th
-                className="px-6 py-3 h-[48px] flex gap-2 justify-center items-center"
+                className="px-6 py-3 h-[48px]"
                 scope="col"
               >
+                <div className="flex items-center">
                 <p className="cursor-pointer" onClick={() => setSort(!sort)}>
                   Created On
                 </p>
                 <span aria-hidden>
                   {sort ? (
                     <IconArrowUp2 className="w-5 h-5 rotate-180" />
-                  ) : (
-                    <IconArrowUp2 className="w-5 h-5 " />
-                  )}
+                    ) : (
+                      <IconArrowUp2 className="w-5 h-5 " />
+                      )}
                 </span>
+                      </div>
               </th>
               <th className="px-6 py-3 h-[48px]" scope="col">
                 Actions
@@ -112,6 +114,7 @@ export default function TemplateListTable({
                     ? "border-b-2 border-dark-700"
                     : ""
                 }
+                key={index}
               >
                 <td className="px-6 h-[72px] py-3">{template.id}</td>
                 <td className="px-6 h-[72px] py-3">{template.name}</td>

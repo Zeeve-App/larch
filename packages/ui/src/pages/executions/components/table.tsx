@@ -46,7 +46,7 @@ export default function ActivityListTable({
   return (
     <>
       <div className="rounded-xl border-2 border-dark-700 p-1">
-        <table className="text-white w-full rounded">
+        <table className="text-white w-full rounded table-auto">
           <thead className="rounded-xl text-xl bg-larch-dark_2">
             <tr className="border-b-2 border-dark-700">
               <th className="px-6 py-3 h-[48px]  text-left" scope="col">
@@ -87,16 +87,17 @@ export default function ActivityListTable({
                 className={
                   index + 1 < runList.length ? "border-b-2 border-dark-700" : ""
                 }
+                key={index}
               >
-                <td className="px-6 h-[72px] py-3">{activity.id}</td>
+                <td className="px-6 h-[72px] break-all py-3">{activity.id}</td>
                 <td className="px-6 h-[72px] py-3 text-center">{activity.intention}</td>
-                <td className="px-6 h-[72px] py-3 ">{activity.relatedId}</td>
+                <td className="px-6 h-[72px] py-3 break-all">{activity.relatedId}</td>
                 <td className="px-6 h-[72px] py-3 text-center">{activity.statusCode}</td>
                 <td className="px-6 h-[72px] py-3 text-center">
                   {getFormattedLocalTime(activity.createdAt)}
                 </td>
                 <td className="h-[72px]">
-                  <div className="flex flex-row justify-center gap-3 my-2">
+                  <div className="flex flex-col lg:flex-row justify-center gap-3 my-2 m-3">
                     <Button
                       className='border-dark-700 border-2 gap-3 rounded-md px-3 bg-larch-dark_2 hover:bg-brand-gradient'
                       onClick={() => {

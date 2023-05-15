@@ -229,7 +229,7 @@ export default function Listing() {
   return (
     <>
       {isShowLoader && <Loader />}
-      <div className="flex flex-wrap justify-between items-center gap-5">
+      <div className="flex flex-wrap justify-between items-center overflow-auto gap-5">
         <div className="flex flex-wrap gap-5">
           <Filter filters={filters} setFilters={setFilters} />
           {filters.some((filter) => filter.checked) && (

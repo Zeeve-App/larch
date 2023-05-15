@@ -24,7 +24,8 @@ console.log('Welcome to Larch');
 export default () => {
   program
     .version(versionInfo.default.version)
-    .description('An CLI for managing polkadot parachain configuration')
+    .name('larch')
+    .description('GUI Application for managing Zombienet')
     .option('--disable-ui', 'Disable Frontend')
     .option('--disable-api', 'Disable Backend')
     .option('--service-port <port>', 'Larch service HTTP listen port', '9000')

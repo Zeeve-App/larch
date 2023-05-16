@@ -25,16 +25,16 @@ export default function MainLayout() {
 
   return (
     <>
-      <main className="flex relative h-screen w-screen overflow-hidden">
+      <main className="flex h-screen w-screen relative overflow-hidden">
         <SidebarLayout />
-        <section className="flex-grow absolute md:relative inset-0 h-screen">
+        <section className="w-full absolute md:relative max-w-full overflow-auto">
           <HeaderLayout
             isServiceOpen={isOpen}
             serviceToggle={() => handleToggle()}
             serviceClose={handleClose}
           />
           <div
-            className={`overflow-auto ${isOpen ? "blur-sm" : "blur-none"}`}
+            className={`${isOpen ? "blur-sm" : "blur-none"} overflow-auto`}
             style={{
               height: "calc(100vh - 80px)",
             }}

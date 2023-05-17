@@ -93,7 +93,7 @@ export default function ActivityListTable({
       {activityList.length === 0 && (
         <div className="w-full text-white text-center pt-5">
           <div>
-            Looks like there's no activity done, do opetations like{" "}
+            Looks like there's no activity done, do operations like{" "}
             <Link to="/templates">
               <span className="text-center text-larch-pink cursor-pointer">
                 Create Network Template

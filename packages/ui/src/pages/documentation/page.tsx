@@ -18,42 +18,45 @@ export default function Documentation() {
   return (
     <div className="flex flex-row-reverse justify-between text-white h-full">
       <div className="w-[674px] border-l-2 border-dark-700 p-6">
-        <ul className="flex flex-col gap-3">
+        <ol className="pl-5 flex flex-col gap-3 list-decimal">
           <li>
-            <a href="#about">1. About</a>
+            <a href="#about">About</a>
           </li>
-          <li className="grid gap-3">
-            <a href="#usage">2. Usage</a>
-            <ul className="pl-3 grid- gap-3 no-underline">
+          <li className="gap-3">
+            <a href="#usage">Usage</a>
+            <ol className="gap-3 no-underline list-[lower-alpha] list-inside">
               <li>
-                <a href="#create-template">1. Create Template</a>
+                <a href="#create-template">Create Template</a>
               </li>
               <li>
-                <a href="#create-network">2. Create Network</a>
+                <a href="#create-network">Create Network</a>
               </li>
               <li>
-                <a href="#network-management">3. Network Management</a>
+                <a href="#network-management">Network Management</a>
               </li>
-            </ul>
+            </ol>
           </li>
-          <li className="grid gap-3">
-            <a href="#components">3. Components</a>
-            <ul className="pl-3 grid gap-3 no-underline">
+          <li className="gap-3">
+            <a href="#components">Components</a>
+            <ol className="gap-3 no-underline list-[lower-alpha] list-inside">
               <li>
-                <a href="#dashboard">1. Dashbord</a>
+                <a href="#dashboard">Dashboard</a>
               </li>
               <li>
-                <a href="#networks">2. Networks</a>
+                <a href="#networks">Networks</a>
               </li>
               <li>
-                <a href="#template">3. Template</a>
+                <a href="#template">Template</a>
               </li>
               <li>
-                <a href="#activity">4. Activity</a>
+                <a href="#executions">Executions</a>
               </li>
-            </ul>
+              <li>
+                <a href="#activity">Activity</a>
+              </li>
+            </ol>
           </li>
-        </ul>
+        </ol>
       </div>
       <article
         className="doc overflow-auto p-6 flex flex-col gap-6"
@@ -61,13 +64,7 @@ export default function Documentation() {
         <div className="bg-larch-dark_2 border-4 border-larch-dark_3 p-6 rounded-lg">
           <h1 className="text-[48px] mb-3">Larch Documentation</h1>
           <p className="text-[18px] leading-8">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus
-            beatae modi voluptas molestiae magnam pariatur eum repudiandae?
-            Omnis cumque natus, nam harum, repellat blanditiis sed quidem
-            perferendis non eos maiores? Lorem ipsum dolor sit, amet consectetur
-            adipisicing elit. Delectus beatae modi voluptas molestiae magnam
-            pariatur eum repudiandae? Omnis cumque natus, nam harum, repellat
-            blanditiis sed quidem perferendis non eos maiores?
+            Zombienet's GUI companion
           </p>
         </div>
         <section className="bg-larch-dark_2 grid gap-5  border-4 border-larch-dark_3 p-6 rounded-lg">
@@ -77,7 +74,7 @@ export default function Documentation() {
           <ul className="list-circle grid gap-3 pl-3 text-[18px]">
             <li>Larch is a UI component for Zombienet CLI.</li>
             <li>
-              With Larch as a Zombient’s UI, one can create network and test
+              With Larch as a Zombienet's UI, one can create network and test
               configuration with assistance and ease.
             </li>
             <li>
@@ -124,7 +121,7 @@ export default function Documentation() {
               </div>
               <div className="grid gap-3">
                 <p className="text-[18px] leading-8">
-                  Network’s can be created for both Evaluation & Testing.
+                  Network's can be created for both Evaluation & Testing.
                 </p>
                 <ul className="list-circle grid gap-3 pl-6 text-[18px]">
                   <li>
@@ -145,10 +142,31 @@ export default function Documentation() {
               <div className="grid gap-1">
                 <h3 id="network-management" className="text-[24px]">Network Management</h3>
                 <p className="text-[18px] leading-8">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Id
-                  error laborum consequuntur dolorem quaerat accusantium quia
-                  aliquid ad quo ex quibusdam totam cupiditate, ducimus facere
-                  rem, consectetur iste fuga dolore.
+                  Once a network is created for either evaluating or testing the network, a certain
+                  operations can be performed on the network and these are:
+                  <ul className="list-circle grid gap-3 pl-6 text-[18px]">
+                    <li>Delete Network</li>
+                    <li>View Command</li>
+                    <li>View Output</li>
+                  </ul> 
+                </p>
+                <h4 id="network-management" className="text-[18px]">Delete Network</h4>
+                <p className="text-[18px] leading-8">
+                  Deletion of network can be done at any stage of network lifecycle (creation, running, etc.).<br/>
+                  Deletion can be performed by navigating to My Network page and then click on delete icon under Action column present against the network record,
+                  then confirmation dialog box will appear, click on confirm to initiate deletion process.
+                </p>
+                <h4 id="network-management" className="text-[18px]">View Command</h4>
+                <p className="text-[18px] leading-8">
+                  Zombienet command can be viewed for which it was issued to create the network<br/>
+                  To view the command navigate to network page, and click on eye icon under action column present against the network record, this will navigate to executions page with network filtered.<br/>
+                  In the execution record under Operation column click on the command button, this will open command details.
+                </p>
+                <h4 id="network-management" className="text-[18px]">View Output</h4>
+                <p className="text-[18px] leading-8">
+                  Zombienet CLI output can be viewed for a created the network<br/>
+                  To view the output, navigate to network page, and click on eye icon under action column present against the network record, this will navigate to executions page with the network filtered.<br/>
+                  In the execution record under Operation column click on the output button, this will open output for the Zombienet. The Output window contains both Standard output and Standard Error streams.
                 </p>
               </div>
             </div>
@@ -204,6 +222,21 @@ export default function Documentation() {
             </div>
             <div className="grid gap-6 p-6 rounded-xl border-4 border-larch-dark_3">
               <div className="grid gap-1">
+                <h3 id="executions" className="text-[24px]">Executions</h3>
+                <p className="text-[18px] leading-8">
+                  List Network execution's command and output.
+                </p>
+              </div>
+              <div className="grid gap-3">
+                <p className="text-[18px] leading-8">Features</p>
+                <ul className="list-circle grid gap-3 pl-6 text-[18px]">
+                  <li>View command used to initiate the network creation</li>
+                  <li>View network execution output (both Standard output and standard error streams)</li>
+                </ul>
+              </div>
+            </div>
+            <div className="grid gap-6 p-6 rounded-xl border-4 border-larch-dark_3">
+              <div className="grid gap-1">
                 <h3 id="activity" className="text-[24px]">Activity</h3>
                 <p className="text-[18px] leading-8">
                   List of activities performed by the user.
@@ -212,7 +245,7 @@ export default function Documentation() {
               <div className="grid gap-3">
                 <p className="text-[18px] leading-8">Features</p>
                 <ul className="list-circle grid gap-3 pl-6 text-[18px]">
-                  <li>Listing of activities</li>
+                  <li>Listing of activities performed by the user using Larch</li>
                   <li>Purge activities records</li>
                 </ul>
               </div>

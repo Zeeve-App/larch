@@ -1,4 +1,4 @@
-# Larch
+# <img alt="Larch Dashboard" src="./docs/assets/logo.svg" width="25em"/> Larch
 
 A GUI for Substrate / Polkadot Zombienet application
 

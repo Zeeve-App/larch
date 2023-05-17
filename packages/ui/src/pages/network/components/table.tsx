@@ -66,7 +66,7 @@ export default function NetworkListTable({
 
   return (
     <>
-      <div className="rounded-xl border-2 border-dark-700 p-1">
+      <div className="rounded-xl border-2 border-dark-700 p-1 overflow-scroll">
         <table className="text-white w-full table-auto">
           <thead className="rounded-xl text-xl bg-larch-dark_2 ">
             <tr className="border-b-2 border-dark-700 align-middle">

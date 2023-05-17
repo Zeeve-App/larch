@@ -38,7 +38,7 @@ export default function ActivityListTable({
 }: ActivityListTableProps) {
   return (
     <>
-      <div className="rounded-xl border-2 border-dark-700 p-1">
+      <div className="rounded-xl border-2 border-dark-700 p-1 overflow-scroll">
         <table className="text-white w-full rounded-lg">
           <thead className="rounded-xl bg-larch-dark_2">
             <tr className="border-b-2 border-dark-700 text-xl">

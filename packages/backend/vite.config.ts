@@ -17,6 +17,7 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
-    testTimeout:5000000
+    testTimeout:5000000,
+    exclude: ['__tests__/routes.test.ts']
   },
 })

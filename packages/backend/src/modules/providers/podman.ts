@@ -18,8 +18,6 @@ import * as path from 'node:path';
 import { execute } from '../exec_run.js';
 import { checkPathExists } from '../../utils/fs_helper.js';
 
-export const do1 = '';
-
 export const getNamespace = async (networkDirectory: string): Promise<string> => {
   const data = await fs.readFile(path.join(networkDirectory, 'namespace'), 'utf-8');
   return JSON.parse(data).metadata.name;

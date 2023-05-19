@@ -13,34 +13,24 @@
  * along with Larch.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { test, describe } from 'vitest'
-import { networkCleanUp , isNetworkReady} from '../src/modules/providers/common';
-import { cleanUp, deleteDirUnshare, checkZombieJson } from '../src/modules/providers/podman';
+import path from 'path';
+import { test, describe, expect } from 'vitest'
+import * as podman from '../src/modules/providers/podman';
+import * as common from '../src/modules/providers/common';
 
+const CURRENT_DIR = __dirname;
 
-describe('networkCleanUp', () => {
-    test("networkCleanUp", async () => {
-        const result = networkCleanUp('podman','','');
-    })
-})
-describe('isNetworkReady', () => {
-    test("isNetworkReady", async () => {
-        const result = isNetworkReady('podman','');
-    })
-})
-describe('cleanUp', () => {
-    test("cleanUp", async () => {
-        const result = cleanUp('','');
-    })
-})
-describe('deleteDirUnshare', () => {
-    test("deleteDirUnshare", async () => {
-        const result = deleteDirUnshare('','');
-    })
-})
-describe('checkZombieJson', () => {
-    test("checkZombieJson", async () => {
-        const result = checkZombieJson('');
-    })
-})
+describe('Podman', () => {
+    test("should get Podman namespace for Zombienet network", async () => {
+      const namespace = await podman.getNamespace(path.join(CURRENT_DIR, 'assets'));
+      expect(namespace).toBe('zombie-6b302120');
+    });
+    test("should check Zombie JSON for Zombienet network", async () => {
+      const networkPath = path.join(CURRENT_DIR, 'assets');
+      const isPresent = await podman.checkZombieJson(path.join(CURRENT_DIR, 'assets'));
+      expect(isPresent).toBe(true);
+      const isPresentCommon = await common.isNetworkReady('podman', networkPath);
+      expect(isPresentCommon).toBe(true);
+    });
+});
 

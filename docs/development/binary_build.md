@@ -1,21 +1,11 @@
 # Binary build docs
 
-Nexe is a command-line utility that compiles Node.js application into a single executable file.
-In our project we are using nexe to build the larch binary.
+For binary build we use `pkg` utility
 
-## install nexe globally
+- Install all packages if not done, then
 
-`npm i nexe -g`
-## building binary
+- Run `npx lerna run package:linux` to build for linux and `npx lerna run package:macos` to build for macos
 
-- `nexe packages/cli/dist/index.js --build --python=$(which python3) --verbose --make="-j$(nproc 2> /dev/null || echo 1)" --target linux-x64-18.15.0 --output ./bin/larch`
-## giving permission to execute 
+## References
 
-- `chmod +x larch`
-## run the binary 
-
-- `./larch`
-
-## Reference 
-
-[1]: [nexe](https://www.npmjs.com/package/nexe)
+- [pkg - npm](https://www.npmjs.com/package/pkg)

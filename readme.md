@@ -6,11 +6,25 @@ A GUI for Substrate / Polkadot Zombienet application
 
 ## Usage
 
-- Execute following commands to start Larch
+### Prerequisites
+
+- Install the required Provider so that network orchestrated by Larch and Zombienet
+- If running the from source, NodeJS v18 or higher is required
+
+### Steps
+
+- Execute following commands to start Larch from **source**
   - `npm i`
   - `npm run build`
   - `npm run start`
+
+- Execute following commands to start Larch from **executable** (download from [releases](https://github.com/Zeeve-App/larch/releases))
+  - `./larch`
+
 - Application will be started on Port 9000 (Default), to view UI then go the browser and navigate to `http://localhost:9000`.
+- Create the network template and then launch the network using the created template.
+- Zombienet will be downloaded by Larch if the supported version binary is not present in the `~/.larch/bin`,
+  once downloaded it will start creating the network 
 
 ### Help
 

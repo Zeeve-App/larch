@@ -90,6 +90,14 @@ export default function Documentation() {
           <div className="grid gap-5">
             <div className="grid gap-6 p-6 rounded-xl border-4 border-larch-dark_3">
               <div className="grid gap-1">
+                <h3 id="create-template" className="text-[24px]">Tutorial</h3>
+                <p className="text-[18px] leading-8">
+                  The Following link contains the Larch tutorial : <a className="text-blue-600 visited:text-purple-600" href="https://github.com/Zeeve-App/larch/blob/main/docs/user/tutorial.md" target="_blank" rel="noopener noreferrer">Larch Tutorial</a>
+                </p>
+              </div>
+            </div>
+            <div className="grid gap-6 p-6 rounded-xl border-4 border-larch-dark_3">
+              <div className="grid gap-1">
                 <h3 id="create-template" className="text-[24px]">Create Template</h3>
                 <p className="text-[18px] leading-8">
                   Larch manages Zombienet based network configuration as
@@ -148,24 +156,24 @@ export default function Documentation() {
                     <li>Delete Network</li>
                     <li>View Command</li>
                     <li>View Output</li>
-                  </ul> 
+                  </ul>
                 </p>
                 <h4 id="network-management" className="text-[18px]">Delete Network</h4>
                 <p className="text-[18px] leading-8">
-                  Deletion of network can be done at any stage of network lifecycle (creation, running, etc.).<br/>
+                  Deletion of network can be done at any stage of network lifecycle (creation, running, etc.).<br />
                   Deletion can be performed by navigating to My Network page and then click on delete icon under Action column present against the network record,
                   then confirmation dialog box will appear, click on confirm to initiate deletion process.
                 </p>
                 <h4 id="network-management" className="text-[18px]">View Command</h4>
                 <p className="text-[18px] leading-8">
-                  Zombienet command can be viewed for which it was issued to create the network<br/>
-                  To view the command navigate to network page, and click on eye icon under action column present against the network record, this will navigate to executions page with network filtered.<br/>
+                  Zombienet command can be viewed for which it was issued to create the network<br />
+                  To view the command navigate to network page, and click on eye icon under action column present against the network record, this will navigate to executions page with network filtered.<br />
                   In the execution record under Operation column click on the command button, this will open command details.
                 </p>
                 <h4 id="network-management" className="text-[18px]">View Output</h4>
                 <p className="text-[18px] leading-8">
-                  Zombienet CLI output can be viewed for a created the network<br/>
-                  To view the output, navigate to network page, and click on eye icon under action column present against the network record, this will navigate to executions page with the network filtered.<br/>
+                  Zombienet CLI output can be viewed for a created the network<br />
+                  To view the output, navigate to network page, and click on eye icon under action column present against the network record, this will navigate to executions page with the network filtered.<br />
                   In the execution record under Operation column click on the output button, this will open output for the Zombienet. The Output window contains both Standard output and Standard Error streams.
                 </p>
               </div>

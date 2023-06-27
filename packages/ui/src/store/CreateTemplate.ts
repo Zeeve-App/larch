@@ -77,6 +77,10 @@ export const DEFAULT_IMAGES = [
   "docker.io/parity/polkadot:latest"
 ];
 
+export const DEFAULT_PARACHAIN_IMAGES = [
+  "docker.io/parity/polkadot-parachain:latest"
+]
+
 export const DEFAULT_ARGUMENTS = ["-lparachain=debug"];
 
 export const DEFAULT: Template = {
@@ -137,6 +141,10 @@ export const useCreateTemplate = create<CreateTemplate>((set, get) => ({
       name: get().settings.networkName,
       configFilename: `${get().settings.networkName}-config.json`,
       configContent: encodeBase64(JSON.stringify({
+        settings: {
+          polkadot_introspector: get().settings.polkadotIntrospector,
+          bootnode: get().settings.isBootNode
+        },
         relaychain: {
           default_image: get().relayChain.default_image,
           default_command: get().relayChain.default_command,

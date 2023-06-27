@@ -28,19 +28,19 @@ export const removeInProgressNetwork = (networkName: string): void => {
 export const execute = async (
   runId: string | undefined,
   commandBinPath: string,
-  commandArguments: string,
+  commandArguments: Array<string>,
   intention: Intention,
   relatedId: string | null,
   wait: boolean,
 ) => {
-  const command = `${commandBinPath} ${commandArguments}`;
+  const command = `${commandBinPath} ${commandArguments.join(' ')}`;
   const execRun = new ExecRun(runId);
   await execRun.addMinimalInfo(command, intention, relatedId);
   console.log(command);
   const spawnZombienet = (): Promise<{
     code: number | null, stdout: Buffer, stderr: Buffer
   } | null> => new Promise((resolve, reject) => {
-    const result = spawn(commandBinPath, [...commandArguments.trim().split(' ')]);
+    const result = spawn(commandBinPath, [...commandArguments]);
     if ((intention === 'NETWORK_CREATE' || intention === 'NETWORK_TEST') && relatedId) {
       spawnObjList.set(relatedId, result);
     }

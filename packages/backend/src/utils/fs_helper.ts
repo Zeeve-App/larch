@@ -40,3 +40,5 @@ export const writeToFileFromBase64 = async (
 ): Promise<void> => {
   await fs.writeFile(fsPath, dataInBase64, { encoding: 'base64' });
 };
+
+export const escapePath = (path: string) => path.replace(/(\s+)/g, '\\$1');

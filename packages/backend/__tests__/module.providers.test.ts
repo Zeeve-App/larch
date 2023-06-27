@@ -25,6 +25,10 @@ describe('Podman', () => {
       const namespace = await podman.getNamespace(path.join(CURRENT_DIR, 'assets'));
       expect(namespace).toBe('zombie-6b302120');
     });
+    test("should get Podman cleanup", async () => {
+      const cleanupResponse = podman.cleanUp('zombie-6b302120', 'zombie-6b302120');
+      expect(cleanupResponse).resolves.toBe(undefined);
+    });
     test("should check Zombie JSON for Zombienet network", async () => {
       const networkPath = path.join(CURRENT_DIR, 'assets');
       const isPresent = await podman.checkZombieJson(path.join(CURRENT_DIR, 'assets'));

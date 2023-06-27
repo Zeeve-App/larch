@@ -12,8 +12,7 @@
     "lint": "eslint --ext .ts .",
     "package": "pkg . -o ../../bins/larch",
     "package:linux": "pkg . -o ../../bins/larch-linux -t node18-linux",
-    "package:macos": "pkg . -o ../../bins/larch-macos -t node18-macos",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "package:macos": "pkg . -o ../../bins/larch-macos -t node18-macos"
   },
   "keywords": [],
   "engines": {
@@ -23,8 +22,8 @@
   "license": "GPL-3.0-or-later",
   "devDependencies": {
     "@types/node": "^18.15.11",
-    "@typescript-eslint/eslint-plugin": "^5.58.0",
-    "@typescript-eslint/parser": "^5.58.0",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/parser": "^5.60.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "pkg": "^5.8.1",

@@ -1,8 +1,0 @@
-### networkStatusUpdate() function: 
-During the network creation process, three network states might occur: creating, running and failed. At the time of creating a network the network state will be 'creating', if the network is created successfully, it will be in the running state, if any problem occurs during the network creation process the network state will be 'failed'. In this case, we have to keep updating the network_state column from the database to get the latest state.  So we use a corn job to update the network after each second. We can get the current network status from `/api/larch/network/status/` API.
-
-```
-startInterval():
-* The startInterval function is acting as a corn job which is updating the network state for the existing network in each second.
-```
-

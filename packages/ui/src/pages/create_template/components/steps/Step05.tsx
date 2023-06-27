@@ -30,11 +30,14 @@ const updateTestContent = (testContent: string, filename: string): string => {
   }
   const networkLine = `Network: ./${filename}`;
   if (content.search("Network:") === -1) {
-    content = `${networkLine}\n${content}`;
+    const contentSplit = content.split('\n');
+    const index = contentSplit.findIndex((line)=> line.includes('Description:'))
+    contentSplit.splice(index+1, 0, networkLine)
+    content = contentSplit.join('\n');
   } else {
     content = content.replace(/^.*Network:.*$/gm, networkLine);
   }
-  return content;
+  return content.trim();
 };
 
 export interface Step05Props {

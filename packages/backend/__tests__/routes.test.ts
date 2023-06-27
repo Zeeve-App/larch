@@ -16,7 +16,7 @@
 import { test, expect, describe } from 'vitest'
 import supertest from 'supertest';
 import { startService } from '../src/server.js';
-import { DIRECTORY_NAME, FILE_NAME, NETWORK_NAME, CONFIG_FILE, NETWORK_PROVIDER, TEST_FILE_NAME, TEST_FILE_CONTENT, TEST_NETWORK_NAME } from './test.variables';
+import { DIRECTORY_NAME, FILE_NAME, NETWORK_NAME, CONFIG_FILE, NETWORK_PROVIDER, TEST_FILE_NAME, TEST_FILE_CONTENT, TEST_NETWORK_NAME } from './assets/variables.js';
 import { Network } from '../src/modules/models/network.js';
 import { ExecRun } from '../src/modules/models/exec_run.js';
 import { Template } from '../src/modules/models/template.js';
@@ -69,19 +69,9 @@ describe('Health route endpoint', () => {
     expect(res.statusCode).not.toEqual(404)
     expect(res && res.body && typeof res.body === 'object')
   })
-})
-
-describe('Health route endpoint', () => {
-  test('if the server is not ok, the status should be not equals to 200', async () => {
-    const res = await supertest(app)
-      .get('/health')
-    expect(res.statusCode).not.toEqual(200)
-  })
-})
-
+});
 
 // Version API
-
 describe('Version route endpoint', () => {
   test('check for response and the type of response', async () => {
     const res = await supertest(app)

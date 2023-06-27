@@ -67,30 +67,34 @@ const checkAndDownloadZombienetBinary = async (zombienetVersion: string): Promis
   console.debug('Done providing execute permission to Zombienet binary');
 };
 
-const generateZombienetCliOptions = (zombienetCliOptions: ZombienetCliOptions): string => {
+export const generateZombienetCliOptions = (zombienetCliOptions: ZombienetCliOptions): Array<string> => {
   const optionsList: Array<string> = [];
   if (zombienetCliOptions.version) {
-    optionsList.push(' version');
-    return optionsList.join('');
+    optionsList.push('version');
+    return optionsList;
   }
 
   if (zombienetCliOptions.spawn) {
-    optionsList.push(` spawn ${zombienetCliOptions.networkConfigPath}`);
+    optionsList.push('spawn');
+    optionsList.push(zombienetCliOptions.networkConfigPath ?? '');
   } else if (zombienetCliOptions.test) {
-    optionsList.push(` test ${zombienetCliOptions.testConfigPath}`);
+    optionsList.push('test');
+    optionsList.push(zombienetCliOptions.testConfigPath ?? '');
   }
 
   if (zombienetCliOptions.provider) {
-    optionsList.push(` --provider ${zombienetCliOptions.provider}`);
+    optionsList.push('--provider');
+    optionsList.push(zombienetCliOptions.provider);
   }
 
   if (zombienetCliOptions.dir) {
-    optionsList.push(` --dir ${zombienetCliOptions.dir}`);
+    optionsList.push('--dir');
+    optionsList.push(zombienetCliOptions.dir);
   }
 
-  optionsList.push(' --force');
+  optionsList.push('--force');
 
-  return optionsList.join('');
+  return optionsList;
 };
 
 export const runZombienet = async (

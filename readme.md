@@ -48,7 +48,8 @@ Options:
 
 ### Docs
 
-- [Docs](/docs)
+- [Docs](/docs/index.md)
+- [Tutorial](/docs/user/tutorial.md)
 
 ## License
 

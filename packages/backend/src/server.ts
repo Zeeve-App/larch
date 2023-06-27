@@ -14,11 +14,10 @@
  */
 
 import { join } from 'path';
-import * as express from 'express';
-import {
+import cors from 'cors';
+import express, {
   Request, Response, NextFunction, Application,
 } from 'express';
-import * as cors from 'cors';
 import apiRouter from './api/index.js';
 
 export type ServiceStartOptions = {

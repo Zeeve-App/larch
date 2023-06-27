@@ -7,9 +7,11 @@
   "license": "GPL-3.0-or-later",
   "scripts": {
     "start": "cd packages/cli && npm run start",
-    "build": "ASSET_URL='/ui' lerna run build && cp -r packages/ui/dist packages/backend/dist/ui"
+    "build": "ASSET_URL='/ui' lerna run build && cp -r packages/ui/dist packages/backend/dist/ui",
+    "test": "lerna run test",
+    "coverage": "lerna run coverage"
   },
   "devDependencies": {
-    "lerna": "^6.6.1"
+    "lerna": "^7.0.2"
   }
 }

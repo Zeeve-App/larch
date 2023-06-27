@@ -26,6 +26,9 @@ export default function Documentation() {
             <a href="#usage">Usage</a>
             <ol className="gap-3 no-underline list-[lower-alpha] list-inside">
               <li>
+                <a href="#tutorial">Tutorial</a>
+              </li>
+              <li>
                 <a href="#create-template">Create Template</a>
               </li>
               <li>
@@ -90,7 +93,7 @@ export default function Documentation() {
           <div className="grid gap-5">
             <div className="grid gap-6 p-6 rounded-xl border-4 border-larch-dark_3">
               <div className="grid gap-1">
-                <h3 id="create-template" className="text-[24px]">Tutorial</h3>
+                <h3 id="tutorial" className="text-[24px]">Tutorial</h3>
                 <p className="text-[18px] leading-8">
                   The Following link contains the Larch tutorial : <a className="text-blue-600 visited:text-purple-600" href="https://github.com/Zeeve-App/larch/blob/main/docs/user/tutorial.md" target="_blank" rel="noopener noreferrer">Larch Tutorial</a>
                 </p>

@@ -44,5 +44,7 @@ UI base path can be changed by passing environment variable `ASSET_URL` and can 
 ## References
 
 [1] : [Building for Production | Vite](https://vitejs.dev/guide/build.html#public-base-path)
+
 [2] : [Getting Started | Lerna](https://lerna.js.org/docs/getting-started)
+
 [3] : [Podman Ubuntu issue](https://bugs.launchpad.net/ubuntu/+source/libpod/+bug/2024394)

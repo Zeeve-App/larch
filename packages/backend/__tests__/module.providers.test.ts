@@ -17,6 +17,14 @@ import path from 'path';
 import { test, describe, expect } from 'vitest'
 import * as podman from '../src/modules/providers/podman';
 import * as common from '../src/modules/providers/common';
+import { LARCH_CONTEXT_DIR } from '../src/config.js';
+import { knexInstance } from '../src/modules/db/sqlite.js';
+import { createDir } from '../src/utils/fs_helper.js';
+
+await createDir(LARCH_CONTEXT_DIR);
+console.log('Executing DB migrations');
+await knexInstance.migrate.latest();
+console.log('Done executing DB migrations');
 
 const CURRENT_DIR = __dirname;
 

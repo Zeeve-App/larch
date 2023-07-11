@@ -21,7 +21,14 @@ import { Network } from '../src/modules/models/network.js';
 import { ExecRun } from '../src/modules/models/exec_run.js';
 import { Template } from '../src/modules/models/template.js';
 import { UserOperation } from '../src/modules/models/user_operation.js';
-import { LARCH_VERSION, ZOMBIENET_VERSION } from '../src/config.js';
+import { LARCH_VERSION, ZOMBIENET_VERSION, LARCH_CONTEXT_DIR } from '../src/config.js';
+import { knexInstance } from '../src/modules/db/sqlite.js';
+import { createDir } from '../src/utils/fs_helper.js';
+
+await createDir(LARCH_CONTEXT_DIR);
+console.log('Executing DB migrations');
+await knexInstance.migrate.latest();
+console.log('Done executing DB migrations');
 
 const app = startService({ httpPort: 9000, disableApi: false, disableUi: false });
 

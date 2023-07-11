@@ -1,5 +1,6 @@
 # Testing and code coverage docs 
 
+- As a prerequisite install podman for Zombienet orchestration related tests.
 - To run the test cases present in the application, from the root of the repository run: `npm run test`
 - To check the test coverage in the application, from the root of the repository run: `npm run coverage`
 

@@ -81,8 +81,8 @@ describe('Version route endpoint', () => {
     expect(res.body).toEqual({
         "status": "success",
         "result": {
-            "zombienetVersion": "1.3.43",
-            "larchVersion": "1.0.0"
+            "zombienetVersion": ZOMBIENET_VERSION,
+            "larchVersion": LARCH_VERSION
         }
     })
   })

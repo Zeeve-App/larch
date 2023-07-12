@@ -6,7 +6,7 @@ For binary build we use `pkg` utility
 
 From the root of the repository, perform the following actions:
 
-- Install all packages (`npm i`) if not done, then
+- Install all packages (`npm i`) and build all the packages (`npm run build`) if not done, then
 
 - Run `npx lerna run package:linux` to build for linux and `npx lerna run package:macos` to build for macos
 

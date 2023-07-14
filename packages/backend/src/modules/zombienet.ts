@@ -37,7 +37,8 @@ const zombienetBinPathByVersion = (
 ): string => `${ZOMBIENET_BIN_COLLECTION_DIR}/${zombienetBinNameByVersion(zombienetVersion)}`;
 
 export const downloadZombienetBinary = async (zombienetVersion: string): Promise<void> => {
-  const binaryDownloadUrl = `${ZOMBIENET_BINARY_DOWNLOAD_BASE_URL}/v${zombienetVersion}/zombienet-linux-x64`;
+  const downloadBinaryFileSlugName = process.platform === 'darwin' ? 'zombienet-macos' : 'zombienet-linux-x64';
+  const binaryDownloadUrl = `${ZOMBIENET_BINARY_DOWNLOAD_BASE_URL}/v${zombienetVersion}/${downloadBinaryFileSlugName}`;
   const binaryVersionedPath = zombienetBinPathByVersion(zombienetVersion);
   await fs.mkdir(ZOMBIENET_BIN_COLLECTION_DIR, { recursive: true });
   await downloadFileToAPath({

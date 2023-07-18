@@ -10,7 +10,7 @@ This tutorial will consist of creating template and network from the created tem
 6. Name the template: `sample-template`, leave other options as it is and click `next` at the bottom of the page
 7. We are in `Relaychain Configuration` section, Some of the fields are prefilled, now in the `Nodes` sub sections, 
     - add value `alice` in the `name` field, select `validator` option, click `+` icon button present inside the `Nodes` sub section, this will add new node input section.
-    - In the new node box, add value `bob` in the `name` field, select `validator` option, and again click on `+` icon button
+    - In the new node box, add value `bob` in the `name` field, select `validator` option.
     - Basically we added two nodes with validator enabled, now click next
 8. Now we are in `Parachain Configuration` section
     - click on `+` icon button to add new parachain config.

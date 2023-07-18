@@ -12,6 +12,6 @@
     "coverage": "lerna run coverage"
   },
   "devDependencies": {
-    "lerna": "^7.1.0"
+    "lerna": "^7.1.4"
   }
 }

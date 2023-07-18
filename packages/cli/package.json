@@ -1,6 +1,6 @@
 {
   "name": "larch-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Larch CLI",
   "main": "dist/index.js",
   "bin": {
@@ -22,15 +22,15 @@
   "license": "GPL-3.0-or-later",
   "devDependencies": {
     "@types/node": "^18.15.11",
-    "@typescript-eslint/eslint-plugin": "^5.60.0",
-    "@typescript-eslint/parser": "^5.60.0",
+    "@typescript-eslint/eslint-plugin": "^6.1.0",
+    "@typescript-eslint/parser": "^6.1.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
     "pkg": "^5.8.1",
     "typescript": "^5.0.2"
   },
   "dependencies": {
     "commander": "^10.0.0",
-    "larch-backend": "1.0.1"
+    "larch-backend": "1.0.2"
   }
 }

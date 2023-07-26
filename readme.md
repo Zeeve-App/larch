@@ -8,7 +8,7 @@ A GUI for Substrate / Polkadot Zombienet application
 
 ### Prerequisites
 
-- Install the required Provider so that network orchestrated by Larch and Zombienet
+- Install the required Provider (currently supporting **Podman v3**) so that network orchestrated by Larch and Zombienet
 - If running the from source, NodeJS v18 or higher is required
 
 ### Steps

@@ -136,7 +136,7 @@ During the network creation process, three network states might occur: creating,
 
 ### Delete Network
 
-Delete network function is used to `delete` a network from the created network list. It will update the network state to `in-cleanup` and also delete the network directory from the process. At last it deletes all the network run informations from the database.
+Delete network function is used to `delete` a network from the created network list. It will update the network state to `in-cleanup` and also delete the network directory from the process. At last it deletes all the network run information from the database.
 
 ### Create Network
 

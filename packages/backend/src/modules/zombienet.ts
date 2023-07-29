@@ -15,7 +15,12 @@
 
 import * as fs from 'node:fs/promises';
 import { constants } from 'node:fs';
-import { ZOMBIENET_BIN_COLLECTION_DIR, ZOMBIENET_BINARY_DOWNLOAD_BASE_URL } from '../config.js';
+import { spawnSync } from 'node:child_process';
+import {
+  ZOMBIENET_BIN_COLLECTION_DIR,
+  ZOMBIENET_BINARY_DOWNLOAD_BASE_URL,
+  ZOMBIENET_PATCH_BINARY_DOWNLOAD_BASE_URL,
+} from '../config.js';
 import { downloadFileToAPath } from '../utils/download.js';
 import { checkPathExists } from '../utils/fs_helper.js';
 import { Intention } from './models/exec_run.js';
@@ -30,15 +35,48 @@ type ZombienetCliOptions = {
   dir?: string,
   version?: boolean
 };
-
 const zombienetBinNameByVersion = (zombienetVersion: string): string => `zombienet-${zombienetVersion}`;
 const zombienetBinPathByVersion = (
   zombienetVersion: string,
 ): string => `${ZOMBIENET_BIN_COLLECTION_DIR}/${zombienetBinNameByVersion(zombienetVersion)}`;
+const zombienetBinContextPath = (): string => `${ZOMBIENET_BIN_COLLECTION_DIR}/context.json`;
 
-export const downloadZombienetBinary = async (zombienetVersion: string): Promise<void> => {
+const getPodmanCurrentAndAvailableVersion = async (): Promise<{
+  current: string,
+  available: string
+}> => {
+  const podmanVersions = {
+    current: '3',
+    available: '3',
+  };
+  try {
+    await fs.mkdir(ZOMBIENET_BIN_COLLECTION_DIR, { recursive: true });
+    const pathExists = await checkPathExists(zombienetBinContextPath());
+    if (pathExists) {
+      const data = await fs.readFile(zombienetBinContextPath(), 'utf-8');
+      const contextJSON = JSON.parse(data);
+      if (contextJSON.podmanVersion) podmanVersions.current = contextJSON.podmanVersion;
+    } else {
+      const contextJSON = {
+        podmanVersion: podmanVersions.current,
+      };
+      await fs.writeFile(zombienetBinContextPath(), JSON.stringify(contextJSON), 'utf-8');
+    }
+    const execInfo = spawnSync('podman', ['version', '--format', 'json']);
+    const availablePodmanInfo = JSON.parse(execInfo.stdout?.toString('utf-8'));
+    const majorVersion = availablePodmanInfo.Client.Version.split('.')[0];
+    podmanVersions.available = majorVersion;
+  } catch (error) {
+    console.warn('Error fetching podman version', error);
+  }
+  return podmanVersions;
+};
+
+export const downloadZombienetBinary = async (zombienetVersion: string, podmanVersion: string): Promise<void> => {
   const downloadBinaryFileSlugName = process.platform === 'darwin' ? 'zombienet-macos' : 'zombienet-linux-x64';
-  const binaryDownloadUrl = `${ZOMBIENET_BINARY_DOWNLOAD_BASE_URL}/v${zombienetVersion}/${downloadBinaryFileSlugName}`;
+  const binaryDownloadUrl = !podmanVersion || podmanVersion === '3'
+    ? `${ZOMBIENET_BINARY_DOWNLOAD_BASE_URL}/v${zombienetVersion}/${downloadBinaryFileSlugName}`
+    : `${ZOMBIENET_PATCH_BINARY_DOWNLOAD_BASE_URL}/v${zombienetVersion}-podman4-patch/${downloadBinaryFileSlugName}`;
   const binaryVersionedPath = zombienetBinPathByVersion(zombienetVersion);
   await fs.mkdir(ZOMBIENET_BIN_COLLECTION_DIR, { recursive: true });
   await downloadFileToAPath({
@@ -49,6 +87,10 @@ export const downloadZombienetBinary = async (zombienetVersion: string): Promise
       console.log(`Total file size: ${fileSize}, Current file size: ${currentFileSize}, Percent downloaded: ${((currentFileSize / fileSize) * 100).toFixed(2)}`);
     },
   });
+  const contextJSON = {
+    podmanVersion,
+  };
+  await fs.writeFile(zombienetBinContextPath(), JSON.stringify(contextJSON), 'utf-8');
 };
 
 export const executePermissionToBinary = async (zombienetVersion: string): Promise<void> => {
@@ -59,9 +101,13 @@ export const executePermissionToBinary = async (zombienetVersion: string): Promi
 const checkAndDownloadZombienetBinary = async (zombienetVersion: string): Promise<void> => {
   const binaryVersionedPath = zombienetBinPathByVersion(zombienetVersion);
   const pathExists = await checkPathExists(binaryVersionedPath);
-  if (pathExists) return;
+  const {
+    current: currentPodmanVersion,
+    available: availablePodmanVersion,
+  } = await getPodmanCurrentAndAvailableVersion();
+  if (pathExists && currentPodmanVersion === availablePodmanVersion) return;
   console.debug(`Downloading Zombienet binary with version: ${zombienetVersion}`);
-  await downloadZombienetBinary(zombienetVersion);
+  await downloadZombienetBinary(zombienetVersion, availablePodmanVersion);
   console.debug('Downloading of Zombienet binary is completed');
   console.debug('Providing execute permission to Zombienet binary');
   await executePermissionToBinary(zombienetVersion);

@@ -25,3 +25,4 @@ export const ZOMBIENET_NETWORKS_COLLECTION_DIR = `${LARCH_CONTEXT_DIR}/networks`
 export const ZOMBIENET_NETWORKS_EXECUTION_DIR = `${LARCH_CONTEXT_DIR}/exec`;
 
 export const ZOMBIENET_BINARY_DOWNLOAD_BASE_URL = 'https://github.com/paritytech/zombienet/releases/download';
+export const ZOMBIENET_PATCH_BINARY_DOWNLOAD_BASE_URL = 'https://github.com/Zeeve-App/zombienet/releases/download';

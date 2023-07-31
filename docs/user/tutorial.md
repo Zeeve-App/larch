@@ -3,11 +3,13 @@
 This tutorial will consist of creating template and network from the created template, this tutorial is to reproduce the official Zombienet example: [zombienet/examples/0001-small-network.toml at main · paritytech/zombienet · GitHub](https://github.com/paritytech/zombienet/blob/main/examples/0001-small-network.toml)
 
 1. Download the larch binary from releases: https://github.com/Zeeve-App/larch/releases
-2. Install Podman on the system to orchestrate the Zombienet networks.
+2. Install Podman / kubectl (as described in here - https://github.com/paritytech/zombienet#with-kubernetes) on the system to orchestrate the Zombienet networks.
 3. Give execute permissions to larch binary: `chmod 755 larch`, Run the larch binary by doing: `./larch`
 4. Open `http://localhost:9000` in the browser
 5. Click on `Network Template +` button, present at the top of page
-6. Name the template: `sample-template`, leave other options as it is and click `next` at the bottom of the page
+6. Name the template: `sample-template`
+    - Select either `Podman` or `Kubernetes` as **Provider** based on your preference (the provider should be installed as mentioned in prerequisite - [Larch Prerequisites](../../readme.md#prerequisites))
+    - click `next` at the bottom of the page
 7. We are in `Relaychain Configuration` section, Some of the fields are prefilled, now in the `Nodes` sub sections, 
     - add value `alice` in the `name` field, select `validator` option, click `+` icon button present inside the `Nodes` sub section, this will add new node input section.
     - In the new node box, add value `bob` in the `name` field, select `validator` option.

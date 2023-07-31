@@ -66,8 +66,7 @@ export default function NetworkListTable({
 
   return (
     <>
-      <div className="rounded-xl border-2 border-dark-700 p-1 overflow-scroll">
-        <table className="text-white w-full table-auto">
+        <table className="text-white w-full table-auto border-2 border-dark-700">
           <thead className="rounded-xl text-xl bg-larch-dark_2 ">
             <tr className="border-b-2 border-dark-700 align-middle">
               <th className="px-6 py-3 h-[48px] text-left" scope="col">
@@ -110,11 +109,7 @@ export default function NetworkListTable({
           <tbody className="rounded-lg text-xl">
             {networkList.map((network, index) => (
               <tr
-                className={
-                  index + 1 < networkList.length
-                    ? "border-b-2 border-dark-700"
-                    : ""
-                }
+                className="border-b-2 border-dark-700 hover:bg-larch-dark_3"
                 key={index}
               >
                 <td className="px-6 h-[72px] break-all py-3">{network.name}</td>
@@ -164,7 +159,6 @@ export default function NetworkListTable({
             ))}
           </tbody>
         </table>
-      </div>
       {networkList.length === 0 && (
         <div className="w-full text-white text-center pt-5">
           <div>

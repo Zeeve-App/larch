@@ -38,7 +38,7 @@ const Step01: FC<Step01Props> = ({ onNextStep, onPreviousStep }) => {
 
   const providers = [
     { label: "Podman", value: "podman" },
-    // { label: "Kubernetes", value: "kubernetes" },
+    { label: "Kubernetes", value: "kubernetes" },
     // { label: "Native", value: "native" },
   ];
 

@@ -71,8 +71,7 @@ export default function TemplateListTable({
   const [actionIdx, setActionIdx] = useState<number | null>(null);
   return (
     <>
-      <div className="rounded-xl border-2 border-dark-700 p-1 overflow-scroll">
-        <table className="text-white w-full text-xl">
+        <table className="text-white w-full text-xl border-2 border-dark-700">
           <thead className="rounded-xl bg-larch-dark_2">
             <tr className="border-b-2 border-dark-700">
               <th className="px-6 py-3 h-[48px] text-left" scope="col">
@@ -109,11 +108,7 @@ export default function TemplateListTable({
           <tbody className="text-xl">
             {templateList.map((template, index) => (
               <tr
-                className={
-                  index + 1 < templateList.length
-                    ? "border-b-2 border-dark-700"
-                    : ""
-                }
+                className="border-b-2 border-dark-700 hover:bg-larch-dark_3"
                 key={index}
               >
                 <td className="px-6 h-[72px] py-3">{template.id}</td>
@@ -209,7 +204,6 @@ export default function TemplateListTable({
             ))}
           </tbody>
         </table>
-      </div>
       {templateList.length === 0 && (
         <div className="w-full text-white text-center pt-5">
           <div>

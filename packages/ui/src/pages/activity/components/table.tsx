@@ -38,8 +38,7 @@ export default function ActivityListTable({
 }: ActivityListTableProps) {
   return (
     <>
-      <div className="rounded-xl border-2 border-dark-700 p-1 overflow-scroll">
-        <table className="text-white w-full rounded-lg">
+        <table className="text-white w-full rounded-lg border-2 border-dark-700">
           <thead className="rounded-xl bg-larch-dark_2">
             <tr className="border-b-2 border-dark-700 text-xl">
               <th className="px-6 py-3 h-[48px]  text-left" scope="col">
@@ -71,11 +70,7 @@ export default function ActivityListTable({
           <tbody className="text-xl">
             {activityList.map((activity, index) => (
               <tr
-                className={
-                  index + 1 < activityList.length
-                    ? "border-b-2 border-dark-700"
-                    : ""
-                }
+                className="border-b-2 border-dark-700 hover:bg-larch-dark_3"
               >
                 <td className="px-6 h-[72px] py-3">{activity.id}</td>
                 <td className="px-6 h-[72px] py-3 ">
@@ -89,7 +84,6 @@ export default function ActivityListTable({
             ))}
           </tbody>
         </table>
-      </div>
       {activityList.length === 0 && (
         <div className="w-full text-white text-center pt-5">
           <div>

@@ -15,7 +15,7 @@
 
 /* eslint-disable react/button-has-type */
 /* eslint-disable max-len */
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { NetworkType } from "../types";
 import { useCompact } from "src/hooks";
@@ -43,9 +43,11 @@ export default function PopUpBox({
   };
 
   const compact = useCompact();
+  const completeButtonRef = useRef(null);
 
   return (
     <Dialog
+      initialFocus={completeButtonRef}
       open={isOpen}
       onClose={() => setIsOpen(false)}
       className="relative z-50"
@@ -79,9 +81,11 @@ export default function PopUpBox({
                 <div className="text-white font-rubik flex gap-3 flex-1">
                   :
                   <input
+                    ref={completeButtonRef}
                     className="flex-grow bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md px-2"
                     onChange={handleChange}
                     value={inputText}
+                    onKeyDown={(event)=>{event.key === 'Enter' && onConfirm(inputText, type)}}
                   />
                 </div>
               </div>

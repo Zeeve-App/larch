@@ -45,8 +45,7 @@ export default function ActivityListTable({
 }: RunListTableProps) {
   return (
     <>
-      <div className="rounded-xl border-2 border-dark-700 p-1 overflow-scroll">
-        <table className="text-white w-full rounded table-auto">
+        <table className="text-white w-full rounded table-auto border-2 border-dark-700">
           <thead className="rounded-xl text-xl bg-larch-dark_2">
             <tr className="border-b-2 border-dark-700">
               <th className="px-6 py-3 h-[48px]  text-left" scope="col">
@@ -84,9 +83,7 @@ export default function ActivityListTable({
           <tbody className="text-xl">
             {runList.map((activity, index) => (
               <tr
-                className={
-                  index + 1 < runList.length ? "border-b-2 border-dark-700" : ""
-                }
+                className="border-b-2 border-dark-700 hover:bg-larch-dark_3"
                 key={index}
               >
                 <td className="px-6 h-[72px] break-all py-3">{activity.id}</td>
@@ -122,7 +119,6 @@ export default function ActivityListTable({
             ))}
           </tbody>
         </table>
-      </div>
       {runList.length === 0 && (
         <div className="w-full text-white text-center pt-5">
           <div>No Records found</div>

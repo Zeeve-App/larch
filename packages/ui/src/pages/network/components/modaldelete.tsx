@@ -16,6 +16,7 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable max-len */
 import { Dialog } from '@headlessui/react';
+import { useRef } from 'react';
 
 type DeletePopUpBoxProps = {
   isOpen: boolean;
@@ -30,8 +31,10 @@ export default function DeletePopUpBox({
   onConfirm,
   name,
 }: DeletePopUpBoxProps) {
+  const completeButtonRef = useRef(null);
   return (
     <Dialog
+      initialFocus={completeButtonRef}
       open={isOpen}
       onClose={() => setIsOpen(false)}
       className='relative z-50'
@@ -50,6 +53,7 @@ export default function DeletePopUpBox({
             </div>
             <div className='flex flex-row justify-between'>
               <button
+                ref={completeButtonRef}
                 className='border-2 border-border rounded-lg py-1.5 px-2 bg-green hover:bg-dark-green text-white font-bold'
                 onClick={() => onConfirm(name)}
               >

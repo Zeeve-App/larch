@@ -16,6 +16,7 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable max-len */
 import { Dialog } from "@headlessui/react";
+import { useRef } from "react";
 import { Button } from "src/components/Button";
 
 type PopUpBoxProps = {
@@ -29,8 +30,10 @@ export default function PopUpBox({
   setIsOpen,
   onConfirm,
 }: PopUpBoxProps) {
+  const completeButtonRef = useRef(null);
   return (
     <Dialog
+      initialFocus={completeButtonRef}
       open={isOpen}
       onClose={() => setIsOpen(false)}
       className="relative z-50"
@@ -39,12 +42,13 @@ export default function PopUpBox({
       <div className="fixed inset-0 flex items-center justify-center ">
         <Dialog.Panel className="w-full max-w-lg rounded-xl bg-create-button border-dark-700 border-4 p-4">
           <Dialog.Title className=" text-white font-rubik pb-4 text-center font-bold">
-            Are you want to create template network?
+            Do you want to save network template?
           </Dialog.Title>
           <Dialog.Description />
           <div className="flex flex-col gap-y-4 mt-5">
             <div className="flex flex-row gap-x-2 justify-between">
               <Button
+                ref={completeButtonRef}
                 className="bg-larch-dark_3 hover:bg-larch-pink"
                 onClick={onConfirm}
               >

@@ -24,40 +24,10 @@ export const getNamespace = async (networkDirectory: string): Promise<string> =>
 
 export const cleanUp = async (namespace: string, networkId: string): Promise<void> => {
   const args = [
-    'pod',
-    'ps',
-    '-f',
-    `label=zombie-ns=${namespace}`,
-    '--format',
-    '{{.Name}}',
+    'delete',
+    'namespace',
+    namespace,
   ];
-  const { code, stdout } = await execute(undefined, 'podman', args, 'NETWORK_CLEANUP', networkId, true);
-  if (code !== 0 || stdout === null) return;
-  const removePodArgs = ['pod', 'rm', '-f', ...stdout.toString('utf-8').trim().split('\n').map((pod) => pod.trim())];
-  const { code: removePodCode } = await execute(
-    undefined,
-    'podman',
-    removePodArgs,
-    'NETWORK_CLEANUP',
-    networkId,
-    true,
-  );
-  console.log({ removePodCode });
-  // now remove the network
-  const removeNetworkArgs = ['network', 'rm', namespace];
-  const { code: removeNetworkCode } = await execute(
-    undefined,
-    'podman',
-    removeNetworkArgs,
-    'NETWORK_CLEANUP',
-    networkId,
-    true,
-  );
+  const { code: removeNetworkCode } = await execute(undefined, 'kubectl', args, 'NETWORK_CLEANUP', networkId, true);
   console.log({ removeNetworkCode });
-};
-
-export const deleteDirUnshare = async (dirPath: string, networkName: string): Promise<void> => {
-  const args = ['unshare', 'rm', '-r', dirPath];
-  const { code } = await execute(undefined, 'podman', args, 'NETWORK_CLEANUP', networkName, true);
-  if (code !== 0) throw new Error('Not able to deleted directory');
 };

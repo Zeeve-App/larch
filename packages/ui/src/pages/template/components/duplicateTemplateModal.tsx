@@ -21,6 +21,7 @@ import { TemplateDelete } from "../types";
 import { useCompact } from "src/hooks";
 import { ReactComponent as IconCross } from "src/assets/Cross.svg";
 import { Button, IconButton } from "src/components/Button";
+import { useRef } from "react";
 
 type PopUpBoxProps = {
   duplicateTemplateObj: TemplateDelete;
@@ -34,9 +35,11 @@ export default function DuplicateTempPopUpBox({
   onConfirm,
 }: PopUpBoxProps) {
   const compact = useCompact();
+  const completeButtonRef = useRef(null);
 
   return (
     <Dialog
+      initialFocus={completeButtonRef}
       open={duplicateTemplateObj.isOpen}
       onClose={() =>
         setDuplicateTemplateObj({ ...duplicateTemplateObj, isOpen: false })
@@ -85,12 +88,16 @@ export default function DuplicateTempPopUpBox({
                       })
                     }
                     value={duplicateTemplateObj.templateName}
+                    onKeyDown={(event)=>{event.key === 'Enter' && onConfirm()}}
                   />
                 </div>
               </div>
             </div>
             <div className="grid gap-6">
-              <Button onClick={onConfirm} className="bg-larch-pink p-3">
+              <Button 
+                ref={completeButtonRef}
+                onClick={onConfirm}
+                className="bg-larch-pink p-3">
                 Confirm
               </Button>
             </div>

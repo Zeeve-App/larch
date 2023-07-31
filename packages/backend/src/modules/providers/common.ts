@@ -14,8 +14,17 @@
  */
 
 /* eslint-disable import/prefer-default-export */
+import path from 'path';
+import { checkPathExists } from '../../utils/fs_helper.js';
 import { Provider } from '../models/network.js';
 import * as podman from './podman.js';
+import * as k8 from './k8.js';
+
+export const checkZombieJson = async (
+  networkDirectory: string,
+): Promise<boolean> => checkPathExists(
+  path.join(networkDirectory, 'zombie.json'),
+);
 
 export const networkCleanUp = async (
   provider: Provider,
@@ -32,6 +41,16 @@ export const networkCleanUp = async (
         console.error('File do not exists, skipping network deletion');
       }
     }
+  } else if (provider === 'kubernetes') {
+    try {
+      const namespace = await k8.getNamespace(networkDirectory);
+      await k8.cleanUp(namespace, networkName);
+    } catch (error) {
+      // @ts-ignore
+      if (error!.code === 'ENOENT') {
+        console.error('File do not exists, skipping network deletion');
+      }
+    }
   }
 };
 
@@ -40,7 +59,8 @@ export const isNetworkReady = async (
   networkDirectory: string,
 ) => {
   switch (provider) {
-    case 'podman': return podman.checkZombieJson(networkDirectory);
+    case 'podman': return checkZombieJson(networkDirectory);
+    case 'kubernetes': return checkZombieJson(networkDirectory);
     default: return true;
   }
 };

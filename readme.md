@@ -8,7 +8,11 @@ A GUI for Substrate / Polkadot Zombienet application
 
 ### Prerequisites
 
-- Install the required Provider (currently supporting **Podman v3**) so that network orchestrated by Larch and Zombienet
+- Install the required Provider so that network orchestrated by Larch and Zombienet
+  - Podman -> v3.x / v4.x,
+    - On Mac OS please generate your own **Polkadot / Parachain** images native to mac os (No official Mac specific images from Parity) and specify image name and tag in templates as required.
+    - If want to run x86_64 images on Mac OS with M1 or higher, try this approach -> [Running x86_64-based containers on Mac computers with an Apple silicon (M1) processor](https://developer.ibm.com/tutorials/running-x86-64-containers-mac-silicon-m1/)
+  - K8 -> Last tested on k8 v1.27.3 (using Minikube), since **Larch** depends on the **Zombienet**, the prerequisites can be referenced from here: [GitHub - paritytech/zombienet: A cli tool to easily spawn ephemeral Polkadot/Substrate networks and perform tests against them.](https://github.com/paritytech/zombienet#with-kubernetes)
 - If running the from source, NodeJS v18 or higher is required
 
 ### Steps

@@ -21,6 +21,7 @@ import { TemplateDelete } from "../types";
 import { useCompact } from "src/hooks";
 import { ReactComponent as IconCross } from "src/assets/Cross.svg";
 import { Button, IconButton } from "src/components/Button";
+import { useRef } from "react";
 
 type DeletePopUpBoxProps = {
   setIsOpen: (obj: TemplateDelete) => void;
@@ -34,9 +35,11 @@ export default function DeletePopUpBox({
   deleteTemplateObj,
 }: DeletePopUpBoxProps) {
   const compact = useCompact();
+  const completeButtonRef = useRef(null);
 
   return (
     <Dialog
+      initialFocus={completeButtonRef}
       open={deleteTemplateObj.isOpen}
       onClose={() => setIsOpen({ ...deleteTemplateObj, isOpen: false })}
       className="relative z-50"
@@ -64,6 +67,7 @@ export default function DeletePopUpBox({
           <div className="flex flex-col gap-6 p-6">
             <div className="grid gap-6">
               <Button
+                ref={completeButtonRef}
                 onClick={() => onConfirm(deleteTemplateObj.templateId)}
                 className="bg-larch-pink p-3"
               >

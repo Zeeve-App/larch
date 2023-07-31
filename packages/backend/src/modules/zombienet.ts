@@ -121,6 +121,7 @@ export const generateZombienetCliOptions = (zombienetCliOptions: ZombienetCliOpt
     return optionsList;
   }
 
+  optionsList.push('--monitor');
   if (zombienetCliOptions.spawn) {
     optionsList.push('spawn');
     optionsList.push(zombienetCliOptions.networkConfigPath ?? '');

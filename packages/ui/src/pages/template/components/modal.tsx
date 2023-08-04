@@ -43,11 +43,12 @@ export default function PopUpBox({
   };
 
   const compact = useCompact();
-  const completeButtonRef = useRef(null);
+  const initialFocusRef = useRef(null);
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
 
   return (
     <Dialog
-      initialFocus={completeButtonRef}
+      initialFocus={initialFocusRef}
       open={isOpen}
       onClose={() => setIsOpen(false)}
       className="relative z-50"
@@ -61,14 +62,13 @@ export default function PopUpBox({
           className="w-full max-w-3xl rounded-xl bg-larch-dark_2 border-dark-700 border-4"
         >
           <Dialog.Title className="text-white font-rubik pb-4 flex justify-between text-3xl p-6 font-bold">
-            <h1>Create Network</h1>
+            Create Network
             <IconButton
               className="bg-larch-dark_3 rounded-xl"
               onClick={() => setIsOpen(false)}
               icon={<IconCross className="w-10 h-10" />}
             />
           </Dialog.Title>
-          <Dialog.Description />
           <div className="w-full flex justify-center">
             <div className="h-1 w-full bg-brand-gray" />
           </div>
@@ -81,11 +81,13 @@ export default function PopUpBox({
                 <div className="text-white font-rubik flex gap-3 flex-1">
                   :
                   <input
-                    ref={completeButtonRef}
+                    ref={initialFocusRef}
+                    autoFocus
                     className="flex-grow bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md px-2"
                     onChange={handleChange}
                     value={inputText}
-                    onKeyDown={(event)=>{event.key === 'Enter' && onConfirm(inputText, type)}}
+                    onKeyDown={(event) => event.key === 'Enter' && onConfirm(inputText, type)}
+                    onBlur={() => submitButtonRef.current && submitButtonRef.current.focus()}
                   />
                 </div>
               </div>
@@ -107,6 +109,7 @@ export default function PopUpBox({
             <div className="grid gap-6">
               <Button
                 onClick={() => onConfirm(inputText, type)}
+                ref={submitButtonRef}
                 className="bg-larch-pink p-3"
               >
                 Confirm

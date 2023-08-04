@@ -35,7 +35,7 @@ export default function DuplicateTempPopUpBox({
   onConfirm,
 }: PopUpBoxProps) {
   const compact = useCompact();
-  const completeButtonRef = useRef(null);
+  const completeButtonRef = useRef<HTMLButtonElement>(null);
 
   return (
     <Dialog
@@ -89,6 +89,7 @@ export default function DuplicateTempPopUpBox({
                     }
                     value={duplicateTemplateObj.templateName}
                     onKeyDown={(event)=>{event.key === 'Enter' && onConfirm()}}
+                    onBlur={()=> completeButtonRef.current && completeButtonRef.current.focus()}
                   />
                 </div>
               </div>

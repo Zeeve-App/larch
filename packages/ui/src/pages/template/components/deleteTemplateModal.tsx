@@ -53,7 +53,7 @@ export default function DeletePopUpBox({
           className="w-full max-w-3xl rounded-xl bg-larch-dark_2 border-dark-700 border-4"
         >
           <Dialog.Title className="text-white font-rubik pb-4 flex justify-between text-3xl p-6 font-bold">
-            <h1> Do you want to delete '{deleteTemplateObj.templateName}'</h1>
+            <h1> Do you want to delete the template: <br/> '{deleteTemplateObj.templateName}'</h1>
             <IconButton
               className="bg-larch-dark_3 rounded-xl"
               onClick={() => setIsOpen({ ...deleteTemplateObj, isOpen: false })}

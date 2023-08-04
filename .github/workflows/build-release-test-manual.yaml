@@ -30,7 +30,7 @@ jobs:
       - run: ls ./bins
         working-directory: "./"
       - name: Test if larch-linux runs
-        run: ./bins/larch-linux version
+        run: ./bins/larch-linux version --version
         working-directory: "./"
   build_release_for_mac:
     name: build_release_for_mac
@@ -52,5 +52,5 @@ jobs:
       - run: npx lerna run package:macos
         working-directory: "./"
       - name: Test if larch-mac runs
-        run: ./bins/larch-macos version
+        run: ./bins/larch-macos --version
         working-directory: "./"

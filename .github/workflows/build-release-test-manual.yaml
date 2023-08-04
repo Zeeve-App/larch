@@ -21,7 +21,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          working-directory: './'
       - run: npm install
         working-directory: "./"
       - run: npm run build
@@ -46,7 +45,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          working-directory: './'
       - run: npm install && npm update
         working-directory: "./"
       - run: npm run build

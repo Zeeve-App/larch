@@ -2,7 +2,7 @@
 
 This tutorial will consist of creating template and network from the created template, this tutorial is to reproduce the official Zombienet example: [zombienet/examples/0001-small-network.toml at main · paritytech/zombienet · GitHub](https://github.com/paritytech/zombienet/blob/main/examples/0001-small-network.toml)
 
-1. Download the larch binary from releases: https://github.com/Zeeve-App/larch/releases
+1. Download the larch binary from [releases](https://github.com/Zeeve-App/larch/releases) or [build](../development/binary_build.md) it yourself: 
 2. Install Podman / kubectl (as described in here - https://github.com/paritytech/zombienet#with-kubernetes) on the system to orchestrate the Zombienet networks.
 3. Give execute permissions to larch binary: `chmod 755 larch`, Run the larch binary by doing: `./larch`
 4. Open `http://localhost:9000` in the browser

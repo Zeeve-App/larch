@@ -42,7 +42,7 @@ export default function PopUpBox({
       <div className="fixed inset-0 flex items-center justify-center ">
         <Dialog.Panel className="w-full max-w-lg rounded-xl bg-larch-dark_2 border-dark-700 border-4 p-4">
           <Dialog.Title className=" text-white font-rubik pb-4 text-center font-bold">
-            Do you want to save network template?
+            Do you want to save the network template?
           </Dialog.Title>
           <Dialog.Description />
           <div className="flex flex-col gap-y-4 mt-5">

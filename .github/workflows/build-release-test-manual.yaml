@@ -1,0 +1,58 @@
+name: Larch Packages Build Release Manual
+
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch
+
+jobs:
+  build_release_for_linux:
+    name: build_release_for_linux
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          working-directory: './'
+      - run: npm install
+        working-directory: "./"
+      - run: npm run build
+        working-directory: "./"
+      - run: npx lerna run package:linux
+        working-directory: "./"
+      - run: ls ./bins
+        working-directory: "./"
+      - name: Test if larch-linux runs
+        run: ./bins/larch-linux version
+        working-directory: "./"
+  build_release_for_mac:
+    name: build_release_for_mac
+    needs: build_release_for_linux
+    runs-on: macos-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          working-directory: './'
+      - run: npm install && npm update
+        working-directory: "./"
+      - run: npm run build
+        working-directory: "./"
+      - run: npx lerna run package:macos
+        working-directory: "./"
+      - name: Test if larch-mac runs
+        run: ./bins/larch-macos version
+        working-directory: "./"

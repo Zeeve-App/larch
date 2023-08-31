@@ -25,6 +25,7 @@ import { downloadFileToAPath } from '../utils/download.js';
 import { checkPathExists } from '../utils/fs_helper.js';
 import { Intention } from './models/exec_run.js';
 import { execute } from './exec_run.js';
+import { setPreRequisites } from './providers/podman.js';
 
 type ZombienetCliOptions = {
   spawn?: boolean,
@@ -155,5 +156,6 @@ export const runZombienet = async (
   const compiledCliOptions = generateZombienetCliOptions(zombienetCliOptions);
   const zombienetBinPath = zombienetBinPathByVersion(zombienetVersion);
   const intention: Intention = zombienetCliOptions.spawn ? 'NETWORK_CREATE' : 'NETWORK_TEST';
+  await setPreRequisites(networkId);
   await execute(runId, zombienetBinPath, compiledCliOptions, intention, networkId, false);
 };

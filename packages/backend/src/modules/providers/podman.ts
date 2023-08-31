@@ -61,3 +61,14 @@ export const deleteDirUnshare = async (dirPath: string, networkName: string): Pr
   const { code } = await execute(undefined, 'podman', args, 'NETWORK_CLEANUP', networkName, true);
   if (code !== 0) throw new Error('Not able to deleted directory');
 };
+
+export const setPreRequisites = async(networkName: string): Promise<void> =>{
+  const args = ['pull', 'k8s.gcr.io/pause:3.5'];
+  try {
+    const { code } = await execute(undefined, 'podman', args, 'PODMAN_PREREQUISITES', networkName, true);
+    if (code !== 0) console.error('Error while pulling podman pause image.');
+  } catch (error) {
+    console.error(error);
+  }
+};
+

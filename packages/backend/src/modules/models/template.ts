@@ -125,3 +125,10 @@ export const getTemplateList = async (
   });
   return getPaginatedInfo(pageInfo, sortArray, getModel, fieldMap, defaultSort);
 };
+
+export const templateNameExists =async (templateName:string) => {
+   const [result] = await knexInstance(primaryTableName)
+    .select('name')
+    .where('name', templateName);
+    return typeof result !== 'undefined';
+}

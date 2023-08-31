@@ -14,12 +14,26 @@
  */
 
 import { Request, Response } from 'express';
-import { Template, getTemplateList } from '../../../modules/models/template.js';
+import { Template, getTemplateList, templateNameExists } from '../../../modules/models/template.js';
 import { addUserOperationEntry } from '../../../modules/user_operation.js';
 
 export const templateCreateController = async (req: Request, res: Response): Promise<void> => {
   const templateData = req.body;
   const template = new Template();
+  const nameExists = await templateNameExists(templateData.name);
+  if (nameExists) {
+    res.statusCode = 400;
+    res.json({
+      success: false,
+      error: {
+        type: 'ERROR_TEMPLATE_FOUND_WITH_SAME_NAME',
+        title: `Template with name:${templateData.name}  already exists`,
+        detail: `Template with name:${templateData.name}  already exists`,
+        instance: req.originalUrl,
+      },
+    });
+    return;
+  }
   await template.set({
     id: template.id,
     name: templateData.name,

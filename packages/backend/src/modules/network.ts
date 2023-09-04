@@ -118,7 +118,7 @@ export const createNetwork = async (networkInfo: NetworkInfo, type: NetworkType)
   if (networkExists) {
     throw new AppError({
       kind: 'NETWORK_EXISTS',
-      message: `Network with network name ${networkInfo.name} already exists`,
+      message: `Network with network name: "${networkInfo.name}" already exists`,
     });
   }
   const networkDirPath = `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkInfo.name}`;
@@ -143,7 +143,7 @@ export const createNetwork = async (networkInfo: NetworkInfo, type: NetworkType)
     await setNetworkWithState('failed');
     throw new AppError({
       kind: 'NETWORK_DIR_CREATE_ERROR',
-      message: `Network dir creation error with network name ${networkInfo.name}`,
+      message: `Network dir creation error with network name: ${networkInfo.name}`,
     });
   }
   await runZombienet({

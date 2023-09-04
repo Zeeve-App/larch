@@ -124,11 +124,12 @@ export default function Listing() {
       .then(() => {
         notify("success", "Network created successfully");
         navigate("/network")
+        setIsShowLoader(false);
       })
       .catch((error: any) => {
         console.log({error});
         let errorMessage = "Failed to create network";
-        if(error?.title && typeof error?.title === 'string') errorMessage = error?.error?.title;
+        if(error?.detail && typeof error?.detail === 'string') errorMessage = error?.detail;
         notify("error", errorMessage);
       })
       .finally(() => {
@@ -211,9 +212,11 @@ export default function Listing() {
         });
         setIsShowLoader(false);
       })
-      .catch(() => {
+      .catch((error) => {
         setIsShowLoader(false);
-        notify("error", "Failed to duplicate template");
+        let errorMessage = `Failed to duplicate template`;
+        if(error?.detail && typeof error?.detail === 'string') errorMessage = error.detail;
+        notify("error", errorMessage);
       });
   };
 

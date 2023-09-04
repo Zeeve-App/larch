@@ -170,6 +170,20 @@ export const templateCloneController = async (req: Request, res: Response): Prom
   addUserOperationEntry('TEMPLATE_CLONE', `Request to clone template: ${templateId}`);
   const template = new Template(templateId);
   const currentTemplateInfo = await template.get();
+  const nameExists = await templateNameExists(templateName);
+  if (nameExists) {
+    res.statusCode = 400;
+    res.json({
+      success: false,
+      error: {
+        type: 'ERROR_TEMPLATE_FOUND_WITH_SAME_NAME',
+        title: `Template with name: "${templateName}" already exists`,
+        detail: `Template with name: "${templateName}" already exists`,
+        instance: req.originalUrl,
+      },
+    });
+    return;
+  }
   const newTemplate = new Template();
   await newTemplate.set({ ...currentTemplateInfo, name: templateName });
   const duplicateTemplateInfo = await newTemplate.get();

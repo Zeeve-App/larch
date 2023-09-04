@@ -125,8 +125,11 @@ export default function Listing() {
         notify("success", "Network created successfully");
         navigate("/network")
       })
-      .catch(() => {
-        notify("error", "Failed to create network");
+      .catch((error: any) => {
+        console.log({error});
+        let errorMessage = "Failed to create network";
+        if(error?.title && typeof error?.title === 'string') errorMessage = error?.error?.title;
+        notify("error", errorMessage);
       })
       .finally(() => {
         setIsShowLoader(false);

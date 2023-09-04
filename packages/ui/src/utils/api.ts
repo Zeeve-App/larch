@@ -59,10 +59,9 @@ export const sendData = async ({ api, payload }: PostApiParams): Promise<Respons
     body: JSON.stringify(payload),
     headers: { 'Content-Type': 'application/json' },
   });
-  if (response.status === 200) {
-    const data = await response.json();
-    return data;
-  }
+  const data = await response.json();
+  if (response.status === 200) return data;
+  if (!data?.success && data.error?.title) throw data.error;
   throw new Error('API error');
 };
 

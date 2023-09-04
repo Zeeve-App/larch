@@ -167,8 +167,10 @@ export const useCreateTemplate = create<CreateTemplate>((set, get) => ({
       }
       await createTemplateNetwork(payload);
       notify("success", "Template created successfully");
-    } catch (error) {
-      notify("error", `Failed to ${templateId ? "update" : "create"} template`);
+    } catch (error: any) {
+      let errorMessage = `Failed to ${templateId ? "update" : "create"} template`;
+      if(error?.title && typeof error?.title === 'string') errorMessage = error.error.title;
+      notify("error", errorMessage);
       throw error;
     }
   },

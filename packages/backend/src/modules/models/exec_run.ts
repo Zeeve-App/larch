@@ -23,7 +23,7 @@ import { AppError } from '../../utils/declaration.js';
 
 const primaryTableName = 'exec_run';
 
-export type Intention = 'NETWORK_CREATE' | 'NETWORK_TEST' | 'NETWORK_CLEANUP';
+export type Intention = 'NETWORK_CREATE' | 'NETWORK_TEST' | 'NETWORK_CLEANUP' | 'PODMAN_PREREQUISITES';
 export type RelatedId = string | null;
 
 export type ExecRunInfo = {

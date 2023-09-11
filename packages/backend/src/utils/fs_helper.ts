@@ -14,6 +14,7 @@
  */
 
 import * as fs from 'node:fs/promises';
+import * as yaml from 'js-yaml';
 
 /**
  * Create the directory with parent directory if not present (recursively)
@@ -42,3 +43,15 @@ export const writeToFileFromBase64 = async (
 };
 
 export const escapePath = (path: string) => path.replace(/(\s+)/g, '\\$1');
+
+export const readFromYamlFile = async (fsPath: string): Promise<any> => yaml.load(
+  (await fs.readFile(fsPath, 'utf8')).toString(),
+);
+
+export const writeToYamlFile = async (
+  fsPath: string,
+  data: any,
+  options?: yaml.DumpOptions,
+): Promise<void> => {
+  await fs.writeFile(fsPath, yaml.dump(data, options));
+};

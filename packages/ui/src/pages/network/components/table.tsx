@@ -26,6 +26,9 @@ import { IconButton } from "src/components/Button";
 import { ReactComponent as IconError } from "src/assets/NotificationError.svg";
 import { ReactComponent as IconSuccess } from "src/assets/NotificationSuccess.svg";
 import { ReactComponent as IconInfo } from "src/assets/NotificationInfo.svg";
+import { ReactComponent as Monitoring } from "src/assets/Monitoring.svg";
+import { useState } from "react";
+import { getCurrentEndpoint } from "src/utils/setting";
 
 type NetworkInfo = {
   name: string;
@@ -34,6 +37,7 @@ type NetworkInfo = {
   networkDirectory: string;
   createdAt: string;
   networkState: string;
+  monitoringPort?: number;
 };
 
 type NetworkListTableProps = {
@@ -63,7 +67,8 @@ export default function NetworkListTable({
   sort,
 }: NetworkListTableProps) {
   const navigate = useNavigate();
-
+  const [endpoint] = useState(getCurrentEndpoint());
+ 
   return (
     <>
         <table className="text-white w-full table-auto border-2 border-dark-700">
@@ -146,6 +151,19 @@ export default function NetworkListTable({
                       }}
                       title="search executions with network name"
                     />
+                    {
+                      network.networkProvider === 'podman' ?
+                        <a href={`${network?.monitoringPort ? `${endpoint.split(':', 2).join(':')}:` : '#'}${network?.monitoringPort}`} target="_blank" rel="noopener noreferrer">
+                          <IconButton
+                            variant={"outline"}
+                            icon={<Monitoring className="text-md w-5 h-5" />}
+                            className="border-white p-0 m-0 text-white"
+                            title={network.networkState === 'running' ? 'monitor network' : 'monitoring will be available after running state'}
+                            disabled={!!(network?.monitoringPort && network.networkState === 'running')}
+                          />
+                        </a>
+                        : null
+                    }
                     <IconButton
                       variant={"outline"}
                       icon={<IconDelete className="text-md" />}

@@ -22,6 +22,8 @@ import { addUserOperationEntry } from '../../../modules/user_operation.js';
 import { Network, NetworkInfo, getNetworkList } from '../../../modules/models/network.js';
 import { AppError } from '../../../utils/declaration.js';
 import { ExecRun, getExecRunList } from '../../../modules/models/exec_run.js';
+import { readFromYamlFile } from '../../../utils/fs_helper.js';
+import { ZOMBIENET_NETWORKS_EXECUTION_DIR } from '../../../config.js';
 
 export const networkGetController = async (req: Request, res: Response): Promise<void> => {
   const networkName = typeof req.query.networkName === 'string' ? req.query.networkName : '';
@@ -229,6 +231,19 @@ export const networkListController = async (req: Request, res: Response): Promis
     pageNum,
     numOfRec,
   });
+  
+  await Promise.all(
+    networks.map(async (network) => {
+      if (!network.networkDirectory || network?.networkState !== 'running' || network?.networkProvider !== 'podman') return;
+      let monitoringPort = 0;
+      try {
+        monitoringPort = (await readFromYamlFile(`${network.networkDirectory}/grafana.yaml`)).spec?.containers[0]?.ports[0]?.hostPort as number;
+        if (monitoringPort) network.monitoringPort = monitoringPort;
+      } catch (error) {
+        console.error(`Not found port for monitoring, error: ${error}`);
+      }
+    })
+  )
 
   res.json({
     success: true,

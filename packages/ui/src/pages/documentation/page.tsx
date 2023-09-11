@@ -155,10 +155,18 @@ export default function Documentation() {
                   Once a network is created for the purpose of either evaluating or testing it,
                   certain operations can be performed on the network:
                   <ul className="list-circle grid gap-3 pl-6 text-[18px]">
+                    <li>Monitor Network</li>
                     <li>Delete Network</li>
                     <li>View Command</li>
                     <li>View Output</li>
                   </ul>
+                </p>
+                <h4 id="network-management" className="text-[18px]">Monitor Network</h4>
+                <p className="text-[18px] leading-8">
+                  Monitoring of a network can be done when it's in <b>running state</b>.<br />
+                  Monitoring can be performed by navigating to the <i>My Network</i> page, clicking on the monitoring icon under <i>Action</i> column present against the network record.
+                  It'll open  new web page where you can login and click on the dashboard option available on the left navigation bar. Under dashboard section, click on the General
+                  folder to open it. The General folder contains dashboards that provide a general overview of the network.
                 </p>
                 <h4 id="network-management" className="text-[18px]">Delete Network</h4>
                 <p className="text-[18px] leading-8">
@@ -208,6 +216,7 @@ export default function Documentation() {
                 <p className="text-[18px] leading-8">Features</p>
                 <ul className="list-circle grid gap-3 pl-6 text-[18px]">
                   <li>List networks</li>
+                  <li>Monitor network</li>
                   <li>Delete networks, view logs & invoke commands</li>
                 </ul>
               </div>

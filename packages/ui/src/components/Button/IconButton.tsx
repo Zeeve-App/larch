@@ -40,7 +40,7 @@ const styles = cva(
         true: 'rounded-full',
       },
       disabled: {
-        true: 'cursor-not-allowed bg-opacity-50 hover:bg-opacity-50 focus:bg-opacity-50 hover:shadow-none focus:shadow-none text-opacity-50',
+        true: 'cursor-not-allowed bg-opacity-50 hover:bg-opacity-50 focus:bg-opacity-50 hover:shadow-none focus:shadow-none text-opacity-50 opacity-50',
       },
     },
     compoundVariants: [

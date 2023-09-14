@@ -149,19 +149,23 @@ export default function NetworkListTable({
 
                         navigate(`/executions/?${searchQuery.toString()}`);
                       }}
-                      title="search executions with network name"
+                      title="Search executions with network name"
                     />
                     {
                       network.networkProvider === 'podman' ?
-                        <a href={`${network?.monitoringPort ? `${endpoint.split(':', 2).join(':')}:` : '#'}${network?.monitoringPort}`} target="_blank" rel="noopener noreferrer">
-                          <IconButton
-                            variant={"outline"}
-                            icon={<Monitoring className="text-md w-5 h-5" />}
-                            className="border-white p-0 m-0 text-white"
-                            title={network.networkState === 'running' ? 'monitor network' : 'monitoring will be available after running state'}
-                            disabled={!!(network?.monitoringPort && network.networkState === 'running')}
-                          />
-                        </a>
+                        <IconButton
+                          variant={"outline"}
+                          icon={<Monitoring className="text-md w-5 h-5" />}
+                          className="border-white p-0 m-0 text-white"
+                          title={network.networkState === 'running' ? 'Monitor network' : 'Monitoring will be available after running state'}
+                          disabled={network.networkState !== 'running'}
+                          onClick={() => {
+                            if (network.networkState !== 'running') return;
+                            const url = `${endpoint.split(':', 2).join(':')}:${network?.monitoringPort}`;
+                            window.open(url);
+
+                          }}
+                        />
                         : null
                     }
                     <IconButton

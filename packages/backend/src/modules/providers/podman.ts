@@ -19,7 +19,8 @@ import { execute } from '../exec_run.js';
 import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
 import { ZOMBIENET_NETWORKS_EXECUTION_DIR } from '../../config.js';
-import { readFromYamlFile, writeToYamlFile } from '../../utils/fs_helper.js';
+import { createDir, readFromYamlFile, writeToFileFromBase64, writeToYamlFile } from '../../utils/fs_helper.js';
+import { grafanaProvisioningConfig, dashboardJson } from '../dashboards/index.js'
 
 const execAsync = promisify(exec);
 
@@ -78,10 +79,7 @@ export const setPreRequisites = async (networkName: string): Promise<void> => {
   }
 };
 
-export const writeToGrafanaYaml = async (fsPath: string, grafanaDoc: any): Promise<void> => {
-
-  const dashboardsPath = path.join(__dirname, '../modules/dashboards');
-  const dashboardProvisioningConfigPath = path.join(__dirname, '../modules/dashboards/config');
+export const writeToGrafanaYaml = async (networkName: string, fsPath: string, grafanaDoc: any): Promise<void> => {
 
   grafanaDoc.spec.containers[0] = {
     ...grafanaDoc.spec.containers[0],
@@ -115,20 +113,30 @@ export const writeToGrafanaYaml = async (fsPath: string, grafanaDoc: any): Promi
       name: 'dashboard-config',
       hostPath: {
         type: 'Directory',
-        path: dashboardProvisioningConfigPath,
+        path: `${ZOMBIENET_NETWORKS_EXECUTION_DIR}/${networkName}/dashboards/config`,
       },
     },
     {
       name: 'dashboard-json',
       hostPath: {
         type: 'Directory',
-        path: dashboardsPath,
+        path: `${ZOMBIENET_NETWORKS_EXECUTION_DIR}/${networkName}/dashboards`,
       },
     },
   ];
   await writeToYamlFile(fsPath, grafanaDoc, { lineWidth: -1 });
   console.info(`Data is written to ${fsPath} successfully`);
 };
+
+const storeGrafanaDashboardConfiguration = async (networkName: string): Promise<void> => {
+  const dirPath = `${ZOMBIENET_NETWORKS_EXECUTION_DIR}/${networkName}`;
+  await createDir(`${dirPath}/dashboards/config`);
+
+  await Promise.all([
+    writeToFileFromBase64(`${dirPath}/dashboards/polkadot.json`, dashboardJson),
+    writeToFileFromBase64(`${dirPath}/dashboards/config/default.yaml`, grafanaProvisioningConfig),
+  ])
+}
 
 export const updateGrafanaPod = async (networkName: string): Promise<void> => {
   try {
@@ -140,21 +148,26 @@ export const updateGrafanaPod = async (networkName: string): Promise<void> => {
 
     let command = `podman pod ps -f label=zombie-ns=${namespace} --format {{.Name}}`;
     let response = await execAsync(command);
-    if(response.stderr) throw new Error(response.stderr);
+    if (response.stderr) throw new Error(response.stderr);
     console.log({ command, response: response.stdout });
 
     // Remove the pod which includes grafana in it's name
     command = `podman pod rm -f ${response.stdout.trim().split('\n').filter((pod) => pod.includes('grafana')).flatMap((pod) => pod)}`;
     console.log({ command });
     response = await execAsync(command);
-    if(response.stderr) throw new Error(response.stderr);
+    if (response.stderr) throw new Error(response.stderr);
 
-    // Write to grafana.yaml and start pod from grafana.yaml
-    await writeToGrafanaYaml(grafanaConfigPath, grafanaDoc);
+    // Write to grafana.yaml and create dashboard.json, default.yaml inside dashboard dir inside network folder
+    await Promise.all([
+      storeGrafanaDashboardConfiguration(networkName),
+      writeToGrafanaYaml(networkName, grafanaConfigPath, grafanaDoc),
+    ]);
+
+    // start pod from grafana.yaml
     command = `podman play kube ${grafanaConfigPath} --network ${namespace}`;
     console.log({ command });
     response = await execAsync(command);
-    if(response.stderr) throw new Error(response.stderr);
+    if (response.stderr) throw new Error(response.stderr);
 
   } catch (error) {
     console.error(error);

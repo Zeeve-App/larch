@@ -105,7 +105,7 @@ export default function standardOutputModal({
           style={{
             marginLeft: compact ? "" : "286px",
           }}
-          className="w-[70%] h-[80%] 2xl:w-3/4 rounded-xl bg-larch-dark_2 border-dark-700 border-4"
+          className="w-[70%] h-[80%] 2xl:w-3/4 rounded-xl bg-larch-dark_2 border-dark-700 border-4 overflow-auto"
         >
           <Dialog.Title className="text-white font-rubik pb-4 flex justify-between text-3xl p-6 font-bold">
             <h1>Output</h1>

@@ -8,16 +8,15 @@
     "lint": "eslint --ext .ts .",
     "test": "vitest run",
     "coverage": "vitest run --coverage",
-    "build": "node scripts/version.mjs && rm -rf dist && tsc && npm run copy-files",
+    "build": "node scripts/version.mjs && node scripts/dashboard.mjs && rm -rf dist && tsc",
     "dev": "npm run build && npm run start",
-    "start": "node dist/index.js",
-    "copy-files": "cp -r ./src/modules/dashboards/config ./dist/modules/dashboards/config"
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "engines": {
     "node": ">=18"
   },
-  "author": "Antar Basu <antar.basu@zeeve.io>, Jasti Sri Radhe Shyam <radheshyam.jasti@zeeve.io>",
+  "author": "Antar Basu <antar.basu@zeeve.io>, Jasti Sri Radhe Shyam <radheshyam.jasti@zeeve.io>, supravat samanta <supravat.samanta@zeeve.io>",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
     "@types/body-parser": "^1.19.2",

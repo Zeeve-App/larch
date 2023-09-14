@@ -73,3 +73,11 @@ input[type="text"]:focus {
 .list-circle {
   list-style-type: circle;
 }
+
+.list-square {
+  list-style-type: square;
+}
+
+.disabled {
+  opacity: .65 !important;
+}

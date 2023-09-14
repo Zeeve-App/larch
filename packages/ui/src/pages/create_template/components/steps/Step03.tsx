@@ -13,13 +13,15 @@
  * along with Larch.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Combobox } from '@headlessui/react'
 import { Button } from "src/components/Button";
 import { useCreateTemplate, DEFAULT_ARGUMENTS, DEFAULT_PARACHAIN_IMAGES } from "src/store/CreateTemplate";
 import { ReactComponent as IconAdd } from "src/assets/Add.svg";
 import { ReactComponent as IconTrash } from "src/assets/Trash.svg";
+import { AnimatePresence } from "framer-motion";
+import { InputError } from "src/components/error";
 
 
 export interface Step03Props {
@@ -30,6 +32,7 @@ export interface Step03Props {
 const Step03: FC<Step03Props> = ({ onNextStep, onPreviousStep }) => {
   const { state } = useLocation();
   const { paraChainList, setParaChainList } = useCreateTemplate();
+  const [inputError, setInputError] = useState({} as { [key: string]: string });
 
   const updateParachains = (updateIndex: number, updateContent: any) => {
     setParaChainList(
@@ -70,6 +73,19 @@ const Step03: FC<Step03Props> = ({ onNextStep, onPreviousStep }) => {
     }
   };
 
+
+  const handleNext = () => {
+    let inputErrors: { [key: string]: string } = {};
+    paraChainList.forEach(({ id, collator: { name, command } }, index) => {
+      if (!name) inputErrors[`collator_name_${index}`] = "Collator name can't be empty";
+      if (!command) inputErrors[`collator_command_${index}`] = "Collator command can't be empty";
+      if (!id) inputErrors[`parachain_id_${index}`] = "Parachain id can't be empty";
+    })
+    if (Object.keys(inputErrors).length) setInputError((prev) => ({ ...prev, ...inputErrors }));
+    else onNextStep();
+  }
+
+
   return (
     <div className="flex flex-col h-full">
       <div className="flex-grow p-6 overflow-auto">
@@ -102,20 +118,32 @@ const Step03: FC<Step03Props> = ({ onNextStep, onPreviousStep }) => {
                 {paraChainList.map((parachain, index) => (
                   <div className="flex justify-between gap-6" key={index}>
                     <div className="flex flex-col flex-grow border-2 border-dark-700 rounded-xl gap-6 p-6">
-                      <div className="flex items-center justify-start gap-x-12 ">
-                        <span className="font-extrabold min-w-[10rem]">
-                          Parachain ID
-                        </span>
-                        <input
-                          className="flex-grow max-w-[300px] active:ring-larch-pink focus:ring-larch-pink bg-larch-dark_2 focus:bg-larch-dark border-dark-700 border-2 rounded-md"
-                          type="number"
-                          value={parachain.id}
-                          onChange={(element) =>
-                            updateParachains(index, {
-                              id: parseInt(element.target.value, 10),
-                            })
-                          }
-                        />
+                      <div className="relative">
+                        <div className="flex items-center justify-start gap-x-12 ">
+                          <span className="font-extrabold min-w-[10rem]">
+                            Parachain ID
+                          </span>
+                          <input
+                            className="flex-grow max-w-[300px] active:ring-larch-pink focus:ring-larch-pink bg-larch-dark_2 focus:bg-larch-dark border-dark-700 border-2 rounded-md"
+                            type="number"
+                            value={parachain.id}
+                            onChange={(element) => {
+                              setInputError((prev) => ({ ...prev, [`parachain_id_${index}`]: '' }));
+                              updateParachains(index, {
+                                id: parseInt(element.target.value, 10),
+                              })
+                            }}
+                          />
+                        </div>
+                        <AnimatePresence mode="wait" initial={false}>
+                          {inputError[`parachain_id_${index}`]?.length ? (
+                            <InputError
+                              message={inputError[`parachain_id_${index}`]}
+                              key={inputError[`parachain_id_${index}`]}
+                              classNames="mt-1 ml-52 absolute z-40"
+                            />
+                          ) : null}
+                        </AnimatePresence>
                       </div>
                       <div className="flex items-center justify-start gap-x-12">
                         <span className="font-extrabold min-w-[10rem]">
@@ -134,28 +162,42 @@ const Step03: FC<Step03Props> = ({ onNextStep, onPreviousStep }) => {
                         />
                       </div>
                       <div className="flex flex-col gap-6 border-2 border-dark-700 rounded-xl p-6">
-                        <span className="font-extrabold w-full">Collector</span>
+                        <span className="font-extrabold w-full">Collator</span>
                         <div className="flex flex-col gap-6 p-6 border-2 border-dark-700 rounded-xl">
                           <div className="flex flex-wrap gap-6 gap-x-20">
-                            <div className="flex items-center gap-6">
-                              <span className="font-extrabold">Name</span>
-                              <input
-                                className="flex-grow bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md"
-                                type="text"
-                                value={
-                                  parachain && parachain?.collator.name
-                                    ? parachain?.collator.name
-                                    : ""
-                                }
-                                onChange={(element) =>
-                                  updateParachains(index, {
-                                    collator: {
-                                      ...parachain?.collator,
-                                      name: element.target.value,
-                                    },
-                                  })
-                                }
-                              />
+                            <div className="relative">
+                              <div className="flex items-center gap-6">
+                                <span className="font-extrabold">Name</span>
+                                <div className="flex flex-col">
+                                  <input
+                                    className="flex-grow bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md"
+                                    type="text"
+                                    value={
+                                      parachain && parachain?.collator.name
+                                        ? parachain?.collator.name
+                                        : ""
+                                    }
+                                    onChange={(element) => {
+                                      setInputError((prev) => ({ ...prev, [`collator_name_${index}`]: '' }));
+                                      updateParachains(index, {
+                                        collator: {
+                                          ...parachain?.collator,
+                                          name: element.target.value,
+                                        },
+                                      })
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                              <AnimatePresence mode="wait" initial={false}>
+                                {inputError[`collator_name_${index}`]?.length ? (
+                                  <InputError
+                                    message={inputError[`collator_name_${index}`]}
+                                    key={inputError[`collator_name_${index}`]}
+                                    classNames="mt-1 ml-16 absolute z-40"
+                                  />
+                                ) : null}
+                              </AnimatePresence>
                             </div>
                             <div className="flex items-center gap-6">
                               <span className="font-extrabold">Image</span>
@@ -211,21 +253,33 @@ const Step03: FC<Step03Props> = ({ onNextStep, onPreviousStep }) => {
                                 </Combobox.Options>
                               </Combobox>
                             </div>
-                            <div className="flex items-center gap-6">
-                              <span className="font-extrabold">Command</span>
-                              <input
-                                className="flex-grow bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md"
-                                type="text"
-                                value={parachain.collator.command}
-                                onChange={(element) =>
-                                  updateParachains(index, {
-                                    collator: {
-                                      ...parachain.collator,
-                                      command: element.target.value,
-                                    },
-                                  })
-                                }
-                              />
+                            <div className="relative">
+                              <div className="flex items-center gap-6">
+                                <span className="font-extrabold">Command</span>
+                                <input
+                                  className="flex-grow bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md"
+                                  type="text"
+                                  value={parachain.collator.command}
+                                  onChange={(element) => {
+                                    setInputError((prev) => ({ ...prev, [`collator_command_${index}`]: '' }));
+                                    updateParachains(index, {
+                                      collator: {
+                                        ...parachain.collator,
+                                        command: element.target.value,
+                                      },
+                                    })
+                                  }}
+                                />
+                              </div>
+                              <AnimatePresence mode="wait" initial={false}>
+                                {inputError[`collator_command_${index}`]?.length ? (
+                                  <InputError
+                                    message={inputError[`collator_command_${index}`]}
+                                    key={inputError[`collator_command_${index}`]}
+                                    classNames="mt-1 ml-24 absolute z-40"
+                                  />
+                                ) : null}
+                              </AnimatePresence>
                             </div>
                           </div>
                           <div className="rounded-xl">
@@ -342,7 +396,7 @@ const Step03: FC<Step03Props> = ({ onNextStep, onPreviousStep }) => {
         >
           Back
         </Button>
-        <Button className="bg-larch-pink" onClick={onNextStep}>
+        <Button className="bg-larch-pink" onClick={handleNext}>
           Next
         </Button>
       </div>

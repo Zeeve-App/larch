@@ -6,7 +6,7 @@
   "engines": {
     "node": ">=18"
   },
-  "author": "Gowrish K <gowrish.k@zeeve.io>, Swati Sharma <swati.sharma@zeeve.io>",
+  "author": "Gowrish K <gowrish.k@zeeve.io>, Swati Sharma <swati.sharma@zeeve.io>, supravat samanta <supravat.samanta@zeeve.io>",
   "license": "GPL-3.0-or-later",
   "scripts": {
     "lint": "eslint --ignore-path .gitignore --ext .tsx --ext .ts .",

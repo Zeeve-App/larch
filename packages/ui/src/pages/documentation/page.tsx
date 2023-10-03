@@ -163,7 +163,7 @@ export default function Documentation() {
                     </ul>
                   </p>
                   <div className="pl-3">
-                    <li className="list-square"><h4 id="network-management" className="text-[18px] pb-1 pt-2">Monitor Network</h4></li>
+                    <li className="list-square"><h4 id="network-management" className="text-[18px] pb-1 pt-2 inline-block">Monitor Network</h4></li>
                     <p className="text-[18px] leading-8 pl-2">
                       To monitor a network through Grafana:
                       <ul className="list-circle grid gap-1 pl-6 text-[18px]">
@@ -182,19 +182,19 @@ export default function Documentation() {
                         <li>Choose the dashboard to monitor the network stats.</li>
                       </ul>
                     </p>
-                    <li className="list-square"><h4 id="network-management" className="text-[18px] pb-1 pt-2">Delete Network</h4></li>
+                    <li className="list-square"><h4 id="network-management" className="text-[18px] pb-1 pt-2 inline-block">Delete Network</h4></li>
                     <p className="text-[18px] leading-8 pl-2">
                       Deletion of a network can be done at any stage of its lifecycle (creation, running, etc.).<br />
                       Deletion can be performed by navigating to the <i>My Network</i> page, clicking on the delete icon under <i>Action</i> column present against the network record and finally
                       clicking on <i>confirm</i> in the confirmation dialog to initiate the deletion process.
                     </p>
-                    <li className="list-square"><h4 id="network-management" className="text-[18px] pb-1 pt-2">View Command</h4></li>
+                    <li className="list-square"><h4 id="network-management" className="text-[18px] pb-1 pt-2 inline-block">View Command</h4></li>
                     <p className="text-[18px] leading-8 pl-2">
                       Zombienet command can be viewed for which it was issued to create the network.<br />
                       To view the command navigate to the network page, and click on the eye icon in the <i>action</i> column present against the network record - this will navigate to the <i>executions</i> page with the network filtered.<br />
                       In the execution record in the <i>Operation</i> column click on the command button, this will open the command details.
                     </p>
-                    <li className="list-square"><h4 id="network-management" className="text-[18px] pb-1 pt-2">View Output</h4></li>
+                    <li className="list-square"><h4 id="network-management" className="text-[18px] pb-1 pt-2 inline-block">View Output</h4></li>
                     <p className="text-[18px] leading-8 pl-2">
                       The Zombienet CLI output can be viewed for a created the network<br />
                       To view the output, navigate to network page, and click on eye icon under action column present against the network record, this will navigate to the <i>executions</i> page with the network filtered.<br />

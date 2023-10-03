@@ -14,6 +14,7 @@
  */
 
 import { FC, useState } from "react";
+import { AnimatePresence } from 'framer-motion';
 import { Button } from "src/components/Button";
 import { useCreateTemplate } from "src/store/CreateTemplate";
 import {
@@ -21,6 +22,7 @@ import {
   DropdownMenuButton,
   DropdownMenuList,
 } from "src/components/DropdownMenu";
+import { InputError } from "src/components/error"
 import { ReactComponent as IconArrowDown } from "src/assets/ArrowDown.svg";
 
 export interface Step01Props {
@@ -35,6 +37,7 @@ const Step01: FC<Step01Props> = ({ onNextStep, onPreviousStep }) => {
   } = useCreateTemplate();
 
   const [isProviderOpen, toggleProviderOpen] = useState<boolean>(false);
+  const [inputError, setInputError] = useState({} as { [key: string]: string });
 
   const providers = [
     { label: "Podman", value: "podman" },
@@ -50,6 +53,14 @@ const Step01: FC<Step01Props> = ({ onNextStep, onPreviousStep }) => {
     }
   };
 
+  const handleNext = () => {
+    let inputErrors: { [key: string]: string } = {};
+    if (!settings.networkName) inputErrors['template_name'] = "Template name can't be empty";
+    console.log({inputErrors})
+    if (Object.keys(inputErrors).length) setInputError((prev) => ({ ...prev, ...inputErrors }));
+    else onNextStep();
+  }
+
   return (
     <div className="h-full flex flex-col">
       <div className="flex-grow px-5 overflow-auto">
@@ -59,14 +70,23 @@ const Step01: FC<Step01Props> = ({ onNextStep, onPreviousStep }) => {
             className="flex-grow bg-larch-dark_2 focus:bg-larch-dark max-w-[300px] focus:ring-larch-dark border-dark-700 border-2 rounded-md"
             type="text"
             name="template_name"
-            onChange={(e) =>
+            onChange={(e) => {
+              setInputError({})
               setSettings({
                 ...settings,
                 networkName: e.target.value,
               })
-            }
+            }}
             value={settings.networkName}
           />
+          <AnimatePresence mode="wait" initial={false}>
+            {inputError['template_name']?.length ? (
+              <InputError
+                message={inputError['template_name']}
+                key={inputError['template_name']}
+              />
+            ) : null}
+          </AnimatePresence>
         </div>
         <div className="p-4 flex flex-col md:flex-row gap-x-12 gap-y-4">
           <div className="flex gap-x-6 items-center justify-between">
@@ -179,7 +199,7 @@ const Step01: FC<Step01Props> = ({ onNextStep, onPreviousStep }) => {
         >
           Cancel
         </Button>
-        <Button className="bg-larch-pink" onClick={onNextStep}>
+        <Button className="bg-larch-pink" onClick={handleNext}>
           Next
         </Button>
       </div>

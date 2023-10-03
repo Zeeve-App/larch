@@ -19,6 +19,8 @@ import { Button } from "src/components/Button";
 import { useCreateTemplate, DEFAULT_ARGUMENTS, DEFAULT_IMAGES } from "src/store/CreateTemplate";
 import { ReactComponent as IconAdd } from "src/assets/Add.svg";
 import { ReactComponent as IconTrash } from "src/assets/Trash.svg";
+import { AnimatePresence } from "framer-motion";
+import { InputError } from "src/components/error";
 
 export interface Step02Props {
   onNextStep: () => void;
@@ -28,6 +30,8 @@ export interface Step02Props {
 const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
   const { relayChain, setRelayChain, nodeList, setNodeList } =
     useCreateTemplate();
+
+  const [inputError, setInputError] = useState({} as { [key: string]: string });
 
   const removeArgumentAtIndex = (delIndex: number) => {
     // if (relayChain.default_args.length > 1) {
@@ -94,6 +98,15 @@ const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
       }
     }
   };
+
+  const handleNext = () => {
+    let inputErrors: { [key: string]: string } = {};
+    nodeList.forEach(({ name }, index) => {
+      if (!name) inputErrors[`node_name_${index}`] = "Node name can't be empty";
+    })
+    if (Object.keys(inputErrors).length) setInputError((prev) => ({ ...prev, ...inputErrors }));
+    else onNextStep();
+  }
 
   return (
     <div className="flex flex-col h-full">
@@ -228,7 +241,7 @@ const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
                   ))}
                 </div>
               </div>
-              <div className="flex-grow border-2 border-dark-700 p-6 rounded-xl">
+              <div className="flex-grow border-2 border-dark-700 p-6 rounded-xl overflow-auto">
                 <div className="flex items-start justify-between gap-x-12">
                   <span className="font-extrabold">Nodes</span>
                   <Button
@@ -251,20 +264,33 @@ const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
                   {nodeList.map((node, index) => (
                     <div className="flex justify-between gap-5" key={index}>
                       <div className="flex flex-col flex-grow border-2 border-dark-700 rounded-xl p-6 gap-6">
-                        <div className="flex items-center justify-between gap-x-12 ">
-                          <span className="font-extrabold min-w-[10rem]">
-                            Name
-                          </span>
-                          <input
-                            className="flex-grow bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md"
-                            type="text"
-                            value={node.name}
-                            onChange={(element) =>
-                              updateNodeList(index, {
-                                name: element.target.value,
-                              })
-                            }
-                          />
+                        <div>
+                          <div className="flex items-center justify-between gap-x-12 ">
+                            <span className="font-extrabold min-w-[10rem]">
+                              Name
+                            </span>
+
+                            <input
+                              className="flex-grow bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md"
+                              type="text"
+                              value={node.name}
+                              onChange={(element) => {
+                                setInputError((prev) =>({...prev, [`node_name_${index}`]: ''}));
+                                updateNodeList(index, {
+                                  name: element.target.value,
+                                })
+                              }}
+                            />
+                          </div>
+                          <AnimatePresence mode="wait" initial={false}>
+                            {inputError[`node_name_${index}`]?.length ? (
+                              <InputError
+                                message={inputError[`node_name_${index}`]}
+                                key={inputError[`node_name_${index}`]}
+                                classNames="mt-1 ml-52"
+                              />
+                            ) : null}
+                          </AnimatePresence>
                         </div>
                         <div className="flex items-center justify-between gap-x-12 ">
                           <span className="font-extrabold min-w-[10rem]">
@@ -424,7 +450,7 @@ const Step02: FC<Step02Props> = ({ onNextStep, onPreviousStep }) => {
         >
           Back
         </Button>
-        <Button className="bg-larch-pink" onClick={onNextStep}>
+        <Button className="bg-larch-pink" onClick={handleNext}>
           Next
         </Button>
       </div>

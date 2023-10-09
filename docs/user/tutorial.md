@@ -60,3 +60,7 @@ alice: system event matches glob "*was backed*" within 10 seconds
 alice: parachain 100 is registered within 225 seconds
 alice: parachain 100 block height is at least 10 within 200 seconds
 ```
+
+15. To view metrics for the deployed network go to `my network` page and click on the Monitoring icon, it will take you to Grafana service.
+  - Default username: `admin` and password: `admin`
+  - In Dashboards section, open `General` folder, you will find the dashboard, open it to view the metrics

@@ -86,18 +86,18 @@ describe('Version route endpoint', () => {
     expect(res && res.body && typeof res.body === 'object')
     expect(res.statusCode).toEqual(200)
     expect(res.body).toEqual({
-        "status": "success",
-        "result": {
-            "zombienetVersion": ZOMBIENET_VERSION,
-            "larchVersion": LARCH_VERSION
-        }
+      "status": "success",
+      "result": {
+        "zombienetVersion": ZOMBIENET_VERSION,
+        "larchVersion": LARCH_VERSION
+      }
     })
   })
 })
 
- // Create Network API
+// Create Network API
 
- describe('Create Network Endpoint', () => {
+describe('Create Network Endpoint', () => {
   test('should return an object with the network-name,directory-name,file-name and configuration-file', async () => {
     const res = await supertest(app)
       .post('/api/larch/network/create/')
@@ -135,9 +135,9 @@ describe('network route endpoint', () => {
     expect(res.statusCode).toBeGreaterThanOrEqual(400)
   })
 })
- // Test Cases Test Network API
+// Test Cases Test Network API
 
- describe('Test Network route endpoint', () => {
+describe('Test Network route endpoint', () => {
   test('Zombienet network test', async () => {
     const res = await supertest(app)
       .post('/api/larch/network/test/')
@@ -151,43 +151,43 @@ describe('network route endpoint', () => {
         "testContent": TEST_FILE_CONTENT,
 
       })
-      expect(res.statusCode).toBeGreaterThanOrEqual(200);
+    expect(res.statusCode).toBeGreaterThanOrEqual(200);
   })
 })
 
-  // Update Network API
+// Update Network API
 
-  describe('Update Network Endpoint', () => {
-    test('it should return success message and status code should be equal to 200', async () => {
-      const res = await supertest(app)
-        .post('/api/larch/network/update/')
-        .query({ networkName: NETWORK_NAME })
-        .send({
-          "testFilename": TEST_FILE_NAME,
-          "testContent": TEST_FILE_CONTENT,
-          "configFilename": FILE_NAME,
-          "configContent": CONFIG_FILE,
-  
-        })
-      expect(res.statusCode).toEqual(400)
-      // expect(res.body.success).toEqual(true);
-    })
-  })
-  
-  describe('Update Network Endpoint', () => {
-    test('it should return error message and status code should be equal to 404', async () => {
-      const networkName = '';
-      const res = await supertest(app)
-        .post('/api/larch/network/update/')
-        .query({ networkName: networkName })
-        const network = new Network(networkName);
-        const networkExists = await network.exists();
-        if (!networkExists) {
-          expect(res.statusCode).toEqual(404)
-          expect(res.body.success).toEqual(false);
-        }
+describe('Update Network Endpoint', () => {
+  test('it should return success message and status code should be equal to 200', async () => {
+    const res = await supertest(app)
+      .post('/api/larch/network/update/')
+      .query({ networkName: NETWORK_NAME })
+      .send({
+        "testFilename": TEST_FILE_NAME,
+        "testContent": TEST_FILE_CONTENT,
+        "configFilename": FILE_NAME,
+        "configContent": CONFIG_FILE,
+
       })
-    })
+    expect(res.statusCode).toEqual(400)
+    // expect(res.body.success).toEqual(true);
+  })
+})
+
+describe('Update Network Endpoint', () => {
+  test('it should return error message and status code should be equal to 404', async () => {
+    const networkName = '';
+    const res = await supertest(app)
+      .post('/api/larch/network/update/')
+      .query({ networkName: networkName })
+    const network = new Network(networkName);
+    const networkExists = await network.exists();
+    if (!networkExists) {
+      expect(res.statusCode).toEqual(404)
+      expect(res.body.success).toEqual(false);
+    }
+  })
+})
 
 // Test Listing API
 
@@ -207,9 +207,9 @@ describe('network route endpoint', () => {
     expect(res && res.body && typeof res.body === 'object')
     expect(res.success === 'true')
     expect(res.body.success === 'true')
-    expect(res.body).not.toEqual({ })
-    })
+    expect(res.body).not.toEqual({})
   })
+})
 
 
 
@@ -221,18 +221,18 @@ describe('Delete Network Endpoint', () => {
     const res = await supertest(app)
       .get('/api/larch/network/delete/')
       .query({ networkName: networkName })
-      const network = new Network(networkName);
-      const networkExists = await network.exists();
-      if (!networkExists) {
-        expect(res.statusCode).toEqual(404)
-        expect(res.body.success).toEqual(false);
-      } else {
-        expect(res.statusCode).toEqual(200)
-        expect(res.body.success).toEqual(true)
-        expect(res.body.result.name).toEqual(networkName)
-      }
-    })
+    const network = new Network(networkName);
+    const networkExists = await network.exists();
+    if (!networkExists) {
+      expect(res.statusCode).toEqual(404)
+      expect(res.body.success).toEqual(false);
+    } else {
+      expect(res.statusCode).toEqual(200)
+      expect(res.body.success).toEqual(true)
+      expect(res.body.result.name).toEqual(networkName)
+    }
   })
+})
 
 
 
@@ -244,17 +244,17 @@ describe('Test Network Run endpoint', () => {
     const res = await supertest(app)
       .get('/api/larch/network/run/')
       .query({ runId: runId })
-      const execRun = new ExecRun(runId);
-      const execRunExists = await execRun.exists();
-      if (!execRunExists) {
-        expect(res.statusCode).toEqual(404)
-        expect(res.body.success).toEqual(false);
-      } else {
-        expect(res && res.body && typeof res.body === 'object')
-        expect(res.statusCode).toEqual(200)
-        expect(res.body.success).toEqual(true)
-      }
-      
+    const execRun = new ExecRun(runId);
+    const execRunExists = await execRun.exists();
+    if (!execRunExists) {
+      expect(res.statusCode).toEqual(404)
+      expect(res.body.success).toEqual(false);
+    } else {
+      expect(res && res.body && typeof res.body === 'object')
+      expect(res.statusCode).toEqual(200)
+      expect(res.body.success).toEqual(true)
+    }
+
   })
 })
 
@@ -268,15 +268,15 @@ describe('Test Network Run-List endpoint', () => {
       .send({
         "filter": {
           "id": "",
-          "intention":"NETWORK_CREATE",
-          "command":""
+          "intention": "NETWORK_CREATE",
+          "command": ""
         },
         "meta": {
           "pageNum": 1,
           "numOfRec": 2
         }
       })
-        expect(res && res.body && typeof res.body === 'object')
+    expect(res && res.body && typeof res.body === 'object')
   })
 })
 
@@ -288,21 +288,33 @@ describe('Test Status endpoint', () => {
     const res = await supertest(app)
       .post('/api/larch/network/test/')
       .query({ networkName: networkName })
-      const network = new Network(networkName);
-      const networkExists = await network.exists();
-      if (!networkExists) {
-        expect(res.statusCode).toBeGreaterThanOrEqual(400)
-        expect(res.body.success).toEqual(false)
-        expect(res.body.error.type).toEqual('VALIDATION_ERROR');
-      } else {
-        expect(res.body.name).toEqual(networkName);
-      }
-      
+    const network = new Network(networkName);
+    const networkExists = await network.exists();
+    if (!networkExists) {
+      expect(res.statusCode).toBeGreaterThanOrEqual(400)
+      expect(res.body.success).toEqual(false)
+      expect(res.body.error.type).toEqual('VALIDATION_ERROR');
+    } else {
+      expect(res.body.name).toEqual(networkName);
+    }
+
   })
 })
 
 describe('Create Network Template API', () => {
   test('should return a success value of true', async () => {
+    const listRes = await supertest(app)
+      .post('/api/larch/template/list/')
+      .send({ filter: { name: NETWORK_NAME } })
+    console.log({ list:listRes.body })
+    if (listRes.body.success) {
+      const list = listRes.body.result
+      console.log({list})
+      const id = list[0].id
+      await supertest(app)
+        .get('/api/larch/template/delete/')
+        .query({ templateId: id })
+    }
     const res = await supertest(app)
       .post('/api/larch/template/create/')
       .send({
@@ -313,6 +325,7 @@ describe('Create Network Template API', () => {
         "testFilename": TEST_FILE_NAME,
         "testContent": TEST_FILE_CONTENT,
       })
+    console.log(res.body);
     expect(res.body.success).toEqual(true);
   })
 })
@@ -323,41 +336,41 @@ describe('Find Network Template API', () => {
     const res = await supertest(app)
       .get('/api/larch/template/')
       .query({ templateId: templateId })
-      const template = new Template(templateId);
-      const templateExists = await template.exists();
-      if (!templateExists) {
-        expect(res.statusCode).toEqual(404)
-        expect(res.body.success).toEqual(false);
-      } else {
-        expect(res.body.success).toEqual(true);
-      } 
-    })
+    const template = new Template(templateId);
+    const templateExists = await template.exists();
+    if (!templateExists) {
+      expect(res.statusCode).toEqual(404)
+      expect(res.body.success).toEqual(false);
+    } else {
+      expect(res.body.success).toEqual(true);
+    }
   })
+})
 
-  describe('Update Network Template API', () => {
-    test('This is a post request if a correct template id is given it will return the template info as result and a success message', async () => {
-      const templateId = '';
-      const res = await supertest(app)
-        .post('/api/larch/template/update/')
-        .query({ templateId: templateId })
-        .send({
-          "name": NETWORK_NAME,
-          "configFilename": FILE_NAME,
-          "configContent": CONFIG_FILE,
-          "networkProvider": NETWORK_PROVIDER,
-          "testFilename": TEST_FILE_NAME,
-          "testContent": TEST_FILE_CONTENT,
-        })
-        const template = new Template(templateId);
-        const templateExists = await template.exists();
-        if (!templateExists) {
-          expect(res.statusCode).toEqual(404)
-          expect(res.body.success).toEqual(false);
-        } else {
-          expect(res.body.success).toEqual(true);
-        } 
+describe('Update Network Template API', () => {
+  test('This is a post request if a correct template id is given it will return the template info as result and a success message', async () => {
+    const templateId = '';
+    const res = await supertest(app)
+      .post('/api/larch/template/update/')
+      .query({ templateId: templateId })
+      .send({
+        "name": NETWORK_NAME,
+        "configFilename": FILE_NAME,
+        "configContent": CONFIG_FILE,
+        "networkProvider": NETWORK_PROVIDER,
+        "testFilename": TEST_FILE_NAME,
+        "testContent": TEST_FILE_CONTENT,
       })
-    })
+    const template = new Template(templateId);
+    const templateExists = await template.exists();
+    if (!templateExists) {
+      expect(res.statusCode).toEqual(404)
+      expect(res.body.success).toEqual(false);
+    } else {
+      expect(res.body.success).toEqual(true);
+    }
+  })
+})
 
 
 describe('Delete Network Template API', () => {
@@ -366,19 +379,19 @@ describe('Delete Network Template API', () => {
     const res = await supertest(app)
       .get('/api/larch/template/delete/')
       .query({ templateId: templateId })
-      const template = new Template(templateId);
-      const templateExists = await template.exists();
-      if (!templateExists) {
-        expect(res.statusCode).toEqual(404)
-        expect(res.body.success).toEqual(false);
-      } else {
-        expect(res.body.success).toEqual(true);
-        expect(res.body.result.id).toEqual(templateId);
-      } 
-    })
+    const template = new Template(templateId);
+    const templateExists = await template.exists();
+    if (!templateExists) {
+      expect(res.statusCode).toEqual(404)
+      expect(res.body.success).toEqual(false);
+    } else {
+      expect(res.body.success).toEqual(true);
+      expect(res.body.result.id).toEqual(templateId);
+    }
   })
+})
 
-  describe('Pagination of template API', () => {
+describe('Pagination of template API', () => {
   test('This is a post should return success msg and a response body of type object', async () => {
     const res = await supertest(app)
       .post('/api/larch/template/list')
@@ -393,20 +406,20 @@ describe('Delete Network Template API', () => {
       })
     expect(res && res.body && typeof res.body === 'object')
     expect(res.body.success === 'true')
-    expect(res.body).not.toEqual({ })
-    })
+    expect(res.body).not.toEqual({})
   })
+})
 
-  describe('Clone Network Template API', () => {
-    test('This is a get request if a correct template id is given it will clone the template and as result and a success message will be sent', async () => {
-      const templateId = '';
-      const res = await supertest(app)
-        .get('/api/larch/template/clone/')
-        .query({ templateId: templateId })
-         expect(res.body.success).toEqual(false);
-        
-      })
-    })
+describe('Clone Network Template API', () => {
+  test('This is a get request if a correct template id is given it will clone the template and as result and a success message will be sent', async () => {
+    const templateId = '';
+    const res = await supertest(app)
+      .get('/api/larch/template/clone/')
+      .query({ templateId: templateId })
+    expect(res.body.success).toEqual(false);
+
+  })
+})
 
 describe('Test User Operation "/" API', () => {
   test('This is a get request if a correct operation id is given it will return the operation info as result and a success message else it will throw error', async () => {
@@ -414,26 +427,26 @@ describe('Test User Operation "/" API', () => {
     const res = await supertest(app)
       .get('/api/larch//user_operation/')
       .query({ operationId: operationId })
-      const userOperation = new UserOperation(operationId);
-      const userOperationExists = await userOperation.exists();
-      if (!userOperationExists) {
-        expect(res.statusCode).toEqual(404)
-        expect(res.body.success).toEqual(false);
-      } else {
-        expect(res.body.success).toEqual(true);
-      } 
-    })
+    const userOperation = new UserOperation(operationId);
+    const userOperationExists = await userOperation.exists();
+    if (!userOperationExists) {
+      expect(res.statusCode).toEqual(404)
+      expect(res.body.success).toEqual(false);
+    } else {
+      expect(res.body.success).toEqual(true);
+    }
   })
+})
 
-  describe('Test User Operation purge API', () => {
-    test('This is a get request if a correct operation id is given it will return the operation info as result and a success message else it will throw error', async () => {
-      const res = await supertest(app)
-        .get('/api/larch//user_operation/purge/')
-          expect(res.body.success).toEqual(true)
-          expect(res.body.result).toEqual({});
-        
-      })
-    })
+describe('Test User Operation purge API', () => {
+  test('This is a get request if a correct operation id is given it will return the operation info as result and a success message else it will throw error', async () => {
+    const res = await supertest(app)
+      .get('/api/larch//user_operation/purge/')
+    expect(res.body.success).toEqual(true)
+    expect(res.body.result).toEqual({});
+
+  })
+})
 
 describe('Pagination of User Operation API', () => {
   test('This is a post should return success msg and a response body of type object', async () => {
@@ -450,7 +463,7 @@ describe('Pagination of User Operation API', () => {
       })
     expect(res && res.body && typeof res.body === 'object')
     expect(res.body.success === 'true')
-    expect(res.body).not.toEqual({ })
+    expect(res.body).not.toEqual({})
     expect(typeof res.body.meta.pageNum === 'number' && typeof res.body.meta.numOfRec === 'number' && typeof res.body.meta.total === 'number')
-    })
   })
+})

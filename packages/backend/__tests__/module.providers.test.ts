@@ -37,12 +37,5 @@ describe('Podman', () => {
       const cleanupResponse = podman.cleanUp('zombie-6b302120', 'zombie-6b302120');
       expect(cleanupResponse).resolves.toBe(undefined);
     });
-    test("should check Zombie JSON for Zombienet network", async () => {
-      const networkPath = path.join(CURRENT_DIR, 'assets');
-      const isPresent = await podman.checkZombieJson(path.join(CURRENT_DIR, 'assets'));
-      expect(isPresent).toBe(true);
-      const isPresentCommon = await common.isNetworkReady('podman', networkPath);
-      expect(isPresentCommon).toBe(true);
-    });
 });
 

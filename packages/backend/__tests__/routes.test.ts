@@ -306,10 +306,8 @@ describe('Create Network Template API', () => {
     const listRes = await supertest(app)
       .post('/api/larch/template/list/')
       .send({ filter: { name: NETWORK_NAME } })
-    console.log({ list:listRes.body })
-    if (listRes.body.success) {
+    if (listRes.body.success && Array.isArray(listRes.body.result) && listRes.body.result.length > 0) {
       const list = listRes.body.result
-      console.log({list})
       const id = list[0].id
       await supertest(app)
         .get('/api/larch/template/delete/')

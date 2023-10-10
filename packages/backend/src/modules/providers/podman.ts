@@ -16,13 +16,13 @@
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import { execute } from '../exec_run.js';
-import { exec } from 'node:child_process';
-import { promisify } from 'node:util';
-import { ZOMBIENET_NETWORKS_EXECUTION_DIR } from '../../config.js';
-import { createDir, readFromYamlFile, writeToFileFromBase64, writeToYamlFile } from '../../utils/fs_helper.js';
-import { grafanaProvisioningConfig, dashboardJson } from '../dashboards/index.js'
-
-const execAsync = promisify(exec);
+import { ZOMBIENET_BIN_COLLECTION_DIR, ZOMBIENET_NETWORKS_EXECUTION_DIR } from '../../config.js';
+import { checkPathExists, createDir, readFromYamlFile, writeToFileFromBase64, writeToYamlFile } from '../../utils/fs_helper.js';
+import { grafanaProvisioningConfig,nodeExporterJson, dashboardJson } from '../dashboards/index.js'
+import { downloadFileToAPath } from '../../utils/download.js';
+import { constants } from 'node:fs';
+import { homedir } from 'node:os';
+import { execPromise } from '../../utils/misc.js';
 
 export const getNamespace = async (networkDirectory: string): Promise<string> => {
   const data = await fs.readFile(path.join(networkDirectory, 'namespace'), 'utf-8');
@@ -134,6 +134,7 @@ const storeGrafanaDashboardConfiguration = async (networkName: string): Promise<
 
   await Promise.all([
     writeToFileFromBase64(`${dirPath}/dashboards/polkadot.json`, dashboardJson),
+    writeToFileFromBase64(`${dirPath}/dashboards/node_exporter.json`, nodeExporterJson),
     writeToFileFromBase64(`${dirPath}/dashboards/config/default.yaml`, grafanaProvisioningConfig),
   ])
 }
@@ -147,15 +148,17 @@ export const updateGrafanaPod = async (networkName: string): Promise<void> => {
     if (!namespace) throw new Error(`Namespace not found for network: ${networkName}`);
 
     let command = `podman pod ps -f label=zombie-ns=${namespace} --format {{.Name}}`;
-    let response = await execAsync(command);
-    if (response.stderr) throw new Error(response.stderr);
-    console.log({ command, response: response.stdout });
+    const namespaceResponse = await execPromise(command)
+    if (namespaceResponse.code != 0)
+      throw new Error(`Error while performing podman rm code: ${namespaceResponse.code}`);
+    console.log({ command, response: namespaceResponse.stdout });
 
     // Remove the pod which includes grafana in it's name
-    command = `podman pod rm -f ${response.stdout.trim().split('\n').filter((pod) => pod.includes('grafana')).flatMap((pod) => pod)}`;
+    command = `podman pod rm -f ${namespaceResponse.stdout.trim().split('\n').filter((pod) => pod.includes('grafana')).flatMap((pod) => pod)}`;
     console.log({ command });
-    response = await execAsync(command);
-    if (response.stderr) throw new Error(response.stderr);
+    const podmanRMResponse = await execPromise(command)
+    if (podmanRMResponse.code != 0)
+      throw new Error(`Error while performing podman rm code: ${podmanRMResponse.code}`);
 
     // Write to grafana.yaml and create dashboard.json, default.yaml inside dashboard dir inside network folder
     await Promise.all([
@@ -166,10 +169,121 @@ export const updateGrafanaPod = async (networkName: string): Promise<void> => {
     // start pod from grafana.yaml
     command = `podman play kube ${grafanaConfigPath} --network ${namespace}`;
     console.log({ command });
-    response = await execAsync(command);
-    if (response.stderr) throw new Error(response.stderr);
+    const kubePlayResponse = await execPromise(command)
+    if (kubePlayResponse.code != 0)
+      throw new Error(`Error while performing kube play code: ${kubePlayResponse.code}`);
 
   } catch (error) {
     console.error(error);
   }
+}
+
+
+export const installNodeExporter = async () => {
+  const NODE_EXPORTER_VERSION = '1.5.0';
+  const finalDir = `node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64`;
+  const binaryDownloadUrl = `https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/${finalDir}.tar.gz`
+  const binaryAchievePath = path.join(ZOMBIENET_BIN_COLLECTION_DIR, `${finalDir}.tar.gz`);
+  const binaryPath = path.join(ZOMBIENET_BIN_COLLECTION_DIR, finalDir, 'node_exporter');
+  const pathExists = await checkPathExists(binaryPath);
+  if (!pathExists) {
+    await fs.mkdir(ZOMBIENET_BIN_COLLECTION_DIR, { recursive: true });
+    await downloadFileToAPath({
+      downloadUrl: binaryDownloadUrl,
+      filePath: binaryAchievePath,
+      progressRefreshInMs: 800,
+      progressCb: (fileSize, currentFileSize) => {
+        console.log(`Total file size: ${fileSize}, Current file size: ${currentFileSize}, Percent downloaded: ${((currentFileSize / fileSize) * 100).toFixed(2)}`);
+      },
+    });
+    const extractCommand = `tar -xf ./${finalDir}.tar.gz`;
+    await execPromise(extractCommand, {
+      cwd: ZOMBIENET_BIN_COLLECTION_DIR
+    });
+    await fs.chmod(binaryPath, constants.S_IRUSR | constants.S_IWUSR | constants.S_IXUSR);
+  }
+  const systemdPath = path.join(homedir(), '.config', 'systemd', 'user');
+  await fs.mkdir(systemdPath, { recursive: true });
+
+  const unitFile = `
+[Unit]
+Description=Node Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=${binaryPath} --web.listen-address=:9902
+
+[Install]
+WantedBy=default.target
+`
+  await fs.writeFile(path.join(systemdPath, 'node_exporter.service'), unitFile, { encoding: 'utf-8' });
+  await execPromise('systemctl --user daemon-reload', {
+    cwd: ZOMBIENET_BIN_COLLECTION_DIR
+  });
+  await execPromise('systemctl --user start node_exporter.service', {
+    cwd: ZOMBIENET_BIN_COLLECTION_DIR
+  });
+}
+
+export const updatePrometheus = async (networkName: string) => {
+  const prometheusPodmanConfigPath = `${ZOMBIENET_NETWORKS_EXECUTION_DIR}/${networkName}/prometheus.yaml`;
+  const prometheusConfigPodmanData = await readFromYamlFile(prometheusPodmanConfigPath);
+
+  const prometheusConfigVolumes = prometheusConfigPodmanData.spec.volumes;
+  let prometheusConfigPath = '';
+  prometheusConfigVolumes.forEach((volume: { name: string, hostPath: { path: string } }) => {
+    if (volume.name == 'prom-cfg') {
+      prometheusConfigPath = path.join(volume.hostPath.path, 'prometheus.yml');
+    }
+  });
+  const prometheusConfigData = await readFromYamlFile(prometheusConfigPath);
+  const scapeConfig = prometheusConfigData.scrape_configs as Array<any>;
+  if(scapeConfig.findIndex((element) => element.job_name === 'node_exporter') === -1 ) {
+    scapeConfig.push({
+      'job_name': 'node_exporter',
+      'static_configs': [{
+        targets: ['host.containers.internal:9902']
+      }]
+    });
+  }
+  console.log({ prometheusConfigData });
+  await writeToYamlFile(prometheusConfigPath, prometheusConfigData, { lineWidth: -1 });
+  const namespace = prometheusConfigPodmanData?.metadata?.namespace;
+  if (!namespace) throw new Error(`Namespace not found for network: ${networkName}`);
+
+  let command = `podman pod ps -f label=zombie-ns=${namespace} --format {{.Name}}`;
+  const namespaceResponse = await execPromise(command)
+  if (namespaceResponse.code != 0)
+    throw new Error(`Error while performing podman rm code: ${namespaceResponse.code}`);
+  console.log({ command, response: namespaceResponse.stdout });
+  console.log({ command, response: namespaceResponse.stdout });
+
+  // Remove the pod which includes grafana in it's name
+  command = `podman pod rm -f ${namespaceResponse.stdout.trim().split('\n').filter((pod) => pod.includes('prometheus')).flatMap((pod) => pod)}`;
+  console.log({ command });
+  const podmanRMResponse = await execPromise(command)
+  if (podmanRMResponse.code != 0)
+    throw new Error(`Error while performing podman rm code: ${podmanRMResponse.code}`);
+  // start pod from grafana.yaml
+  command = `podman play kube ${prometheusPodmanConfigPath} --network ${namespace}`;
+  console.log({ command });
+  const kubePlayResponse = await execPromise(command)
+  if (kubePlayResponse.code != 0)
+    throw new Error(`Error while performing kube play code: ${kubePlayResponse.code}`);
+  const kubeInspectResponse = await execPromise('podman inspect prometheus-prometheus');
+  if (kubeInspectResponse.code != 0)
+    throw new Error(`Error while performing kube play code: ${kubePlayResponse.code}`);
+  const inspectInfo = JSON.parse(kubeInspectResponse.stdout);
+  const ipAddress = inspectInfo[0]['NetworkSettings']['Networks'][namespace]['IPAddress'];
+  const grafanaDataSourceConfigPath = path.join(ZOMBIENET_NETWORKS_EXECUTION_DIR, networkName, 'grafana', 'datasources', 'prometheus.yml');
+  const grafanaDataSource = await readFromYamlFile(grafanaDataSourceConfigPath);
+  const datasources = grafanaDataSource.datasources as Array<any>;
+
+  datasources.forEach((element: { name: string, url: string }, index) => {
+    if (element.name === 'Prometheus') {
+      datasources[index].url = `http://${ipAddress}:9090`
+    }
+  });
+  await writeToYamlFile(grafanaDataSourceConfigPath, grafanaDataSource, { lineWidth: -1 });
 }

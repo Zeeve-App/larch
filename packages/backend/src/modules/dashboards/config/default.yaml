@@ -1,7 +1,16 @@
 apiVersion: 1
 
 providers:
-  - name: "Polkadot & parachain dashboard"
+  - name: "Polkadot & Parachain dashboard"
+    orgId: 1
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: true
+  - name: "Node Exporter (System Metrics)"
     orgId: 1
     type: file
     disableDeletion: false

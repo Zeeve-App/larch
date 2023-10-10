@@ -19,14 +19,16 @@ import * as path from 'path';
 const rootPath = path.dirname(new URL(import.meta.url).pathname);
 console.log(rootPath);
 
-const [dashboardJson, grafanaProvisioningConfig] = await Promise.all([
+const [dashboardJson, nodeExporterJson, grafanaProvisioningConfig] = await Promise.all([
   fs.readFile(path.join(rootPath, '../src/modules/dashboards/polkadot.json'), {encoding: 'base64'}),
+  fs.readFile(path.join(rootPath, '../src/modules/dashboards/node_exporter.json'), {encoding: 'base64'}),
   fs.readFile(path.join(rootPath, '../src/modules/dashboards/config/default.yaml'), {encoding: 'base64'}),
 ]);
 
 const dataToBeWritten = `/* eslint-disable max-len */
 export const grafanaProvisioningConfig = '${grafanaProvisioningConfig}';
 export const dashboardJson = '${dashboardJson}';
+export const nodeExporterJson = '${nodeExporterJson}';
 `;
 
 await fs.writeFile(path.join(rootPath, '../src/modules/dashboards/index.ts'), dataToBeWritten);

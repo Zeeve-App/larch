@@ -14,6 +14,7 @@
  */
 
 /* eslint-disable no-param-reassign */
+import { exec } from 'child_process';
 import { Request, Response, NextFunction } from 'express';
 
 export const convertToCamel = (stringToBeConverted: string): string => stringToBeConverted
@@ -40,3 +41,55 @@ export const handlePromiseController = (fn: (req: Request, res: Response, next: 
 ) => Promise
   .resolve(fn(req, res, next))
   .catch(next);
+
+export const execPromise = async (command: string, execOptions: { env?: any, cwd?: string } = {}): Promise<{
+  code: number,
+  stdout: string,
+  stderr: string,
+  err: any,
+}> => {
+  if (execOptions.env) execOptions.env = { ...process.env, ...execOptions.env };
+  return new Promise((resolve, reject) => {
+    const execProcess = exec(command, execOptions);
+    let stdout = '';
+    let stderr = '';
+    execProcess.stdout?.on('data', (data) => {
+      stdout += data.toString();
+      global.process.stdout.write(data.toString());
+    });
+
+    execProcess.stderr?.on('data', (data) => {
+      stderr += data.toString();
+      global.process.stderr.write(data.toString());
+    });
+
+    execProcess.on('exit', (code) => {
+      console.log(`child process : ${command} exited with code: ${code?.toString()}`);
+      if (code === 0) {
+        return resolve({
+          code,
+          stdout,
+          stderr,
+          err: undefined,
+        });
+      }
+      // eslint-disable-next-line prefer-promise-reject-errors
+      return reject({
+        code,
+        stdout,
+        stderr,
+        err: undefined,
+      });
+    });
+
+    execProcess.on('error', (err) => {
+      // eslint-disable-next-line prefer-promise-reject-errors
+      reject({
+        code: -1,
+        stdout,
+        stderr,
+        err,
+      });
+    });
+  });
+};

@@ -18,7 +18,7 @@ import * as path from 'node:path';
 import { execute } from '../exec_run.js';
 import { ZOMBIENET_BIN_COLLECTION_DIR, ZOMBIENET_NETWORKS_EXECUTION_DIR } from '../../config.js';
 import { checkPathExists, createDir, readFromYamlFile, writeToFileFromBase64, writeToYamlFile } from '../../utils/fs_helper.js';
-import { grafanaProvisioningConfig,nodeExporterJson, dashboardJson } from '../dashboards/index.js'
+import { grafanaProvisioningConfig, nodeExporterJson, dashboardJson } from '../dashboards/index.js'
 import { downloadFileToAPath } from '../../utils/download.js';
 import { constants } from 'node:fs';
 import { homedir } from 'node:os';
@@ -239,7 +239,7 @@ export const updatePrometheus = async (networkName: string) => {
   });
   const prometheusConfigData = await readFromYamlFile(prometheusConfigPath);
   const scapeConfig = prometheusConfigData.scrape_configs as Array<any>;
-  if(scapeConfig.findIndex((element) => element.job_name === 'node_exporter') === -1 ) {
+  if (scapeConfig.findIndex((element) => element.job_name === 'node_exporter') === -1) {
     scapeConfig.push({
       'job_name': 'node_exporter',
       'static_configs': [{
@@ -271,7 +271,10 @@ export const updatePrometheus = async (networkName: string) => {
   const kubePlayResponse = await execPromise(command)
   if (kubePlayResponse.code != 0)
     throw new Error(`Error while performing kube play code: ${kubePlayResponse.code}`);
-  const kubeInspectResponse = await execPromise('podman inspect prometheus-prometheus');
+  let kubeInspectResponse = await execPromise('podman inspect prometheus_pod-prometheus');
+  if (kubeInspectResponse.code != 0) {
+    kubeInspectResponse = await execPromise('podman inspect prometheus-prometheus');
+  }
   if (kubeInspectResponse.code != 0)
     throw new Error(`Error while performing kube play code: ${kubePlayResponse.code}`);
   const inspectInfo = JSON.parse(kubeInspectResponse.stdout);

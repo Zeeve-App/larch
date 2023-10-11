@@ -43,7 +43,7 @@ export const handlePromiseController = (fn: (req: Request, res: Response, next: 
   .catch(next);
 
 export const execPromise = async (command: string, execOptions: { env?: any, cwd?: string } = {}): Promise<{
-  code: number,
+  code: number | null,
   stdout: string,
   stderr: string,
   err: any,
@@ -65,16 +65,7 @@ export const execPromise = async (command: string, execOptions: { env?: any, cwd
 
     execProcess.on('exit', (code) => {
       console.log(`child process : ${command} exited with code: ${code?.toString()}`);
-      if (code === 0) {
-        return resolve({
-          code,
-          stdout,
-          stderr,
-          err: undefined,
-        });
-      }
-      // eslint-disable-next-line prefer-promise-reject-errors
-      return reject({
+      return resolve({
         code,
         stdout,
         stderr,

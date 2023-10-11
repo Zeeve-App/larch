@@ -23,6 +23,7 @@ import { downloadFileToAPath } from '../../utils/download.js';
 import { constants } from 'node:fs';
 import { homedir } from 'node:os';
 import { execPromise } from '../../utils/misc.js';
+import { getNodeExporterYaml } from './podman/node-exporter.js';
 
 export const getNamespace = async (networkDirectory: string): Promise<string> => {
   const data = await fs.readFile(path.join(networkDirectory, 'namespace'), 'utf-8');
@@ -179,6 +180,28 @@ export const updateGrafanaPod = async (networkName: string): Promise<void> => {
 }
 
 
+export const startNodeExporter = async (namespace: string, execPath: string): Promise<{ ipAddress: string }> => {
+  const nodeExporterYamlPath = path.join(execPath, 'node-exporter.yaml');
+  await fs.writeFile(nodeExporterYamlPath, getNodeExporterYaml(namespace), { encoding: 'utf-8' });
+  // start pod from grafana.yaml
+  const command = `podman play kube ${nodeExporterYamlPath} --network ${namespace}`;
+  console.log({ command });
+  const kubePlayResponse = await execPromise(command)
+  if (kubePlayResponse.code != 0)
+    throw new Error(`Error while performing kube play code: ${kubePlayResponse.code}`);
+  let kubeInspectResponse = await execPromise('podman inspect node_exporter_pod-node_exporter');
+  if (kubeInspectResponse.code != 0) {
+    kubeInspectResponse = await execPromise('podman inspect node_exporter-node_exporter');
+  }
+  if (kubeInspectResponse.code != 0)
+    throw new Error(`Error while performing inspect code: ${kubePlayResponse.code}`);
+  const inspectInfo = JSON.parse(kubeInspectResponse.stdout);
+  const ipAddress = inspectInfo[0]['NetworkSettings']['Networks'][namespace]['IPAddress'];
+  return {
+    ipAddress
+  }
+}
+
 export const installNodeExporter = async () => {
   const NODE_EXPORTER_VERSION = '1.5.0';
   const finalDir = `node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64`;
@@ -227,10 +250,13 @@ WantedBy=default.target
 }
 
 export const updatePrometheus = async (networkName: string) => {
-  const prometheusPodmanConfigPath = `${ZOMBIENET_NETWORKS_EXECUTION_DIR}/${networkName}/prometheus.yaml`;
+  const execPath = `${ZOMBIENET_NETWORKS_EXECUTION_DIR}/${networkName}`
+  const prometheusPodmanConfigPath = `${execPath}/prometheus.yaml`;
   const prometheusConfigPodmanData = await readFromYamlFile(prometheusPodmanConfigPath);
 
   const prometheusConfigVolumes = prometheusConfigPodmanData.spec.volumes;
+  const namespace = prometheusConfigPodmanData?.metadata?.namespace;
+  if (!namespace) throw new Error(`Namespace not found for network: ${networkName}`);
   let prometheusConfigPath = '';
   prometheusConfigVolumes.forEach((volume: { name: string, hostPath: { path: string } }) => {
     if (volume.name == 'prom-cfg') {
@@ -238,19 +264,22 @@ export const updatePrometheus = async (networkName: string) => {
     }
   });
   const prometheusConfigData = await readFromYamlFile(prometheusConfigPath);
-  const scapeConfig = prometheusConfigData.scrape_configs as Array<any>;
-  if (scapeConfig.findIndex((element) => element.job_name === 'node_exporter') === -1) {
-    scapeConfig.push({
-      'job_name': 'node_exporter',
-      'static_configs': [{
-        targets: ['host.containers.internal:9902']
-      }]
-    });
+  try {
+    const { ipAddress } = await startNodeExporter(namespace, execPath);
+    const scapeConfig = prometheusConfigData.scrape_configs as Array<any>;
+    if (scapeConfig.findIndex((element) => element.job_name === 'node_exporter') === -1) {
+      scapeConfig.push({
+        'job_name': 'node_exporter',
+        'static_configs': [{
+          targets: [`${ipAddress}:9100`]
+        }]
+      });
+    }
+    console.log({ prometheusConfigData });
+    await writeToYamlFile(prometheusConfigPath, prometheusConfigData, { lineWidth: -1 });
+  } catch (error) {
+    console.error(error);
   }
-  console.log({ prometheusConfigData });
-  await writeToYamlFile(prometheusConfigPath, prometheusConfigData, { lineWidth: -1 });
-  const namespace = prometheusConfigPodmanData?.metadata?.namespace;
-  if (!namespace) throw new Error(`Namespace not found for network: ${networkName}`);
 
   let command = `podman pod ps -f label=zombie-ns=${namespace} --format {{.Name}}`;
   const namespaceResponse = await execPromise(command)
@@ -276,7 +305,7 @@ export const updatePrometheus = async (networkName: string) => {
     kubeInspectResponse = await execPromise('podman inspect prometheus-prometheus');
   }
   if (kubeInspectResponse.code != 0)
-    throw new Error(`Error while performing kube play code: ${kubePlayResponse.code}`);
+    throw new Error(`Error while performing inspect code: ${kubePlayResponse.code}`);
   const inspectInfo = JSON.parse(kubeInspectResponse.stdout);
   const ipAddress = inspectInfo[0]['NetworkSettings']['Networks'][namespace]['IPAddress'];
   const grafanaDataSourceConfigPath = path.join(ZOMBIENET_NETWORKS_EXECUTION_DIR, networkName, 'grafana', 'datasources', 'prometheus.yml');

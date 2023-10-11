@@ -28,7 +28,7 @@ import { ExecRun, removeAllExecRunByRelatedId, getExecStatusCode } from './model
 import { runZombienet } from './zombienet.js';
 import { AppError } from '../utils/declaration.js';
 import { isNetworkReady, networkCleanUp } from './providers/common.js';
-import { deleteDirUnshare, installNodeExporter, updateGrafanaPod, updatePrometheus } from './providers/podman.js';
+import { deleteDirUnshare, updateGrafanaPod, updatePrometheus } from './providers/podman.js';
 import { removeInProgressNetwork } from './exec_run.js';
 
 const getNetworkPath = (networkName: string): string => `${ZOMBIENET_NETWORKS_COLLECTION_DIR}/${networkName}`;
@@ -58,7 +58,6 @@ async function networkStatusUpdate() {
       })();
       if (networkReady && networkInfo.networkProvider === 'podman' && !networksWithUpdatedGrafana.has(networkInfo.name)) {
         networksWithUpdatedGrafana.set(networkInfo.name, 1);
-        await installNodeExporter();
         await updatePrometheus(networkInfo.name);
         await updateGrafanaPod(networkInfo.name);
       }

@@ -18,7 +18,7 @@ import { constants } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import {
   ZOMBIENET_BIN_COLLECTION_DIR,
-  ZOMBIENET_BINARY_DOWNLOAD_BASE_URL,
+  // ZOMBIENET_BINARY_DOWNLOAD_BASE_URL,
   ZOMBIENET_PATCH_BINARY_DOWNLOAD_BASE_URL,
 } from '../config.js';
 import { downloadFileToAPath } from '../utils/download.js';
@@ -76,7 +76,7 @@ const getPodmanCurrentAndAvailableVersion = async (): Promise<{
 export const downloadZombienetBinary = async (zombienetVersion: string, podmanVersion: string): Promise<void> => {
   const downloadBinaryFileSlugName = process.platform === 'darwin' ? 'zombienet-macos' : 'zombienet-linux-x64';
   const binaryDownloadUrl = !podmanVersion || podmanVersion === '3'
-    ? `${ZOMBIENET_BINARY_DOWNLOAD_BASE_URL}/v${zombienetVersion}/${downloadBinaryFileSlugName}`
+    ? `${ZOMBIENET_PATCH_BINARY_DOWNLOAD_BASE_URL}/v${zombienetVersion}-podman3-patch/${downloadBinaryFileSlugName}`
     : `${ZOMBIENET_PATCH_BINARY_DOWNLOAD_BASE_URL}/v${zombienetVersion}-podman4-patch/${downloadBinaryFileSlugName}`;
   const binaryVersionedPath = zombienetBinPathByVersion(zombienetVersion);
   await fs.mkdir(ZOMBIENET_BIN_COLLECTION_DIR, { recursive: true });
@@ -122,7 +122,6 @@ export const generateZombienetCliOptions = (zombienetCliOptions: ZombienetCliOpt
     return optionsList;
   }
 
-  optionsList.push('--monitor');
   if (zombienetCliOptions.spawn) {
     optionsList.push('spawn');
     optionsList.push(zombienetCliOptions.networkConfigPath ?? '');
@@ -130,6 +129,7 @@ export const generateZombienetCliOptions = (zombienetCliOptions: ZombienetCliOpt
     optionsList.push('test');
     optionsList.push(zombienetCliOptions.testConfigPath ?? '');
   }
+  optionsList.push('--monitor');
 
   if (zombienetCliOptions.provider) {
     optionsList.push('--provider');

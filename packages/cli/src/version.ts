@@ -14,4 +14,4 @@
 */
 
 // Managed by version script - do not edit directly
-export default { version: '1.4.0' };
+export default { version: '1.5.0' };

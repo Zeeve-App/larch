@@ -54,6 +54,7 @@ Options:
 
 - [Docs](/docs/index.md)
 - [Tutorial](/docs/user/tutorial.md)
+- [Execution Issues](/docs/misc/exec_issues.md)
 
 ## License
 

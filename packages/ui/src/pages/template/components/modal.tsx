@@ -86,7 +86,12 @@ export default function PopUpBox({
                     className="flex-grow bg-larch-dark_2 focus:bg-larch-dark focus:ring-larch-dark border-dark-700 border-2 rounded-md px-2"
                     onChange={handleChange}
                     value={inputText}
-                    onKeyDown={(event) => event.key === 'Enter' && onConfirm(inputText, type)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter') {
+                        event.preventDefault();
+                        onConfirm(inputText, type)
+                      }
+                    }}
                     onBlur={() => submitButtonRef.current && submitButtonRef.current.focus()}
                   />
                 </div>
